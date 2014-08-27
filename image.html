@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<script type="text/javascript" src="lib/GeoBeans.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<script type="text/javascript" src="lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+
+<script type="text/javascript" src="lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Layer/OsmLayer.js"></script>
+<!--<script type="text/javascript" src="lib/GeoBeans/Layer/BaiduLayer.js"></script>-->
+<script type="text/javascript" src="lib/GeoBeans/Layer/BingLayer.js"></script>
+
+<script type="text/javascript" src="lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Layer/FeatureLayer.js"></script>
+
+<script type="text/javascript" src="lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Map.js"></script>
+
+<script type="text/javascript">
+
+var mapObj = null;
+function init(){
+	
+    var my_canvas= document.getElementById("myCanvas");  
+    var context=my_canvas.getContext("2d");  
+    // var footprint_img=document.getElementById("footprint");  
+    // var footprint_img=new Image();  
+    // footprint_img.src="footprint.jpg";  
+	var url = "http://ourgis.digitalearth.cn/QuadServer/maprequest?services=world_vector&row=4&col=4&level=3";
+    preImage(url,function(){  
+        context.drawImage(this,10,10,200,200);  
+    });  
+}
+
+function preImage(url,callback){  
+     var img = new Image();
+     img.src = url;  
+     
+    if (img.complete) {
+         callback.call(img);  
+        return; 
+     }  
+  
+     img.onload = function () {
+         callback.call(img);
+     };  
+}  
+
+</script>
+
+
+<title>Map5</title>
+</head>
+
+<body onload="init()">
+
+<canvas id="myCanvas" width="800" height="800"></canvas>
+<!--<img src="map.jpg"/>-->
+</body>
+</html>
+
+
+
+
