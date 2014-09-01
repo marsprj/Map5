@@ -24,9 +24,11 @@
 <script type="text/javascript" src="lib/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Layer/TileLayer.js"></script>
+<!--
 <script type="text/javascript" src="lib/GeoBeans/Layer/OsmLayer.js"></script>
-<!--<script type="text/javascript" src="lib/GeoBeans/Layer/BaiduLayer.js"></script>-->
+<script type="text/javascript" src="lib/GeoBeans/Layer/BaiduLayer.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Layer/BingLayer.js"></script>
+-->
 <script type="text/javascript" src="lib/GeoBeans/Layer/AMapLayer.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Layer/QSLayer.js"></script>
 
@@ -54,16 +56,16 @@ function init(){
 	
 	var layer = null;
 	//var center = new GeoBeans.Geometry.Point(0,0);	
-	var center = new GeoBeans.Geometry.Point(10000000,10000000);	
+	var center = new GeoBeans.Geometry.Point(0,10);	
 	//var center = new GeoBeans.Geometry.Point(-20037508.3427892,20037508.3427892);
 	//var layer = new GeoBeans.Layer.AMapLayer ("gaode","http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8");		
 	//mapObj.setExtent(new GeoBeans.Envelope(10762435.858420863,3415567.428002159,17135450.014862295,6351564.966545691));	
 	
-	layer = new GeoBeans.Layer.AMapLayer("gaode");				
+	layer = new GeoBeans.Layer.QSLayer("gaode");				
 	//mapObj.addLayer(layer);
 	mapObj.setBaseLayer(layer);
 	mapObj.setCenter(center);
-	mapObj.setLevel(4);	
+	mapObj.setLevel(5);	
 	mapObj.draw();	
 
 	context.fillStyle = 'rgba(255,0,0,1)';
