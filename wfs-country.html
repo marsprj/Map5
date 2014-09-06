@@ -73,17 +73,17 @@ function init(){
 	layer = new GeoBeans.Layer.QSLayer("gaode");				
 	mapObj.setBaseLayer(layer);
 	
-	layer = new GeoBeans.Layer.WMSLayer("wms",
-										"http://127.0.0.1:8080/geoserver/radi/wms?",
-										"radi:cities",
-										"image/png");	
-										
-	mapObj.addLayer(layer);
+//	layer = new GeoBeans.Layer.WMSLayer("wms",
+//										"http://127.0.0.1:8080/geoserver/radi/wms?",
+//										"radi:cities",
+//										"image/png");	
+//										
+//	mapObj.addLayer(layer);
 
 	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 2;
-	symbolizer.fillColor = "Aquamarine";
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	//symbolizer.size = 2;
+	//symbolizer.fillColor = "Aquamarine";
 	symbolizer.outLineWidth = 1.0;
 	symbolizer.outLineColor = "Red";
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
@@ -95,7 +95,7 @@ function init(){
 	style.addRule(rule);
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
 										"http://127.0.0.1:8080/geoserver/radi/ows?",
-										"radi:cities",
+										"radi:country",
 										"GML2");
 	layer.setStyle(style);	
 	mapObj.addLayer(layer);			
