@@ -31,11 +31,13 @@
 -->
 <script type="text/javascript" src="lib/GeoBeans/Layer/AMapLayer.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Layer/QSLayer.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Layer/WMSLayer.js"></script>
 
 <script type="text/javascript" src="lib/GeoBeans/Feature.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Layer/FeatureLayer.js"></script>
 
 <script type="text/javascript" src="lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Events.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Map.js"></script>
 
 <script type="text/javascript">
@@ -53,10 +55,11 @@ function init(){
 	context.fillRect(0,0,ww,wh);
 	
 	mapObj = new GeoBeans.Map("myCanvas");
+	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;
 	//var center = new GeoBeans.Geometry.Point(0,0);	
-	var center = new GeoBeans.Geometry.Point(0,40);	
+	var center = new GeoBeans.Geometry.Point(0,0);	
 	//var center = new GeoBeans.Geometry.Point(-20037508.3427892,20037508.3427892);
 	//var layer = new GeoBeans.Layer.AMapLayer ("gaode","http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8");		
 	//mapObj.setExtent(new GeoBeans.Envelope(10762435.858420863,3415567.428002159,17135450.014862295,6351564.966545691));	
@@ -64,8 +67,15 @@ function init(){
 	layer = new GeoBeans.Layer.QSLayer("gaode");				
 	//mapObj.addLayer(layer);
 	mapObj.setBaseLayer(layer);
+	
+	layer = new GeoBeans.Layer.WMSLayer("wms",
+										"http://127.0.0.1:8080/geoserver/radi/wms?",
+										"radi:cities",
+										"image/png");	
+	mapObj.addLayer(layer);			
+	
 	mapObj.setCenter(center);
-	mapObj.setLevel(3);	
+	mapObj.setLevel(2);	
 	mapObj.draw();	
 
 	context.fillStyle = 'rgba(255,0,0,1)';
@@ -84,6 +94,19 @@ function btnoffset(){
 	mapObj.drawCache();
 }
 
+function onMapClick(evt){
+	alert("onMapClick");
+}
+
+function onMapMove(evt){
+	var mapX = evt.mapX;
+	var mapY = evt.mapY;
+	
+	var str = mapX + "," + mapY;
+	document.getElementById("xy").innerHTML = str;
+}
+
+
 </script>
 
 
@@ -94,6 +117,7 @@ function btnoffset(){
 
 <canvas id="myCanvas" width="800" height="800"></canvas>
 <input type='button' value='offset' onclick="btnoffset();">
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>
 
