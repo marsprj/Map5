@@ -67,21 +67,18 @@ function init(){
 	mapObj = new GeoBeans.Map("myCanvas");
 	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
-	var layer = null;
-	//var center = new GeoBeans.Geometry.Point(0,0);	
+	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
-	//var center = new GeoBeans.Geometry.Point(-20037508.3427892,20037508.3427892);
-	//var layer = new GeoBeans.Layer.AMapLayer ("gaode","http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8");		
-	//mapObj.setExtent(new GeoBeans.Envelope(10762435.858420863,3415567.428002159,17135450.014862295,6351564.966545691));	
 	
 	layer = new GeoBeans.Layer.QSLayer("gaode");				
-	//mapObj.addLayer(layer);
 	mapObj.setBaseLayer(layer);
 	
-//	layer = new GeoBeans.Layer.WMSLayer("wms",
-//										"http://127.0.0.1:8080/geoserver/radi/wms?",
-//										"radi:cities",
-//										"image/png");	
+	layer = new GeoBeans.Layer.WMSLayer("wms",
+										"http://127.0.0.1:8080/geoserver/radi/wms?",
+										"radi:cities",
+										"image/png");	
+										
+	mapObj.addLayer(layer);
 
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Style.PointSymbolizer();
