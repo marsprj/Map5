@@ -81,21 +81,18 @@ function init(){
 	mapObj.addLayer(layer);
 
 	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 2;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	symbolizer = new GeoBeans.Style.LineSymbolizer();
+	symbolizer.width = 2;
+	symbolizer.color = "Red";
+	symbolizer.lineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.lineJoin  = GeoBeans.Style.LineJoin.ROUND;
 	
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style = new GeoBeans.Style();
 	style.addRule(rule);
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
 										"http://127.0.0.1:8080/geoserver/radi/ows?",
-										"radi:cities",
+										"radi:rivers",
 										"GML2");
 	layer.setStyle(style);	
 	mapObj.addLayer(layer);			
