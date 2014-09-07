@@ -66,6 +66,7 @@ function init(){
 	
 	mapObj = new GeoBeans.Map("myCanvas");
 	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
+	//mapObj.addEventListener(GeoBeans.Events.CLICK, onMapClick);
 	
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
@@ -121,14 +122,15 @@ function btnoffset(){
 }
 
 function onMapClick(evt){
-	alert("onMapClick");
+	//alert("onMapClick");
+	alert(evt.X + "," + evt.Y);
 }
 
 function onMapMove(evt){
 	var mapX = evt.mapX;
 	var mapY = evt.mapY;
 	
-	var str = mapX + "," + mapY;
+	var str = mapX + "," + mapY+ "##" + evt.X + "," + evt.Y;
 	document.getElementById("xy").innerHTML = str;
 }
 
@@ -140,10 +142,9 @@ function onMapMove(evt){
 </head>
 
 <body onload="init()">
-
 <canvas id="myCanvas" width="800" height="800"></canvas>
-<input type='button' value='offset' onclick="btnoffset();">
-<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
+<!--<input type='button' value='offset' onclick="btnoffset();">-->
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>
 </body>
 </html>
 
