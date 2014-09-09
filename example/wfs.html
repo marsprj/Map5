@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<!-- Geometry -->
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
+
+<!-- Feature -->
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
+
+
+<script type="text/javascript">
+
+var workspace = null;
+var featureType = null;
+
+function onTypes(){
+	var ws = getWorkspace();
+	ws.getFeatureTypes(featureTypes_callback);
+}
+
+function onSchema(){
+	featureType.getFields(schema_callback);
+}
+
+function onFeatures(){
+	
+}
+
+function getWorkspace(){
+	if(workspace==null){
+		var version = "1.0.0";
+		var url = $("#server").first().val();
+		workspace = new GeoBeans.WFSWorkspace("world", url, version);
+	}
+	return workspace;
+}
+
+function featureTypes_callback(featureTypes){
+	var fts = featureTypes;
+	var len = fts.length;
+	var html = "<table border='1'>";
+	for(var i=0; i<len; i++){
+		var ft = fts[i];
+		html += "<tr>";
+		html += "<td>" + ft.name + "</td>";
+		html += "<td>" + ft.title + "</td>";
+		html += "<td>" + ft.keywords + "</td>";
+		html += "<td>" + ft.srs + "</td>";
+		html += "</tr>";
+	}
+	html += "</table>";
+	
+	document.getElementById("types").innerHTML = html;
+	
+	featureType = fts[0];
+}
+
+function featureType_callback(featureType){
+
+}
+
+
+function schema_callback(fields){
+	var len = fields.length;
+	var html = "<table border='1'>";
+	for(var i=0; i<len; i++){
+		var f = fields[i];
+		html += "<tr>";
+		html += "<td>" + f.name + "</td>";
+		html += "<td>" + f.type + "</td>";
+		if(f.type == GeoBeans.FieldType.GEOMETRY){
+			html += "<td>" + f.geomType + "</td>";
+		}
+		html += "</tr>";
+	}
+	html += "</table>";
+	
+	document.getElementById("fields").innerHTML = html;
+	
+}
+
+function features_callback(features){
+	
+}
+
+</script>
+
+<title>Map5 WFS</title>
+</head>
+
+<body>
+<table>
+<tr>
+<td>URL:</td>
+<td><input id="server" type='text' style='width:500px' value="http://127.0.0.1/Map5/example/wfs/wfs-getcapabilities-1.0.0.xml"/></td>
+</tr>
+<tr>
+<td>name:</td>
+<td><input id="typeName" type='text' style='width:100px' value="radi:cities"/></td>
+</tr>
+<tr>
+<td><input type='button' value="Types" onclick="onTypes();"/></td>
+<td><input type='button' value="Schema" onclick="onSchema();"/></td>
+<td><input type='button' value="Features" onclick="onFeatures();"/></td>
+</tr>
+</table>
+<div id="types"></div>
+<div id="fields"></div>
+<div id="features"></div>
+</body>
+</html>
+
+
+
+
