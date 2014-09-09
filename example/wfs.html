@@ -112,6 +112,7 @@ function features_callback(featureType, features){
 	var f = null;
 	var len = fields.length;
 	html += "<tr>";
+	html += "<td>fid</td>";
 	for(var i=0; i<len; i++){
 		f = fields[i];
 		html += "<td>" + f.name + "</td>";
@@ -125,6 +126,7 @@ function features_callback(featureType, features){
 		var num = values.length;
 		
 		html += "<tr>";
+		html += "<td>" + ftr.fid + "</td>";
 		for(var j=0; j<num; j++){
 			f = fields[j];
 			if(f.type == GeoBeans.FieldType.GEOMETRY){
