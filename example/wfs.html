@@ -43,7 +43,7 @@ function onTypes(){
 
 function onSchema(){
 	//featureType.getFields(schema_callback);
-	featureType.getFields();
+	schema_callback(featureType.getFields());
 }
 
 function onFeatures(){
@@ -103,8 +103,43 @@ function schema_callback(fields){
 	
 }
 
-function features_callback(features){
+function features_callback(featureType, features){
+	var fields = featureType.fields;
 	
+	
+	var html = "<table border='1'>";
+	
+	var f = null;
+	var len = fields.length;
+	html += "<tr>";
+	for(var i=0; i<len; i++){
+		f = fields[i];
+		html += "<td>" + f.name + "</td>";
+	}
+	html += "</tr>";
+	
+	len = features.length;
+	for(i=0; i<len; i++){
+		var ftr = features[i];
+		var values = ftr.values;
+		var num = values.length;
+		
+		html += "<tr>";
+		for(var j=0; j<num; j++){
+			f = fields[j];
+			if(f.type == GeoBeans.FieldType.GEOMETRY){
+				html += "<td></td>";
+			}
+			else{
+				html += "<td>" + values[j] + "</td>";
+			}
+		}
+		html += "<tr>";
+	}
+	
+	html += "</table>";
+	
+	document.getElementById("features").innerHTML = html;
 }
 
 </script>
