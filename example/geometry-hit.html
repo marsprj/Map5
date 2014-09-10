@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+
+<script type="text/javascript">
+
+var mapObj = null;
+function init(){
+	
+	var ww = window.document.body.clientWidth;
+	var wh = window.document.body.clientHeight;
+	var canvas = document.getElementById('myCanvas');
+	canvas.setAttribute("width", ww);
+	canvas.setAttribute("height", wh);
+	var context = canvas.getContext('2d');
+	context.fillStyle = 'rgba(0,255,0,0.25)';
+	context.fillRect(0,0,ww,wh);	
+}
+
+function onHitPolygon(){
+	var x = parseFloat(document.getElementById("x").value);
+	var y = parseFloat(document.getElementById("y").value);
+	
+	var polygon = createPolygon4();
+	if(polygon.hit(x, y)){
+		alert("true");
+	}
+	else{
+		alert("false");
+	}
+}
+
+function createPolygon(){
+	var pt1 = new GeoBeans.Geometry.Point(-2, -2);
+	var pt2 = new GeoBeans.Geometry.Point(-2,  2);
+	var pt3 = new GeoBeans.Geometry.Point( 2,  2);
+	var pt4 = new GeoBeans.Geometry.Point( 2, -2);
+	var pt5 = new GeoBeans.Geometry.Point(-2, -2);
+	
+	var ring1 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5]);
+	var polygon = new GeoBeans.Geometry.Polygon([ring1]);
+	return polygon;
+}
+
+function createPolygon2(){
+	var pt1 = new GeoBeans.Geometry.Point(-2, -2);
+	var pt2 = new GeoBeans.Geometry.Point(-2,  2);
+	var pt3 = new GeoBeans.Geometry.Point( 2,  2);
+	var pt4 = new GeoBeans.Geometry.Point( 2,  0);
+	var pt5 = new GeoBeans.Geometry.Point( 3,  0);
+	var pt6 = new GeoBeans.Geometry.Point( 3, -2);
+	var pt7 = new GeoBeans.Geometry.Point(-2, -2);
+	
+	var ring1 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5,pt6,pt7]);
+	var polygon = new GeoBeans.Geometry.Polygon([ring1]);
+	return polygon;
+}
+
+function createPolygon3(){
+	var pt1 = new GeoBeans.Geometry.Point(-2, -2);
+	var pt2 = new GeoBeans.Geometry.Point(-2,  2);
+	var pt3 = new GeoBeans.Geometry.Point( 2,  2);
+	var pt4 = new GeoBeans.Geometry.Point( 2,  0);
+	var pt5 = new GeoBeans.Geometry.Point( 3,  0);
+	var pt5 = new GeoBeans.Geometry.Point( 2,  0);
+	var pt6 = new GeoBeans.Geometry.Point( 2, -2);
+	var pt7 = new GeoBeans.Geometry.Point(-2, -2);
+	
+	var ring1 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5,pt6,pt7]);
+	var polygon = new GeoBeans.Geometry.Polygon([ring1]);
+	return polygon;
+}
+
+function createPolygon4(){
+	var pt1 = new GeoBeans.Geometry.Point(-2, -2);
+	var pt2 = new GeoBeans.Geometry.Point(-2,  2);
+	var pt3 = new GeoBeans.Geometry.Point( 2,  2);
+	var pt4 = new GeoBeans.Geometry.Point( 2,  0);
+	var pt5 = new GeoBeans.Geometry.Point( 3,  0);
+	var pt5 = new GeoBeans.Geometry.Point( 2,  0);
+	var pt6 = new GeoBeans.Geometry.Point( 2, -2);
+	var pt7 = new GeoBeans.Geometry.Point(-2, -2);
+	var ring1 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5,pt6,pt7]);
+	
+	pt1 = new GeoBeans.Geometry.Point(-1, -1);
+	pt2 = new GeoBeans.Geometry.Point( 1, -1);
+	pt3 = new GeoBeans.Geometry.Point( 1,  1);
+	pt4 = new GeoBeans.Geometry.Point(-1,  1);
+	pt5 = new GeoBeans.Geometry.Point(-1, -1);
+	var ring2 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5]);	
+	var polygon = new GeoBeans.Geometry.Polygon([ring1,ring2]);
+	return polygon;
+}
+
+</script>
+
+
+<title>[Map5] Geometry Hit Test </title>
+</head>
+
+<body onload="init()">
+<input type="text" value="0" id="x">
+<input type="text" value="0.0000001" id="y">
+<input type="button" value="Hit(0,0)" onclick="onHitPolygon();">
+<canvas id="myCanvas" width="800" height="800"></canvas>
+<!--<input type='button' value='offset' onclick="btnoffset();">-->
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>
+</body>
+</html>
+
+
+
+
