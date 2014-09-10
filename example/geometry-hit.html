@@ -19,19 +19,60 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+
 <script type="text/javascript">
 
 var mapObj = null;
+var canvas = null;
+var context = null;
+var s1, s2;
+var ps = new Array();
 function init(){
 	
 	var ww = window.document.body.clientWidth;
 	var wh = window.document.body.clientHeight;
-	var canvas = document.getElementById('myCanvas');
+	canvas = document.getElementById('myCanvas');
 	canvas.setAttribute("width", ww);
 	canvas.setAttribute("height", wh);
-	var context = canvas.getContext('2d');
+	context = canvas.getContext('2d');
 	context.fillStyle = 'rgba(0,255,0,0.25)';
 	context.fillRect(0,0,ww,wh);	
+	
+	canvas.addEventListener("mousemove", onmousemove);
+	
+	s1 = createSymbolizer1();
+	s2 = createSymbolizers();
+	
+	ps.push(createPolygon1());
+	ps.push(createPolygon2());
+	drawPolygons(context);
+}
+
+function drawPolygons(){
+	var len = ps.length;
+	for(var i=0; i<len; i++){
+		var p = ps[i];
+		drawPolygon(context, p, s1);
+	}
+}
+
+function onmousemove(evt){
+	document.getElementById("xy").innerHTML = evt.layerX + "," + evt.layerY;
+	
+	var len = ps.length;
+	for(var i=0; i<len; i++){
+		var p = ps[i];
+		if(p.hit(evt.layerX , evt.layerY)){
+			drawPolygon(context, p, s2);
+		}
+		else{
+			drawPolygon(context, p, s1);
+		}
+	}
 }
 
 function onHitPolygon(){
@@ -47,12 +88,14 @@ function onHitPolygon(){
 	}
 }
 
-function createPolygon(){
-	var pt1 = new GeoBeans.Geometry.Point(-2, -2);
-	var pt2 = new GeoBeans.Geometry.Point(-2,  2);
-	var pt3 = new GeoBeans.Geometry.Point( 2,  2);
-	var pt4 = new GeoBeans.Geometry.Point( 2, -2);
-	var pt5 = new GeoBeans.Geometry.Point(-2, -2);
+function createPolygon1(){
+	var cx = canvas.width / 2;
+	var cy = canvas.height / 2;
+	var pt1 = new GeoBeans.Geometry.Point(cx-20, cy-20);
+	var pt2 = new GeoBeans.Geometry.Point(cx-20, cy+20);
+	var pt3 = new GeoBeans.Geometry.Point(cx+20, cy+20);
+	var pt4 = new GeoBeans.Geometry.Point(cx+20, cy-20);
+	var pt5 = new GeoBeans.Geometry.Point(cx-20, cy-20);
 	
 	var ring1 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5]);
 	var polygon = new GeoBeans.Geometry.Polygon([ring1]);
@@ -60,13 +103,15 @@ function createPolygon(){
 }
 
 function createPolygon2(){
-	var pt1 = new GeoBeans.Geometry.Point(-2, -2);
-	var pt2 = new GeoBeans.Geometry.Point(-2,  2);
-	var pt3 = new GeoBeans.Geometry.Point( 2,  2);
-	var pt4 = new GeoBeans.Geometry.Point( 2,  0);
-	var pt5 = new GeoBeans.Geometry.Point( 3,  0);
-	var pt6 = new GeoBeans.Geometry.Point( 3, -2);
-	var pt7 = new GeoBeans.Geometry.Point(-2, -2);
+	var ox = 500;
+	var oy = 500;
+	var pt1 = new GeoBeans.Geometry.Point(ox-20, oy-20);
+	var pt2 = new GeoBeans.Geometry.Point(ox-20, oy+20);
+	var pt3 = new GeoBeans.Geometry.Point(ox+20, oy+20);
+	var pt4 = new GeoBeans.Geometry.Point(ox+20, oy+ 0);
+	var pt5 = new GeoBeans.Geometry.Point(ox+30, oy+ 0);
+	var pt6 = new GeoBeans.Geometry.Point(ox+30, oy-20);
+	var pt7 = new GeoBeans.Geometry.Point(ox-20, oy-20);
 	
 	var ring1 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5,pt6,pt7]);
 	var polygon = new GeoBeans.Geometry.Polygon([ring1]);
@@ -107,6 +152,71 @@ function createPolygon4(){
 	var ring2 = new GeoBeans.Geometry.LinearRing([pt1,pt2,pt3,pt4,pt5]);	
 	var polygon = new GeoBeans.Geometry.Polygon([ring1,ring2]);
 	return polygon;
+}
+
+function drawPolygon(context, polygon, symbolizer){
+
+	var pt = null;
+	var ring = null;
+	var numRing = 0;
+	var numPoints = 0;	
+	
+	if(symbolizer.fillColor!=null){			
+		context.fillStyle = symbolizer.fillColor;
+	}
+	if(symbolizer.showOutline){
+		if(symbolizer.outLineWidth != null){
+			context.lineWidth   = symbolizer.outLineWidth;
+		}
+		if(symbolizer.outLineColor != null){
+			context.strokeStyle = symbolizer.outLineColor;
+		}
+		if(symbolizer.outLineCap != null){
+			context.lineCap = symbolizer.outLineCap;
+		}
+		if(symbolizer.outLineJoin != null){
+			context.lineJoin = symbolizer.outLineJoin;
+		}
+	}	
+	
+	context.beginPath();		
+	numRing = polygon.rings.length;
+	for(i=0; i<numRing; i++){
+		ring = polygon.rings[i];
+		
+		numPoints = ring.points.length;
+		pt = ring.points[0];
+		context.moveTo(pt.x, pt.y);
+		for(j=1; j<numPoints; j++){
+			pt = ring.points[j];
+			context.lineTo(pt.x, pt.y);
+		}
+	}
+	if(symbolizer.fillColor!=null){
+		context.fill();
+	}
+	if(symbolizer.showOutline){
+		context.stroke();
+	}
+	context.closePath();		
+}
+
+function createSymbolizer1(){
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Red";
+	symbolizer.showOutline = false;
+	
+	return symbolizer;
+}
+
+function createSymbolizers(){
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Blue";
+	symbolizer.showOutline = false;
+	
+	return symbolizer;
 }
 
 </script>
