@@ -24,7 +24,7 @@
 
 <script type="text/javascript" src="lib/GeoBeans/Transformation.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Style/Filter.js"></script>
+<script type="text/javascript" src="lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Style/Style.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Style/Rule.js"></script>
 <script type="text/javascript" src="lib/GeoBeans/Style/Symbolizer.js"></script>
@@ -95,7 +95,7 @@ function init(){
 	style = new GeoBeans.Style();
 	style.addRule(rule);
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"http://127.0.0.1:8080/geoserver/radi/ows?",
+										"http://ourgis.digitalearth.cn/geoserver/radi/ows?",
 										"radi:country",
 										"GML2");
 	layer.setStyle(style);	
