@@ -95,7 +95,7 @@ function init(){
 	style = new GeoBeans.Style();
 	style.addRule(rule);
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"http://ourgis.digitalearth.cn/geoserver/radi/ows?",
+										"http://127.0.0.1/geoserver/radi/ows?",
 										"radi:country",
 										"GML2");
 	layer.setStyle(style);	
