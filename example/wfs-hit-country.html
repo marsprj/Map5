@@ -52,6 +52,10 @@
 
 <script type="text/javascript">
 
+
+var g_s_hited  = createSymbolizer1();
+var g_s_normal = createSymbolizer2();
+
 var mapObj = null;
 function init(){
 	
@@ -65,7 +69,7 @@ function init(){
 	context.fillRect(0,0,ww,wh);
 	
 	mapObj = new GeoBeans.Map("myCanvas");
-	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
+	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
@@ -89,7 +93,7 @@ function init(){
 										"GML2");
 	layer.setStyle(style);	
 	mapObj.addLayer(layer);
-	layer.resigterHitEvent();
+	layer.resigterHitEvent(onFeatureHit);
 	
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));	
 	mapObj.draw();	
@@ -119,6 +123,41 @@ function onMapMove(evt){
 	var str = mapX + "," + mapY+ "##" + evt.X + "," + evt.Y;
 	document.getElementById("xy").innerHTML = str;
 }
+
+function onFeatureHit(selection, selection_old){
+	//console.log(feature.fid);
+	var i;
+	var len = selection_old.length;
+	for(i=0; i<len; i++){
+		var f = selection_old[i];
+		mapObj.renderer.drawGeometry(f.geometry, g_s_normal, mapObj.transformation);
+	}
+	len = selection.length;
+	for(i=0; i<len; i++){
+		var f = selection[i];
+		mapObj.renderer.drawGeometry(f.geometry, g_s_hited, mapObj.transformation);
+	}
+}
+
+function createSymbolizer1(){
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Red";
+	symbolizer.showOutline = false;
+	
+	return symbolizer;
+}
+
+function createSymbolizer2(){
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Blue";
+	symbolizer.outLineColor = "#471953";
+	symbolizer.showOutline = true;
+	
+	return symbolizer;
+}
+
 
 
 </script>
