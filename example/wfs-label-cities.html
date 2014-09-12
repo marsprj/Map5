@@ -79,23 +79,42 @@ function init(){
 	symbolizer = new GeoBeans.Style.PointSymbolizer();
 	symbolizer.size = 2;
 	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineWidth = 0.3;
 	symbolizer.outLineColor = "Red";
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
 	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;	
+	symbolizer.showOutline = true;
+	symbolizer.shadowBlur	 = 3;
+	symbolizer.shadowColor	 = "Gray";
+	symbolizer.shadowOffsetX = 3,
+	symbolizer.shadowOffsetY = 3;
+	symbolizer.showShadow = true;
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style.addRule(rule);
 	
 	symbolizer = new GeoBeans.Style.TextSymbolizer();	
 	symbolizer.field = "name";
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style.addRule(rule);
+	symbolizer.fontFamily = "Times New Roman";
+	symbolizer.fontSize	= 30.0;
+	symbolizer.fontWeight = GeoBeans.Style.FontWeight.NORMAL ;
+	symbolizer.fontStyle = GeoBeans.Style.FontStyle.ITALIC;	
+	symbolizer.fillColor = "red";
+	symbolizer.showFill	= true;
+	symbolizer.outLineWidth = 1;
+	symbolizer.outLineColor = "black";
+	symbolizer.outLineCap = GeoBeans.Style.LineCap.SQUARE;
+	symbolizer.outLineJoin = GeoBeans.Style.LineJoin.MITER,
+	symbolizer.showOutline = true;
 	
-	symbolizer = new GeoBeans.Style.TextSymbolizer();	
-	symbolizer.field = "name";
+	symbolizer.shadowBlur	 = 10;
+	symbolizer.shadowColor	 = "Gray";
+	symbolizer.shadowOffsetX = 10,
+	symbolizer.shadowOffsetY = 10;
+	symbolizer.showShadow = true;
+		
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style.addRule(rule);
+	//style.addRule(rule);
+	
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
 										"http://127.0.0.1/geoserver/radi/ows?",
 										"radi:cities",

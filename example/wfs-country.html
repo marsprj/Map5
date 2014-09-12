@@ -81,6 +81,12 @@ function init(){
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
 	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
 	symbolizer.showOutline = true;
+
+	symbolizer.shadowBlur	 = 3;
+	symbolizer.shadowColor	 = "Gray";
+	symbolizer.shadowOffsetX = 3,
+	symbolizer.shadowOffsetY = 3;
+	symbolizer.showShadow = true;
 	
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style = new GeoBeans.Style();
