@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript">
+
+var mapObj = null;
+function init(){
+	
+	var ww = window.document.body.clientWidth;
+	var wh = window.document.body.clientHeight;
+	var canvas = document.getElementById('myCanvas');
+	canvas.setAttribute("width", ww);
+	canvas.setAttribute("height", wh);
+	var context = canvas.getContext('2d');
+	context.fillStyle = 'rgba(0,255,0,0.25)';
+	context.fillRect(0,0,ww,wh);
+	
+	mapObj = new GeoBeans.Map("myCanvas");
+	
+	var layer = null;		
+
+	layer = new GeoBeans.Layer.WFSLayer("wfs",
+										"http://127.0.0.1/geoserver/radi/ows?",
+										"radi:country",
+										"GML2");
+	style = createStyle();
+	layer.setStyle(style);	
+	mapObj.addLayer(layer);			
+	
+	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+	mapObj.draw();
+}
+
+function createStyle(){
+
+	var symbolizer, rule, filter;
+	var style = new GeoBeans.Style();
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Aquamarine";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","Europe");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Beige";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","Oceania");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "BurlyWood";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","Australia");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "CornflowerBlue";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","Asia");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Cyan";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","Africa");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "DarkKhaki";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","North America");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "DarkOrange";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","Antarctica");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "FireBrick";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	filter = new GeoBeans.Filter("continent","South America");	
+	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	style.addRule(rule);
+
+	return style;
+}
+
+</script>
+
+
+<title>Map5</title>
+</head>
+
+<body onload="init()">
+<canvas id="myCanvas" width="800" height="800"></canvas>
+<!--<input type='button' value='offset' onclick="btnoffset();">-->
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>
+</body>
+</html>
+
+
+
+
