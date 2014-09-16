@@ -82,7 +82,7 @@ function init(){
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
 	//symbolizer.size = 2;
-	//symbolizer.fillColor = "Aquamarine";
+	symbolizer.fillColor = "Aquamarine";
 	symbolizer.outLineWidth = 1.0;
 	symbolizer.outLineColor = "Red";
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
@@ -129,18 +129,18 @@ function onMapMove(evt){
 	document.getElementById("xy").innerHTML = str;
 }
 
-function onFeatureHit(selection, selection_old){
+function onFeatureHit(layer, selection, selection_old){
 	//console.log(feature.fid);
 	var i;
 	var len = selection_old.length;
 	for(i=0; i<len; i++){
 		var f = selection_old[i];
-		mapObj.renderer.drawGeometry(f.geometry, g_s_normal, mapObj.transformation);
+		layer.drawFeature(f);
 	}
 	len = selection.length;
 	for(i=0; i<len; i++){
 		var f = selection[i];
-		mapObj.renderer.drawGeometry(f.geometry, g_s_hited, mapObj.transformation);
+		layer.drawFeature(f, g_s_hited);
 	}
 }
 
