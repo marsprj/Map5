@@ -70,8 +70,8 @@ function init(){
 	canvas.setAttribute("width", ww);
 	canvas.setAttribute("height", wh);
 	var context = canvas.getContext('2d');
-	context.fillStyle = 'rgba(0,255,0,0.25)';
-	context.fillRect(0,0,ww,wh);
+//	context.fillStyle = 'rgba(0,255,0,0.25)';
+//	context.fillRect(0,0,ww,wh);
 	
 	mapObj = new GeoBeans.Map("myCanvas");
 	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
@@ -82,7 +82,7 @@ function init(){
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
 	//symbolizer.size = 2;
-	symbolizer.fillColor = "Aquamarine";
+	symbolizer.fillColor = 'rgba(0,255,0,0.25)'//"Aquamarine";
 	symbolizer.outLineWidth = 1.0;
 	symbolizer.outLineColor = "Red";
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
@@ -103,11 +103,11 @@ function init(){
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));	
 	mapObj.draw();	
 
-	context.fillStyle = 'rgba(255,0,0,1)';
-	context.beginPath();
-	context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
-	context.closePath();
-	context.fill();
+//	context.fillStyle = 'rgba(255,0,0,1)';
+//	context.beginPath();
+//	context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
+//	context.closePath();
+//	context.fill();
 
 }
 
@@ -135,7 +135,7 @@ function onFeatureHit(layer, selection, selection_old){
 	var len = selection_old.length;
 	for(i=0; i<len; i++){
 		var f = selection_old[i];
-		layer.drawFeature(f);
+		//layer.drawFeature(f);
 	}
 	len = selection.length;
 	for(i=0; i<len; i++){
