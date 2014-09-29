@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<script type="text/javascript">
+
+var surface = null;
+var canvas = null;
+var context = null;
+var points = [];
+
+function init(){
+	
+	var ww = window.document.body.clientWidth;
+	var wh = window.document.body.clientHeight;
+	canvas = document.getElementById('myCanvas');
+	context = canvas.getContext('2d');
+	canvas.setAttribute("width", ww);
+	canvas.setAttribute("height", wh);
+	context.fillStyle = 'rgba(0,255,0,0.25)';
+	context.fillRect(0,0,ww,wh);	
+	//context.clearRect(0,0,ww,wh);
+	
+	drawLine(9,0,400,400);
+	
+	var mouse_down = false;
+		
+	var onmousedown = function(evt){
+		
+		var x_d = evt.layerX;
+		var y_d = evt.layerY;
+		
+		if(!mouse_down){
+			drawPoint(x_d, y_d);
+			mouse_down = true;
+		}
+		
+		saveSurface();
+		var onmousemove = function(evt){
+
+			restoreSurface();
+					
+			var x_m = evt.layerX;
+			var y_m = evt.layerY;
+			
+			drawLine(x_d, y_d, x_m, y_m);
+			drawPoint(x_m, y_m);
+			
+			document.getElementById("bar").innerHTML = evt.layerX + "," + evt.layerY;
+		};
+		var onmousedbclick = function(evt){
+			//restoreSurface();
+			
+			mouse_down = false;
+			
+			canvas.removeEventListener("mousemove", onmousemove);
+			canvas.removeEventListener("dblclick", onmousedbclick);
+		}
+
+		canvas.addEventListener("mousemove", onmousemove);
+		canvas.addEventListener("dblclick", onmousedbclick);
+	};
+	
+
+	
+	canvas.addEventListener("mousedown", onmousedown);
+}
+
+function drawPoint(x, y){
+	var r = 10;
+				
+	context.save();
+	
+	context.fillStyle = 'rgba(255,0,0,0.25)';
+	context.strokeStyle = 'rgba(0,0,0,0.75)';
+	context.lineWidth = 1.0;
+	
+	context.beginPath();
+	context.arc(x, y, r, 0, 2 * Math.PI, false);  
+	context.closePath();			
+	
+	context.fill();
+	context.stroke();
+	
+	context.restore();
+}
+
+function drawLine(x1, y1, x2, y2){
+	
+	context.save();
+	
+	context.strokeStyle = 'rgba(0,0,1)';
+	context.lineWidth = 1.0;
+	
+	context.beginPath();;
+	context.moveTo(x1, y1);
+	context.lineTo(x2, y2);
+	context.stroke();
+	
+	context.restore();
+}
+
+function saveSurface(){
+	
+	surface = context.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+function restoreSurface(){
+	context.putImageData(surface, 0,0);
+}
+
+
+</script>
+
+
+<title>Map5</title>
+</head>
+
+<body onload="init()">
+
+<canvas id="myCanvas" width="800" height="800"></canvas>
+<div id='bar' style="width:200px;height:30px"></div>
+</body>
+</html>
+
+
+
+

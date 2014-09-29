@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<script type="text/javascript">
+
+var surface = null;
+var canvas = null;
+var context = null;
+
+function init(){
+	
+	var ww = window.document.body.clientWidth;
+	var wh = window.document.body.clientHeight;
+	canvas = document.getElementById('myCanvas');
+	context = canvas.getContext('2d');
+	canvas.setAttribute("width", ww);
+	canvas.setAttribute("height", wh);
+	context.fillStyle = 'rgba(0,255,0,0.25)';
+	context.fillRect(0,0,ww,wh);	
+	//context.clearRect(0,0,ww,wh);
+	
+	saveSurface();
+	
+	context.fillStyle = 'rgba(255,0,0,0.25)';
+	context.strokeStyle = 'rgba(0,0,0,0.75)';
+	context.lineWidth = 1.0;
+	
+	var onmousemove = function(evt){
+		
+		restoreSurface();
+
+		var r = 10;
+		var x = evt.layerX;
+		var y = evt.layerY;
+		context.beginPath();
+		context.arc(x, y, r, 0, 2 * Math.PI, false);  
+		context.closePath();
+		
+		context.fill();
+		context.storke();
+		
+		document.getElementById("bar").innerHTML = evt.layerX + "," + evt.layerY;
+	};
+	
+	canvas.addEventListener("mousemove", onmousemove);
+}
+
+function saveSurface(){
+	
+	surface = context.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+function restoreSurface(){
+	context.putImageData(surface, 0,0);
+}
+
+
+</script>
+
+
+<title>Map5</title>
+</head>
+
+<body onload="init()">
+
+<canvas id="myCanvas" width="800" height="800"></canvas>
+<div id='bar' style="width:200px;height:30px"></div>
+</body>
+</html>
+
+
+
+
