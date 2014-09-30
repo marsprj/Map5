@@ -100,7 +100,7 @@ function init(){
 	style = new GeoBeans.Style();
 	style.addRule(rule);
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"http://ourgis.digitalearth.cn/geoserver/radi/ows?",
+										"/geoserver/radi/ows?",
 										"radi:cities",
 										"GML2");
 	layer.setStyle(style);	

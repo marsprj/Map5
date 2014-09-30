@@ -41,7 +41,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/Tracker.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 
@@ -66,7 +66,8 @@ function init(){
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();
 	
-	tracker = new GeoBeans.Control.Tracker(mapObj);	
+	tracker = new GeoBeans.Control.TrackControl();
+	mapObj.controls.add(tracker);
 }
 
 function onMapMove(evt){
@@ -103,7 +104,23 @@ function callback_line(line){
 }
 
 function callback_polygon(polygon){
-	alert(polygon);
+	var symbolizer;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Aquamarine";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	symbolizer.shadowBlur	 = 3;
+	symbolizer.shadowColor	 = "Gray";
+	symbolizer.shadowOffsetX = 3,
+	symbolizer.shadowOffsetY = 3;
+	symbolizer.showShadow = true;
+	//alert(polygon);
+	
+	mapObj.renderer.drawGeometry(polygon, symbolizer, mapObj.transformation);
 }
 
 </script>
