@@ -50,6 +50,10 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
@@ -113,7 +117,7 @@ function init(){
 	symbolizer.showShadow = true;
 		
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	//style.addRule(rule);
+	style.addRule(rule);
 	
 	layer = new GeoBeans.Layer.WFSLayer("wfs",
 										"http://127.0.0.1/geoserver/radi/ows?",
