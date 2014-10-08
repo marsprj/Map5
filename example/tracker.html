@@ -98,11 +98,11 @@ function onStop(){
 }
 
 function callback_point(pt){
-	alert(pt.x + "," + pt.y);
+	//alert(pt.x + "," + pt.y);
 }
 
 function callback_line(line){
-	alert(line);
+	//alert(line);
 }
 
 function callback_polygon(polygon){
@@ -125,6 +125,10 @@ function callback_polygon(polygon){
 	mapObj.renderer.drawGeometry(polygon, symbolizer, mapObj.transformation);
 }
 
+function onRestore(){
+	mapObj.restoreSnap();
+}
+
 </script>
 
 
@@ -136,6 +140,7 @@ function callback_polygon(polygon){
 <input type="button" value="Line" onclick="onLine();">
 <input type="button" value="Polygon" onclick="onPolygon();">
 <input type="button" value="stop" onclick="onStop();">
+<input type="button" value="restore" onclick="onRestore();">
 <canvas id="myCanvas" width="800" height="800"></canvas>
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
