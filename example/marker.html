@@ -3,49 +3,57 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/BaseTypes/Class.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Geometry.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/GeometryCollection.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/LinearRing.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/Polygon.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/MultiPoint.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/MultiLineString.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Transformation.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Style/Rule.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Style/Symbolizer.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Style/Style.js"></script>
+<!-- <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script> -->
 
-<script type="text/javascript" src="lib/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Layer/Tile.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Layer/OsmLayer.js"></script>
-<!--<script type="text/javascript" src="lib/GeoBeans/Layer/BaiduLayer.js"></script>-->
-<script type="text/javascript" src="lib/GeoBeans/Layer/BingLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OsmLayer.js"></script>
+<!--<script type="text/javascript" src="../lib/GeoBeans/Layer/BaiduLayer.js"></script>-->
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BingLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Feature.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Marker.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Layer/MarkerLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Marker.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/MarkerLayer.js"></script>
 
-<script type="text/javascript" src="lib/GeoBeans/Renderer.js"></script>
-<script type="text/javascript" src="lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 
 <script type="text/javascript">
 
 var mapObj = null;
 function init(){
-	
 	var ww = window.document.body.clientWidth;
 	var wh = window.document.body.clientHeight;
 	var canvas = document.getElementById('myCanvas');
@@ -54,25 +62,51 @@ function init(){
 	var context = canvas.getContext('2d');
 	context.fillStyle = 'rgba(0,255,0,0.25)';
 	context.fillRect(0,0,ww,wh);
-		
+	
 	mapObj = new GeoBeans.Map("myCanvas");
 	
+	var layer = null;	
+	var center = new GeoBeans.Geometry.Point(0,0);	
+
+	layer = new GeoBeans.Layer.QSLayer("gaode");				
+	mapObj.setBaseLayer(layer);
+
+
+		
+	
+	mapObj.setCenter(center);
+	mapObj.setLevel(2);	
+	mapObj.draw();	
+
+
 	var layer = new GeoBeans.Layer.MarkerLayer("marker");
 	
 	var marker = null;
-	marker = new GeoBeans.Marker("北京", "images/pin-32.png", 0, 0)
-	//marker.addEventListener("click", marker_click);
-	layer.addMarker(marker);
+	
+	for(var i = 0; i < 10000;++i){
+		var x = Math.random()*(180-(-180)+1)+(-180);
+		var y = Math.random()*(90-(-90)+1)+(-90);
+		marker = new GeoBeans.Marker("北京", "../images/pin-32.png", x, y);	
+		layer.addMarker(marker);
+	}
+	
 	
 	mapObj.addLayer(layer);	
 	
-	mapObj.setExtent(new GeoBeans.Envelope(-180,-90,180,90));
 	
 	mapObj.draw();	
 }
 
 function marker_click(marker){
 	alert(marker.title);
+}
+
+var count = 1;
+function refresh(){
+	setInterval(function(){
+		mapObj.draw();
+		console.log(count++);	
+	}, 1000);
 }
 
 </script>
@@ -85,7 +119,9 @@ function marker_click(marker){
 
 <canvas id="myCanvas" width="800" height="800"></canvas>
 <!--<img src="map.jpg"/>-->
+<button value="refresh" onclick="refresh()">refresh</button>
 </body>
+
 </html>
 
 

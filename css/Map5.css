@@ -1,0 +1,142 @@
+.map-nav-wrapper{
+	height:214px;
+	width:62px;
+	position: absolute;
+	top: 80px;
+	left:40px;
+	/*border: 1px solid #ccc;*/
+}
+.map-nav-wrapper div{
+	position: absolute;
+}
+.map-nav-pan{
+	background-image: url(../images/map-nav.png);
+	width: 44px;
+	height: 44px;
+}
+
+.map-nav-pan div{
+	position: absolute;
+}
+.map-nav-button{
+	height: 15px;
+	width: 15px;
+	cursor: pointer;
+}
+
+.map-nav-pan-N{
+	left: 14px;
+	top: 0px;
+}
+.map-nav-pan-W{
+	left: 1px;
+	top: 12px;
+}
+
+.map-nav-pan-E{
+	left: 27px;
+	top: 12px;
+}
+
+.map-nav-pan-S{
+	left: 14px;
+	top: 25px;
+}
+
+.map-nav-zoom{
+	/*border: 1px solid #ccc;*/
+	height: 147px;
+	width: 62px;
+	top: 45px;
+}
+
+.map-nav-zoom .map-nav-button{
+	width: 22px;
+	height: 21px;
+	left: 12px;
+	overflow: hidden;
+	background-image: url(../images/map-nav.png);
+	background-repeat: no-repeat;
+	position: absolute;
+}
+
+.map-nav-zoom-in{
+	background-position: 0px -221px;
+}
+
+.map-nav-zoom-out{
+	background-position: 0 -265px;
+	top: 146px;
+}
+
+.map-nav-zoom-slider{
+	height: 118px;
+	top: 18px;
+	width: 37px;
+}
+
+.map-nav-zoom-slider-top{
+	left: 18px;
+	width: 10px;
+	background-image: url(../images/map-nav.png);
+	background-position: -23px -226px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 128px;
+}
+
+.map-nav-zoom-slider-bottom{
+	left: 19px;
+	width: 10px;
+	background-image: url(../images/map-nav.png);
+	background-position: -33px bottom;
+	background-repeat: no-repeat;	
+	top:100px;
+	height: 28px;
+}
+
+.map-nav-zoom-slider-bar{
+	background-image: url(../images/map-nav.png);
+	background-position: 0 -309px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 11px;
+	left: 13px;
+	width: 19px;
+	top: 90px;
+}
+
+.map-nav-zoom-labels{
+	top:0px;
+	display: none;
+}
+
+.map-nav-zoom-label{
+	width: 28px;
+	height: 21px;
+	background-image: url(../images/map-nav.png);
+	background-repeat: no-repeat;
+	overflow: hidden;
+	left: 34px;
+	cursor: pointer;
+}
+
+.map-nav-zoom-label-street{
+	top:21px;
+	background-position: 0 -380px;	
+}
+
+.map-nav-zoom-label-city{
+	top:57px;
+	background-position: 0 -401px;
+}
+
+.map-nav-zoom-label-province{
+	top:86px;
+	background-position: 0 -422px;
+}
+
+.map-nav-zoom-label-country{
+	top:110px;
+	background-position: 0 -443px;
+}
