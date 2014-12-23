@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
@@ -57,6 +58,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 
@@ -65,16 +67,16 @@
 var mapObj = null;
 function init(){
 	
-	var ww = window.document.body.clientWidth;
-	var wh = window.document.body.clientHeight;
-	var canvas = document.getElementById('myCanvas');
-	canvas.setAttribute("width", ww);
-	canvas.setAttribute("height", wh);
-	var context = canvas.getContext('2d');
-	context.fillStyle = 'rgba(0,255,0,0.25)';
-	context.fillRect(0,0,ww,wh);
+	// var ww = window.document.body.clientWidth;
+	// var wh = window.document.body.clientHeight;
+	// var canvas = document.getElementById('myCanvas');
+	// canvas.setAttribute("width", ww);
+	// canvas.setAttribute("height", wh);
+	// var context = canvas.getContext('2d');
+	// context.fillStyle = 'rgba(0,255,0,0.25)';
+	// context.fillRect(0,0,ww,wh);
 	
-	mapObj = new GeoBeans.Map("myCanvas");
+	mapObj = new GeoBeans.Map("mapDiv");
 	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;
@@ -119,11 +121,11 @@ function init(){
 	mapObj.setLevel(2);	
 	mapObj.draw();	
 
-	context.fillStyle = 'rgba(255,0,0,1)';
-	context.beginPath();
-	context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
-	context.closePath();
-	context.fill();
+	// context.fillStyle = 'rgba(255,0,0,1)';
+	// context.beginPath();
+	// context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
+	// context.closePath();
+	// context.fill();
 
 	//var tile = new GeoBeans.Tile("http://mt2.google.cn/vt/x=0&y=0&z=2",null, null, null, null, null, null);
 	//tile.context = context;
@@ -156,7 +158,8 @@ function onMapMove(evt){
 
 <body onload="init()">
 
-<canvas id="myCanvas" width="800" height="800"></canvas>
+<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
+<div id="mapDiv" style="height:800px;width:100%"></div>
 <input type='button' value='offset' onclick="btnoffset();">
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
