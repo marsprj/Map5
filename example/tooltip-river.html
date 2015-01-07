@@ -3,8 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
@@ -61,69 +64,94 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
-
+<style type="text/css">
+#info {
+	position: absolute;
+	height: 1px;
+	width: 1px;
+	z-index: 100;
+}	
+</style>
 <script type="text/javascript">
 
 var mapObj = null;
 function init(){
 	
-	// var ww = window.document.body.clientWidth;
-	// var wh = window.document.body.clientHeight;
-	// var canvas = document.getElementById('myCanvas');
-	// canvas.setAttribute("width", ww);
-	// canvas.setAttribute("height", wh);
-	// var context = canvas.getContext('2d');
-	// context.fillStyle = 'rgba(0,255,0,0.25)';
-	// context.fillRect(0,0,ww,wh);
 	
 	mapObj = new GeoBeans.Map("mapDiv");
 	
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
 	
-//	layer = new GeoBeans.Layer.QSLayer("gaode");				
-//	mapObj.setBaseLayer(layer);
-	
-//	layer = new GeoBeans.Layer.WMSLayer("wms",
-//										"http://127.0.0.1:8080/geoserver/radi/wms?",
-//										"radi:cities",
-//										"image/png");	
-//										
-//	mapObj.addLayer(layer);
-
 	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);
 
-	mapObj.setNavControl(true);
-		
+
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.LineSymbolizer();
+	symbolizer.width = 2;
+	symbolizer.color = "rgba(0,0,255,1)";
+	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	layer = new GeoBeans.Layer.WFSLayer("wfs",
+										"/geoserver/radi/ows?",
+										"radi:rivers",
+										"GML2");
+	layer.setStyle(style);	
+	mapObj.addLayer(layer);		
+	layer.registerHitTooltipEvent(onFeatureHitTooltip);	
 	
 	mapObj.setCenter(center);
 	mapObj.setLevel(2);	
-//	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();	
 
-	// context.fillStyle = 'rgba(255,0,0,1)';
-	// context.beginPath();
-	// context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
-	// context.closePath();
-	// context.fill();
-
-	//var tile = new GeoBeans.Tile("http://mt2.google.cn/vt/x=0&y=0&z=2",null, null, null, null, null, null);
-	//tile.context = context; 
-	//tile.draw();
 }
+
+function onFeatureHitTooltip(layer, x, y,feature){
+	var info = $("#info");
+	info.tooltip({
+		animation: false,
+		trigger: 'manual'
+	});
+
+	info.css("left",x + "px");
+	info.css("top",(y - 15) + "px");
+
+	if(feature == null){
+		info.tooltip('hide');
+		return;
+	}
+	var title = feature.featureType.title;
+	var fieldIndex = feature.featureType.getFieldIndex('name');
+	var value = feature.values[fieldIndex];
+	var html = "<div style='min-height:40px;min-width:60px;background-color:red;border-radius:3px;'>" + value + "</div>"
+
+	info.tooltip('hide')
+		.attr("data-original-title",html)
+		.tooltip('show');
+
+}
+
 
 
 </script>
 
 
-<title>Map5</title>
+<title>Map5-tooltip-cities</title>
 </head>
 
 <body onload="init()">
 
-<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-<div id="mapDiv" style="height:800px;width:100%"></div>
+	<div id="mapDiv" style="height:800px;width:100%">
+		<div id='info' data-toggle='tooltip' data-html="true" data-placement='top'></div>
+	</div>
+<input type='button' value='offset' onclick="btnoffset();">
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>
 
