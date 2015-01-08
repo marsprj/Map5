@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 0.3 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,9 +18,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
-
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
-
 
 <script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
@@ -28,14 +26,29 @@
 <script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 
+
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<!--
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OsmLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BaiduLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BingLayer.js"></script>
+-->
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AMapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
@@ -48,130 +61,83 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+
 <script type="text/javascript">
 
-var mapObj = null;
+
 var g_s_hited  = createSymbolizer1();
 var g_s_normal = createSymbolizer2();
+
+var mapObj = null;
+
+var countryLayer = null;
+var citiesLayer = null;
 function init(){
 	
-	
+
 	mapObj = new GeoBeans.Map("mapDiv");
 	
-	var layer = null;		
+	var layer = null;	
+	var center = new GeoBeans.Geometry.Point(0,0);	
+	
 
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
+	// mapObj = new GeoBeans.Map("myCanvas");
+	// mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
+
+	
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	//symbolizer.size = 2;
+	symbolizer.fillColor = 'rgba(0,255,0,0.25)'//"Aquamarine";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	countryLayer = new GeoBeans.Layer.WFSLayer("wfs",
 										"/geoserver/radi/ows?",
 										"radi:country",
 										"GML2");
-	style = createStyle();
-	layer.setStyle(style);	
-	mapObj.addLayer(layer);	
-	layer.registerHitEvent(onFeatureHit);
+	countryLayer.setStyle(style);	
+	mapObj.addLayer(countryLayer);
 	
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-	mapObj.draw();
-}
 
-function createStyle(){
 
-	var symbolizer, rule, filter;
-	var style = new GeoBeans.Style();
 
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	//点
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PointSymbolizer();
+	symbolizer.size = 8;
 	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 0.3;
+	symbolizer.outLineWidth = 1.0;
 	symbolizer.outLineColor = "Red";
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
 	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
 	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","Europe");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
 
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Beige";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","Oceania");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
 	style.addRule(rule);
+	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/geoserver/radi/ows?",
+										"radi:cities",
+										"GML2");
+	citiesLayer.setStyle(style);	
+	mapObj.addLayer(citiesLayer);
+	
+	
+	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));	
+	mapObj.draw();	
 
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "BurlyWood";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","Australia");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
-
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "CornflowerBlue";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","Asia");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
-
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Cyan";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","Africa");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
-
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "DarkKhaki";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","North America");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
-
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "DarkOrange";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","Antarctica");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
-
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "FireBrick";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	filter = new GeoBeans.Filter("continent","South America");	
-	rule = new GeoBeans.Style.Rule(symbolizer, filter);
-	style.addRule(rule);
-
-	return style;
 }
 
 function onFeatureHit(layer, selection){
 	//console.log(feature.fid);
-	// var i;
+	var i;
 	// var len = selection_old.length;
 	// for(i=0; i<len; i++){
 	// 	var f = selection_old[i];
@@ -180,8 +146,18 @@ function onFeatureHit(layer, selection){
 	len = selection.length;
 	for(i=0; i<len; i++){
 		var f = selection[i];
-		layer.drawFeature(f, g_s_hited);
+		// layer.drawFeature(f, g_s_hited);
+		layer.drawHitFeature(f, g_s_hited);
 	}
+}
+
+function onCitiesFeatureHit(layer, selection, selection_old){
+	len = selection.length;
+	for(i=0; i<len; i++){
+		var f = selection[i];
+		// layer.drawFeature(f, g_s_hited);
+		layer.drawHitFeature(f, createPointSymbolizer2());
+	}	
 }
 
 function createSymbolizer1(){
@@ -203,16 +179,47 @@ function createSymbolizer2(){
 	return symbolizer;
 }
 
+function createPointSymbolizer2(){
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PointSymbolizer();
+	symbolizer.size = 8;
+	symbolizer.fillColor = "Blue";	
+	symbolizer.outLineColor = "#471953";
+	symbolizer.showOutline = true;
+	
+	return symbolizer;
+}
+function registerCountryHitEvent(){
+	countryLayer.registerHitEvent(onFeatureHit);
+}
 
+function registerCityHitEvent(){
+	citiesLayer.registerHitEvent(onCitiesFeatureHit);	
+}
+
+function unRegisterCountryHitEvent(){
+	countryLayer.unRegisterHitEvent();
+}
+
+function unRegisterCityHitEvent(){
+	citiesLayer.unRegisterHitEvent();
+}
 </script>
 
 
-<title>wfs-hit-country-theme</title>
+<title>wfs-hit-cities-country</title>
 </head>
 
 <body onload="init()">
+<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
+注册<input type='button' value='country' onclick="registerCountryHitEvent();">
+<input type='button' value='city' onclick="registerCityHitEvent();">
+<br/><br/>
+注销<input type='button' value='country' onclick="unRegisterCountryHitEvent();">
+<input type='button' value='city' onclick="unRegisterCityHitEvent();">
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>
 </body>
 </html>
 
