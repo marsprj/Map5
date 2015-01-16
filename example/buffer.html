@@ -42,6 +42,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackBufferControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
@@ -52,22 +53,53 @@
 
 var mapObj = null;
 var tracker = null;
+var buffer = null;
+var citiesLayer = null;
+var countryLayer = null;
+var riversLayer = null;
 function init(){
-	
-	// var ww = window.document.body.clientWidth;
-	// var wh = 700;//window.document.body.clientHeight;
-	// var canvas = document.getElementById('myCanvas');
-	// canvas.setAttribute("width", ww);
-	// canvas.setAttribute("height", wh);
-	// var context = canvas.getContext('2d');
-	// context.fillStyle = 'rgba(0,255,0,0.25)';
-	// context.fillRect(0,0,ww,wh);
-	
-	// mapObj = new GeoBeans.Map("myCanvas");
+
 	mapObj = new GeoBeans.Map("mapDiv");
 	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
-	
 
+	// 面
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.size = 8;
+	symbolizer.fillColor = "rgba(0,255,255,1)";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	countryLayer = new GeoBeans.Layer.WFSLayer("country",
+										"/geoserver/radi/ows?",
+										"radi:country",
+										"GML2");
+	countryLayer.setStyle(style);
+	mapObj.addLayer(countryLayer);	
+
+
+	// 线
+	symbolizer = new GeoBeans.Style.LineSymbolizer();
+	symbolizer.width = 2;
+	symbolizer.color = "rgba(0,0,255,1)";
+	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	riversLayer = new GeoBeans.Layer.WFSLayer("rivers",
+										"/geoserver/radi/ows?",
+										"radi:rivers",
+										"GML2");
+	riversLayer.setStyle(style);	
+	mapObj.addLayer(riversLayer);
 
 	//点
 	var symbolizer, rule, style;
@@ -89,12 +121,11 @@ function init(){
 										"GML2");
 	citiesLayer.setStyle(style);	
 	mapObj.addLayer(citiesLayer);
+
 	
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();
-	
-	tracker = new GeoBeans.Control.TrackControl();
-	mapObj.controls.add(tracker);
+
 }
 
 function onMapMove(evt){
@@ -106,80 +137,116 @@ function onMapMove(evt){
 	document.getElementById("xy").innerHTML = str;
 }
 
-function onPoint(){
-	tracker.trackPoint(callback_point);
+
+
+function onPointBuffer(){
+	citiesLayer.queryByBufferCircle(callback_buffer);
 }
 
-function onLine(){
-	tracker.trackLine(callback_line);
+function onLineBuffer(){
+	var distance = 6;
+
+	citiesLayer.queryByBufferLine(distance,callback_buffer);
 }
 
-function onPolygon(){
-	tracker.trackPolygon(callback_polygon);
-}
+function callback_buffer(features){
 
-function onStop(){
-	tracker.end();
-}
-
-function callback_point(pt){
-	//alert(pt.x + "," + pt.y);
-}
-
-function callback_line(line){
-	//alert(line);
-	var points = line.points;
-	var str = "";
-	str += "<" + points.length + ">";
-	for(var i = 0; i < points.length; ++i){
-		var p = points[i];
-		str += p.x;
-		str += " ";
-		str += p.y + ",";
+	var table = $("#table");
+	var html = "";
+	for(var i = 0; i < features.length; ++i){
+		var feature = features[i];
+		var fid = feature.fid;
+		html += fid + ";";
 	}
-	alert(str);
-}
+	table.html(html);
 
-function callback_polygon(polygon){
-	var symbolizer;
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	var symbolizer = new GeoBeans.Style.PointSymbolizer();
+	symbolizer.size = 8;
+	symbolizer.fillColor = "#08c";	
+	symbolizer.outLineColor = "#fff";
 	symbolizer.showOutline = true;
-
-	symbolizer.shadowBlur	 = 3;
-	symbolizer.shadowColor	 = "Gray";
-	symbolizer.shadowOffsetX = 3,
-	symbolizer.shadowOffsetY = 3;
-	symbolizer.showShadow = true;
-	//alert(polygon);
-	
-	mapObj.renderer.drawGeometry(polygon, symbolizer, mapObj.transformation);
+	citiesLayer.drawBufferFeatures(features,symbolizer);
 }
 
-function onRestore(){
-	mapObj.restoreSnap();
+function removeBuffer(){
+	citiesLayer.clearBufferFeatures();
 }
 
+
+function onPointBufferCountry(){
+	countryLayer.queryByBufferCircle(callback_buffer_country);
+}
+
+function onLineBufferCountry(){
+	var distance = 6;
+	countryLayer.queryByBufferLine(distance,callback_buffer_country);
+}
+
+function callback_buffer_country(features){
+	var	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Red";
+	symbolizer.showOutline = true;
+	countryLayer.drawBufferFeatures(features,symbolizer);
+}
+
+function removeBufferCountry(){
+	countryLayer.clearBufferFeatures();
+}
+
+function onPointBufferRiver(){
+	riversLayer.queryByBufferCircle(callback_buffer_rivers);
+}
+
+function onLineBufferRiver(){
+	var distance = 6;
+	riversLayer.queryByBufferLine(distance,callback_buffer_rivers);
+}
+
+function removeBufferRiver(){
+	riversLayer.clearBufferFeatures();
+}
+
+function callback_buffer_rivers(features){
+	var symbolizer = new GeoBeans.Style.LineSymbolizer();
+	symbolizer.width = 2;
+	symbolizer.color = "Red";
+	symbolizer.lineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.lineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	riversLayer.drawBufferFeatures(features,symbolizer);
+}
 </script>
 
 
-<title>Map5</title>
+
+
+<title>Map5-buffer</title>
 </head>
 
 <body onload="init()">
-<input type="button" value="Point" onclick="onPoint();">
-<input type="button" value="Line" onclick="onLine();">
-<input type="button" value="Polygon" onclick="onPolygon();">
-<input type="button" value="stop" onclick="onStop();">
-<input type="button" value="restore" onclick="onRestore();">
+
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
-<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
+
+	<div id="xy" style="width:200px;height:30px;line-height:30px" ></div>  
+cities:
+<input type="button" value="Point Buffer" onclick="onPointBuffer();">
+<input type="button" value="Line Buffer" onclick="onLineBuffer();">
+<input type="button" value="Remove Buffer" onclick="removeBuffer();">
+<br/><br/>
+country:
+<input type="button" value="Point Buffer" onclick="onPointBufferCountry();">
+<input type="button" value="Line Buffer" onclick="onLineBufferCountry();">
+<input type="button" value="Remove Buffer" onclick="removeBufferCountry();">
+<br/><br/>
+river:
+<input type="button" value="Point Buffer" onclick="onPointBufferRiver();">
+<input type="button" value="Line Buffer" onclick="onLineBufferRiver();">
+<input type="button" value="Remove Buffer" onclick="removeBufferRiver();">
+<br/>
+	<div id="table">
+	</div>
 </body>
 </html>
 

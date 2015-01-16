@@ -26,6 +26,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 
+
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
@@ -34,7 +35,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<!--
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OsmLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BaiduLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BingLayer.js"></script>
+-->
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AMapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
@@ -51,25 +65,66 @@
 <script type="text/javascript">
 
 var mapObj = null;
-var tracker = null;
+
+var countryLayer = null;
+var citiesLayer = null;
 function init(){
 	
-	// var ww = window.document.body.clientWidth;
-	// var wh = 700;//window.document.body.clientHeight;
-	// var canvas = document.getElementById('myCanvas');
-	// canvas.setAttribute("width", ww);
-	// canvas.setAttribute("height", wh);
-	// var context = canvas.getContext('2d');
-	// context.fillStyle = 'rgba(0,255,0,0.25)';
-	// context.fillRect(0,0,ww,wh);
-	
-	// mapObj = new GeoBeans.Map("myCanvas");
+
 	mapObj = new GeoBeans.Map("mapDiv");
-	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
+	
+	var layer = null;	
+	var center = new GeoBeans.Geometry.Point(0,0);	
+
+	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	// mapObj.setBaseLayer(layer);
+	
+	// var symbolizer, rule, style;
+	// symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	// //symbolizer.size = 2;
+	// symbolizer.fillColor = 'rgba(0,255,0,0.25)'//"Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
+	
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
+	// countryLayer = new GeoBeans.Layer.WFSLayer("wfs",
+	// 									"/geoserver/radi/ows?",
+	// 									"radi:country",
+	// 									"GML2");
+	// countryLayer.setStyle(style);	
+	// mapObj.addLayer(countryLayer);
 	
 
 
-	//点
+
+	// 点
+	// var symbolizer, rule, style;
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
+
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
+	// citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+	// 									"/geoserver/radi/ows?",
+	// 									"radi:cities",
+	// 									"GML2");
+	// citiesLayer.setStyle(style);	
+	// mapObj.addLayer(citiesLayer);
+
+
+	// 地震
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Style.PointSymbolizer();
 	symbolizer.size = 8;
@@ -84,102 +139,32 @@ function init(){
 	style = new GeoBeans.Style();
 	style.addRule(rule);
 	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/radi/ows?",
-										"radi:cities",
+										"/geoserver/earthquake/ows?",
+										"earthquake:g_earthquake_china",
 										"GML2");
 	citiesLayer.setStyle(style);	
-	mapObj.addLayer(citiesLayer);
+	mapObj.addLayer(citiesLayer);	
 	
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-	mapObj.draw();
+
+	mapObj.setViewer(new GeoBeans.Envelope(100,29,101,30));
 	
-	tracker = new GeoBeans.Control.TrackControl();
-	mapObj.controls.add(tracker);
-}
+	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+	// mapObj.setCenter(center);
+	// mapObj.setLevel(10);		
+	mapObj.draw();	
 
-function onMapMove(evt){
-	var mapX = evt.mapX;
-	var mapY = evt.mapY;
-	
-	//var str = mapX + "," + mapY;
-	var str = evt.X + "," + evt.Y;
-	document.getElementById("xy").innerHTML = str;
-}
-
-function onPoint(){
-	tracker.trackPoint(callback_point);
-}
-
-function onLine(){
-	tracker.trackLine(callback_line);
-}
-
-function onPolygon(){
-	tracker.trackPolygon(callback_polygon);
-}
-
-function onStop(){
-	tracker.end();
-}
-
-function callback_point(pt){
-	//alert(pt.x + "," + pt.y);
-}
-
-function callback_line(line){
-	//alert(line);
-	var points = line.points;
-	var str = "";
-	str += "<" + points.length + ">";
-	for(var i = 0; i < points.length; ++i){
-		var p = points[i];
-		str += p.x;
-		str += " ";
-		str += p.y + ",";
-	}
-	alert(str);
-}
-
-function callback_polygon(polygon){
-	var symbolizer;
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-
-	symbolizer.shadowBlur	 = 3;
-	symbolizer.shadowColor	 = "Gray";
-	symbolizer.shadowOffsetX = 3,
-	symbolizer.shadowOffsetY = 3;
-	symbolizer.showShadow = true;
-	//alert(polygon);
-	
-	mapObj.renderer.drawGeometry(polygon, symbolizer, mapObj.transformation);
-}
-
-function onRestore(){
-	mapObj.restoreSnap();
 }
 
 </script>
 
 
-<title>Map5</title>
+<title>wfs-bbox</title>
 </head>
 
 <body onload="init()">
-<input type="button" value="Point" onclick="onPoint();">
-<input type="button" value="Line" onclick="onLine();">
-<input type="button" value="Polygon" onclick="onPolygon();">
-<input type="button" value="stop" onclick="onStop();">
-<input type="button" value="restore" onclick="onRestore();">
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
-<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>
 
