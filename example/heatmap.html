@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/HeatMapLayer.js"></script>
+<!--
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OsmLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BaiduLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BingLayer.js"></script>
+-->
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AMapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+
+<script type="text/javascript" src="../lib/heatmap.min.js"></script>
+<script type="text/javascript">
+
+var mapObj = null;
+
+var countryLayer = null;
+var citiesLayer = null;
+function init(){
+	
+
+	mapObj = new GeoBeans.Map("mapDiv");
+	
+	var layer = null;	
+	var center = new GeoBeans.Geometry.Point(0,0);	
+
+	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	mapObj.setBaseLayer(layer);
+	
+	// 点
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PointSymbolizer();
+	symbolizer.size = 8;
+	symbolizer.fillColor = "Aquamarine";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/geoserver/radi/ows?",
+										"radi:cities",
+										"GML2");
+	citiesLayer.setStyle(style);	
+	mapObj.addLayer(citiesLayer);
+
+
+	
+	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+	mapObj.setCenter(center);
+	mapObj.setLevel(2);		
+	mapObj.draw();	
+
+}
+
+function addLayerHeatMap(){
+	var heatMapLayer = new GeoBeans.Layer.HeatMapLayer("populat-map");
+	heatMapLayer.setLayer(citiesLayer,"populat");
+	mapObj.addLayer(heatMapLayer);
+	mapObj.draw();
+}
+</script>
+
+
+<title>wfs-heatmap</title>
+</head>
+
+<body onload="init()">
+<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
+	<div id="mapDiv" style="height:800px;width:100%">
+	</div>
+
+	<input type="button" value="heatMap-2" onclick="addLayerHeatMap()">
+</body>
+</html>
+
+
+
+
