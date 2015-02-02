@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/HeatMapLayer.js"></script>
+<!--
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OsmLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BaiduLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/BingLayer.js"></script>
+-->
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AMapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackTransactionControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+
+<script type="text/javascript" src="../lib/heatmap.min.js"></script>
+<style type="text/css">
+	#right{
+		position:absolute;
+		right:0;
+		width:20%;
+		height:800px;
+		border: 1px solid #ccc;
+		top:0px;
+		padding-top:60px;
+	}
+	#geometry{
+		min-height:100px;
+		background-color: #D8E3EF;
+		padding: 8px;
+	}
+</style>
+<script type="text/javascript">
+
+var mapObj = null;
+
+// var countryLayer = null;
+var citiesLayer = null;
+var riversLayer = null;
+var layer_insert = null;
+var geometry_insert = null;
+
+function init(){
+	
+
+	mapObj = new GeoBeans.Map("mapDiv");
+	
+	var layer = null;	
+	var center = new GeoBeans.Geometry.Point(0,0);	
+
+	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	// mapObj.setBaseLayer(layer);
+
+	// 面
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.size = 8;
+	symbolizer.fillColor = "rgba(0,255,255,1)";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+	
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	countryLayer = new GeoBeans.Layer.WFSLayer("country",
+										"/geoserver/radi/ows?",
+										"radi:country",
+										"GML2");
+	countryLayer.setStyle(style);
+	mapObj.addLayer(countryLayer);
+
+
+		// 线
+	symbolizer = new GeoBeans.Style.LineSymbolizer();
+	symbolizer.width = 2;
+	symbolizer.color = "rgba(0,0,255,1)";
+	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	riversLayer = new GeoBeans.Layer.WFSLayer("rivers",
+										"/geoserver/radi/ows?",
+										"radi:rivers",
+										"GML2");
+	riversLayer.setStyle(style);	
+	mapObj.addLayer(riversLayer);	
+
+
+	// 点
+	var symbolizer, rule, style;
+	symbolizer = new GeoBeans.Style.PointSymbolizer();
+	symbolizer.size = 8;
+	symbolizer.fillColor = "Aquamarine";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	rule = new GeoBeans.Style.Rule(symbolizer, null);
+	style = new GeoBeans.Style();
+	style.addRule(rule);
+	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/geoserver/radi/ows?",
+										"radi:cities",
+										"GML2");
+	citiesLayer.setStyle(style);	
+	mapObj.addLayer(citiesLayer);
+
+
+	
+	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+
+	// mapObj.setCenter(center);
+	// mapObj.setLevel(2);		
+	mapObj.draw();	
+
+}
+
+function citiesLayerTransaction(){
+	citiesLayer.beginTransaction(beginTransactionCallback);
+	layer_insert = citiesLayer;
+}
+
+function beginTransactionCallback(geometry,layer,transactionCallback){
+	geometry_insert = geometry;
+	displayeGeometry(geometry);
+	buildLayerField(layer);
+	// var values = [];
+	// values.push({field:"name",value:"test"});
+	// values.push({field:"country",value:"China"});
+	// layer.transaction(geometry,values,transactionCallback);
+}
+
+function riversLayerTransaction(){
+	riversLayer.beginTransaction(beginTransactionCallback);
+	layer_insert = riversLayer;
+}
+
+function countryLayerTransaction(){
+	countryLayer.beginTransaction(beginTransactionCallback);
+	layer_insert = countryLayer;
+}
+
+function transactionCallback(featureId){
+	alert(featureId);
+}
+
+function displayeGeometry(geometry){
+	var html = "";
+	var type = geometry.type;
+	switch(type){
+		case GeoBeans.Geometry.Type.POINT:{
+			var x = geometry.x;
+			var y = geometry.y;
+			html += x;
+			html += " ";
+			html += y;			
+			break;			
+		}
+
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			var points = geometry.points;
+			for(var i = 0; i < points.length; ++i){
+				var point = points[i];
+				html += "[" + i + "]";
+				html += point.x.toFixed(2);
+				html += " ";
+				html += point.y.toFixed(2);
+				html += "<br/>"
+			}
+			break;
+		}
+		case GeoBeans.Geometry.Type.MULTILINESTRING:{
+			var lines = geometry.lines;
+			for(var i = 0; i < lines.length; ++i){
+				var points = lines[i].points;
+				for(var j = 0; j < points.length; ++j){
+					var point = points[j];
+					html += "[" + j + "]";
+					html += point.x.toFixed(2);
+					html += " ";
+					html += point.y.toFixed(2);
+					html += "<br/>"					
+				}
+			}
+			break;
+		}
+		case GeoBeans.Geometry.Type.POLYGON:{
+			break;
+		}
+		case GeoBeans.Geometry.Type.MULTIPOLYGON:{
+			var polygons = geometry.polygons;
+			for(var i = 0; i < polygons.length; ++i){
+				html += "polygon" + "[" + i + "]<br/>";
+				var rings = polygons[i].rings;
+				for(var j = 0; j < rings.length; ++j){
+					html += "ring" + "["+ j + "]<br/>";
+					var ring = rings[j];
+					var points = ring.points;
+					for(var m = 0; m < points.length; ++m){
+						var point = points[m];
+						html += "point" + "[" + m + "]"
+						html += point.x.toFixed(2);
+						html += " ";
+						html += point.y.toFixed(2);
+						html += "<br/>";
+					}
+				}
+			}
+			break;
+		}
+
+	}
+	
+	$("#geometry").html(html);
+}
+
+function buildLayerField(layer){
+	var tableHtml = "<table>";
+
+	var featureType = layer.featureType;
+	var fields = featureType.fields;
+	for(var i = 0; i < fields.length; ++i){
+		var itemHtml = "<tr>";
+		var field = fields[i];
+		var name = field.name;
+		itemHtml += "<td>" + name + "</td>";
+		itemHtml += "<td><input type='input' name='" + name + "'></td>"; 
+		itemHtml += "</tr>";
+		tableHtml += itemHtml;
+	}
+	tableHtml += "</table>";
+	$("#fieldTable").html(tableHtml);
+}
+
+function insert(){
+	var values = [];
+
+	var featureType = layer_insert.featureType;
+	var fields = featureType.fields;
+	for(var i = 0; i < fields.length; ++i){
+		var field_1 = fields[i];
+		var name = field_1.name;
+		var val = $("input[name='" + name + "']").val();
+		if(val != ""){
+			values.push({field:name,value:val});
+		}
+		
+	}
+
+	layer_insert.transaction(geometry_insert,values,transactionCallback);
+
+}
+</script>
+
+
+<title>wfs-transaction</title>
+</head>
+
+<body onload="init()">
+<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
+	<div id="mapDiv" style="height:800px;width:80%">
+	</div>
+
+	cities<input type="button" value="transaction" onclick="citiesLayerTransaction()">
+
+	river<input type="button" value="transaction" onclick="riversLayerTransaction()">
+
+	country<input type="button" value="transaction" onclick="countryLayerTransaction()">
+
+	<div id="right">
+		<div id="geometry"></div>
+		<div id="fieldTable"></div>
+		<input type="button" value="添加" onclick="insert()">
+		<input type="button" value="清空" onclick="removeValues()">
+	</div>
+</body>
+</html>
+
+
+
+
