@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+<style type="text/css">
+</style>
+<script type="text/javascript">
+var ctx = null;
+function init(){
+	var canvas = document.getElementById("myCanvas");
+	ctx = canvas.getContext("2d");
+	ctx.fillStyle="#ff00ff";
+	
+}
+
+
+function drawPoints(){
+	var count = $("#count").val();
+	ctx.clearRect(0,0,1200,800);
+	var date1 = new Date();
+	for(var i = 0; i < count; ++i){
+		ctx.beginPath();
+		var x = Math.random()*1200;
+		var y = Math.random()*800;
+		ctx.arc(x,y,5,0,2*Math.PI);
+		ctx.fill();
+		ctx.closePath();
+	}
+	var date2 = new Date();	
+	var date3=date2.getTime()-date1.getTime();
+	alert("毫秒数：" + date3);
+}
+
+function drawImages(){
+	var count = $("#count").val();
+	ctx.clearRect(0,0,1200,800);
+	var date1 = new Date();
+	var img = new Image();
+	img.src = "Web_Browser_002.png";
+	img.onload = function(){
+		for(var i = 0; i < count; ++i){
+			var x = Math.random()*1200;
+			var y = Math.random()*800;
+			ctx.drawImage(img,x,y);
+		}
+		var date2 = new Date();	
+		var date3=date2.getTime()-date1.getTime();
+		alert("毫秒数：" + date3);	
+	}
+
+
+}
+</script>
+
+<title>Map5-points</title>
+</head>
+
+<body onload="init()">
+<canvas height="800" width="1200" id="myCanvas"></canvas>
+<input type="text" value="100" id="count">
+<input type="button" onclick="drawPoints()" value="drawPoints">
+<input type="button" onclick="drawImages()" value="drawImages">
+</body>
+</html>
+
+
+
+
