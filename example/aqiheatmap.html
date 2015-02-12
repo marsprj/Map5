@@ -61,7 +61,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/heatmap.min.js"></script>
 <script type="text/javascript">
 
@@ -78,53 +78,48 @@ function init(){
 	mapObj = new GeoBeans.Map("mapDiv");
 	
 	var layer = null;	
-	var center = new GeoBeans.Geometry.Point(0,0);	
+	var center = new GeoBeans.Geometry.Point(113,35);	
 
 	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);
 	
-	// 点
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// // 点
+	// var symbolizer, rule, style;
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
+
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
+	// citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+	// 									"/geoserver/radi/ows?",
+	// 									"radi:cities",
+	// 									"GML2");
+	// citiesLayer.setStyle(style);	
+	// // mapObj.addLayer(citiesLayer);
+
+	symbolizer = new GeoBeans.Style.LineSymbolizer();
+	symbolizer.width = 2;
+	symbolizer.color = "rgba(0,0,255,1)";
+	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
 	symbolizer.showOutline = true;
 
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style = new GeoBeans.Style();
 	style.addRule(rule);
-	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/radi/ows?",
-										"radi:cities",
+	cnProvLayer = new GeoBeans.Layer.WFSLayer("rivers",
+										"/geoserver/aqi/ows?",
+										"aqi:cn_prov_l",
 										"GML2");
-	citiesLayer.setStyle(style);	
-	// mapObj.addLayer(citiesLayer);
-
-
-	// 点
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	aqiLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/radi/ows?",
-										"radi:aqi_ranking_2015_02_03_09",
-										"GML2");
-	aqiLayer.setStyle(style);	
-	mapObj.addLayer(aqiLayer);
-
+	cnProvLayer.setStyle(style);	
+	mapObj.addLayer(cnProvLayer);	
 
 		// 点
 	symbolizer = new GeoBeans.Style.PointSymbolizer();
@@ -139,42 +134,70 @@ function init(){
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style = new GeoBeans.Style();
 	style.addRule(rule);
-	aqiLayer2 = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/radi/ows?",
-										"radi:aqi_ranking_2015_02_04_11",
+	aqiLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/geoserver/aqi/ows?",
+										"aqi:gc_aqi_ranking",
 										"GML2");
-	aqiLayer2.setStyle(style);	
-	mapObj.addLayer(aqiLayer2);
+	aqiLayer.setStyle(style);	
+	var filter = new GeoBeans.Filter("time_point","2015-02-04T08:00:00");
+	aqiLayer.setFilter(filter);
+	mapObj.addLayer(aqiLayer);
 
 	
 	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.setCenter(center);
-	mapObj.setLevel(2);		
+	mapObj.setLevel(5);		
 	mapObj.draw();	
 	heatMapLayer = new GeoBeans.Layer.HeatMapLayer("aqi-map");
-	aqiLayer.setVisiable(false);
-	aqiLayer2.setVisiable(false);
+
 }
 
-function addLayerHeatMap(){
-	mapObj.removeLayer("aqi-map");
+// function addLayerHeatMap(){
+// 	mapObj.removeLayer("aqi-map");
+// 	heatMapLayer.setLayer(aqiLayer,"pm2_5");
+// 	mapObj.addLayer(heatMapLayer);
+// 	// aqiLayer.setVisiable(false);
+// 	mapObj.draw();
+// }
+
+function timeline(){
+	var timelineArray = ["2015-02-04T06:00:00",
+		"2015-02-04T07:00:00",
+		"2015-02-04T08:00:00",
+		"2015-02-04T09:00:00",
+		"2015-02-04T10:00:00",
+		"2015-02-04T11:00:00",
+		"2015-02-04T12:00:00",
+		"2015-02-04T13:00:00"
+		];
+
+	// aqiLayer.setVisiable(false);
 	heatMapLayer.setLayer(aqiLayer,"pm2_5");
 	mapObj.addLayer(heatMapLayer);
-	// aqiLayer.setVisiable(false);
 	mapObj.draw();
+	var i = 1;
+	// setInterval(function(){
+	// 	var time = timelineArray[i];
+	// 	var filter = new GeoBeans.Filter("time_point",time);
+	// 	aqiLayer.setFilter(filter);
+	// 	mapObj.removeLayer("aqi-map");
+	// 	heatMapLayer.setLayer(aqiLayer,"pm2_5");
+	// 	mapObj.addLayer(heatMapLayer);
+	// 	mapObj.draw();
+	// 	if(i <　timelineArray.length){
+	// 		i++;
+	// 	}else{
+	// 		i = 0;
+	// 	}
+	// }
+	// 	, 3000);
+
 }
 
-function addLayerHeatMapAqi(){
-	mapObj.removeLayer("aqi-map");
-	heatMapLayer.setLayer(aqiLayer2,"pm2_5");
-	mapObj.addLayer(heatMapLayer);
-	// aqiLayer2.setVisiable(false);
-	mapObj.draw();
-}
 </script>
 
 
-<title>wfs-heatmap</title>
+<title>wfs-aqi-heatmap</title>
 </head>
 
 <body onload="init()">
@@ -182,8 +205,7 @@ function addLayerHeatMapAqi(){
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
 
-	<input type="button" value="heatMap" onclick="addLayerHeatMap()">
-	<input type="button" value="heatMap-AQI" onclick="addLayerHeatMapAqi()">
+	<input type="button" value="heatMap" onclick="timeline()">
 </body>
 </html>
 

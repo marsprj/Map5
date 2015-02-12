@@ -18,6 +18,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Circle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
@@ -118,12 +119,16 @@ function onPolygon(){
 	tracker.trackPolygon(callback_polygon);
 }
 
+function onCircle(){
+	tracker.trackCircle(callback_circle);
+}
+
 function onStop(){
 	tracker.end();
 }
 
 function callback_point(pt){
-	//alert(pt.x + "," + pt.y);
+	alert(pt.x + "," + pt.y);
 }
 
 function callback_line(line){
@@ -160,6 +165,24 @@ function callback_polygon(polygon){
 	mapObj.renderer.drawGeometry(polygon, symbolizer, mapObj.transformation);
 }
 
+function callback_circle(circle){
+	var symbolizer;
+	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	symbolizer.fillColor = "Aquamarine";
+	symbolizer.outLineWidth = 1.0;
+	symbolizer.outLineColor = "Red";
+	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	symbolizer.showOutline = true;
+
+	symbolizer.shadowBlur	 = 3;
+	symbolizer.shadowColor	 = "Gray";
+	symbolizer.shadowOffsetX = 3,
+	symbolizer.shadowOffsetY = 3;
+	symbolizer.showShadow = true;
+	
+	mapObj.renderer.drawGeometry(circle, symbolizer, mapObj.transformation);
+}
 function onRestore(){
 	mapObj.restoreSnap();
 }
@@ -174,6 +197,7 @@ function onRestore(){
 <input type="button" value="Point" onclick="onPoint();">
 <input type="button" value="Line" onclick="onLine();">
 <input type="button" value="Polygon" onclick="onPolygon();">
+<input type="button" value="Circle" onclick="onCircle();">
 <input type="button" value="stop" onclick="onStop();">
 <input type="button" value="restore" onclick="onRestore();">
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->

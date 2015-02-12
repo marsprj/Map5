@@ -16,13 +16,17 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
@@ -33,30 +37,36 @@ var mapObj = null;
 
 $().ready(function(e) {
 	
-	var ww = window.document.body.clientWidth;
-	var wh = window.document.body.clientHeight;
-	var canvas = document.getElementById('myCanvas');
-	canvas.setAttribute("width", ww);
-	canvas.setAttribute("height", wh);
-	var context = canvas.getContext('2d');
-	context.fillStyle = 'rgba(0,255,0,0.25)';
-	context.fillRect(0,0,ww,wh);
-	
-	mapObj = new GeoBeans.Map("myCanvas");
+	var center = new GeoBeans.Geometry.Point(0,0);	
+	mapObj = new GeoBeans.Map("mapDiv");
 	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;
+	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	mapObj.setBaseLayer(layer);
+
+
+	// layer = new GeoBeans.Layer.WMSLayer("wms",
+	// 									"/geoserver/radi/ows?",
+	// 									["radi:country","radi:rivers","radi:cities"],
+	// 									[,,"capitals"]);
 	layer = new GeoBeans.Layer.WMSLayer("wms",
-										"http://127.0.0.1/geoserver/radi/ows?",
-										["radi:country","radi:rivers","radi:cities"],
-										[,,"capitals"]);
+										"/geoserver/radi/ows?",
+										["country","rivers","cities"],
+										[]);	
 //	layer = new GeoBeans.Layer.WMSLayer({name:"wms",
 //										 url:"http://127.0.0.1/geoserver/radi/ows?",
 //										 layers:["radi:country","radi:rivers"],
 //										 format:"image/png"});
 	mapObj.addLayer(layer);
-	//mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-	mapObj.setViewer(new GeoBeans.Envelope(0,0,180,90));
+	
+
+
+	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+	// mapObj.setViewer(new GeoBeans.Envelope(0,0,180,90));
+
+	mapObj.setCenter(center);
+	mapObj.setLevel(2);	
 	mapObj.draw();	
 
 });
@@ -76,7 +86,9 @@ function onMapMove(evt){
 </head>
 
 <body>
-<canvas id="myCanvas" width="800" height="800"></canvas>
+	<div id="mapDiv" style="height:800px;width:100%">
+
+	</div>
 <!--<input type='button' value='offset' onclick="btnoffset();">-->
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>
 </body>

@@ -53,6 +53,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -62,6 +63,11 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polygon.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <style type="text/css">
@@ -192,6 +198,14 @@ function removeCity(){
 	mapObj.removeLayer("cities");
 	mapObj.draw();
 }
+
+
+function upCity(){
+
+}
+function downCity(){
+	
+}
 </script>
 
 
@@ -210,6 +224,9 @@ function removeCity(){
 删除图层<input type='button' value='country' onclick="removeCountry();">
 <input type='button' value='river' onclick="removeRiver();">
 <input type='button' value='city' onclick="removeCity();">
+更改cities顺序
+<input type='button' value='river' onclick="upCity();">
+<input type='button' value='city' onclick="downCity();">
 </body>
 </html>
 
