@@ -51,7 +51,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackOverlayControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
@@ -62,6 +62,7 @@
 <script type="text/javascript">
 
 var mapObj = null;
+var trackOverlayControl = null;
 var marker = null;
 var polyline = null;
 function init(){
@@ -69,7 +70,7 @@ function init(){
 	var center = new GeoBeans.Geometry.Point(0,0);
 
 	mapObj = new GeoBeans.Map("mapDiv");
-	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
+	// mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 
 	var layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);	
@@ -88,11 +89,11 @@ function init(){
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style = new GeoBeans.Style();
 	style.addRule(rule);
-	// citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-	// 									"/geoserver/radi/ows?",
-	// 									"radi:cities",
-	// 									"GML2");
-	// citiesLayer.setStyle(style);	
+	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/geoserver/radi/ows?",
+										"radi:cities",
+										"GML2");
+	citiesLayer.setStyle(style);	
 	// mapObj.addLayer(citiesLayer);
 	
 	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
@@ -101,7 +102,10 @@ function init(){
 	mapObj.setLevel(2);	
 
 	mapObj.draw();
-	
+
+
+	trackOverlayControl = new GeoBeans.Control.TrackOverlayControl();
+	mapObj.controls.add(trackOverlayControl);
 }
 
 function onMapMove(evt){
@@ -114,67 +118,114 @@ function onMapMove(evt){
 }
 
 function addMarker(){
-	var point = new GeoBeans.Geometry.Point(16,39);
-	// var image = "pin.png";
-	var symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.icon_url = "pin.png";
-	symbolizer.icon_offset_x = 0;
-	symbolizer.icon_offset_y = 0;
+	// var point = new GeoBeans.Geometry.Point(16,39);
+	// // var image = "pin.png";
+	// var symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.icon_url = "pin.png";
+	// symbolizer.icon_offset_x = 0;
+	// symbolizer.icon_offset_y = 0;
 
 
-	marker = new GeoBeans.Overlay.Marker("maker",point,symbolizer);
-	mapObj.addOverlay(marker);
-	mapObj.draw();
+	// marker = new GeoBeans.Overlay.Marker("maker",point,symbolizer);
+	// mapObj.addOverlay(marker);
+	// mapObj.draw();
+
+	trackOverlayControl.trackMarker(callback_trackOverlay);
+
+
 }
+function callback_trackOverlay(overlay){
+	var isEdit = overlay.isEdit;
+	if(isEdit){
+		$("#editDisplay").append("edit");
+		return;
+	}
+	var html = "";
+	var type = overlay.type;
+	var geometry = overlay.geometry;
+	switch(type){
+		case GeoBeans.Overlay.Type.MARKER:
+			html = geometry.x + "," + geometry.y + "<br/>";
+			break;
 
+		case GeoBeans.Overlay.Type.PLOYLINE:
+			var points = geometry.points;
+			for(var i = 0; i < points.length;++i){
+				var point = points[i];
+				html += point.x + "," + point.y + ";"
+			}
+			html += "<br/>";
+			break;
+		case GeoBeans.Overlay.Type.POLYGON:
+			var rings = geometry.rings;
+			for(var i = 0; i < rings.length;++i){
+				var ring = rings[i];
+				var points = ring.points;
+				html += "[";
+				for(var j = 0;j < points.length;++j){
+					var point = points[j];
+					html += point.x + "," + point.y;
+				}
+				html += "]";
+			}
+			html += "<br/>";
+			break;
+		default:
+			break;
+	}
+	$("#display").append(html);
+}
 
 function addPolyline(){
-	var points = [];
-	points.push(new GeoBeans.Geometry.Point(40,39));
-	points.push(new GeoBeans.Geometry.Point(33,59));
-	points.push(new GeoBeans.Geometry.Point(65,39));
-	points.push(new GeoBeans.Geometry.Point(25,20));
-	var lineString = new GeoBeans.Geometry.LineString(points);
 
-	// 线
-	var symbolizer = new GeoBeans.Style.LineSymbolizer();
-	symbolizer.width = 3;
-	symbolizer.color = "rgba(0,0,255,1)";
-	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
-	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;	
+	trackOverlayControl.trackLine(callback_trackOverlay);
+	// var points = [];
+	// points.push(new GeoBeans.Geometry.Point(40,39));
+	// points.push(new GeoBeans.Geometry.Point(33,59));
+	// points.push(new GeoBeans.Geometry.Point(65,39));
+	// points.push(new GeoBeans.Geometry.Point(25,20));
+	// var lineString = new GeoBeans.Geometry.LineString(points);
 
-	polyline = new GeoBeans.Overlay.Polyline("polyline",lineString,symbolizer);
-	mapObj.addOverlay(polyline);
-	mapObj.draw();
+	// // 线
+	// var symbolizer = new GeoBeans.Style.LineSymbolizer();
+	// symbolizer.width = 3;
+	// symbolizer.color = "rgba(0,0,255,1)";
+	// symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	// symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;	
+
+	// polyline = new GeoBeans.Overlay.Polyline("polyline",lineString,symbolizer);
+	// mapObj.addOverlay(polyline);
+	// mapObj.draw();
 }
 
-
 function addPolygon(){
-	var symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "rgba(0,255,255,1)";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	trackOverlayControl.trackPolygon(callback_trackOverlay);
 
-	var points = [];
-	points.push(new GeoBeans.Geometry.Point(80,39));
-	points.push(new GeoBeans.Geometry.Point(113,59));
-	points.push(new GeoBeans.Geometry.Point(124,39));
-	points.push(new GeoBeans.Geometry.Point(125,20));	
-	points.push(new GeoBeans.Geometry.Point(80,39));
+	// var symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "rgba(0,255,255,1)";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	var lineString = new GeoBeans.Geometry.LineString(points);
+	// var points = [];
+	// points.push(new GeoBeans.Geometry.Point(80,39));
+	// points.push(new GeoBeans.Geometry.Point(113,59));
+	// points.push(new GeoBeans.Geometry.Point(124,39));
+	// points.push(new GeoBeans.Geometry.Point(125,20));	
+	// points.push(new GeoBeans.Geometry.Point(80,39));
 
-	var geometry_poly = new GeoBeans.Geometry.Polygon([lineString]);
+	// var lineString = new GeoBeans.Geometry.LineString(points);
 
-	var polygon = new GeoBeans.Overlay.Polygon("polygon",
-		geometry_poly,symbolizer);	
-	mapObj.addOverlay(polygon);
-	mapObj.draw();	
+	// var geometry_poly = new GeoBeans.Geometry.Polygon([lineString]);
+
+	// var polygon = new GeoBeans.Overlay.Polygon("polygon",
+	// 	geometry_poly,symbolizer);	
+	// mapObj.addOverlay(polygon);
+	// mapObj.draw();	
 }
 
 function addCircle(){
@@ -254,6 +305,10 @@ function removeOverlays(){
 	mapObj.removeOverlays();
 	mapObj.draw();	
 }
+
+function clearDisplay(){
+	$("#display").html("");
+}
 </script>
 
 
@@ -262,7 +317,7 @@ function removeOverlays(){
 
 <body onload="init()">
 
-	<div id="mapDiv" style="height:800px;width:100%">
+	<div id="mapDiv" style="height:600px;width:100%">
 	</div>
 	<div id="xy" style="width:200px;height:30px;line-height:30px"></div> 
 添加overlay 
@@ -282,6 +337,12 @@ function removeOverlays(){
 <input type="button" value="removeOverlay" onclick="removeOverlay();">
 
 <input type="button" value="removeOverlays" onclick="removeOverlays();">
+<input type="button" value="清空显示屏" onclick="clearDisplay()">
+<div id="display" style="float:left;width:600px">
+</div>
+<div id="editDisplay"style="float:right;width:600px">
+
+</div>
 </body>
 </html>
 

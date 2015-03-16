@@ -201,10 +201,12 @@ function removeCity(){
 
 
 function upCity(){
-	citiesLayer.up(2);
+	citiesLayer.up(1);
+	mapObj.draw();
 }
-function downCity(){
-
+function downCountry(){
+	countryLayer.down(1);
+	mapObj.draw();
 }
 </script>
 
@@ -225,8 +227,9 @@ function downCity(){
 <input type='button' value='river' onclick="removeRiver();">
 <input type='button' value='city' onclick="removeCity();">
 更改cities顺序
-<input type='button' value='river' onclick="upCity();">
-<input type='button' value='city' onclick="downCity();">
+<input type='button' value='up' onclick="upCity();">
+更改country顺序
+<input type='button' value='down' onclick="downCountry();">
 </body>
 </html>
 
