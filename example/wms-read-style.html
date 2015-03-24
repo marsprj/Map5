@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/MapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSWorkspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
+<script type="text/javascript">
+
+
+$().ready(function(e) {
+
+});
+var path = "point_user_6.xml";
+// var path = "line.xml";
+// var path = "polygon_red.xml";
+var writeStyle = null;
+function readStyleXML(){
+	$.get(path,function(xml){
+		var reader = new GeoBeans.StyleReader();
+		writeStyle = reader.read(xml);
+	});
+
+}
+
+function writeXML(){
+	if(writeStyle == null){
+		alert("请定义style");
+		return;
+	}
+
+	var writer = new GeoBeans.StyleWriter();
+	var xml = writer.write(writeStyle);
+} 
+</script>
+<title>WMS Read Style</title>
+</head>
+
+<body>
+<div class="container">
+	<div class="row">
+		<button class="btn btn-default" onclick="readStyleXML()">readStyleXML</button>
+		<button class="btn btn-default" onclick="writeXML()">writeXML</button>
+	</div>
+
+</div>
+
+</body>
+</html>
+
+
+
+

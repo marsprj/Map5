@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" version="1.0.0">
+    <sld:UserLayer>
+        <sld:LayerFeatureConstraints>
+            <sld:FeatureTypeConstraint/>
+        </sld:LayerFeatureConstraints>
+        <sld:UserStyle>
+            <sld:Name>Default Styler</sld:Name>
+            <sld:Title/>
+            <sld:IsDefault>1</sld:IsDefault>
+            <sld:FeatureTypeStyle>
+                <sld:Name>simple</sld:Name>
+                <sld:FeatureTypeName>Feature</sld:FeatureTypeName>
+                <sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier>
+                <sld:SemanticTypeIdentifier>simple</sld:SemanticTypeIdentifier>
+                <sld:Rule>
+                    <sld:LineSymbolizer>
+                        <sld:Stroke>
+                            <sld:CssParameter name="stroke">#00BFBF</sld:CssParameter>
+                            <sld:CssParameter name="stroke-opacity">0.25</sld:CssParameter>
+                            <sld:CssParameter name="stroke-width">3.0</sld:CssParameter>
+                        </sld:Stroke>
+                    </sld:LineSymbolizer>
+                    <sld:TextSymbolizer>
+                        <sld:Label>
+                            <ogc:PropertyName>id</ogc:PropertyName>
+                        </sld:Label>
+                        <sld:Font>
+                            <sld:CssParameter name="font-family">Bell MT</sld:CssParameter>
+                            <sld:CssParameter name="font-size">12.0</sld:CssParameter>
+                            <sld:CssParameter name="font-style">italic</sld:CssParameter>
+                            <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+                        </sld:Font>
+                        <sld:LabelPlacement>
+                            <sld:LinePlacement>
+                                <sld:PerpendicularOffset>10.0</sld:PerpendicularOffset>
+                            </sld:LinePlacement>
+                        </sld:LabelPlacement>
+                        <sld:Fill>
+                            <sld:CssParameter name="fill">#000000</sld:CssParameter>
+                        </sld:Fill>
+                        <sld:VendorOption name="spaceAround">2</sld:VendorOption>
+                        <sld:VendorOption name="group">yes</sld:VendorOption>
+                    </sld:TextSymbolizer>
+                </sld:Rule>
+            </sld:FeatureTypeStyle>
+        </sld:UserStyle>
+    </sld:UserLayer>
+</sld:StyledLayerDescriptor>
+
