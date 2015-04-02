@@ -46,13 +46,32 @@
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/IDFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/UnaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
+
 <script type="text/javascript">
 
 
 $().ready(function(e) {
 
 });
-var path = "point_user_6.xml";
+// var path = "point_user_6.xml";
+// var path = "wmsStyleXML/point-bbox.xml";
+// var path = "wmsStyleXML/point-not.xml";
+var path = "wmsStyleXML/point-id.xml";
+// var path = "point_theme_label.xml";
 // var path = "line.xml";
 // var path = "polygon_red.xml";
 var writeStyle = null;
@@ -61,7 +80,6 @@ function readStyleXML(){
 		var reader = new GeoBeans.StyleReader();
 		writeStyle = reader.read(xml);
 	});
-
 }
 
 function writeXML(){
