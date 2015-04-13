@@ -32,7 +32,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/WMSWorkspace.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
@@ -44,6 +44,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
 <script type="text/javascript">
@@ -53,7 +56,7 @@ var url = '';
 
 $().ready(function(e) {
 	url = $("#server").val();
-	wmsStyleMgr = new GeoBeans.WMSStleManager(url);
+	wmsStyleMgr = new GeoBeans.WMSStyleManager(url);
 });
 
 function getStyles(){
