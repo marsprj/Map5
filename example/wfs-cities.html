@@ -8,6 +8,7 @@
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -49,6 +50,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -57,7 +59,34 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 
 <script type="text/javascript">
@@ -65,61 +94,47 @@
 var mapObj = null;
 function init(){
 	
-	var ww = window.document.body.clientWidth;
-	var wh = window.document.body.clientHeight;
-	var canvas = document.getElementById('myCanvas');
-	canvas.setAttribute("width", ww);
-	canvas.setAttribute("height", wh);
-	var context = canvas.getContext('2d');
-	context.fillStyle = 'rgba(0,255,0,0.25)';
-	context.fillRect(0,0,ww,wh);
-	
-	mapObj = new GeoBeans.Map("myCanvas");
+	mapObj = new GeoBeans.Map("mapDiv");
 	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
+	// layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	// mapObj.setBaseLayer(layer);
 	
-//	layer = new GeoBeans.Layer.QSLayer("gaode");				
-//	mapObj.setBaseLayer(layer);
-	
-//	layer = new GeoBeans.Layer.WMSLayer("wms",
-//										"http://127.0.0.1:8080/geoserver/radi/wms?",
-//										"radi:cities",
-//										"image/png");	
-//										
-//	mapObj.addLayer(layer);
 
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 2;
+	symbolizer.size = 8;
 	symbolizer.fillColor = "Aquamarine";
 	symbolizer.outLineWidth = 1.0;
 	symbolizer.outLineColor = "Red";
 	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
 	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
 	symbolizer.showOutline = true;
-	
+
 	rule = new GeoBeans.Style.Rule(symbolizer, null);
 	style = new GeoBeans.Style();
 	style.addRule(rule);
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"/geoserver/radi/ows?",
-										"radi:cities",
-										"GML2");
-	layer.setStyle(style);	
-	mapObj.addLayer(layer);			
+	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+		"/geoserver/radi/ows?",
+		"radi:cities","GML2");
+
+	// citiesLayer.setStyle(style);
+	mapObj.addLayer(citiesLayer);			
 	
 //	mapObj.setCenter(center);
 //	mapObj.setLevel(2);	
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-	mapObj.draw();	
+	// mapObj.setCenter(center);
+	// mapObj.setLevel(2);	
+	mapObj.draw();		
 
-	context.fillStyle = 'rgba(255,0,0,1)';
-	context.beginPath();
-	context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
-	context.closePath();
-	context.fill();
+	// context.fillStyle = 'rgba(255,0,0,1)';
+	// context.beginPath();
+	// context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
+	// context.closePath();
+	// context.fill();
 
 	//var tile = new GeoBeans.Tile("http://mt2.google.cn/vt/x=0&y=0&z=2",null, null, null, null, null, null);
 	//tile.context = context;
@@ -152,7 +167,8 @@ function onMapMove(evt){
 
 <body onload="init()">
 
-<canvas id="myCanvas" width="800" height="800"></canvas>
+	<div id="mapDiv" style="height:800px;width:100%">
+	</div>
 <input type='button' value='offset' onclick="btnoffset();">
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>

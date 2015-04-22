@@ -37,7 +37,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
@@ -51,6 +51,16 @@
 <script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 <script type="text/javascript">
 
 var mapObj = null;
@@ -91,7 +101,7 @@ $().ready(function(e) {
 	mapObj.draw();	
 
 
-	wmsStyleMgr = new GeoBeans.WMSStleManager(mgrUrl);
+	wmsStyleMgr = new GeoBeans.WMSStyleManager(mgrUrl);
 });
 
 function getLayers(){
@@ -206,9 +216,18 @@ function setStyle(){
 		return;
 	}
 	$("#setStyle").html(html);
-	mapLayer.setStyle(style);
-	mapObj.draw();
+	// mapLayer.setStyle(style);
+	layer.setMapLayerStyle(mapLayer,styleName,callback);
 
+	// mapObj.draw();
+
+}
+function callback(result){
+	if(result != "success"){
+		alert(result);
+		return;
+	}
+	mapObj.draw();
 }
 </script>
 

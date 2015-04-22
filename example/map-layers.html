@@ -12,6 +12,7 @@
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -68,6 +69,32 @@
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Polygon.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <style type="text/css">
@@ -98,63 +125,63 @@ function init(){
 
 
 	
-	//点
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// //点
+	// var symbolizer, rule, style;
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
 										"/geoserver/radi/ows?",
 										"radi:cities",
 										"GML2");
-	citiesLayer.setStyle(style);	
+	// citiesLayer.setStyle(style);	
 	// mapObj.addLayer(layer);	
 
 	// 线
-	symbolizer = new GeoBeans.Style.LineSymbolizer();
-	symbolizer.width = 2;
-	symbolizer.color = "rgba(0,0,255,1)";
-	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
-	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// symbolizer = new GeoBeans.Style.LineSymbolizer();
+	// symbolizer.width = 2;
+	// symbolizer.color = "rgba(0,0,255,1)";
+	// symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	// symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	riversLayer = new GeoBeans.Layer.WFSLayer("rivers",
 										"/geoserver/radi/ows?",
 										"radi:rivers",
 										"GML2");
-	riversLayer.setStyle(style);	
+	// riversLayer.setStyle(style);	
 	// mapObj.addLayer(layer);	
 
 	// 面
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "rgba(0,255,255,1)";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "rgba(0,255,255,1)";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 	
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	countryLayer = new GeoBeans.Layer.WFSLayer("country",
 										"/geoserver/radi/ows?",
 										"radi:country",
 										"GML2");
-	countryLayer.setStyle(style);	
+	// countryLayer.setStyle(style);	
 	// mapObj.addLayer(layer);
 
 
