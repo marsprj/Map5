@@ -32,41 +32,43 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WMS/WMSWorkspace.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Symbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/PointSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/LineSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/TextSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
+
 <script type="text/javascript">
 
-var wmsStyleMgr = null;
+var styleMgr = null;
 var url = '';
 
 $().ready(function(e) {
 	url = $("#server").val();
-	wmsStyleMgr = new GeoBeans.WMSStyleManager(url);
+	styleMgr = new GeoBeans.StyleManager(url);
 });
 
 function getStyles(){
-	wmsStyleMgr.getStyles(styles_callback);
+	styleMgr.getStyles(styles_callback);
 }
 
 function getStyleByType(){
 	// var type = GeoBeans.WMSStyle.Type.POINT;
 	var type = $("#getStyleByType_type").val();
-	var styles = wmsStyleMgr.getStyleByType(type);
+	var styles = styleMgr.getStyleByType(type);
 
 	var html = '<table border="1">';
 	var len = styles.length;
@@ -80,7 +82,7 @@ function getStyleByType(){
 		html += "<tr>";
 		html += "<td>" + i + "</td>";
 		html += "<td>" + s.name + "</td>";
-		html += "<td>" + s.type + "</td>";
+		html += "<td>" + s.geomType + "</td>";
 		html += "</tr>";
 	}
 	html += "</table>";	
@@ -100,7 +102,7 @@ function styles_callback(styles){
 		html += "<tr>";
 		html += "<td>" + i + "</td>";
 		html += "<td>" + s.name + "</td>";
-		html += "<td>" + s.type + "</td>";
+		html += "<td>" + s.geomType + "</td>";
 		html += "</tr>";
 	}
 	html += "</table>";
@@ -110,7 +112,7 @@ function styles_callback(styles){
 
 function getStyleXML(){
 	var name = $("#styleName").val();
-	wmsStyleMgr.getStyleXML(name,getStyleXML_callback);
+	styleMgr.getStyleXML(name,getStyleXML_callback);
 }
 
 function getStyleXML_callback(style){
@@ -126,7 +128,7 @@ function addStyle(){
 	var type = $("#addStyleType").val();
 
 	var xml = $("#xml").val();
-	wmsStyleMgr.addStyle(xml,name,type,addStyle_callback);
+	styleMgr.addStyle(xml,name,type,addStyle_callback);
 }
 
 function addStyle_callback(result){
@@ -136,14 +138,14 @@ function addStyle_callback(result){
 
 function removeStyle(){
 	var name = $("#removeStyleName").val();
-	wmsStyleMgr.removeStyle(name,removeStyle_Callback);
+	styleMgr.removeStyle(name,removeStyle_Callback);
 }
 
 function removeStyle_Callback(result){
 	$("#removeStyle_result").html(result);
 }
 </script>
-<title>Map5 WMS Style</title>
+<title>Map5 Style</title>
 </head>
 
 <body>
