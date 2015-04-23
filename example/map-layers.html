@@ -137,8 +137,8 @@ function init(){
 	// style = new GeoBeans.Style();
 	// style.addRule(rule);
 	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/radi/ows?",
-										"radi:cities",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
 	// citiesLayer.setStyle(style);	
 	// mapObj.addLayer(layer);	
@@ -155,8 +155,8 @@ function init(){
 	// style = new GeoBeans.Style();
 	// style.addRule(rule);
 	riversLayer = new GeoBeans.Layer.WFSLayer("rivers",
-										"/geoserver/radi/ows?",
-										"radi:rivers",
+										"/ows/user1/world/ims?",
+										"rivers",
 										"GML2");
 	// riversLayer.setStyle(style);	
 	// mapObj.addLayer(layer);	
@@ -175,8 +175,8 @@ function init(){
 	// style = new GeoBeans.Style();
 	// style.addRule(rule);
 	countryLayer = new GeoBeans.Layer.WFSLayer("country",
-										"/geoserver/radi/ows?",
-										"radi:country",
+										"/ows/user1/world/ims?",
+										"country",
 										"GML2");
 	// countryLayer.setStyle(style);	
 	// mapObj.addLayer(layer);
