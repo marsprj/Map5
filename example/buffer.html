@@ -77,75 +77,23 @@ function init(){
 	mapObj = new GeoBeans.Map("mapDiv");
 	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 
-	// // 面
-	// symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	// symbolizer.size = 8;
-	// symbolizer.fillColor = "rgba(0,255,255,1)";
-	// symbolizer.outLineWidth = 1.0;
-	// symbolizer.outLineColor = "Red";
-	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
-	
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
-	// countryLayer = new GeoBeans.Layer.WFSLayer("country",
-	// 									"/geoserver/radi/ows?",
-	// 									"radi:country",
-	// 									"GML2");
-	// countryLayer.setStyle(style);
-	// mapObj.addLayer(countryLayer);	
-
-
-	// // 线
-	// symbolizer = new GeoBeans.Style.LineSymbolizer();
-	// symbolizer.width = 2;
-	// symbolizer.color = "rgba(0,0,255,1)";
-	// symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
-	// symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
-
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
-	// riversLayer = new GeoBeans.Layer.WFSLayer("rivers",
-	// 									"/geoserver/radi/ows?",
-	// 									"radi:rivers",
-	// 									"GML2");
-	// riversLayer.setStyle(style);	
-	// mapObj.addLayer(riversLayer);
-
-	// //点
-	// var symbolizer, rule, style;
-	// symbolizer = new GeoBeans.Style.PointSymbolizer();
-	// symbolizer.size = 8;
-	// symbolizer.fillColor = "Aquamarine";
-	// symbolizer.outLineWidth = 1.0;
-	// symbolizer.outLineColor = "Red";
-	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
-
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
-	// citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-	// 									"/geoserver/radi/ows?",
-	// 									"radi:cities",
-	// 									"GML2");
-	// citiesLayer.setStyle(style);	
-	// mapObj.addLayer(citiesLayer);
 	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
 										"/ows/user1/world/ims?",
 										"cities",
 										"GML2");
-	countryLayer = new GeoBeans.Layer.WFSLayer("country", "/ows/user1/world/ims?",
+	countryLayer = new GeoBeans.Layer.WFSLayer("country",
+										 "/ows/user1/world/ims?",
 										"country",
+										"GML2");
+
+	riversLayer = new GeoBeans.Layer.WFSLayer("river",
+										 "/ows/user1/world/ims?",
+										"rivers",
 										"GML2");
 	mapObj.addLayer(countryLayer);
 	mapObj.addLayer(citiesLayer);
-	
+	mapObj.addLayer(riversLayer);
+
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();
 
@@ -155,7 +103,6 @@ function onMapMove(evt){
 	var mapX = evt.mapX;
 	var mapY = evt.mapY;
 	
-	//var str = mapX + "," + mapY;
 	var str = evt.X + "," + evt.Y;
 	document.getElementById("xy").innerHTML = str;
 }
@@ -183,11 +130,6 @@ function callback_buffer(features){
 	}
 	table.html(html);
 
-	// var symbolizer = new GeoBeans.Style.PointSymbolizer();
-	// symbolizer.size = 8;
-	// symbolizer.fillColor = "#08c";	
-	// symbolizer.outLineColor = "#fff";
-	// symbolizer.showOutline = true;
 
 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 	symbolizer.stroke.color.set(255,0,0,1);
@@ -211,11 +153,9 @@ function onLineBufferCountry(){
 }
 
 function callback_buffer_country(features){
-	// var	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
 	var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 	symbolizer.fill.color.set(255,0,0,1);
 	symbolizer.stroke.color.set(255,0,0,1);
-	// symbolizer.showOutline = true;
 	countryLayer.drawBufferFeatures(features,symbolizer);
 }
 
@@ -237,15 +177,12 @@ function removeBufferRiver(){
 }
 
 function callback_buffer_rivers(features){
-	var symbolizer = new GeoBeans.Style.LineSymbolizer();
-	symbolizer.width = 2;
-	symbolizer.color = "Red";
-	symbolizer.lineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.lineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+	symbolizer.stroke.color.set(255,255,0,1);
+	symbolizer.width = 4;
 	riversLayer.drawBufferFeatures(features,symbolizer);
 }
 </script>
-
 
 
 
@@ -254,7 +191,6 @@ function callback_buffer_rivers(features){
 
 <body onload="init()">
 
-<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
 
@@ -278,7 +214,3 @@ river:
 	</div>
 </body>
 </html>
-
-
-
-

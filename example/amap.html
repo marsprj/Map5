@@ -48,6 +48,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <!-- Renderer -->
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
@@ -97,24 +98,24 @@ function init(){
 //										"radi:cities",
 //										"image/png");	
 
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 2;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// var symbolizer, rule, style;
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 2;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 	
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"http://127.0.0.1:8080/geoserver/radi/ows?",
-										"radi:cities",
-										"GML2");
-	layer.setStyle(style);	
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
+	// layer = new GeoBeans.Layer.WFSLayer("wfs",
+	// 									"http://127.0.0.1:8080/geoserver/radi/ows?",
+	// 									"radi:cities",
+	// 									"GML2");
+	// layer.setStyle(style);	
 	// mapObj.addLayer(layer);			
 	
 	mapObj.setCenter(center);

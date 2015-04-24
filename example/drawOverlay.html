@@ -8,6 +8,7 @@
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -30,9 +31,22 @@
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
@@ -75,26 +89,11 @@ function init(){
 	var layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);	
 
-	//点
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/radi/ows?",
-										"radi:cities",
+	var citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
-	citiesLayer.setStyle(style);	
-	// mapObj.addLayer(citiesLayer);
+	mapObj.addLayer(citiesLayer);
 	
 	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 
@@ -230,14 +229,8 @@ function addPolygon(){
 
 function addCircle(){
 	var circle = new GeoBeans.Geometry.Circle(new GeoBeans.Geometry.Point(0,0),8);
-	var symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "rgba(0,255,255,1)";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;	
+	var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+	symbolizer.fill.color.set(123,123,12,0.6);
 
 	var circlePolygon = new GeoBeans.Overlay.Circle("circle",circle,symbolizer);
 	mapObj.addOverlay(circlePolygon);
@@ -247,12 +240,12 @@ function addCircle(){
 
 function addMarkers(){
 	var markers = [];
-	for(var i = 0; i < 10000; ++i){
+	for(var i = 0; i < 100; ++i){
 		var id = "marker" +　i;
 		var x = (Math.random() - 1) * 360 + 180;
 		var y = (Math.random() - 1) * 180  + 90;
 		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Style.PointSymbolizer();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.icon_url = "pin.png";
 		symbolizer.icon_offset_x = 0;
 		symbolizer.icon_offset_y = 0;
@@ -301,8 +294,8 @@ function removeOverlay(){
 	mapObj.draw();	
 }
 
-function removeOverlays(){
-	mapObj.removeOverlays();
+function clearOverlays(){
+	mapObj.clearOverlays();
 	mapObj.draw();	
 }
 
@@ -336,7 +329,7 @@ function clearDisplay(){
 删除overlay
 <input type="button" value="removeOverlay" onclick="removeOverlay();">
 
-<input type="button" value="removeOverlays" onclick="removeOverlays();">
+<input type="button" value="removeOverlays" onclick="clearOverlays();">
 <input type="button" value="清空显示屏" onclick="clearDisplay()">
 <div id="display" style="float:left;width:600px">
 </div>

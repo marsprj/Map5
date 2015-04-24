@@ -51,6 +51,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -104,43 +105,43 @@ function init(){
 	// citiesLayer.setStyle(style);	
 	// // mapObj.addLayer(citiesLayer);
 
-	symbolizer = new GeoBeans.Style.LineSymbolizer();
-	symbolizer.width = 2;
-	symbolizer.color = "rgba(0,0,255,1)";
-	symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
-	symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// symbolizer = new GeoBeans.Style.LineSymbolizer();
+	// symbolizer.width = 2;
+	// symbolizer.color = "rgba(0,0,255,1)";
+	// symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
+	// symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	cnProvLayer = new GeoBeans.Layer.WFSLayer("rivers",
 										"/geoserver/aqi/ows?",
 										"aqi:cn_prov_l",
 										"GML2");
-	cnProvLayer.setStyle(style);	
+	// cnProvLayer.setStyle(style);	
 	mapObj.addLayer(cnProvLayer);	
 
-		// 点
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// 	// 点
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	aqiLayer = new GeoBeans.Layer.WFSLayer("cities",
 										"/geoserver/aqi/ows?",
 										"aqi:gc_aqi_ranking",
 										"GML2");
-	aqiLayer.setStyle(style);	
-	var filter = new GeoBeans.Filter("time_point","2015-02-04T08:00:00");
-	aqiLayer.setFilter(filter);
+	// aqiLayer.setStyle(style);	
+	// var filter = new GeoBeans.Filter("time_point","2015-02-04T08:00:00");
+	// aqiLayer.setFilter(filter);
 	mapObj.addLayer(aqiLayer);
 
 	
