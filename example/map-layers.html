@@ -117,63 +117,21 @@ function init(){
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
 	
-	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	layer = new GeoBeans.Layer.QSLayer("qs","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);
 
-
 	
-	// //点
-	// var symbolizer, rule, style;
-	// symbolizer = new GeoBeans.Style.PointSymbolizer();
-	// symbolizer.size = 8;
-	// symbolizer.fillColor = "Aquamarine";
-	// symbolizer.outLineWidth = 1.0;
-	// symbolizer.outLineColor = "Red";
-	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
 
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
 	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
 										"/ows/user1/world/ims?",
 										"cities",
 										"GML2");
-	// citiesLayer.setStyle(style);	
-	// mapObj.addLayer(layer);	
 
-	// 线
-	// symbolizer = new GeoBeans.Style.LineSymbolizer();
-	// symbolizer.width = 2;
-	// symbolizer.color = "rgba(0,0,255,1)";
-	// symbolizer.outLineCap = GeoBeans.Style.LineCap.ROUND;;
-	// symbolizer.outLineJoin =  GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
-
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
 	riversLayer = new GeoBeans.Layer.WFSLayer("rivers",
 										"/ows/user1/world/ims?",
 										"rivers",
 										"GML2");
-	// riversLayer.setStyle(style);	
-	// mapObj.addLayer(layer);	
 
-	// 面
-	// symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	// symbolizer.size = 8;
-	// symbolizer.fillColor = "rgba(0,255,255,1)";
-	// symbolizer.outLineWidth = 1.0;
-	// symbolizer.outLineColor = "Red";
-	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
-	
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
 	countryLayer = new GeoBeans.Layer.WFSLayer("country",
 										"/ows/user1/world/ims?",
 										"country",

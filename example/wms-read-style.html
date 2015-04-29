@@ -94,6 +94,7 @@ function writeXML(){
 
 	var writer = new GeoBeans.StyleWriter();
 	var xml = writer.write(writeStyle);
+	$("#text").text(xml);
 } 
 </script>
 <title>WMS Read Style</title>
@@ -104,6 +105,9 @@ function writeXML(){
 	<div class="row">
 		<button class="btn btn-default" onclick="readStyleXML()">readStyleXML</button>
 		<button class="btn btn-default" onclick="writeXML()">writeXML</button>
+	</div>
+	<div class="row">
+		<textarea id="text" style="height:800px;width:600px;"></textarea>
 	</div>
 
 </div>

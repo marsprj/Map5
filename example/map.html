@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript">
+
+var mapManager = null;
+var url = "/ows/user1/mgr";
+function init(){
+	mapManager = new GeoBeans.MapManager(url);
+}
+
+function getMaps(){
+	mapManager.getMaps(getMaps_callback);
+}
+
+function getMaps_callback(maps){
+	if(maps == null){
+		return;
+	}
+	var html = "<table border='1'>";
+	html += "<tr>";
+	html += "<td>Name</td>";
+	html += "<td>Srid</td>";
+	html += "<td>Extent</td>";
+	html += "</tr>";
+	
+	for(var i = 0; i < maps.length; ++i){
+		var map = maps[i];
+		html += "<tr>";
+		html += "<td>" + map.name + "</td>";
+		html += "<td>" + map.srid + "</td>";
+		html += "<td>" + map.extent.toString() + "</td>";
+		html += "</tr>";
+	}
+	html += "</table>";
+	$("#getMaps_div").html(html);	
+}
+
+function getMap(){
+	var name = $("#getMapName").val();
+	mapManager.getMap(name,getMap_callback);
+}
+
+function getMap_callback(map){
+	var html = "";
+	var layers = map.layers;
+	for(var i = 0; i < layers.length;++i){
+		var layer = layers[i];
+		html += layer.name + "=>";
+		html += layer.type + "=>";
+		if(layer.type == "Group"){
+			var dbLayers = layer.layers;
+			html += "<";
+			for(var j = 0; j < dbLayers.length;++j){
+				var dbLayer = dbLayers[j];
+				html += dbLayer.name ;
+				html += ",";
+			}
+			html += ">";
+		}
+	}
+	$("#getMap_div").html(html);	
+}
+</script>
+<body onload="init()">
+<div class="container">
+	<div class="page-header">
+		<h1>getMaps</h1>
+	</div>
+	<div class="row">
+		<div>
+			<button class="btn btn-default" onclick="getMaps()">getMaps</button>
+		</div>
+		<div id="getMaps_div"></div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>getMap</h1>
+	</div>
+	<div class="row">
+		<input type="text" value="world" id="getMapName">
+		<button class="btn btn-default" onclick="getMap()">getMap</button>
+	</div>
+	<div id="getMap_div"></div>
+</div>
+</body>

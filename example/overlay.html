@@ -113,7 +113,6 @@ function init(){
 	mapObj.setLevel(2);	
 
 	mapObj.draw();
-	
 }
 
 function onMapMove(evt){
@@ -132,7 +131,6 @@ function addMarker(){
 	symbolizer.icon_url = "pin.png";
 	symbolizer.icon_offset_x = 0;
 	symbolizer.icon_offset_y = 0;
-
 
 	marker = new GeoBeans.Overlay.Marker("maker",point,symbolizer);
 	mapObj.addOverlay(marker);

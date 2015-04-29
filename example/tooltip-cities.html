@@ -12,6 +12,7 @@
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -33,9 +34,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
@@ -53,6 +65,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -75,41 +88,28 @@
 <script type="text/javascript">
 
 var mapObj = null;
+var layer = null;
 function init(){
 	
 	
 	mapObj = new GeoBeans.Map("mapDiv");
 	
-	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
 	
-	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
-	mapObj.setBaseLayer(layer);
+	// layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	// mapObj.setBaseLayer(layer);
 
 
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"/geoserver/radi/ows?",
-										"radi:cities",
+	layer = new GeoBeans.Layer.WFSLayer("cities",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
-	layer.setStyle(style);	
 	mapObj.addLayer(layer);		
-	layer.registerHitTooltipEvent(onFeatureHitTooltip);	
 	
-	mapObj.setCenter(center);
-	mapObj.setLevel(2);	
+	
+	// mapObj.setCenter(center);
+	// mapObj.setLevel(2);	
+	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();	
 
 }
@@ -138,8 +138,13 @@ function onFeatureHitTooltip(layer, x, y,feature){
 
 }
 
+function registerHitTooltip(){
+	layer.registerHitTooltipEvent(onFeatureHitTooltip);	
+}
 
-
+function unregisterHitTooltip(){
+	layer.unregisterHitTooltipEvent();
+}
 </script>
 
 
@@ -148,10 +153,11 @@ function onFeatureHitTooltip(layer, x, y,feature){
 
 <body onload="init()">
 
-	<div id="mapDiv" style="height:800px;width:100%">
+	<div id="mapDiv" style="height:400px;width:100%">
 		<div id='info' data-toggle='tooltip' data-html="true" data-placement='top'></div>
 	</div>
-<input type='button' value='offset' onclick="btnoffset();">
+<input type='button' value='registerHitTooltip' onclick="registerHitTooltip();">
+<input type='button' value='unregisterHitTooltip' onclick="unregisterHitTooltip();">
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>

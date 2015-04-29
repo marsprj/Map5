@@ -9,6 +9,7 @@
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -30,9 +31,21 @@
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
@@ -50,6 +63,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -82,54 +96,20 @@ function init(){
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
 	
-//	layer = new GeoBeans.Layer.QSLayer("gaode");				
-//	mapObj.setBaseLayer(layer);
-	
-//	layer = new GeoBeans.Layer.WMSLayer("wms",
-//										"http://127.0.0.1:8080/geoserver/radi/wms?",
-//										"radi:cities",
-//										"image/png");	
-//										
-//	mapObj.addLayer(layer);
-
 	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);
 
 
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 2;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"/geoserver/radi/ows?",
-										"radi:cities",
+	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
-	layer.setStyle(style);	
-	mapObj.addLayer(layer);			
+	mapObj.addLayer(citiesLayer);			
 	
 	mapObj.setCenter(center);
 	mapObj.setLevel(2);	
 //	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();	
-
-	context.fillStyle = 'rgba(255,0,0,1)';
-	context.beginPath();
-	context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
-	context.closePath();
-	context.fill();
-
-	//var tile = new GeoBeans.Tile("http://mt2.google.cn/vt/x=0&y=0&z=2",null, null, null, null, null, null);
-	//tile.context = context;
-	//tile.draw();
 }
 
 function btnoffset(){

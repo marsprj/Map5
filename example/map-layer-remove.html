@@ -27,6 +27,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 
 
+
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
@@ -50,6 +51,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -58,39 +60,30 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 
 <script type="text/javascript">
 
 
-var g_s_hited  = createSymbolizer1();
-var g_s_normal = createSymbolizer2();
 
 var mapObj = null;
 function init(){
 	
-	var ww = window.document.body.clientWidth;
-	var wh = window.document.body.clientHeight;
-	var canvas = document.getElementById('myCanvas');
-	canvas.setAttribute("width", ww);
-	canvas.setAttribute("height", wh);
-	var context = canvas.getContext('2d');
-//	context.fillStyle = 'rgba(0,255,0,0.25)';
-//	context.fillRect(0,0,ww,wh);
-	
-	mapObj = new GeoBeans.Map("myCanvas");
+	mapObj = new GeoBeans.Map("mapDiv");
 	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
+	var layer = null;	
+	var center = new GeoBeans.Geometry.Point(0,0);	
+	layer = new GeoBeans.Layer.QSLayer("qs","/QuadServer/maprequest?services=world_image");				
+	mapObj.setBaseLayer(layer);
+	mapObj.setCenter(center);
+	mapObj.setLevel(2);	
+	mapObj.draw();
 	
 }
 
-function btnoffset(){
-	mapObj.setCenter(new GeoBeans.Geometry.Point(0,0));
-	mapObj.drawCache();
-}
 
 function onMapClick(evt){
-	//alert("onMapClick");
 	alert(evt.X + "," + evt.Y);
 }
 
@@ -102,65 +95,13 @@ function onMapMove(evt){
 	document.getElementById("xy").innerHTML = str;
 }
 
-function onFeatureHit(layer, selection, selection_old){
-	//console.log(feature.fid);
-	var i;
-	var len = selection_old.length;
-	for(i=0; i<len; i++){
-		var f = selection_old[i];
-		layer.drawFeature(f);
-	}
-	len = selection.length;
-	for(i=0; i<len; i++){
-		var f = selection[i];
-		layer.drawFeature(f, g_s_hited);
-	}
-}
-
-function createSymbolizer1(){
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Red";
-	symbolizer.showOutline = false;
-	
-	return symbolizer;
-}
-
-function createSymbolizer2(){
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Blue";
-	symbolizer.outLineColor = "#471953";
-	symbolizer.showOutline = true;
-	
-	return symbolizer;
-}
-
 function onAddLayer(){
-	var layer = null;	
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	//symbolizer.size = 2;
-	symbolizer.fillColor = 'rgba(0,255,0,0.25)'//"Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"http://127.0.0.1/geoserver/radi/ows?",
-										"radi:country",
+	var citiesLayer = new GeoBeans.Layer.WFSLayer("wfs",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
-	layer.setStyle(style);	
-	mapObj.addLayer(layer);
-	layer.resigterHitEvent(onFeatureHit);
-	
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));	
-	mapObj.draw();	
+	mapObj.addLayer(citiesLayer);
+	mapObj.draw();
 }
 
 function onRemoveLayer(){
@@ -177,8 +118,8 @@ function onRemoveLayer(){
 <body onload="init()">
 <input type="button" value="add" onclick="onAddLayer()">
 <input type="button" value="remove" onclick="onRemoveLayer()">
-<canvas id="myCanvas" width="800" height="800"></canvas>
-<!--<input type='button' value='offset' onclick="btnoffset();">-->
+	<div id="mapDiv" style="height:400px;width:100%">
+	</div>
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>
 </body>
 </html>

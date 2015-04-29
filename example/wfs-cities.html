@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
@@ -13,12 +13,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
@@ -30,9 +25,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
@@ -51,6 +57,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -61,84 +70,35 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Symbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/PointSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/LineSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/TextSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
-
-
-<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
 
 <script type="text/javascript">
-
+var url = "/ows/user1/mgr";
 var mapObj = null;
 function init(){
-	
-	mapObj = new GeoBeans.Map("mapDiv");
+	// mapObj = new GeoBeans.Map(null,"mapDiv");
+	var srid = 4326;
+	var extent = new GeoBeans.Envelope(-180,-90,180,90);
+	mapObj = new GeoBeans.Map(url,"mapDiv","a",extent,srid);
 	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
-	// layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
-	// mapObj.setBaseLayer(layer);
 	
 
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	layer = new GeoBeans.Layer.WFSLayer("cities",
+										"/ows/user1/world/ims?",
+										"cities",
+										"GML2");
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-		"/geoserver/radi/ows?",
-		"radi:cities","GML2");
 
-	// citiesLayer.setStyle(style);
-	mapObj.addLayer(citiesLayer);			
+	mapObj.addLayer(layer);			
 	
 //	mapObj.setCenter(center);
 //	mapObj.setLevel(2);	
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-	// mapObj.setCenter(center);
-	// mapObj.setLevel(2);	
-	mapObj.draw();		
-
-	// context.fillStyle = 'rgba(255,0,0,1)';
-	// context.beginPath();
-	// context.arc(ww/2, wh/2, 10, 0, 2 * Math.PI, false);  
-	// context.closePath();
-	// context.fill();
-
-	//var tile = new GeoBeans.Tile("http://mt2.google.cn/vt/x=0&y=0&z=2",null, null, null, null, null, null);
-	//tile.context = context;
-	//tile.draw();
+	mapObj.draw();	
 }
 
 function btnoffset(){
@@ -162,14 +122,12 @@ function onMapMove(evt){
 </script>
 
 
-<title>Map5</title>
+<title>Map5-wfs-cities</title>
 </head>
 
 <body onload="init()">
-
-	<div id="mapDiv" style="height:800px;width:100%">
+	<div id="mapDiv" style="height:400px;width:100%">
 	</div>
-<input type='button' value='offset' onclick="btnoffset();">
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>

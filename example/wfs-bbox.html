@@ -8,6 +8,7 @@
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -30,9 +31,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
@@ -50,6 +62,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -76,33 +89,10 @@ function init(){
 	var layer = null;	
 	var center = new GeoBeans.Geometry.Point(0,0);	
 
-	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
+	// layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	// mapObj.setBaseLayer(layer);
-	
-	// var symbolizer, rule, style;
-	// symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	// //symbolizer.size = 2;
-	// symbolizer.fillColor = 'rgba(0,255,0,0.25)'//"Aquamarine";
-	// symbolizer.outLineWidth = 1.0;
-	// symbolizer.outLineColor = "Red";
-	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
-	
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
-	// countryLayer = new GeoBeans.Layer.WFSLayer("wfs",
-	// 									"/geoserver/radi/ows?",
-	// 									"radi:country",
-	// 									"GML2");
-	// countryLayer.setStyle(style);	
-	// mapObj.addLayer(countryLayer);
-	
 
-
-
-	// 点
+	// 地震
 	// var symbolizer, rule, style;
 	// symbolizer = new GeoBeans.Style.PointSymbolizer();
 	// symbolizer.size = 8;
@@ -117,36 +107,20 @@ function init(){
 	// style = new GeoBeans.Style();
 	// style.addRule(rule);
 	// citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-	// 									"/geoserver/radi/ows?",
-	// 									"radi:cities",
+	// 									"/geoserver/earthquake/ows?",
+	// 									"earthquake:g_earthquake_china",
 	// 									"GML2");
 	// citiesLayer.setStyle(style);	
-	// mapObj.addLayer(citiesLayer);
+	// mapObj.addLayer(citiesLayer);	
 
-
-	// 地震
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
-	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/geoserver/earthquake/ows?",
-										"earthquake:g_earthquake_china",
+	layer = new GeoBeans.Layer.WFSLayer("cities",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
-	citiesLayer.setStyle(style);	
-	mapObj.addLayer(citiesLayer);	
+	mapObj.addLayer(layer);	
 	
 
-	mapObj.setViewer(new GeoBeans.Envelope(100,29,101,30));
+	mapObj.setViewer(new GeoBeans.Envelope(60,21,101,30));
 	
 	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	// mapObj.setCenter(center);

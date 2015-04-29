@@ -48,8 +48,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/IDFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/UnaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 
 <script type="text/javascript">
 
@@ -113,10 +125,14 @@ function styles_callback(styles){
 function getStyleXML(){
 	var name = $("#styleName").val();
 	styleMgr.getStyleXML(name,getStyleXML_callback);
+
 }
 
 function getStyleXML_callback(style){
 	// alert(xml);
+	var text = "style name :" + style.name + "<br/>";
+	text += "style rules count :" + style.rules.length;
+	 $("#stylexml").text(text);
 	
 }
 
@@ -178,7 +194,11 @@ function removeStyle_Callback(result){
 	</div>
 	<input type="text" value="point" id="styleName">
 	<input type="button" value="getStyleXML" onclick="getStyleXML()">
-	<div id="stylexml"></div>
+	<div>
+		<textarea id="stylexml" rows="35" cols="60">
+		</textarea>
+	</div>
+	
 </div>
 
 <div class="container">

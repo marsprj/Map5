@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DataSource.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
+<script type="text/javascript">
+
+
+var url = "/ows/user1/mgr";
+var dbsMgr = null;
+var g_dataSource = null;
+function init(){
+	dbsMgr = new GeoBeans.DBSManager(url);
+
+}
+
+function getDataSources(){
+	dbsMgr.getDataSources(getDataSources_callback);
+}
+
+function getDataSources_callback(dataSources){
+	var html = "<table border='1'>";
+	html += "<tr>";
+	html += "<td>Name</td>";
+	html += "<td>Engine</td>";
+	html += "<td>ConnectionString</td>";
+	html += "</tr>";
+	for(var i = 0; i < dataSources.length;++i){
+		var dataSource = dataSources[i];
+
+		html += "<tr>";
+		html += "<td>" + dataSource.name + "</td>";
+		html += "<td>" + dataSource.engine + "</td>";
+		html += "<td>" + dataSource.constr + "</td>";
+		html += "</tr>";
+	}
+	html += "</table>";
+	$("#getDataSources_div").html(html);
+}
+//注销
+function unRegisterDataSource(){
+	var name = $("#unRegisterDBSName").val();
+	dbsMgr.unRegisterDataSource(name,unRegisterDataSource_callback);
+}
+
+function unRegisterDataSource_callback(result){
+	$("#unRegisterDBS_div").html(result);
+}
+
+// 注册
+function registerDataSource(){
+	var name = $("#registerDBS_name").val();
+	var engine = $("#registerDBS_engine").val();
+	var uri = $("#registerDBS_uri").val();
+	dbsMgr.registerDataSource(name,engine,uri,registerDataSource_callback);
+}
+
+function registerDataSource_callback(result){
+	$("#registerDataSource_div").html(result);	
+}
+
+function getDataSource(){
+	var name = $("#dbName").val();
+	dbsMgr.getDataSource(name,getDataSource_callback);
+}
+
+function getDataSource_callback(dataSource){
+	g_dataSource = dataSource;
+	var html = "<table border='1'>";
+	html += "<tr>";
+	html += "<td>Name</td>";
+	html += "<td>Engine</td>";
+	html += "<td>ConnectionString</td>";
+	html += "</tr>";
+
+	html += "<tr>";
+	html += "<td>" + dataSource.name + "</td>";
+	html += "<td>" + dataSource.engine + "</td>";
+	html += "<td>" + dataSource.constr + "</td>";
+	html += "</tr>";
+	html += "</table>";
+	$("#getDataSource_div").html(html);
+}
+
+function getDataSets(){
+	if(g_dataSource == null){
+		alert("请先获取dataSource");
+		return;
+	}
+	g_dataSource.getDataSets(getDataSets_callback);
+}
+
+function getDataSets_callback(dataSets){
+	var html = "<table border='1'>";
+	html += "<tr>";
+	html += "<td>Name</td>";
+	html += "<td>Type</td>";
+	html += "<td>GeometryType</td>";
+	html += "<td>Srid</td>"
+	html += "</tr>";
+	for(var i = 0; i < dataSets.length;++i){
+		var dataSet = dataSets[i];
+
+		html += "<tr>";
+		html += "<td>" + dataSet.name + "</td>";
+		html += "<td>" + dataSet.type + "</td>";
+		html += "<td>" + dataSet.geometryType + "</td>";
+		html += "<td>" + dataSet.srid + "</td>";
+		html += "</tr>";
+	}
+	html += "</table>";
+	$("#getDataSets_div").html(html);	
+}
+
+
+function getDataSet(){
+	if(g_dataSource == null){
+		alert("请先获取dataSource");
+		return;
+	}
+	var name = $("#dataSetName").val();
+	g_dataSource.getDataSet(name,getDataSet_callback);
+}
+
+function getDataSet_callback(dataSet){
+	if(dataSet == null){
+		return;
+	}
+	var html = "<table border='1'>";
+	html += "<tr>";
+	html += "<td>Name</td>";
+	html += "<td>Type</td>";
+	html += "<td>GeometryType</td>";
+	html += "<td>Srid</td>"
+	html += "</tr>";
+	
+
+		html += "<tr>";
+		html += "<td>" + dataSet.name + "</td>";
+		html += "<td>" + dataSet.type + "</td>";
+		html += "<td>" + dataSet.geometryType + "</td>";
+		html += "<td>" + dataSet.srid + "</td>";
+		html += "</tr>";
+	
+	html += "</table>";
+	$("#getDataSet_div").html(html);	
+}
+</script>
+</head>
+<body onload="init()">
+<div class="container">
+	<div class="page-header">
+		<h1>getDataSources</h1>
+	</div>
+	<div class="row">
+		<div>
+			<button class="btn btn-default" onclick="getDataSources()">getDataSources</button>
+		</div>
+		<div id="getDataSources_div"></div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>unRegisterDataSource</h1>
+	</div>
+	<div class="row">
+		<input type="text" value="db221" id="unRegisterDBSName">
+		<button class="btn btn-default" onclick="unRegisterDataSource()">unRegisterDataSource</button>
+	</div>
+	<div id="unRegisterDBS_div"></div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>registerDataSource</h1>
+	</div>
+	<div class="row">
+		<input type="text" value="test" id="registerDBS_name">
+		<input type="text" value="Postgres" id="registerDBS_engine">
+		<input type="text" value="server=127.0.0.1;instance=5432;database=gisdb;user=postgres;password=qwer1234;encoding=GBK" id="registerDBS_uri">
+		<button class="btn btn-default" onclick="registerDataSource()">registerDataSource</button>
+	</div>
+	<div id="registerDataSource_div"></div>
+</div>
+
+
+<div class="container">
+	<div class="page-header">
+		<h1>getDataSource</h1>
+	</div>
+	<div class="row">
+		<div>
+			<input type="text" value="db1" id="dbName">
+			<button class="btn btn-default"  onclick="getDataSource()">getDataSource</button>
+			<button class="btn btn-default"  onclick="getDataSets()">getDataSets</button>
+		</div>
+		<div id="getDataSource_div"></div>
+		<div id="getDataSets_div"></div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>getDataSet</h1>
+	</div>
+	<div class="row">
+		<div>
+			<input type="text" value="country" id="dataSetName">
+			<button class="btn btn-default"  onclick="getDataSet()">getDataSet</button>
+		</div>
+		<div id="getDataSet_div"></div>
+	</div>
+</div>
+</body>

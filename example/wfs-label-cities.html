@@ -2,22 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
@@ -29,9 +25,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
@@ -49,112 +56,86 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
-
-<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Label.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Label/PointLabel.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 
 <script type="text/javascript">
 
 var mapObj = null;
 function init(){
-	
-	var ww = window.document.body.clientWidth;
-	var wh = window.document.body.clientHeight;
-	var canvas = document.getElementById('myCanvas');
-	canvas.setAttribute("width", ww);
-	canvas.setAttribute("height", wh);
-	var context = canvas.getContext('2d');
-	context.fillStyle = 'rgba(0,255,0,0.25)';
-	context.fillRect(0,0,ww,wh);
-	
-	mapObj = new GeoBeans.Map("myCanvas");
+	mapObj = new GeoBeans.Map("mapDiv");
+	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;	
-	var symbolizer, rule, style;
-	style = new GeoBeans.Style();
+	var center = new GeoBeans.Geometry.Point(0,0);	
 	
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 2;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 0.3;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
-	symbolizer.shadowBlur	 = 3;
-	symbolizer.shadowColor	 = "Gray";
-	symbolizer.shadowOffsetX = 3,
-	symbolizer.shadowOffsetY = 3;
-	symbolizer.showShadow = true;
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style.addRule(rule);
-	
-	symbolizer = new GeoBeans.Style.TextSymbolizer();	
-	symbolizer.field = "name";
-	symbolizer.fontFamily = "Times New Roman";
-	symbolizer.fontSize	= 30.0;
-	symbolizer.fontWeight = GeoBeans.Style.FontWeight.NORMAL ;
-	symbolizer.fontStyle = GeoBeans.Style.FontStyle.ITALIC;	
-	symbolizer.fillColor = "red";
-	symbolizer.showFill	= true;
-	symbolizer.outLineWidth = 1;
-	symbolizer.outLineColor = "black";
-	symbolizer.outLineCap = GeoBeans.Style.LineCap.SQUARE;
-	symbolizer.outLineJoin = GeoBeans.Style.LineJoin.MITER,
-	symbolizer.showOutline = true;
-	
-	symbolizer.shadowBlur	 = 10;
-	symbolizer.shadowColor	 = "Gray";
-	symbolizer.shadowOffsetX = 10,
-	symbolizer.shadowOffsetY = 10;
-	symbolizer.showShadow = true;
-		
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style.addRule(rule);
-	
-	layer = new GeoBeans.Layer.WFSLayer("wfs",
-										"http://127.0.0.1/geoserver/radi/ows?",
-										"radi:cities",
+
+	layer = new GeoBeans.Layer.WFSLayer("cities",
+										"/ows/user1/world/ims?",
+										"cities",
 										"GML2");
-	layer.setStyle(style);	
+
+
+	style = createStyle();
+	layer.setStyle(style);
 	mapObj.addLayer(layer);			
-	
+//	mapObj.setCenter(center);
+//	mapObj.setLevel(2);	
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();	
-
 }
 
-function onZoomIn(){
-	mapObj.viewer.scale(1.5);
-	mapObj.transformation.update();
-	mapObj.draw();
+function onMapMove(evt){
+	var mapX = evt.mapX;
+	var mapY = evt.mapY;
+	
+	var str = mapX + "," + mapY;
+	document.getElementById("xy").innerHTML = str;
 }
 
-function onZoomOut(){
-	mapObj.viewer.scale(1/1.5);
-	mapObj.transformation.update();
-	mapObj.draw();
+function createStyle(){
+	var style = new GeoBeans.Style.FeatureStyle();
+	var rule = new GeoBeans.Rule();
+	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+	symbolizer.fill.color.set(255,0,0,0.3);
+	symbolizer.stroke.color.set(255,0,0,0.3);
+
+	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+	textSymbolizer.labelProp = "name";
+	textSymbolizer.fill.color.set(0,11,233,0.6);
+	textSymbolizer.stroke = null;
+	var font = new GeoBeans.Font();
+	font.weight = GeoBeans.Font.WeightType.Bold;
+	font.size = 16;
+	textSymbolizer.font = font;
+	rule.symbolizer = symbolizer;
+	rule.textSymbolizer = textSymbolizer;
+	style.addRule(rule);
+	return style;
 }
 
 </script>
 
 
-<title>Map5</title>
+<title>Map5-wfs-hit-cities</title>
 </head>
 
 <body onload="init()">
-
-<input type='button' value='ZoomIn' onclick="onZoomIn();">
-<input type='button' value='ZoomOut' onclick="onZoomOut();">
-<canvas id="myCanvas" width="800" height="800"></canvas>
-
+	<div id="mapDiv" style="height:400px;width:100%">
+	</div>
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>

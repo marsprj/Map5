@@ -37,20 +37,22 @@
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyleManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Rule.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/FeatureStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Symbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/PointSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/LineSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/TextSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Font.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Stroke.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/Fill.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/StyleWriter.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
@@ -66,7 +68,7 @@
 var mapObj = null;
 var wmsWorkspace = null;
 var layer = null;
-var wmsStyleMgr = null;
+var styleMgr = null;
 var url = '/ows/user1/world/ims?';
 var mgrUrl = "/ows/user1/mgr?";
 
@@ -82,26 +84,10 @@ $().ready(function(e) {
 	mapObj.setBaseLayer(layer);
 
 
-	// var url = '/geoserver/radi/ows';
-	// var url = '/ows/user1/world/ims?';
-	// var wmsWorkspace = new GeoBeans.WMSWorkspace('world',url,'1.3.0');
-	// layer = new GeoBeans.Layer.WMSLayer(wmsWorkspace,"wms",
-	// 									url,
-	// 									["country","rivers","cities"],
-	// 									[]);	
-	// mapObj.addLayer(layer);
-	
-
-
-	// mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-	// mapObj.setViewer(new GeoBeans.Envelope(0,0,180,90));
-
 	mapObj.setCenter(center);
 	mapObj.setLevel(2);	
 	mapObj.draw();	
-
-
-	wmsStyleMgr = new GeoBeans.WMSStyleManager(mgrUrl);
+	styleMgr = new GeoBeans.StyleManager(mgrUrl);
 });
 
 function getLayers(){
@@ -165,10 +151,10 @@ function getStyles(){
 	// 	alert("请选择图层");
 	// 	return;
 	// }	
-	wmsStyleMgr.getStyles(styles_callback);
+	styleMgr.getStyles(styles_callback);
 	// var mapLayer = layer.mapLayers[mapLayerId];
 	// var type = GeoBeans.WMSStyle.Type.POINT;
-	// var styles = wmsStyleMgr.getStyleByType(type);
+	// var styles = styleMgr.getStyleByType(type);
 	// styles_callback(styles);
 }
 
@@ -210,7 +196,7 @@ function setStyle(){
 	}
 
 	var mapLayer = layer.mapLayers[mapLayerId];
-	var style = wmsStyleMgr.getStyle(styleName);
+	var style = styleMgr.getStyle(styleName);
 	if(mapLayer == null || style == null){
 		alert("有问题!");
 		return;
@@ -235,7 +221,7 @@ function callback(result){
 </head>
 
 <body>
-	<div id="mapDiv" style="height:600px;width:100%">
+	<div id="mapDiv" style="height:400px;width:100%">
 
 	</div>
 <!--<input type='button' value='offset' onclick="btnoffset();">-->
