@@ -56,6 +56,16 @@ function unRegisterDataSource_callback(result){
 	$("#unRegisterDBS_div").html(result);
 }
 
+//测试
+function tryConnection(){
+	var uri = $("#connect").val();
+	dbsMgr.tryConnection(uri,tryConnection_callback);
+}
+
+function tryConnection_callback(result){
+	$("#connect_div").html(result);
+}
+
 // 注册
 function registerDataSource(){
 	var name = $("#registerDBS_name").val();
@@ -178,6 +188,17 @@ function getDataSet_callback(dataSet){
 		<button class="btn btn-default" onclick="unRegisterDataSource()">unRegisterDataSource</button>
 	</div>
 	<div id="unRegisterDBS_div"></div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>tryConnection</h1>
+	</div>
+	<div class="row">
+		<input type="text" value="server=127.0.0.1;instance=5432;database=gisdb;user=postgres;password=qwer1234d;encoding=GBK" id="connect">
+		<button class="btn btn-default" onclick="tryConnection()">tryConnection</button>
+	</div>
+	<div id="connect_div"></div>
 </div>
 
 <div class="container">
