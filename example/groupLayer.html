@@ -144,7 +144,8 @@ function createMap_callback(map,result){
 
 function removeMap(){
 	var name = $("#removeMapName").val();
-	mapManager.removeMap(name,removeMap_callback);
+	// mapManager.removeMap(name,removeMap_callback);
+	var result = mapManager.removeMap(name);
 }
 
 function removeMap_callback(result){
