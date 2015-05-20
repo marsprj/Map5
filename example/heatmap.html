@@ -51,6 +51,8 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -83,46 +85,46 @@ function init(){
 	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
 	mapObj.setBaseLayer(layer);
 	
-	// 点
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// // 点
+	// var symbolizer, rule, style;
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
 										"/geoserver/radi/ows?",
 										"radi:cities",
 										"GML2");
-	citiesLayer.setStyle(style);	
+	// citiesLayer.setStyle(style);	
 	// mapObj.addLayer(citiesLayer);
 
 
 	// 点
-	symbolizer = new GeoBeans.Style.PointSymbolizer();
-	symbolizer.size = 8;
-	symbolizer.fillColor = "Aquamarine";
-	symbolizer.outLineWidth = 1.0;
-	symbolizer.outLineColor = "Red";
-	symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	symbolizer.showOutline = true;
+	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+	// symbolizer.size = 8;
+	// symbolizer.fillColor = "Aquamarine";
+	// symbolizer.outLineWidth = 1.0;
+	// symbolizer.outLineColor = "Red";
+	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+	// symbolizer.showOutline = true;
 
-	rule = new GeoBeans.Style.Rule(symbolizer, null);
-	style = new GeoBeans.Style();
-	style.addRule(rule);
+	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+	// style = new GeoBeans.Style();
+	// style.addRule(rule);
 	aqiLayer = new GeoBeans.Layer.WFSLayer("cities",
 										"/geoserver/radi/ows?",
 										"radi:aqi_ranking_2015_02_03_09",
 										"GML2");
-	aqiLayer.setStyle(style);	
+	// aqiLayer.setStyle(style);	
 	mapObj.addLayer(aqiLayer);
 
 

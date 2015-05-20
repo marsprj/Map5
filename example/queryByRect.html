@@ -56,6 +56,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -74,6 +75,7 @@ var mapObj = null;
 var tracker = null;
 var mapManager = null;
 var url = "/ows/user1/mgr";
+var features = null;
 function init(){
 	mapManager = new GeoBeans.MapManager(url);
 	var center = new GeoBeans.Geometry.Point(0,0);
@@ -83,25 +85,7 @@ function init(){
 	mapObj = mapManager.getMap("mapDiv","world");
 	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
 	mapObj.draw();
-	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
-	
-	var layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
-	mapObj.setBaseLayer(layer);	
 
-	layer = new GeoBeans.Layer.WFSLayer("cities",
-										"/ows/user1/world/ims?",
-										"cities",
-										"GML2");
-	mapObj.addLayer(layer);	
-	
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
-
-	// mapObj.setCenter(center);
-	// mapObj.setLevel(2);	
-	mapObj.draw();
-	
-	tracker = new GeoBeans.Control.TrackControl();
-	mapObj.controls.add(tracker);
 }
 
 function onMapMove(evt){
@@ -112,99 +96,54 @@ function onMapMove(evt){
 	var str = evt.X + "," + evt.Y;
 	document.getElementById("xy").innerHTML = str;
 }
-
-function onPoint(){
-	tracker.trackPoint(callback_point);
+function Query_point(){
+	mapObj.queryByRect("cities",query_callback);
 }
 
-function onLine(){
-	tracker.trackLine(callback_line);
+function Query_line(){
+	mapObj.queryByRect("rivers",query_callback);
 }
 
-function onPolygon(){
-	tracker.trackPolygon(callback_polygon);
+function Query_polygon(){
+	mapObj.queryByRect("country",query_callback);
 }
 
-function onCircle(){
-	tracker.trackCircle(callback_circle);
+function query_callback(layer,count){
+	// alert("查询的个数：" + count);
+	features = mapObj.queryByRectPage();
+	$("#features_count").html(count);
+
 }
 
-function onRect(){
-	tracker.trackRect(callback_rect);
-}
-
-function onStop(){
-	tracker.end();
-}
-
-function callback_point(pt){
-	alert(pt.x + "," + pt.y);
-}
-
-function callback_line(line){
-	//alert(line);
-	var points = line.points;
-	var str = "";
-	str += "<" + points.length + ">";
-	for(var i = 0; i < points.length; ++i){
-		var p = points[i];
-		str += p.x;
-		str += " ";
-		str += p.y + ",";
-	}
-	alert(str);
-}
-
-function callback_polygon(polygon){
-	var symbolizer;
-	symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	symbolizer.fill.color.set(213,0,0,0.5);
-
-	mapObj.renderer.setSymbolizer(symbolizer);
-	mapObj.renderer.drawGeometry(polygon, symbolizer, mapObj.transformation);
-}
-
-function callback_circle(circle){
-	var symbolizer;
-	symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	symbolizer.fill.color.set(213,0,0,0.5);
-	
-	mapObj.renderer.setSymbolizer(symbolizer);
-	mapObj.renderer.drawGeometry(circle, symbolizer, mapObj.transformation);
-}
-
-function callback_rect(rect){
-	var symbolizer;
-	symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	symbolizer.fill.color.set(255,0,0,0.5);
-	symbolizer.stroke.color.set(0,0,0,0.5);
-
-	mapObj.renderer.setSymbolizer(symbolizer);
-	mapObj.renderer.drawGeometry(rect, symbolizer, mapObj.transformation);
-}
-
-function onRestore(){
-	mapObj.restoreSnap();
+function setFeatureBlink(){
+	// var feature = v
+	var id = $("#feature_id").val();
+	var feature = features[id];
+	var count = parseInt($("#blink_count").val());
+	// var count = 1;
+	mapObj.setFeatureBlink(feature,count);
 }
 
 </script>
 
 
-<title>Map5--track</title>
+<title>Map5--Query by rect</title>
 </head>
 
 <body onload="init()">
-<input type="button" value="Point" onclick="onPoint();">
-<input type="button" value="Line" onclick="onLine();">
-<input type="button" value="Polygon" onclick="onPolygon();">
-<input type="button" value="Circle" onclick="onCircle();">
-<input type="button" value="Rect" onclick="onRect();">
-<input type="button" value="stop" onclick="onStop();">
-<input type="button" value="restore" onclick="onRestore();">
+<input type="button" value="Point" onclick="Query_point();">
+<input type="button" value="Line" onclick="Query_line();">
+<input type="button" value="Polygon" onclick="Query_polygon();">
+选择的个数：<span id="features_count"></span>
+
+闪烁：ID<input type="text" value="1" id="feature_id">
+次数<input type="text" value="3" id="blink_count">
+<input type="button" value="闪烁" onclick="setFeatureBlink();">
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
-<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
+
+<!-- <div id="xy" style="width:200px;height:30px;line-height:30px"/>   -->
 </body>
 </html>
 
