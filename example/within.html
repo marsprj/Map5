@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>WFS GetFeature Post</title>
+  <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+  <script type="text/javascript">
+    function onClick(){
+/*    	var xml = "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" "
+         + "xmlns:world=\"www.world.ac.cn\" "
+         +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "
+         +  "xmlns:gml=\"http://www.opengis.net/gml\" "
+         +  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+         +  "xsi:schemaLocation=\"http://www.opengis.net/wfs "
+         +  " http://schemas.opengis.net/wfs/1.1.0/wfs.xsd\">"
+         +  "<wfs:Query typeName=\"world:cities\">"
+         +  "	<PropertyName>gid</PropertyName>"
+         +  "	<PropertyName>name</PropertyName>"
+         +  "	<PropertyName>geom</PropertyName>"
+         +  "</wfs:Query>"
+         +"</wfs:GetFeature>";
+*/
+// var xml = "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" sourceName=\"db1\" "
+var xml = "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" mapName=\"world\" "
+         + "xmlns:world=\"www.world.ac.cn\" "
+         +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "
+         +  "xmlns:gml=\"http://www.opengis.net/gml\" "
+         +  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+         +  "xsi:schemaLocation=\"http://www.opengis.net/wfs "
+         +  "http://schemas.opengis.net/wfs/1.1.0/wfs.xsd\">"
+         // +  "<wfs:Query typeName=\"world:country\">"
+         +  "<wfs:Query typeName=\"country\">"
+         +    "<Filter>"
+		 +		"<Within>"
+		 +			"<PropertyName>shape</PropertyName>"
+		 +				"<gml:Point name=\"1\" srsName=\"EPSG:63266405\">"
+		 +					"<gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" decimal=\".\" cs=\",\" ts=\" \">35.19886363636364,-18.10227272727273</gml:coordinates>"
+		 +				"</gml:Point>"
+		 +			"</Within>"
+         +      "</Filter>"
+         +  "</wfs:Query>"
+         +"</wfs:GetFeature>";
+
+      var url = "/ows/user1/mgr?";
+
+      $.ajax({
+        type  :"post",
+        url   : url,
+        // data : encodeURI(params),
+        contentType: "text/xml",
+        data  : xml,
+        dataType: "text",
+        async : false,
+        beforeSend: function(XMLHttpRequest){
+        },
+        success : function(xml, textStatus){
+          alert(xml);
+        },
+        complete: function(XMLHttpRequest, textStatus){
+        },
+        error : function(){
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <input type='button' value='Submit' onclick="onClick();"></body>
+</html>

@@ -141,6 +141,12 @@
 	background-position: 0 -443px;
 }
 
+.infoWindow{
+	position: absolute;
+	height: 1px;
+	width: 1px;
+	z-index: 100;
+}
 /*.tooltip .tooltip-inner{
 	background-color: #fff;
 	color:#000;
@@ -150,3 +156,24 @@
 .tooltip .tooltip-arrow{
 	border-top-color: #fff !important;
 }*/
+
+/*popover*/
+
+.popover{
+	width: 300px;
+}
+.popover .popover-title{
+	background-color: #
+}
+.popover .popover-content{
+	height: 160px;
+	overflow-y: auto;
+}
+.popover .popover-content table{
+	width: 100%;
+	margin-bottom: 0px;
+}
+
+.popover .popover-content table td{
+	width: 50%;
+}
