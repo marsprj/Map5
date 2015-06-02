@@ -12,6 +12,10 @@
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSource.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 <script type="text/javascript">
 
 
@@ -164,6 +168,16 @@ function getDataSet_callback(dataSet){
 	html += "</table>";
 	$("#getDataSet_div").html(html);	
 }
+
+function removeDataset(){
+	var name = $("#remove_dataset_name").val();
+	g_dataSource.removeDataSet(name,removeDataSet_callback);
+}
+
+function removeDataSet_callback(result){
+	$("#removeDataSet_div").html(result);
+}
+
 </script>
 </head>
 <body onload="init()">
@@ -240,6 +254,19 @@ function getDataSet_callback(dataSet){
 			<button class="btn btn-default"  onclick="getDataSet()">getDataSet</button>
 		</div>
 		<div id="getDataSet_div"></div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>removeDataset</h1>
+	</div>
+	<div class="row">
+		<div>
+			<input type="text" value="new" id="remove_dataset_name">
+			<button class="btn btn-default"  onclick="removeDataset()">removeDataset</button>
+		</div>
+		<div id="removeDataSet_div"></div>
 	</div>
 </div>
 </body>
