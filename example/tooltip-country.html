@@ -65,7 +65,13 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMTSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/ChartLayer.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -76,7 +82,10 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
 <style type="text/css">
 #info {
 	position: absolute;
@@ -89,10 +98,17 @@
 
 var mapObj = null;
 var layer = null;
+var mapManager = null;
+var url = "/ows/user1/mgr";
 function init(){
 	
 	
-	mapObj = new GeoBeans.Map("mapDiv");
+	mapManager = new GeoBeans.MapManager(url);
+	var center = new GeoBeans.Geometry.Point(0,0);
+
+	// mapObj = new GeoBeans.Map("mapDiv");
+
+	mapObj = mapManager.getMap("mapDiv","chart");
 	
 	var center = new GeoBeans.Geometry.Point(0,0);	
 	

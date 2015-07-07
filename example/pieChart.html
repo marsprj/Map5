@@ -1,11 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 0.3 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-
+<!-- <script type="text/javascript" src="../lib/echarts-plain.js"></script> -->
+<script type="text/javascript" src="../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
@@ -20,9 +23,8 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Circle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
-
 
 <script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
@@ -30,7 +32,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 
+
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
@@ -66,15 +70,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
-
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/ChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/BarChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/PieChartLayer.js"></script>
+
+
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
 
@@ -83,76 +92,129 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
-
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
 <script type="text/javascript">
 
-
-var g_s_hited  = createSymbolizer1();
-
 var mapObj = null;
-
+var tracker = null;
 var mapManager = null;
 var url = "/ows/user1/mgr";
 function init(){
-	
-
 	mapManager = new GeoBeans.MapManager(url);
 	var center = new GeoBeans.Geometry.Point(0,0);
 
-	// mapObj = new GeoBeans.Map("mapDiv");
 
 	mapObj = mapManager.getMap("mapDiv","chart");
+	// mapObj = mapManager.getMap("mapDiv","aqi");
+	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 	
-	var layer = null;		
+	mapObj.setViewer(mapObj.extent);
 
-	layer = new GeoBeans.Layer.WFSLayer("country",
-										"/ows/user1/world/ims?",
-										"country",
-										"GML2");
-	// style = createStyle();
-	// layer.setStyle(style);	
-	mapObj.addLayer(layer);	
-	layer.registerHitEvent(onFeatureHit);
-	
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+
+	// var center = new GeoBeans.Geometry.Point(90,0);	
+	// var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+	// mapObj.setBaseLayer(layer);
+	// mapObj.setCenter(center);
+	// mapObj.setLevel(1);
 	mapObj.draw();
 
 }
 
-
-function onFeatureHit(layer, selection){
-	var i;
-
-	len = selection.length;
-	for(i=0; i<len; i++){
-		var f = selection[i];
-		// layer.drawFeature(f, g_s_hited);
-		layer.drawHitFeature(f, g_s_hited);
-	}
+function onMapMove(evt){
+	var mapX = evt.mapX;
+	var mapY = evt.mapY;
+	
+	var str = mapX + "," + mapY + ";";
+	str += evt.X + "," + evt.Y + "<br/>";
+	var map = mapObj.transformation.toMapPoint(mapX,mapY);
+	// str += map.x + "," + map.y;
+	document.getElementById("xy").innerHTML = str;
 }
 
-function createSymbolizer1(){
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	symbolizer.fill.color.set(255,0,0,1);
-	
-	return symbolizer;
+
+function onAddChart(){
+	// var layer = mapObj.getLayer("china_prov_region");
+	// // var style = layer.getChartStyle("name","gisdb","people_age_60","合计",1,3);
+	// var style = layer.getRangeChartStyle("name","gisdb","people_age_60","地区","合计",1,4);
+	// layer.addRangeChart("60岁老年人健康统计",style);
+	// mapObj.draw();
+
+	// var layer = mapObj.getLayer("china_prov_point");
+	// if(layer == null){
+	// 	return;
+	// }
+	// layer.addBarChart("bar","prov","gisdb","people_age_60","地区",["合计","健康","基本健康"],100,40);
+	// mapObj.draw();
+
+
+	// var layer = mapObj.getLayer("china_prov_point");
+	// if(layer == null){
+	// 	return;
+	// }
+
+	var colors = [
+		new GeoBeans.Color().getHex(),
+		new GeoBeans.Color().getHex(),
+		new GeoBeans.Color().getHex()
+	];
+	var option = {
+		radius 		: 30,
+		colors 		: colors,
+		offsetX 	: 0,
+		offsetY 	: 0,
+		showLabel 	: false,
+		opacity 	: 1.0
+	};
+
+	var chartLayer = new GeoBeans.Layer.PieChartLayer("pie","china_prov_point","prov","gisdb","people_age_60","地区",["合计","健康","基本健康"],option);
+	// layer.addPieChart("pie","prov","gisdb","people_age_60","地区",["合计","健康","基本健康"],option);
+	mapObj.addLayer(chartLayer,addLayer_callback);
+	mapObj.draw();
+
+}
+
+function addLayer_callback(result){
+	if(result == "success"){
+		mapObj.draw();
+	}else{
+		alert(result);
+	}	
+}
+
+function removeChart(){
+	mapObj.removeLayer("pie",removeLayer_callback);
+}
+
+
+function removeLayer_callback(result){
+	if(result == "success"){
+		mapObj.draw();
+	}else{
+		alert("result");
+	}
 }
 </script>
 
-<title>wfs-hit-country</title>
+
+<title>Map5--Pie chart </title>
 </head>
 
 <body onload="init()">
+
+
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-	<div id="mapDiv" style="height:800px;width:100%">
+	<div id="mapDiv" style="height:800px;width:100%;border:1px solid #ccc;position:relative">
+		
 	</div>
-<!--<input type='button' value='offset' onclick="btnoffset();">-->
-<div id="xy" style="width:200px;height:30px;line-height:30px"/>
+
+	<div id="xy" style="width:200px;height:30px;line-height:30px"></div> 
+<input type="button" value="onAddChart" onclick="onAddChart();">
+<input type="button" value="removeChart" onclick="removeChart();">
+
+
 </body>
 </html>
 
