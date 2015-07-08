@@ -161,16 +161,19 @@
 
 .popover{
 	/*width: 300px;*/
-	width : 100px;
+	/*width : 100px;*/
+	min-width: 30px;
 }
 .popover .popover-title{
 	background-color: #
 }
 .popover .popover-content{
 	/*height: 160px;*/
-	min-height: 40px;
+	/*min-height: 40px;*/
+	min-height: 20px;
 	max-height: 160px;
 	overflow-y: auto;
+	padding: 4px;
 }
 .popover .popover-content table{
 	width: 100%;
