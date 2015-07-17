@@ -4,9 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+<link rel="stylesheet" type="text/css" href="../css/custom_slider.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.nouislider.js"></script>
 <script type="text/javascript" src="../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
@@ -98,6 +100,8 @@
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/AQI/AQIIndexChart.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/AQI/AQIStatCompChart.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/AQI/TimeLineBar.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Timeline.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
@@ -144,8 +148,6 @@ function onMapMove(evt){
 	document.getElementById("xy").innerHTML = str;
 }
 
-
-
 function addLayer_callback(result){
 	if(result == "success"){
 		mapObj.draw();
@@ -157,7 +159,7 @@ function addLayer_callback(result){
 function onAddChartLayer2(){
 
 	var option = {
-		colorMapID : 11
+		colorMapID : 10
 	};
 
 
@@ -165,12 +167,17 @@ function onAddChartLayer2(){
 	// 	"gc_aqi","pm2_5","position_name","station_code","2014-05-19 08:00:00",option);
 	// mapObj.addLayer(layer,addLayer_callback);
 
-	var timePoints = ["2014-05-19 08:00:00",
+	var timePoints = ["2015-06-20 11:00:00",
 					  "2014-05-21 08:00:00",
+					  "2014-05-21 17:00:00",
+					  "2014-05-21 18:00:00",
+					  "2014-05-21 19:00:00",
+					  "2014-05-21 20:00:00",
+					  "2014-05-21 21:00:00",
 					  "2014-10-22 20:00:00"];
 	var interval = 1000;
 	var layer = new GeoBeans.Layer.AQITimelineLayer("timeline","gisdb",
-		"gc_aqi","pm2_5","position_name","station_code",timePoints,3000,option);
+		"gc_aqi","pm2_5","position_name","station_code","time_point",timePoints,3000,option);
 	mapObj.addLayer(layer,addLayer_callback);
 }
 
@@ -218,21 +225,6 @@ function stationCompareChart(){
 }
 
 
-function startTimeline(){
-	var layer = mapObj.getLayer("timeline");
-	if(layer == null){
-		return;
-	}
-	layer.start();
-}
-
-function stopTimeline(){
-	var layer = mapObj.getLayer("timeline");
-	if(layer == null){
-		return;
-	}
-	layer.stop();
-}
 </script>
 
 
@@ -251,9 +243,6 @@ function stopTimeline(){
 <input type="button" value="onAddChartLayer2" onclick="onAddChartLayer2();">
 <input type="button" value="removeChart" onclick="removeChart();">
 
-<input type="button" value="开始" onclick="startTimeline();">
-<input type="button" value="结束" onclick="stopTimeline();">
-
 
 	<div class="modal" id="dialog" tabindex="-1" role="dialog" aria-hidden="true">
 	    <div class="modal-dialog" style="width:1000px">
@@ -268,6 +257,8 @@ function stopTimeline(){
 	        </div>
 	    </div>
 	</div>
+
+
 </body>
 </html>
 

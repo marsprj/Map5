@@ -4,15 +4,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+<link rel="stylesheet" type="text/css" href="../css/custom_slider.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.nouislider.js"></script>
 <script type="text/javascript" src="../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -55,6 +58,7 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/ColorMap.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
@@ -97,6 +101,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/AQI/AQIIndexChart.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/AQI/AQIStatCompChart.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/AQI/AQITimePointList.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
@@ -118,8 +123,8 @@ function init(){
 	mapObj = mapManager.getMap("mapDiv","vector");
 	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 	
-	// mapObj.setViewer(mapObj.extent);
-	mapObj.setViewer(new GeoBeans.Envelope(123,42,135,49));
+	mapObj.setViewer(mapObj.extent);
+	// mapObj.setViewer(new GeoBeans.Envelope(123,42,135,49));
 
 
 	// var center = new GeoBeans.Geometry.Point(90,0);	
@@ -160,12 +165,12 @@ function onAddChartLayer2(){
 	// 	borderOpacity	: 1.0
 	// };
 	var option = {
-		colorMapID : 11
+		colorMapID : 10
 	};
 
 
 	var layer = new GeoBeans.Layer.AQIChartLayer("aqi","gisdb",
-		"gc_aqi","pm2_5","position_name","station_code","2014-05-19 08:00:00",option);
+		"gc_aqi","pm2_5","position_name","station_code","time_point","2014-05-19 08:00:00",option);
 	mapObj.addLayer(layer,addLayer_callback);
 }
 
@@ -178,7 +183,8 @@ function removeChart(){
 function registerHitEvent(){
 	var layer = mapObj.getLayer("aqi");
 	if(layer != null){
-		layer.registerHitEvent(callback);
+		var html = "<a href='javascript:void(0)' class='aqi_info'>查看24小时变化情况</a>";
+		layer.registerHitEvent(html,callback);
 	} 
 }
 
@@ -212,6 +218,19 @@ function stationCompareChart(){
 	chart.show();
 }
 
+function getTimeList(){
+	var timeList = new GeoBeans.AQITimePointList("time","gisdb","gc_aqi_uptime","uptime","2014-05-20 00:00","2014-05-21 00:00");
+	timeList.setMap(mapObj);
+	var list = timeList.getTimeList();
+	var time = null;
+	var html = "";
+	for(var i = 0; i< list.length; ++i){
+		html += "<span> '" + list[i] + "', </span>";
+	}
+
+	$("#timeList").html(html);
+}
+
 </script>
 
 
@@ -231,8 +250,8 @@ function stationCompareChart(){
 <input type="button" value="removeChart" onclick="removeChart();">
 <input type="button" value="registerHitEvent" onclick="registerHitEvent();">
 <input type="button" value="站点对比" onclick="stationCompareChart();">
-
-
+<input type="button" value="时间列表" onclick="getTimeList();">
+	<div id="timeList"></div>
 	<div class="modal" id="dialog" tabindex="-1" role="dialog" aria-hidden="true">
 	    <div class="modal-dialog" style="width:1000px">
 	        <div class="modal-content">
@@ -246,6 +265,8 @@ function stationCompareChart(){
 	        </div>
 	    </div>
 	</div>
+
+	
 </body>
 </html>
 
