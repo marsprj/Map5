@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
+
+<script type="text/javascript">
+
+
+var url = "/ows/user1/mgr";
+var gpsMgr = null;
+function init(){
+	gpsMgr = new GeoBeans.GPSManager(url);
+
+}
+
+function getCapabilities(){
+	gpsMgr.getCapabilities(getCapabilities_callback);
+}
+
+function getCapabilities_callback(list){
+
+}
+
+
+function clusterKmean(){
+	var inputSourceName = $(".kmean-div .input-source-name").val();
+	var inputTypeName = $(".kmean-div .input-type-name").val();
+	var outputSourceName = $(".kmean-div .output-source-name").val();
+	var outputTypeName = $(".kmean-div .output-type-name").val();
+	var clusters = $(".kmean-div .clusters").val();
+	gpsMgr.clusterKmean(inputSourceName,inputTypeName,outputSourceName,outputTypeName,clusters,clusterKmean_callback);
+}
+
+function clusterKmean_callback(result){
+	$("#clusterKmean_div").html(result);
+}
+</script>
+</head>
+<body onload="init()">
+<div class="container">
+	<div class="page-header">
+		<h1>getCapabilities</h1>
+	</div>
+	<div class="row">
+		<div>
+			<button class="btn btn-default" onclick="getCapabilities()">getCapabilities</button>
+		</div>
+		<div id="getDataSources_div"></div>
+	</div>
+</div>
+
+<div class="container kmean-div">
+	<div class="page-header">
+		<h1>clusterKmean</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				inputSourceName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control input-source-name" value="test">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				inputTypeName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control input-type-name" value="cities">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				outputSourceName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control output-source-name" value="test">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				outputTypeName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control output-type-name" value="cities-1">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				clusters
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control clusters" value="10">
+			</div>
+		</div>
+	</form>
+	<button class="btn btn-default" onclick="clusterKmean()">clusterKmean</button>
+	<div id="clusterKmean_div"></div>
+</div>
+
+</body>
