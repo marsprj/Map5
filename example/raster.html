@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/File/Folder.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/File/File.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
+
+<script type="text/javascript">
+
+
+var url = "/ows/user1/mgr";
+var rasterDBManager = null;
+function init(){
+	rasterDBManager = new GeoBeans.RasterDBManager(url);
+}
+
+function getList(){
+	var path = $(".get-list-path").val();
+	var sourceName = $(".get-list-source-name").val();
+	rasterDBManager.getList(sourceName,path,getList_callback);
+}
+
+function getList_callback(list){
+	var html = "";
+	html = "<table class='table'>"
+		+ "<thead>"
+		+ "<tr>"
+		+ "<th>Name</th>"
+		+ "<th>Type</th>"
+		+ "<th>access_time</th>"
+		+ "<th>last_modified_time</th>"
+		+ "<th>size</th>"
+		+ "</tr>"
+		+ "</thead>"
+		+ "<tbody>";
+	for(var i = 0; i < list.length; ++i){
+		var f = list[i];
+		if(f instanceof GeoBeans.File){
+			html += "<tr>"
+			+ "<td>" + f.name + "</td>"
+			+ "<td>" + "File" + "</td>"
+			+ "<td>" + f.accessTime + "</td>"
+			+ "<td>" + f.lastTime + "</td>"
+			+ "<td>" + f.size + "</td>"
+			+ "</tr>";
+		}else {
+			html += "<tr>"
+			+ "<td>" + f.name + "</td>"
+			+ "<td>" + "File" + "</td>"
+			+ "<td>" + f.accessTime + "</td>"
+			+ "<td>" + f.lastTime + "</td>"
+			+ "<td></td>"
+			+ "</tr>";
+		}
+	}
+	html += "</tbody></table>";
+	$("#getList_div").html(html);
+}
+
+function getRaster(){
+	var sourceName = $(".get-raster-source-name").val();
+	var rasterName = $(".get-raster-raster-name").val();
+	var rasterPath = $(".get-raster-raster-path").val();
+	var url = rasterDBManager.getRasterUrl(sourceName,rasterName,rasterPath);
+	$('#getRaster_div img').attr('src', url);
+}
+
+
+function createFolder(){
+	var sourceName = $(".create-raster-source-name").val();
+	var folderName = $(".create-raster-folder-name").val();
+	rasterDBManager.createFolder(sourceName,folderName,createFolder_callback);
+}
+
+function createFolder_callback(result){
+	$("#createFolderr_div").html(result);
+}
+
+function removeFolder(){
+	var sourceName = $(".remove-folder-source-name").val();
+	var folderName = $(".remove-folder-folder-name").val();
+	rasterDBManager.removeFolder(sourceName,folderName,removeFolder_callback);
+}
+
+function removeFolder_callback(result){
+	$("#removeFolderr_div").html(result);
+}
+
+
+function addRaster(){
+	var sourceName = $(".add-raster-source-name").val();
+	var rasterName = $(".add-raster-name").val();
+	var rasterPath = $(".add-raster-path").val();
+	var filePath = $(".add-raster-file-path").val();
+	rasterDBManager.addRaster(sourceName,rasterName,rasterPath,filePath,addRaster_callback);
+}
+
+function addRaster_callback(result){
+	$("#addRaster_div").html(result);
+}
+</script>
+</head>
+<body onload="init()">
+<div class="container">
+	<div class="page-header">
+		<h1>getList</h1>
+	</div>
+	<div class="row">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="control-label col-md-2">
+					path
+				</label>
+				<div class="col-md-3">
+					<input type="text" class="form-control get-list-path" value="/">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">
+					path
+				</label>
+				<div class="col-md-3">
+					<input type="text" class="form-control get-list-source-name" value="rsdb">
+				</div>
+			</div>
+		</form>
+
+		<div>
+			<button class="btn btn-default" onclick="getList()">getList</button>
+		</div>
+		<div id="getList_div"></div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="page-header">
+		<h1>getRaster</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				sourceName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control get-raster-source-name" value="rsdb">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				rasterName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control get-raster-raster-name" value="Penguins.jpg">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				rasterPath
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control get-raster-raster-path" value="/">
+			</div>
+		</div>
+	</form>
+	<button class="btn btn-default" onclick="getRaster()">getRaster</button>
+	<div id="getRaster_div">
+		<img src="">
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="page-header">
+		<h1>createFolder</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				sourceName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control create-raster-source-name" value="rsdb">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				rasterName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control create-raster-folder-name" value="/a">
+			</div>
+		</div>
+	</form>
+	<button class="btn btn-default" onclick="createFolder()">createFolder</button>
+	<div id="createFolderr_div">
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="page-header">
+		<h1>removeFolder</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				sourceName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control remove-folder-source-name" value="rsdb">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				rasterName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control remove-folder-folder-name" value="/a">
+			</div>
+		</div>
+	</form>
+	<button class="btn btn-default" onclick="removeFolder()">removeFolder</button>
+	<div id="removeFolderr_div">
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="page-header">
+		<h1>addRaster</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				sourceName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control add-raster-source-name" value="rsdb">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				rasterName
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control add-raster-name" value="1.png">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				rasterPath
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control add-raster-path" value="/">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				filePath
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control add-raster-file-path" value="/1.png">
+			</div>
+		</div>
+	</form>
+	<button class="btn btn-default" onclick="addRaster()">addRaster</button>
+	<div id="addRaster_div">
+	</div>
+</div>
+
+</body>

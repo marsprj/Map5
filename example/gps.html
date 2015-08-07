@@ -10,6 +10,7 @@
 
 
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/GPS/SpatialReference.js"></script>
 
 <script type="text/javascript">
 
@@ -41,6 +42,61 @@ function clusterKmean(){
 
 function clusterKmean_callback(result){
 	$("#clusterKmean_div").html(result);
+}
+
+function getSpatialReference(){
+	var count = $(".srid-count").val();
+	var offset = $(".srid-offset").val();
+	gpsMgr.getSpatialReferenceList(count,offset,getSpatialReference_callback);
+}
+
+function getSpatialReference_callback(list){
+	var srid = null;
+	var html = "<table class='table'>"
+		+ "<thead>"
+		+ "<tr>"
+		+ "<th>srid</th>"
+		+ "<th>srtext</th>"
+		+ "<th>proj4</th>"
+		+ "</tr>"
+		+ "</thead>"
+		+ "<tbody>";
+	for(var i = 0; i < list.length; ++i){
+		srid = list[i];
+		html += "<tr>"
+		+ "<td>" + srid.srid + "</td>"
+		+ "<td>" + srid.srtext + "</td>"
+		+ "<td>" + srid.proj + "</td>"
+		+ "</tr>";
+	}
+
+	html += "</tbody></table>";
+	$("#getSpatialReference_div").html(html);
+}
+
+
+function getSpatialReferenceBySrid(){
+	var name = $(".srid-name").val();
+	gpsMgr.getSpatialReferenceBySrid(name,getSpatialReferenceBySrid_callback);
+}
+
+function getSpatialReferenceBySrid_callback(srid){
+	var html = "<table class='table'>"
+		+ "<thead>"
+		+ "<tr>"
+		+ "<th>srid</th>"
+		+ "<th>srtext</th>"
+		+ "<th>proj4</th>"
+		+ "</tr>"
+		+ "</thead>"
+		+ "<tbody>";	
+	html += "<tr>"
+		+ "<td>" + srid.srid + "</td>"
+		+ "<td>" + srid.srtext + "</td>"
+		+ "<td>" + srid.proj + "</td>"
+		+ "</tr>";
+	html += "</tbody></table>";
+	$("#getSpatialReferenceBySrid_div").html(html);
 }
 </script>
 </head>
@@ -105,6 +161,48 @@ function clusterKmean_callback(result){
 	</form>
 	<button class="btn btn-default" onclick="clusterKmean()">clusterKmean</button>
 	<div id="clusterKmean_div"></div>
+</div>
+
+
+<div class="container kmean-div">
+	<div class="page-header">
+		<h1>SpatialReference</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				count
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control srid-count" value="1">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				offset
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control srid-offset" value="0">
+			</div>
+		</div>
+
+	</form>
+	<button class="btn btn-default" onclick="getSpatialReference()">getSpatialReference</button>
+	<div id="getSpatialReference_div"></div>
+
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-md-2">
+				count
+			</label>
+			<div class="col-md-3">
+				<input type="text" class="form-control srid-name" value="4326">
+			</div>
+		</div>
+
+	</form>
+	<button class="btn btn-default" onclick="getSpatialReferenceBySrid()">getSpatialReferenceBySrid</button>
+	<div id="getSpatialReferenceBySrid_div"></div>
 </div>
 
 </body>
