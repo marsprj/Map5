@@ -3,12 +3,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -108,8 +111,11 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+
+<script type="text/javascript" src="../../Map5/lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../../Map5/lib/GeoBeans/Overlay/Marker.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/TileDB/TileDBManager.js"></script>
@@ -121,187 +127,108 @@
 }
 </style>
 <script type="text/javascript">
+var authServer = "/ows/admin/mgr";
+var userName = "b";
+var mapName = "b"; 
 
-var mapManager = null;
-var user = null;
-var mapObj = null;
-function init(){
-	
-}
+$().ready(function(){
+	var user = new GeoBeans.User(userName);
+	var mapManager = user.getMapManager();
 
-function getMaps(){
-	var name = $("#userName").val();
-	user = new GeoBeans.User(name);
-	mapManager = user.getMapManager();
-	if(mapManager != null){
-		mapManager.getMaps(getMaps_callback);
-	}
-}
+	mapObj = mapManager.getMap("mapDiv",mapName);
 
-function getMaps_callback(maps){
-	if(maps == null){
-		return;
-	}
-	var html = "<table border='1'>";
-	html += "<tr>";
-	html += "<td>Name</td>";
-	html += "<td>Srid</td>";
-	html += "<td>Extent</td>";
-	html += "</tr>";
-	
-	for(var i = 0; i < maps.length; ++i){
-		var map = maps[i];
-		html += "<tr>";
-		html += "<td>" + map.name + "</td>";
-		html += "<td>" + map.srid + "</td>";
-		html += "<td>" + map.extent.toString() + "</td>";
-		html += "</tr>";
-	}
-	html += "</table>";
-	$("#getMaps_div").html(html);	
-}
-
-function getMap(){
-	var name = $("#getMapName").val();
-	mapObj = mapManager.getMap("mapDiv",name);
 	if(mapObj == null){
 		alert("没有该地图");
 		return;
 	}
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+	mapObj.setViewer(mapObj.extent);
+	mapObj.setNavControl(false);
+	mapObj.draw();
+});
+
+
+function add360Sight(){
+	var html = "<div style='width:600px;height:400px;'><iframe src='http://192.168.111.152:8088/panorama/nanshan12.html' style='width:100%;height:100%'></iframe></div>";
+	
+	var options = {
+		title : "360",
+	}
+	var infoWindow = new GeoBeans.InfoWindow(html,options);
+	var point = new GeoBeans.Geometry.Point(116,-40)
+	mapObj.openInfoWindow(infoWindow,point);
+}
+
+
+function add360SightByOverlay(){
+
+}
+function add360Sight2(){
+	var point = new GeoBeans.Geometry.Point(116,-40);
+	var name = "360";
+	var html = "http://192.168.111.152:8088/panorama/nanshan12.html";
+
+
+	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+	symbolizer.icon_url = "images/marker.png";
+	symbolizer.icon_offset_x = 0;
+	symbolizer.icon_offset_y = 0;
+	var marker = new GeoBeans.Overlay.Marker("maker",point,symbolizer);
+	mapObj.addOverlay(marker);
+	mapObj.draw();
+
+
+	mapObj.overlayLayer.setHitOverlayCallback(callback);
+	mapObj.registerOverlayEvent();
+}
+
+function callback(overlay){
+	var str = (overlay == null)? null :overlay.name;
+	console.log(str);
+	if(overlay == null){
+		return;
+	}
+	if(overlay.isEdit){
+		add360Sight();
+	}
+}
+
+
+function add360Sight3(){
+	// var html = "http://192.168.111.152:8088/panorama/nanshan12.html";
+
+	var icon = "images/360.png";
+	var point = new GeoBeans.Geometry.Point(0,0);
+	var name = "南山";
+	var html = "http://192.168.111.152:8088/panorama/nanshan12.html";
+	mapObj.addPanorama(point,name,html,icon);
+
+	point = new GeoBeans.Geometry.Point(100,-30);
+	name = "接收机房";
+	var html = "http://192.168.111.152:8088/panorama/jieshouzhanjifang2.html";
+	mapObj.addPanorama(point,name,html,icon);
+	
 	mapObj.draw();
 }
 
-function getMap_callback(map){
-	var html = "";
-	var layers = map.layers;
-	for(var i = 0; i < layers.length;++i){
-		var layer = layers[i];
-		html += layer.name + "=>";
-		html += layer.type + "=>";
-		if(layer.type == "Group"){
-			var dbLayers = layer.layers;
-			html += "<";
-			for(var j = 0; j < dbLayers.length;++j){
-				var dbLayer = dbLayers[j];
-				html += dbLayer.name ;
-				html += ",";
-			}
-			html += ">";
-		}
-	}
-	$("#getMap_div").html(html);	
+
+function remove360Sight(){
+	var name = "南山";
+	mapObj.removePanorama(name);
+	mapObj.draw();
 }
 
-
-function getStyles(){
-	var name = $("#userName").val();
-	user = new GeoBeans.User(name);
-	styleManager = user.getStyleManager();
-	if(styleManager != null){
-		var styles = styleManager.getStyles();
-		listStyles(styles);
-	}
-}
-
-function listStyles(styles){
-	var html = '<table border="1">';
-	var len = styles.length;
-	html += "<tr>";
-	html += "<td></td>";
-	html += "<td>Name</td>";
-	html += "<td>Type</td>";
-	html += "</tr>";
-	for(var i=0; i<len; i++){
-		var s = styles[i];
-		html += "<tr>";
-		html += "<td>" + i + "</td>";
-		html += "<td>" + s.name + "</td>";
-		html += "<td>" + s.geomType + "</td>";
-		html += "</tr>";
-	}
-	html += "</table>";
-	$("#getStyles_div").html(html);
-}
-
-
-function getDBS(){
-	var name = $("#userName").val();
-	user = new GeoBeans.User(name);
-	var dbsManager = user.getDBSManager();
-	if(dbsManager != null){
-		dbsManager.getDataSources(getDataSources_callback);
-	}	
-}
-
-function getDataSources_callback(dataSources){
-	var html = "<table border='1'>";
-	html += "<tr>";
-	html += "<td>Name</td>";
-	html += "<td>Engine</td>";
-	html += "<td>ConnectionString</td>";
-	html += "</tr>";
-	for(var i = 0; i < dataSources.length;++i){
-		var dataSource = dataSources[i];
-
-		html += "<tr>";
-		html += "<td>" + dataSource.name + "</td>";
-		html += "<td>" + dataSource.engine + "</td>";
-		html += "<td>" + dataSource.constr + "</td>";
-		html += "</tr>";
-	}
-	html += "</table>";
-	$("#getDBS_div").html(html);
+function clear360Sights(){
+	mapObj.clearPanoramas();
+	mapObj.draw();
 }
 </script>
-<body onload="init()">
+<body >
 
-<div class="container">
-	<div class="page-header">
-		<h3>setUser</h3>
-	</div>
-	<div class="row">
-		<div class="col-md-2">
-			<input type="text" value="user1" id="userName" class="form-control">
-		</div>
-	</div>
+<div id="mapDiv" style="height:600px;width:100%;">
 </div>
-
-
-<div class="container">
-	<div class="page-header">
-		<h3>getList</h3>
-	</div>
-	<div class="row">
-		<div class="col-md-4">
-			<button class="btn btn-default" onclick="getMaps()">getMaps</button>
-			<div id="getMaps_div"></div>
-		</div>
-		<div class="col-md-4">
-			<button class="btn btn-default" onclick="getStyles()">getStyles</button>
-			<div id="getStyles_div"></div>
-		</div>
-		<div class="col-md-4">
-			<button class="btn btn-default" onclick="getDBS()">getDBS</button>
-			<div id="getDBS_div"></div>
-		</div>
-		
-	</div>
-</div>
-
-<div class="container">
-	<div class="page-header">
-		<h3>getMap</h3>
-	</div>
-	<div class="row">
-		<input type="text" value="aa" id="getMapName">
-		<button class="btn btn-default" onclick="getMap()">getMap</button>
-	</div>
-	<div id="getMap_div"></div>
-</div>
-<div id="mapDiv" style="height:400px;width:100%">
-</div>
-
-
-
+<!-- <button onclick="add360Sight()">全景图</button>
+<button onclick="add360Sight2()">全景图2</button> -->
+<button onclick="add360Sight3()">添加全景图</button>
+<button onclick="remove360Sight()">删除某一个全景图</button>
+<button onclick="clear360Sights()">清空</button>
 </body>

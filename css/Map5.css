@@ -160,18 +160,16 @@
 /*popover*/
 
 .popover{
-	/*width: 300px;*/
-	/*width : 100px;*/
 	min-width: 30px;
+	max-width: 100%;
 }
 .popover .popover-title{
 	background-color: #
 }
 .popover .popover-content{
-	/*height: 160px;*/
 	min-height: 40px;
-	/*min-height: 20px;*/
-	max-height: 160px;
+	/*max-height: 160px;*/
+	max-height: none;
 	overflow-y: auto;
 	padding: 4px;
 }
