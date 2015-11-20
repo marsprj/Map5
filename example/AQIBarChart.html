@@ -52,6 +52,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
@@ -83,6 +84,12 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/AQIChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/MapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+
 
 
 
@@ -95,35 +102,48 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/AQI/AQIIndexChart.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DataSource.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/File/FileManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/Raster.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/TileDB/TileDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/TileDB/TileStore.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript">
 
 var mapObj = null;
 var tracker = null;
 var mapManager = null;
 var url = "/ows/user1/mgr";
+var userName = "user1";
+var mapName = "world"; 
 function init(){
-	mapManager = new GeoBeans.MapManager(url);
-	var center = new GeoBeans.Geometry.Point(0,0);
+	var user = new GeoBeans.User(userName);
+	var mapManager = user.getMapManager();
 
-	// mapObj = new GeoBeans.Map("mapDiv");
+	mapObj = mapManager.getMap("mapDiv",mapName);
 
-	// mapObj = mapManager.getMap("mapDiv","chart");
-	mapObj = mapManager.getMap("mapDiv","vector");
-	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
-	
+	if(mapObj == null){
+		alert("没有该地图");
+		return;
+	}
 	mapObj.setViewer(mapObj.extent);
-
-
-	// var center = new GeoBeans.Geometry.Point(90,0);	
-	// var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
-	// mapObj.setBaseLayer(layer);
-	// mapObj.setCenter(center);
-	// mapObj.setLevel(1);
+	mapObj.setNavControl(false);
 	mapObj.draw();
+
 
 }
 

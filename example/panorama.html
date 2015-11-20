@@ -93,6 +93,8 @@
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSource.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
@@ -128,8 +130,8 @@
 </style>
 <script type="text/javascript">
 var authServer = "/ows/admin/mgr";
-var userName = "b";
-var mapName = "b"; 
+var userName = "user1";
+var mapName = "world"; 
 
 $().ready(function(){
 	var user = new GeoBeans.User(userName);

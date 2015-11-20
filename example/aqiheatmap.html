@@ -51,7 +51,15 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer/MapLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
@@ -64,6 +72,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/heatmap.min.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DataSource.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/File/FileManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/Raster.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/TileDB/TileDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/TileDB/TileStore.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript">
 
 var mapObj = null;
@@ -73,16 +95,23 @@ var citiesLayer = null;
 var aqiLayer = null;
 var aqiLayer2 = null;
 var heatMapLayer = null;
+var userName = "user1";
+var mapName = "world"; 
 function init(){
 	
 
-	mapObj = new GeoBeans.Map("mapDiv");
-	
-	var layer = null;	
-	var center = new GeoBeans.Geometry.Point(113,35);	
+	var user = new GeoBeans.User(userName);
+	var mapManager = user.getMapManager();
 
-	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
-	mapObj.setBaseLayer(layer);
+	mapObj = mapManager.getMap("mapDiv",mapName);
+
+	if(mapObj == null){
+		alert("没有该地图");
+		return;
+	}
+	mapObj.setViewer(mapObj.extent);
+	mapObj.setNavControl(false);
+	mapObj.draw();
 	
 	// // 点
 	// var symbolizer, rule, style;

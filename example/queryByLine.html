@@ -4,18 +4,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
-<link rel="stylesheet" type="text/css" href="../css/custom_slider.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-<script type="text/javascript" src="../lib/jquery.nouislider.js"></script>
-<script type="text/javascript" src="../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
-
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -29,36 +24,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/Circle.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
 
-<script type="text/javascript" src="../lib/GeoBeans/Label.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Label/PointLabel.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 
-
 <script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/IDFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/UnaryLogicFilter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BBoxFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
-
-
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/ColorMap.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
@@ -83,10 +62,6 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WMTSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/ChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/AQIChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/MapLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
@@ -102,16 +77,16 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/AQI/AQIIndexChart.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/AQI/AQIStatCompChart.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/AQI/AQITimePointList.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
 
+
+
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSource.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
+
 <script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 
@@ -128,9 +103,10 @@ var mapObj = null;
 var tracker = null;
 var mapManager = null;
 var url = "/ows/user1/mgr";
+var features = null;
+var url = "/ows/user1/mgr";
 var userName = "user1";
 var mapName = "world"; 
-var station_code = null;
 function init(){
 	var user = new GeoBeans.User(userName);
 	var mapManager = user.getMapManager();
@@ -150,133 +126,61 @@ function onMapMove(evt){
 	var mapX = evt.mapX;
 	var mapY = evt.mapY;
 	
-	var str = mapX + "," + mapY + ";";
-	str += evt.X + "," + evt.Y + "<br/>";
-	var map = mapObj.transformation.toMapPoint(mapX,mapY);
+	//var str = mapX + "," + mapY;
+	var str = evt.X + "," + evt.Y + "<br/>";
+	// var map = mapObj.transformation.toMapPoint(mapX,mapY);
 	// str += map.x + "," + map.y;
 	document.getElementById("xy").innerHTML = str;
 }
-
-
-
-function addLayer_callback(result){
-	if(result == "success"){
-		mapObj.draw();
-	}else{
-		alert(result);
-	}
+function Query_point(){
+	mapObj.queryByLine("cities",query_callback);
 }
 
-function onAddChartLayer2(){
-	// var option = {
-	// 	colorMapID 		: 4,
-	// 	opacity 		: 0.6,
-	// 	border 			: "#efefef",
-	// 	borderOpacity	: 1.0
-	// };
-	var option = {
-		colorMapID : 10
-	};
-
-
-	var layer = new GeoBeans.Layer.AQIChartLayer("aqi","gisdb",
-		"gc_aqi","pm2_5","position_name","station_code","time_point","2014-05-19 08:00:00",option);
-	mapObj.addLayer(layer,addLayer_callback);
+function Query_line(){
+	mapObj.queryByLine("rivers",query_callback);
 }
 
-function removeChart(){
-
-	mapObj.removeLayer("aqi");
-	mapObj.draw();
+function Query_polygon(){
+	mapObj.queryByLine("country",query_callback);
 }
 
-function registerHitEvent(){
-	var layer = mapObj.getLayer("aqi");
-	if(layer != null){
-		var html = "<a href='javascript:void(0)' class='aqi_info'>查看24小时变化情况</a>";
-		layer.registerHitEvent(html,callback);
-	} 
+function query_callback(layer,count){
+	// alert("查询的个数：" + count);
+	// features = mapObj.queryByRectPage();
+	features = mapObj.queryByLinePage();
+	$("#features_count").html(count);
+
 }
 
-function callback(code){
-	// this.station_code = station_code;
-	station_code = code;
-	var that = this;
-	$(".aqi_info").click(function(){
-		mapObj.closeInfoWindow();
-		var container = document.getElementById("chart_panel");
-		var aqiIndexChart = new GeoBeans.AQIIndexChart("统计图",container,"gisdb",
-			"gc_aqi",["aqi","pm2_5"],"station_code",station_code,"time_point",
-			"2014-05-20 00:00","2014-05-21 00:00");
-		aqiIndexChart.setMap(mapObj);
-		$("#dialog").modal();
-		aqiIndexChart.show();
-
-	});	
-}
-
-
-
-function stationCompareChart(){
-	var container = document.getElementById("chart_panel");
-	var stationCodes = ["1023A","1111A"];
-	var chart = new GeoBeans.AQIStatCompChart("站点对比图",container,"gisdb",
-			"gc_aqi",["aqi","pm2_5"],"station_code",stationCodes,"time_point",
-			"2014-05-20 00:00","2014-05-21 00:00","position_name");
-	chart.setMap(mapObj);
-	$("#dialog").modal();
-	chart.show();
-}
-
-function getTimeList(){
-	var timeList = new GeoBeans.AQITimePointList("time","gisdb","gc_aqi_uptime","uptime","2014-05-20 00:00","2014-05-21 00:00");
-	timeList.setMap(mapObj);
-	var list = timeList.getTimeList();
-	var time = null;
-	var html = "";
-	for(var i = 0; i< list.length; ++i){
-		html += "<span> '" + list[i] + "', </span>";
-	}
-
-	$("#timeList").html(html);
+function setFeatureBlink(){
+	// var feature = v
+	var id = $("#feature_id").val();
+	var feature = features[id];
+	var count = parseInt($("#blink_count").val());
+	// var count = 1;
+	mapObj.setFeatureBlink(feature,count);
 }
 
 </script>
 
 
-<title>Map5--AQI chart </title>
+<title>Map5--Query by polygon</title>
 </head>
 
 <body onload="init()">
+<input type="button" value="Point" onclick="Query_point();">
+<input type="button" value="Line" onclick="Query_line();">
+<input type="button" value="Polygon" onclick="Query_polygon();">
+选择的个数：<span id="features_count"></span>
 
-
+闪烁：ID<input type="text" value="1" id="feature_id">
+次数<input type="text" value="3" id="blink_count">
+<input type="button" value="闪烁" onclick="setFeatureBlink();">
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-	<div id="mapDiv" style="height:800px;width:100%;border:1px solid #ccc;position:relative">
-		
+	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
 
-	<div id="xy" style="width:200px;height:30px;line-height:30px"></div> 
-<input type="button" value="onAddChartLayer2" onclick="onAddChartLayer2();">
-<input type="button" value="removeChart" onclick="removeChart();">
-<input type="button" value="registerHitEvent" onclick="registerHitEvent();">
-<input type="button" value="站点对比" onclick="stationCompareChart();">
-<input type="button" value="时间列表" onclick="getTimeList();">
-	<div id="timeList"></div>
-	<div class="modal" id="dialog" tabindex="-1" role="dialog" aria-hidden="true">
-	    <div class="modal-dialog" style="width:1000px">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-	                <h5 class="modal-title">展示图</h5>
-	            </div>
-	            <div class="modal-body" id="chart_panel" style="height:800px;">
-
-	            </div>
-	        </div>
-	    </div>
-	</div>
-
-	
+<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>
 
