@@ -124,6 +124,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/TileDB/TileStore.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <style type="text/css">
 #mapDiv{
 	border: 1px solid #ccc;
@@ -134,22 +135,35 @@ var authServer = "/ows/admin/mgr";
 var userName = "user1";
 var mapName = "b"; 
 var poiManager = null;
+var subManager = null;
 var cookie = null;
 var time = null;
 
 $().ready(function(){
 	var user = new GeoBeans.User(userName);
-	poiManager = user.getPoiManager();
+	subManager = user.getSubManager();
+	subManager.setSubParams("base","gc_aqi_ranking","time_point","area",
+		"gc_aqi_ranking_uptime","uptime","downtime",getSub_callback);
+	// poiManager = user.getPoiManager();
 
-	cookie = new GeoBeans.Cookie();
+	// cookie = new GeoBeans.Cookie();
 
-	time = cookie.getCookie("poi-time");
-	if(time == null){
-		// time = new Date();
-		time = new Date("2015-10-30 07:42:23");
-	}
+	// time = cookie.getCookie("poi-time");
+	// if(time == null){
+	// 	// time = new Date();
+	// 	time = new Date("2015-10-30 07:42:23");
+	// }
 	
 });
+
+function getSub_callback(time,poiFeatures,aqiFeatures){
+	var html = "";
+	html += "<div>" + time + "</div>";
+	html += "<div>AQI更新条数:" + aqiFeatures.length + "</div>";
+	html += "<div>POI:" + poiFeatures.length + "</div>";
+	html += "----------------------------------------------------";
+	$("#result").append(html);
+}
 
 
 function beginSub(){
@@ -186,8 +200,8 @@ function endSub(){
 </div>
 <!-- <button onclick="add360Sight()">全景图</button>
 <button onclick="add360Sight2()">全景图2</button> -->
-<button onclick="beginSub()">开始订阅</button>
-<button onclick="endSub()">取消订阅</button>
+<!-- <button onclick="beginSub()">开始订阅</button>
+<button onclick="endSub()">取消订阅</button> -->
 <div id="result">
 </div>
 </body>
