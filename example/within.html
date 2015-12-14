@@ -69,30 +69,30 @@
      //     +    "</Filter>"
      //     +  "</wfs:Query>"
      //     +"</wfs:GetFeature>";
-      var xml = "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" mapName=\"world\" "
-         + "xmlns:map2=\"www.map2.ac.cn\" "
-         +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "
-         +  "xmlns:gml=\"http://www.opengis.net/gml\" "
-         +  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-         +  "xsi:schemaLocation=\"http://www.opengis.net/wfs "
-         +  "http://schemas.opengis.net/wfs/1.1.0/wfs.xsd\">"
-         +  "<wfs:Query typeName=\"world:country\">"
-         +    "<Filter>"
-     +    "<Intersects>"
-     +      "<PropertyName>shape</PropertyName>"
-     +      "<gml:Polygon>"
-     +      " <gml:outerBoundaryIs>"
-     +      "   <gml:LinearRing>"
-     +      "     <gml:coordinates ts=\" \" cs=\",\" decimal=\".\">"
-     +      "       0,0 0,80 80,80 80,0 0,0"
-     +      "     </gml:coordinates>"
-     +      "   </gml:LinearRing>"
-     +      " </gml:outerBoundaryIs>"
-     +      "</gml:Polygon>"
-     +    "</Intersects>"
-         +    "</Filter>"
-         +  "</wfs:Query>"
-         +"</wfs:GetFeature>";     
+     //  var xml = "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" mapName=\"world\" "
+     //     + "xmlns:map2=\"www.map2.ac.cn\" "
+     //     +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "
+     //     +  "xmlns:gml=\"http://www.opengis.net/gml\" "
+     //     +  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+     //     +  "xsi:schemaLocation=\"http://www.opengis.net/wfs "
+     //     +  "http://schemas.opengis.net/wfs/1.1.0/wfs.xsd\">"
+     //     +  "<wfs:Query typeName=\"world:country\">"
+     //     +    "<Filter>"
+     // +    "<Intersects>"
+     // +      "<PropertyName>shape</PropertyName>"
+     // +      "<gml:Polygon>"
+     // +      " <gml:outerBoundaryIs>"
+     // +      "   <gml:LinearRing>"
+     // +      "     <gml:coordinates ts=\" \" cs=\",\" decimal=\".\">"
+     // +      "       0,0 0,80 80,80 80,0 0,0"
+     // +      "     </gml:coordinates>"
+     // +      "   </gml:LinearRing>"
+     // +      " </gml:outerBoundaryIs>"
+     // +      "</gml:Polygon>"
+     // +    "</Intersects>"
+     //     +    "</Filter>"
+     //     +  "</wfs:Query>"
+     //     +"</wfs:GetFeature>";     
 
     // var xml = "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" mapName=\"map2\" "
     //      + "xmlns:map2=\"www.map2.ac.cn\" "
@@ -113,7 +113,18 @@
     //      +  "</wfs:Query>"
     //      +"</wfs:GetFeature>";
 
-      var url = "/ows/s/mgr?";
+
+    // var xml ='<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base" maxFeatures="5"><wfs:Query typeName="gc_aqi_ranking"><ogc:Filter><ogc:And><ogc:Or><ogc:PropertyIsEqualTo><ogc:PropertyName>area</ogc:PropertyName><ogc:Literal>北京</ogc:Literal></ogc:PropertyIsEqualTo><ogc:PropertyIsEqualTo><ogc:PropertyName>area</ogc:PropertyName><ogc:Literal>石家庄</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Or><ogc:Or><ogc:PropertyIsLessThan><ogc:PropertyName>time_point</ogc:PropertyName><ogc:Literal>2015-12-04 11:00:00</ogc:Literal></ogc:PropertyIsLessThan></ogc:Or></ogc:And></ogc:Filter><OrderBy><Property Name="time_point" Order="Desc"/></OrderBy></wfs:Query></wfs:GetFeature>';
+
+    var xml = '<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base" maxFeatures="100"><wfs:Query typeName="gc_aqi"><wfs:PropertyName>aqi</wfs:PropertyName><wfs:PropertyName>time_point</wfs:PropertyName><wfs:PropertyName>station_code</wfs:PropertyName><ogc:Filter><ogc:And><ogc:PropertyIsEqualTo><ogc:PropertyName>station_code</ogc:PropertyName><ogc:Literal>1011A</ogc:Literal></ogc:PropertyIsEqualTo><ogc:And><ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>time_point</ogc:PropertyName><ogc:Literal>2015-11-01 11:00:00</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThanOrEqualTo><ogc:PropertyName>time_point</ogc:PropertyName><ogc:Literal>2015-11-03 11:00:00</ogc:Literal></ogc:PropertyIsLessThanOrEqualTo></ogc:And></ogc:And></ogc:Filter><ogc:OrderBy order="desc"><wfs:PropertyName>base:time_point</wfs:PropertyName></ogc:OrderBy></wfs:Query></wfs:GetFeature>';
+
+    var xml ='<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base" offset="0"><wfs:Query typeName="gc_aqi_ranking"><wfs:PropertyName>aqi</wfs:PropertyName><wfs:PropertyName>area</wfs:PropertyName><wfs:PropertyName>quality</wfs:PropertyName><wfs:PropertyName>x</wfs:PropertyName><wfs:PropertyName>y</wfs:PropertyName><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>time_point</ogc:PropertyName><ogc:Literal>2015-12-10 12:00:00</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><ogc:OrderBy order="asc"><wfs:PropertyName>aqi</wfs:PropertyName></ogc:OrderBy></wfs:Query></wfs:GetFeature>';
+
+    var xml = '<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base"><wfs:Query typeName="china_city_region"><wfs:PropertyName>gid</wfs:PropertyName><wfs:PropertyName>name</wfs:PropertyName><wfs:PropertyName>aname</wfs:PropertyName></wfs:Query></wfs:GetFeature>'
+
+
+    // var xml = '<wfs:GetFeature service="WFS" version="1.1.0" mapName="new2" xmlns:world="www.world.ac.cn" xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><wfs:Query typeName="china_china"><wfs:PropertyName>name_engli</wfs:PropertyName><wfs:PropertyName>eumember</wfs:PropertyName>   <Filter>        <Within>            <PropertyName>shape</PropertyName> <gml:Point><gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="." cs="," ts=" ">99.54716901562499,35.4731975625</gml:coordinates></gml:Point>       </Within>   </Filter></wfs:Query></wfs:GetFeature>';
+      var url = "/ows/radi/mgr?";
 
       $.ajax({
         type  :"post",
@@ -126,7 +137,8 @@
         beforeSend: function(XMLHttpRequest){
         },
         success : function(xml, textStatus){
-          alert(xml);
+          // alert(xml);
+          console.log(xml);
         },
         complete: function(XMLHttpRequest, textStatus){
         },
