@@ -122,9 +122,13 @@
 
     var xml = '<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base"><wfs:Query typeName="china_city_region"><wfs:PropertyName>gid</wfs:PropertyName><wfs:PropertyName>name</wfs:PropertyName><wfs:PropertyName>aname</wfs:PropertyName></wfs:Query></wfs:GetFeature>'
 
+   var xml = '<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base" maxFeatures="80" offset="0"><wfs:Query typeName="prov_bount_4m"><wfs:PropertyName>shape</wfs:PropertyName><wfs:PropertyName>name</wfs:PropertyName></wfs:Query></wfs:GetFeature>';
+
 
     // var xml = '<wfs:GetFeature service="WFS" version="1.1.0" mapName="new2" xmlns:world="www.world.ac.cn" xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><wfs:Query typeName="china_china"><wfs:PropertyName>name_engli</wfs:PropertyName><wfs:PropertyName>eumember</wfs:PropertyName>   <Filter>        <Within>            <PropertyName>shape</PropertyName> <gml:Point><gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="." cs="," ts=" ">99.54716901562499,35.4731975625</gml:coordinates></gml:Point>       </Within>   </Filter></wfs:Query></wfs:GetFeature>';
-      var url = "/ows/radi/mgr?";
+
+    var xml = '<?xml version="1.0" encoding="UTF-8"?><wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WFS" version="1.0.0" outputFormat="GML2" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" sourceName="base"><wfs:Query typeName="prov_bount_4m"/></wfs:GetFeature>';
+      var url = "/ows/user1/mgr?";
 
       $.ajax({
         type  :"post",
