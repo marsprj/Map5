@@ -2,8 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
@@ -101,87 +105,56 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/HeatMapLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
-<!-- <script type="text/javascript" src="../lib/heatmap.min.js"></script> -->
-<!-- <script type="text/javascript" src="../lib/heatmap.min-2.js"></script> -->
-<script type="text/javascript" src="../lib/heatmap.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
+
 <script type="text/javascript">
-
-var mapManager = null;
-
-var countryLayer = null;
-var citiesLayer = null;
-var aqiLayer = null;
-var aqiLayer2 = null;
-var heatMapLayer = null;
-
-var mapObj = null;
-var username = "user1";
-var mapName = "world_tt";
-function init(){
-	var user = new GeoBeans.User(username);
-	var mapManager = user.getMapManager();
-	mapObj = mapManager.getMap("mapDiv",mapName);
-	if(mapObj == null){
-		alert("没有该地图");
-		return;
+	var mapObj = null;
+	var username = "user1";
+	var mapName = "chart2";
+	function init(){
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		mapObj.draw();
 	}
-	mapObj.draw();
-}
 
-function addLayerHeatMap_cities_db(){
-	mapObj.addHeatMap("cities","populat");
-	mapObj.draw();
-}
+	function addChart(){
+		var name = "水泥产量_万吨";
+		var baseLayerName = "china_prov_point";
+		var baseLayerField = "prov_fname";
+		var dbName = "gisdb";
+		var tableName = "gongye";
+		var tableField = "地区";
+		var chartFields = ["发电量_亿千瓦小时"];
+		// var chartFields = ["钢材产量_万吨"];
+		// var chartFields = ["水泥产量_万吨"];
+		
+		var chartOption = {
+			color : "#CC3300",
+			opacity : 1,
+			border : "#cccccc",
+			borderOpacity : 0.5,
+			level : 4,
+			maxsize : 1.5,
+			byLevel : true,
 
-function addLayerHeatMap_aqi_db(){
-	mapObj.addHeatMap("aqi","pm2_5");
-	mapObj.draw();
-}
+		};
 
+		var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();
 
-function removeHeatMap_cities(){
-	mapObj.removeHeatMap("cities");
-	mapObj.draw();
-}
-
-function removeHeatMap_aqi(){
-	mapObj.removeHeatMap("aqi");
-	mapObj.draw();	
-}
-
-var flag = false;
-function setHeatMapVisible(){
-	mapObj.setHeatMapVisible("cities",flag);
-	if(flag){
-		flag = false;
-	}else{
-		flag = true;
 	}
-	mapObj.draw();	
-}
+
 </script>
-
-
-<title>wfs-heatmap</title>
-</head>
-
 <body onload="init()">
-<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-	<div id="mapDiv" style="height:800px;width:100%">
+	<button onclick="addChart()">图表</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
-	增加：
-	<input type="button" value="heatMap-cities-db" onclick="addLayerHeatMap_cities_db()">
-	<input type="button" value="heatMap-aqi-db" onclick="addLayerHeatMap_aqi_db()"><br/>
-	删除：
-	<input type="button" value="removeHeatMap_cities" onclick="removeHeatMap_cities()">
-	<input type="button" value="removeHeatMap_aqi" onclick="removeHeatMap_aqi()">
-	显示
-	<input type="button" value="setHeatMapVisible" onclick="setHeatMapVisible()">
+	
 </body>
-</html>
-
-
-
-
