@@ -7,8 +7,8 @@
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
-
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+<!-- 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
@@ -106,13 +106,18 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeSymbolChartLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Circle.js"></script> -->
+
 <script type="text/javascript">
 	var mapObj = null;
 	var username = "user1";
-	var mapName = "chart2";
+	var mapName = "world2";
 	function init(){
 		var user = new GeoBeans.User(username);
 		var mapManager = user.getMapManager();
@@ -122,94 +127,40 @@
 			return;
 		}
 		mapObj.draw();
+		// mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 	}
 
-	function addChart(){
-		var rangeChartLayer = new GeoBeans.Layer.RangeChartLayer("range",
-			"prov_bount_4m","name","gisdb","gongye","地区",["发电量_亿千瓦小时"],{
-				border: "#cccccc",
-				borderOpacity: 0.29,
-				colorMapID: "8",
-				opacity: 1.00
-			});
-		mapObj.addLayer(rangeChartLayer,null);
 
-		var name = "水泥产量_万吨";
-		var baseLayerName = "china_prov_point";
-		var baseLayerField = "prov_fname";
-		var dbName = "gisdb";
-		var tableName = "gongye";
-		var tableField = "地区";
-		// var chartFields = ["发电量_亿千瓦小时"];
-		var chartFields = ["钢材产量_万吨"];
-		// var chartFields = ["水泥产量_万吨"];
-		
-		var chartOption = {
-			border: "#eeeeee",
-			borderOpacity: 1,
-			byLevel: false,
-			color: "#f7e302",
-			level: 4,
-			maxsize: 2,
-			opacity: 1
-		};
-
-		var layer = new GeoBeans.Layer.SymbolChartLayer("symbol",baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		mapObj.draw();
-
-
-		// var name = "水泥产量_万吨";
-		// var baseLayerName = "china_prov_point";
-		// var baseLayerField = "prov_fname";
-		// var dbName = "gisdb";
-		// var tableName = "gongye";
-		// var tableField = "地区";
-		// var chartFields = ["发电量_亿千瓦小时"];
-		
-		
-		// var chartOption = {
-		// 	color : "#CC3300",
-		// 	opacity : 1,
-		// 	border : "#cccccc",
-		// 	borderOpacity : 0.5,
-		// 	level : 4,
-		// 	maxsize : 1.5,
-		// 	byLevel : true,
-
-		// };
-
-		// var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		// mapObj.addLayer(layer,null);
+	function drawImage(){
+		// var url = "world-raster.png";
+		// var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		// mapObj.drawImage(url,extent);
 		// mapObj.draw();
+
+		// var url = "Canada.png";
+		// var extent = new GeoBeans.Envelope(-141.066667,41.6,-52.4,83.333333);
+		// mapObj.drawImage(url,extent);
+		// mapObj.draw();		
+
+		var url = "world_1.png";
+		var extent = new GeoBeans.Envelope(0,0,90,45);
+		mapObj.drawImage(url,extent);
+		mapObj.draw();			
 	}
 
-	function addRangeSymbolChart(){
-		var rangeOption = {
-			border: "#cccccc",
-			borderOpacity: 0.29,
-			colorMapID: "8",
-			opacity: 1.00
-		};
-		var symbolOption = {
-			border: "#eeeeee",
-			borderOpacity: 1,
-			byLevel: false,
-			color: "#f7e302",
-			level: 4,
-			maxsize: 2,
-			opacity: 1
-		};
-		var layer = new GeoBeans.Layer.RangeSymbolChartLayer("图","prov_bount_4m","name","水泥产量_万吨","china_prov_point","prov_fname","钢材产量_万吨","gisdb","gongye","地区",rangeOption,symbolOption);
-		mapObj.addLayer(layer);
-		mapObj.draw();
+	function onMapMove(evt){
+		var mapX = evt.mapX;
+		var mapY = evt.mapY;
+		
+		var str = mapX + "," + mapY;
+		document.getElementById("xy").innerHTML = str;
 	}
 
 </script>
 <body onload="init()">
-	<button onclick="addChart()">图表</button>
-	<button onclick="addRangeSymbolChart()">复合图表</button>
+	<button onclick="drawImage()">绘制图片</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
-	
+	<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
+
 </body>

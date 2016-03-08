@@ -7,8 +7,8 @@
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
-
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+<!-- 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
@@ -106,13 +106,20 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeSymbolChartLayer.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Circle.js"></script> -->
+
 <script type="text/javascript">
 	var mapObj = null;
 	var username = "user1";
-	var mapName = "chart2";
+	var mapName = "c_1";
+
+	var str = "117.496,40.6653 117.499,40.6404 117.494,40.6351 117.476,40.6365 117.467,40.6389 117.446,40.6523 117.436,40.6496 117.423,40.6283 117.419,40.6198 117.421,40.6138 117.424,40.6093 117.437,40.589 117.439,40.5789 117.434,40.5763 117.423,40.5728 117.399,40.5713 117.374,40.5649 117.333,40.5758 117.316,40.5773 117.3,40.5773 117.235,40.5465 117.234,40.5424 117.235,40.534 117.243,40.5279 117.249,40.5226 117.249,40.5169 117.244,40.5134 117.234,40.5134 117.224,40.5165 117.209,40.5128 117.199,40.5051 117.195,40.4969 117.199,40.4861 117.208,40.4724 117.219,40.4579 117.225,40.4511 117.228,40.4435 117.23,40.4361 117.23,40.4275 117.223,40.4077 117.22,40.394 117.217,40.3793 117.22,40.3735 117.224,40.3697 117.237,40.3629 117.239,40.3545 117.239,40.3469 117.248,40.3362 117.258,40.3263 117.264,40.3149 117.271,40.3035 117.282,40.2911 117.293,40.2822 117.305,40.2784 117.318,40.2739 117.324,40.2663 117.323,40.2612 117.328,40.2553 117.333,40.2439 117.337,40.2378 117.342,40.2323 117.35,40.2292 117.363,40.2269 117.373,40.2267 117.38,40.2245 117.38,40.2181 117.383,40.2095 117.382,40.2058 117.38,40.2027 117.375,40.1998 117.372,40.1951 117.369,40.191 117.37,40.188 117.373,40.1847 117.377,40.1833 117.38,40.1804 117.381,40.1765 117.381,40.1729 117.379,40.1708 117.373,40.17 117.359,40.1707 117.355,40.1692 117.348,40.1621 117.343,40.1517 117.335,40.1412 117.325,40.1347 117.311,40.1337 117.299,40.131 117.292,40.1265 117.284,40.1244 117.279,40.1182 117.273,40.1118 117.267,40.1102 117.26,40.1089 117.227,40.107 117.222,40.1046 117.215,40.1017 117.205,40.0931 117.194,40.0828 117.136,40.0635 117.056,40.0619 116.998,40.029 116.958,40.046 116.835,40.0436 116.76,40.0276 116.752,40.0157 116.772,39.9991 116.756,39.9655 116.758,39.9605 116.775,39.9475 116.776,39.9374 116.774,39.927 116.78,39.8926 116.791,39.8813 116.795,39.8784 116.803,39.8767 116.815,39.8787 116.825,39.8767 116.837,39.8612 116.846,39.8564 116.855,39.8524 116.865,39.8515 116.874,39.8481 116.889,39.836 116.901,39.8377 116.905,39.8478 116.912,39.8387 116.915,39.8258 116.921,39.8145 116.929,39.8052 116.938,39.796 116.946,39.7824 116.946,39.773 116.94,39.7682 116.935,39.7689 116.928,39.7718 116.918,39.7646 116.902,39.7592 116.901,39.754 116.907,39.7411 116.9,39.7347 116.891,39.7291 116.885,39.7209 116.89,39.702 116.894,39.6963 116.899,39.678 116.847,39.6621 116.828,39.6202 116.799,39.61 116.77,39.5959 116.735,39.6216 116.699,39.6177 116.722,39.5951 116.709,39.5877 116.673,39.603 116.629,39.6058 116.599,39.6292 116.517,39.5946 116.51,39.5709 116.479,39.544 116.397,39.514 116.411,39.4887 116.441,39.4772 116.447,39.4425 116.433,39.4425 116.409,39.4473 116.387,39.4521 116.367,39.4521 116.34,39.4506 116.308,39.477 116.277,39.4921 116.244,39.5042 116.237,39.5157 116.234,39.5502 116.231,39.5562 116.219,39.5647 116.215,39.5726 116.158,39.5796 116.123,39.5646 116.004,39.5794 115.982,39.5909 115.957,39.5671 115.919,39.598 115.905,39.5898 115.901,39.5637 115.831,39.5475 115.803,39.512 115.75,39.5117 115.725,39.5513 115.686,39.5618 115.673,39.6007 115.561,39.5972 115.476,39.6535 115.467,39.6702 115.484,39.7403 115.481,39.7474 115.431,39.7561 115.418,39.7744 115.478,39.7991 115.498,39.7916 115.539,39.7974 115.563,39.8148 115.513,39.8433 115.523,39.8772 115.51,39.8852 115.508,39.912 115.448,39.9488 115.417,39.9529 115.441,40.0016 115.441,40.0262 115.51,40.0748 115.554,40.0992 115.586,40.0945 115.606,40.1188 115.635,40.1179 115.673,40.1353 115.739,40.1337 115.755,40.1476 115.753,40.1658 115.776,40.1786 115.79,40.156 115.823,40.1402 115.847,40.15 115.838,40.178 115.872,40.1976 115.875,40.2198 115.916,40.2502 115.955,40.2618 115.906,40.3546 115.866,40.3583 115.823,40.3902 115.807,40.416 115.762,40.4516 115.77,40.4907 115.732,40.4955 115.733,40.511 115.752,40.5413 115.775,40.557 115.807,40.5641 115.82,40.5882 115.871,40.5942 115.905,40.617 115.927,40.6132 115.98,40.5794 116.104,40.6183 116.112,40.656 116.154,40.6662 116.157,40.7003 116.203,40.7239 116.232,40.7869 116.245,40.7873 116.288,40.7559 116.312,40.7722 116.369,40.7704 116.4,40.7846 116.422,40.7636 116.454,40.7737 116.454,40.7901 116.327,40.9002 116.33,40.9297 116.354,40.9395 116.369,40.9363 116.392,40.903 116.459,40.8925 116.469,40.9101 116.444,40.949 116.444,40.9755 116.494,40.9764 116.53,40.9883 116.589,40.9789 116.61,41.0154 116.601,41.0433 116.621,41.0586 116.677,41.0409 116.685,41.0201 116.667,40.9767 116.681,40.9442 116.711,40.9321 116.716,40.901 116.777,40.8725 116.792,40.8427 116.846,40.833 116.883,40.7968 116.892,40.7795 116.913,40.7726 116.942,40.7252 116.994,40.693 117.141,40.7018 117.166,40.6925 117.183,40.6899 117.199,40.6869 117.225,40.6785 117.263,40.6709 117.285,40.6595 117.302,40.6542 117.32,40.6549 117.341,40.6663 117.372,40.6755 117.399,40.6793 117.409,40.6793 117.443,40.6747 117.478,40.6709 117.489,40.6709 117.496,40.6653";
 	function init(){
 		var user = new GeoBeans.User(username);
 		var mapManager = user.getMapManager();
@@ -124,91 +131,45 @@
 		mapObj.draw();
 	}
 
-	function addChart(){
-		var rangeChartLayer = new GeoBeans.Layer.RangeChartLayer("range",
-			"prov_bount_4m","name","gisdb","gongye","地区",["发电量_亿千瓦小时"],{
-				border: "#cccccc",
-				borderOpacity: 0.29,
-				colorMapID: "8",
-				opacity: 1.00
-			});
-		mapObj.addLayer(rangeChartLayer,null);
-
-		var name = "水泥产量_万吨";
-		var baseLayerName = "china_prov_point";
-		var baseLayerField = "prov_fname";
-		var dbName = "gisdb";
-		var tableName = "gongye";
-		var tableField = "地区";
-		// var chartFields = ["发电量_亿千瓦小时"];
-		var chartFields = ["钢材产量_万吨"];
-		// var chartFields = ["水泥产量_万吨"];
-		
-		var chartOption = {
-			border: "#eeeeee",
-			borderOpacity: 1,
-			byLevel: false,
-			color: "#f7e302",
-			level: 4,
-			maxsize: 2,
-			opacity: 1
-		};
-
-		var layer = new GeoBeans.Layer.SymbolChartLayer("symbol",baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		mapObj.draw();
 
 
-		// var name = "水泥产量_万吨";
-		// var baseLayerName = "china_prov_point";
-		// var baseLayerField = "prov_fname";
-		// var dbName = "gisdb";
-		// var tableName = "gongye";
-		// var tableField = "地区";
-		// var chartFields = ["发电量_亿千瓦小时"];
-		
-		
-		// var chartOption = {
-		// 	color : "#CC3300",
-		// 	opacity : 1,
-		// 	border : "#cccccc",
-		// 	borderOpacity : 0.5,
-		// 	level : 4,
-		// 	maxsize : 1.5,
-		// 	byLevel : true,
+	function addPolygon(){
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 
-		// };
+		// var points = [];
+		// points.push(new GeoBeans.Geometry.Point(80,39));
+		// points.push(new GeoBeans.Geometry.Point(113,59));
+		// points.push(new GeoBeans.Geometry.Point(124,39));
+		// points.push(new GeoBeans.Geometry.Point(125,20));	
+		// points.push(new GeoBeans.Geometry.Point(80,39));
+		var points = prasePoints();
 
-		// var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		// mapObj.addLayer(layer,null);
-		// mapObj.draw();
+		var lineString = new GeoBeans.Geometry.LineString(points);
+
+		var geometry_poly = new GeoBeans.Geometry.Polygon([lineString]);
+
+		var polygon = new GeoBeans.Overlay.Polygon("polygon",
+			geometry_poly,symbolizer);	
+		mapObj.addOverlay(polygon);
+		mapObj.draw();			
 	}
 
-	function addRangeSymbolChart(){
-		var rangeOption = {
-			border: "#cccccc",
-			borderOpacity: 0.29,
-			colorMapID: "8",
-			opacity: 1.00
-		};
-		var symbolOption = {
-			border: "#eeeeee",
-			borderOpacity: 1,
-			byLevel: false,
-			color: "#f7e302",
-			level: 4,
-			maxsize: 2,
-			opacity: 1
-		};
-		var layer = new GeoBeans.Layer.RangeSymbolChartLayer("图","prov_bount_4m","name","水泥产量_万吨","china_prov_point","prov_fname","钢材产量_万吨","gisdb","gongye","地区",rangeOption,symbolOption);
-		mapObj.addLayer(layer);
-		mapObj.draw();
+	function prasePoints(){
+		var points = [];
+		var array = str.split(" ");
+		var point = null,xystr = null;
+		for(var i = 0; i < array.length; ++i){
+			xystr = array[i];
+			point = new GeoBeans.Geometry.Point(xystr.split(",")[0],xystr.split(",")[1]);
+			points.push(point);
+		}
+		return points;
 	}
+	
 
 </script>
 <body onload="init()">
-	<button onclick="addChart()">图表</button>
-	<button onclick="addRangeSymbolChart()">复合图表</button>
+	<button onclick="addPolygon()">多边形--北京市</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	

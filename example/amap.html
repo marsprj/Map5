@@ -6,66 +6,15 @@
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
-<script type="text/javascript" src="../lib/GeoBeans.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
 
-<!-- Geometry -->
-<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
-
-<!-- Feature -->
-<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
-
-<!-- Style -->
-<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
-
-<!-- Layer -->
-<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/AMapLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
-
-<!-- Renderer -->
-<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
 
 <script type="text/javascript">
 
 var mapObj = null;
+var url = "/ows/user1/mgr";
+var username = "user1";
+var mapName = "world_tt"; 
 function init(){
 	
 	// var ww = window.document.body.clientWidth;
@@ -77,8 +26,15 @@ function init(){
 	// context.fillStyle = 'rgba(0,255,0,0.25)';
 	// context.fillRect(0,0,ww,wh);
 	
-	mapObj = new GeoBeans.Map("mapDiv");
-	mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		mapObj.draw();
+	// mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
 	
 	var layer = null;
 	//var center = new GeoBeans.Geometry.Point(0,0);	
@@ -88,39 +44,39 @@ function init(){
 	//mapObj.setExtent(new GeoBeans.Envelope(10762435.858420863,3415567.428002159,17135450.014862295,6351564.966545691));	
 	
 //	layer = new GeoBeans.Layer.QSLayer("gaode");	
-	layer = new GeoBeans.Layer.AMapLayer("gaode","/appmaptile?lang=zh_cn&size=1&scale=1&style=8");
+// 	layer = new GeoBeans.Layer.AMapLayer("gaode","/appmaptile?lang=zh_cn&size=1&scale=1&style=8");
 	
-	//mapObj.addLayer(layer);
-	mapObj.setBaseLayer(layer);
+// 	//mapObj.addLayer(layer);
+// 	mapObj.setBaseLayer(layer);
 	
-//	layer = new GeoBeans.Layer.WMSLayer("wms",
-//										"http://127.0.0.1:8080/geoserver/radi/wms?",
-//										"radi:cities",
-//										"image/png");	
+// //	layer = new GeoBeans.Layer.WMSLayer("wms",
+// //										"http://127.0.0.1:8080/geoserver/radi/wms?",
+// //										"radi:cities",
+// //										"image/png");	
 
-	// var symbolizer, rule, style;
-	// symbolizer = new GeoBeans.Style.PointSymbolizer();
-	// symbolizer.size = 2;
-	// symbolizer.fillColor = "Aquamarine";
-	// symbolizer.outLineWidth = 1.0;
-	// symbolizer.outLineColor = "Red";
-	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
-	// symbolizer.showOutline = true;
+// 	// var symbolizer, rule, style;
+// 	// symbolizer = new GeoBeans.Style.PointSymbolizer();
+// 	// symbolizer.size = 2;
+// 	// symbolizer.fillColor = "Aquamarine";
+// 	// symbolizer.outLineWidth = 1.0;
+// 	// symbolizer.outLineColor = "Red";
+// 	// symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
+// 	// symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+// 	// symbolizer.showOutline = true;
 	
-	// rule = new GeoBeans.Style.Rule(symbolizer, null);
-	// style = new GeoBeans.Style();
-	// style.addRule(rule);
-	// layer = new GeoBeans.Layer.WFSLayer("wfs",
-	// 									"http://127.0.0.1:8080/geoserver/radi/ows?",
-	// 									"radi:cities",
-	// 									"GML2");
-	// layer.setStyle(style);	
-	// mapObj.addLayer(layer);			
+// 	// rule = new GeoBeans.Style.Rule(symbolizer, null);
+// 	// style = new GeoBeans.Style();
+// 	// style.addRule(rule);
+// 	// layer = new GeoBeans.Layer.WFSLayer("wfs",
+// 	// 									"http://127.0.0.1:8080/geoserver/radi/ows?",
+// 	// 									"radi:cities",
+// 	// 									"GML2");
+// 	// layer.setStyle(style);	
+// 	// mapObj.addLayer(layer);			
 	
-	mapObj.setCenter(center);
-	mapObj.setLevel(2);	
-	mapObj.draw();	
+// 	mapObj.setCenter(center);
+// 	mapObj.setLevel(2);	
+// 	mapObj.draw();	
 
 	// context.fillStyle = 'rgba(255,0,0,1)';
 	// context.beginPath();
@@ -134,8 +90,7 @@ function init(){
 }
 
 function btnoffset(){
-	mapObj.setCenter(new GeoBeans.Geometry.Point(0,0));
-	mapObj.drawCache();
+	
 }
 
 function onMapClick(evt){
@@ -150,6 +105,15 @@ function onMapMove(evt){
 	document.getElementById("xy").innerHTML = str;
 }
 
+function amap(){
+	var center = new GeoBeans.Geometry.Point(0,0);	
+	var layer = new GeoBeans.Layer.AMapLayer("gaode","/appmaptile?lang=zh_cn&size=1&scale=1&style=8");
+	
+	mapObj.setBaseLayer(layer);
+		mapObj.setCenter(center);
+	mapObj.setLevel(2);	
+	mapObj.draw();	
+}
 
 </script>
 
@@ -161,7 +125,7 @@ function onMapMove(evt){
 
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 <div id="mapDiv" style="height:800px;width:100%"></div>
-<input type='button' value='offset' onclick="btnoffset();">
+<input type='button' value='amap' onclick="amap();">
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>
