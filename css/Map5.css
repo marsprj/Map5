@@ -216,7 +216,7 @@
 }
 .chart-legend-canvas{
 	float: left;
-	margin: 10px;
+	margin: 0 4px;
 }
 
 .chart-symbol-legend .chart-legend-canvas{

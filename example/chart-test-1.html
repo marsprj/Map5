@@ -4,9 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+<link rel="stylesheet" type="text/css" href="../css/custom_slider.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/echarts-all.js"></script>
+<script type="text/javascript" src="../lib/jquery.nouislider.js"></script>
 <!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
 
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
@@ -107,14 +110,19 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/AQIChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeSymbolChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/BarChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/PieChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/AQI/TimeLineBar.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/AQITimelineLayer.js"></script>
+
 <script type="text/javascript">
 	var mapObj = null;
 	var username = "user1";
 	var mapName = "chart2";
-	var layer = null;
 	function init(){
 		var user = new GeoBeans.User(username);
 		var mapManager = user.getMapManager();
@@ -124,19 +132,42 @@
 			return;
 		}
 		mapObj.draw();
+
+		$("#removeSymbol").click(function(){
+			alert(12);
+		});
 	}
 
 	function addChart(){
-		var rangeChartLayer = new GeoBeans.Layer.RangeChartLayer("range",
-			"prov_bount_4m","name","gisdb","gongye","地区",["发电量_亿千瓦小时"],{
-				border: "#cccccc",
-				borderOpacity: 0.29,
-				colorMapID: "8",
-				opacity: 1.00
-			});
-		// mapObj.addLayer(rangeChartLayer,null);
+		var name = "tu1";
+		var baseLayerName = "china_prov_point";
+		var baseLayerField = "prov_fname";
+		var dbName = "gisdb";
+		var tableName = "gongye";
+		var tableField = "地区";
+		var chartFields = ["发电量_亿千瓦小时"];
+		// var chartFields = ["钢材产量_万吨"];
+		// var chartFields = ["水泥产量_万吨"];
+		
+		var chartOption = {
+			color : "#CC3300",
+			opacity : 1,
+			border : "#000000",
+			borderOpacity : 0.5,
+			level : 4,
+			maxsize : 1.5,
+			byLevel : true,
 
-		var name = "水泥产量_万吨";
+		};
+
+		var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();
+
+	}
+
+	function addChart2(){
+		var name = "tu2";
 		var baseLayerName = "china_prov_point";
 		var baseLayerField = "prov_fname";
 		var dbName = "gisdb";
@@ -147,43 +178,76 @@
 		// var chartFields = ["水泥产量_万吨"];
 		
 		var chartOption = {
-			border: "#eeeeee",
-			borderOpacity: 1,
-			byLevel: false,
-			color: "#f70302",
-			level: 4,
-			maxsize: 2,
-			opacity: 1
+			color : "#AB3300",
+			opacity : 1,
+			border : "#000000",
+			borderOpacity : 0.5,
+			level : 4,
+			maxsize : 1.5,
+			byLevel : true,
+
 		};
 
-		var layer = new GeoBeans.Layer.SymbolChartLayer("symbol",baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();		
+	}
+
+	function addAQI(){
+		var option = {
+			colorMapID : 10
+		};
+
+
+		var layer = new GeoBeans.Layer.AQIChartLayer("aqi","gisdb",
+			"gc_aqi","pm2_5","position_name","station_code","time_point","2014-05-19 08:00:00",option);
 		mapObj.addLayer(layer,null);
 		mapObj.draw();
+	}
 
 
-		// var name = "水泥产量_万吨";
-		// var baseLayerName = "china_prov_point";
-		// var baseLayerField = "prov_fname";
-		// var dbName = "gisdb";
-		// var tableName = "gongye";
-		// var tableField = "地区";
-		// var chartFields = ["发电量_亿千瓦小时"];
+	function removeChart1(){
+		mapObj.removeLayer("tu1");
+		mapObj.draw();
+	}
+
+
+	function removeChart2(){
+		mapObj.removeLayer("tu2");
+		mapObj.draw();		
+	}
+
+
+	function addSymbolChart(){
+		var name = "symbol";
+		var baseLayerName = "china_prov_point";
+		var baseLayerField = "prov_fname";
+		var dbName = "gisdb";
+		var tableName = "gongye";
+		var tableField = "地区";
+		var chartFields = ["发电量_亿千瓦小时"];
+		// var chartFields = ["钢材产量_万吨"];
+		// var chartFields = ["水泥产量_万吨"];
 		
-		
-		// var chartOption = {
-		// 	color : "#CC3300",
-		// 	opacity : 1,
-		// 	border : "#cccccc",
-		// 	borderOpacity : 0.5,
-		// 	level : 4,
-		// 	maxsize : 1.5,
-		// 	byLevel : true,
+		var chartOption = {
+			color : "#CC3300",
+			opacity : 1,
+			border : "#000000",
+			borderOpacity : 0.5,
+			level : 4,
+			maxsize : 1.5,
+			byLevel : true,
 
-		// };
+		};
 
-		// var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		// mapObj.addLayer(layer,null);
-		// mapObj.draw();
+		var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();		
+	}
+
+	function removeSymbolChart(){
+		mapObj.removeLayer("symbol");
+		mapObj.draw();
 	}
 
 	function addRangeSymbolChart(){
@@ -202,34 +266,144 @@
 			maxsize: 2,
 			opacity: 0.5
 		};
-		layer = new GeoBeans.Layer.RangeSymbolChartLayer("图","prov_bount_4m","name","水泥产量_万吨","china_prov_point","prov_fname","发电量_亿千瓦小时","gisdb","gongye","地区",rangeOption,symbolOption);
+		layer = new GeoBeans.Layer.RangeSymbolChartLayer("rangesymbol","prov_bount_4m","name","水泥产量_万吨","china_prov_point","prov_fname","发电量_亿千瓦小时","gisdb","gongye","地区",rangeOption,symbolOption);
 		mapObj.addLayer(layer);
 		mapObj.draw();
 	}
 
-
-	function changeChartOption(){
-		layer.setRangeChartField("发电量_亿千瓦小时");
-		mapObj.draw();
-	}
-
-	function removeSymbolChart(){
-		mapObj.removeLayer("symbol");
-		mapObj.draw();
-	}
-
 	function removeRangeSymbolChart(){
-		mapObj.removeLayer("图");
+		mapObj.removeLayer("rangesymbol");
+		mapObj.draw();
+	}
+
+
+	function addRangeChart(){
+		var rangeChartLayer = new GeoBeans.Layer.RangeChartLayer("range",
+			"prov_bount_4m","name","gisdb","gongye","地区",["发电量_亿千瓦小时"],{
+				border: "#cccccc",
+				borderOpacity: 0.29,
+				colorMapID: "8",
+				opacity: 1.00
+			});
+		mapObj.addLayer(rangeChartLayer,null);
+		mapObj.draw();
+	}
+
+	function removeRangeChart(){
+		mapObj.removeLayer("range");
+		mapObj.draw();
+	}
+
+
+	function addBarChart(){
+		var name = "";
+
+		var layer = new GeoBeans.Layer.BarChartLayer("bar","china_prov_point","prov_fname",
+			"gisdb","gongye","地区", ["水泥产量_万吨", "钢材产量_万吨"],{
+				height 		: 200,
+				width 		: 80,
+				colors 		: ["#dafb7f","#4ca5f3"],
+				offsetX 	: 0,
+				offsetY 	: 0,
+				showLabel 	: true,
+				opacity 	: 1,
+				x_axisLine  : false,
+				x_splitLine : false,
+				y_axisLine  : false,
+				y_splitLine : false
+			});
+		mapObj.addLayer(layer);
+		mapObj.draw();
+	}
+
+	function removeBarChart(){
+		mapObj.removeLayer("bar");
+		mapObj.draw();
+	}
+
+	function addPieChart(){
+		var colors = [
+			new GeoBeans.Color().getHex(),
+			new GeoBeans.Color().getHex(),
+			new GeoBeans.Color().getHex()
+		];
+		var option = {
+			radius 		: 25,
+			colors 		: colors,
+			offsetX 	: 0,
+			offsetY 	: 0,
+			showLabel 	: false,
+			opacity 	: 1.0
+		};
+
+		var chartLayer = new GeoBeans.Layer.PieChartLayer("pie","china_prov_point","prov_fname",
+			"gisdb","gongye","地区", ["水泥产量_万吨", "钢材产量_万吨"],option);
+		mapObj.addLayer(chartLayer);
+		mapObj.draw();
+	}
+
+	function removePieChart(){
+		mapObj.removeLayer("pie");
+		mapObj.draw();
+	}
+
+
+	function addAQIChart(){
+		var option = {
+			colorMapID : 10
+		};
+
+		var layer = new GeoBeans.Layer.AQIChartLayer("aqi","base",
+			"gc_aqi","pm2_5","position_name","station_code","time_point","2016-03-10 13:00:00",option);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();		
+	}
+
+	function removeAQIChart(){
+		mapObj.removeLayer("aqi");
+		mapObj.draw();
+	}
+
+
+	function addAQITimeline(){
+		var option = {
+			colorMapID : 10
+		};
+		var timePoints = ["2016-03-10 10:00:00",
+						  "2016-03-10 11:00:00",						
+						  "2016-03-10 13:00:00"];
+		var interval = 1000;
+		var layer = new GeoBeans.Layer.AQITimelineLayer("timeline","base",
+			"gc_aqi","aqi","position_name","station_code","time_point",timePoints,3000,option);
+		mapObj.addLayer(layer);
+		mapObj.draw();
+	}
+
+	function removeAQITimelineChart(){
+		mapObj.removeLayer("timeline");
 		mapObj.draw();
 	}
 </script>
 <body onload="init()">
-	<button onclick="addChart()">图表</button>
-	<button onclick="addRangeSymbolChart()">复合图表</button>
-	<button onclick="changeChartOption()">修改字段</button>
-	<button onclick="removeSymbolChart()">remove symbol</button>
-	<button onclick="removeRangeSymbolChart()">remove range symbol</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
+	
+	添加<button onclick="addSymbolChart()">symbol</button>
+	<button onclick="addRangeSymbolChart()">rangesymbol</button>
+	<button onclick="addRangeChart()">range</button>
+	<button onclick="addBarChart()">bar</button>
+	<button onclick="addPieChart()">pie</button>
+	<button onclick="addAQIChart()">aqi</button>
+	<button onclick="addAQITimeline()">aqi timeline</button>
+
+	<br/><br/>
+	删除<button onclick="removeSymbolChart()">symbol</button>
+	<button onclick="removeRangeSymbolChart()">rangesymbol</button>
+	<button onclick="removeRangeChart()">range</button>
+	<button onclick="removeBarChart()">bar</button>
+	<button onclick="removePieChart()">pie</button>
+	<button onclick="removeAQIChart()">aqi</button>
+	<button onclick="removeAQITimelineChart()">aqi timeline</button>
+	
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 	
 </body>
