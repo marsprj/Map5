@@ -103,120 +103,111 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Circle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
 
 <script type="text/javascript">
 	var mapObj = null;
+	var username = "user1";
+	var mapName = "chart2";
 	function init(){
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		mapObj = new GeoBeans.Map(null,"mapDiv","name",extent,4326);
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
 		if(mapObj == null){
+			alert("没有该地图");
 			return;
 		}
-		
-		addQuadServerLayer();
+		mapObj.draw();
+	}
+
+	function addChart(){
+		var name = "tu";
+		var baseLayerName = "china_prov_point";
+		var baseLayerField = "prov_fname";
+		var dbName = "gisdb";
+		var tableName = "gongye";
+		var tableField = "地区";
+		var chartFields = ["发电量_亿千瓦小时"];
+
+
+		var chartOption = {
+			maxsize : 30,
+			outerRadius : 20,
+			color : "#6b0fb2",
+			opacityInner : 0.5,
+			opacityOuter : 0.1
+		};
+
+		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();
 
 	}
 
-	function addQuadServerLayer(){
-		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
-		mapObj.setBaseLayer(layer);
 
-		var center = new GeoBeans.Geometry.Point(116.35,39.8);	
-		mapObj.setCenter(center);
-		mapObj.setLevel(10);	
+	function addChart2(){
+		var name = "gangcai";
+		var baseLayerName = "china_prov_point";
+		var baseLayerField = "prov_fname";
+		var dbName = "gisdb";
+		var tableName = "gongye";
+		var tableField = "地区";
+		var chartFields = ["钢材产量_万吨"];
+
+
+		var chartOption = {
+			maxsize : 30,
+			outerRadius : 20,
+			color : "#2167ab",
+			opacityInner : 0.5,
+			opacityOuter : 0.1
+		};
+
+		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();
+
+	} 
+
+
+	function aqi(){
+		var name = "aqi";
+		var baseLayerName = "gc_aqi_city";
+		var baseLayerField = "name";
+		var dbName = "base";
+		var tableName = "gc_aqi_ranking_2016_01_04_12";
+		var tableField = "area";
+		var chartFields = ["aqi"];		
+		var chartOption = {
+			maxsize : 30,
+			outerRadius : 20,
+			color : "#5CA2D1",
+			opacityInner : 0.5,
+			opacityOuter : 0.1
+		};
+
+
+		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
 		mapObj.draw();
 	}
 
 
-	function addInfoWindow(){
-		// 注册弹框事件
-		mapObj.registerInfoWindowEvent();
-
-		// 定义marker
-		var x = 116.37751;
-		var y = 39.9268;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：西直门内大街69号</div><div>电话:010-62252767</div></div>";
-		var options = {
-			title : "新街口电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-		
-
-		var x = 116.381510;
-		var y = 39.909310;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：西四东大街丁55号</div><div>电话:010-66175091</div></div>";
-		var options = {
-			title : "胜利电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-
-		var x = 116.366640;
-		var y = 39.869190;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：白广路8号</div></div>";
-		var options = {
-			title : "广安门电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-
-
-		var x = 116.346760;
-		var y = 39.978640;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：成府路23号</div><div>电话:010-62313624</div></div>";
-		var options = {
-			title : "五道口工人俱乐部电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-		mapObj.draw();
-		
+	for(var i = 0; i < 18; ++i){
+		var opacity = 1 - 1/18*i;
+		console.log(opacity.toFixed(2));
 	}
-
-	
 
 </script>
 <body onload="init()">
-	<button onclick="addInfoWindow()">弹框</button>
+	<button onclick="addChart()">图表</button>
+	<button onclick="addChart2()">图表2</button>
+	<button onclick="aqi()">aqi</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	

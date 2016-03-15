@@ -117,106 +117,106 @@
 
 <script type="text/javascript">
 	var mapObj = null;
+	var mapName = "0311_1";
+	var username = "user1";
 	function init(){
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		mapObj = new GeoBeans.Map(null,"mapDiv","name",extent,4326);
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
 		if(mapObj == null){
 			return;
 		}
-		
-		addQuadServerLayer();
-
+		mapObj.draw();
 	}
+
 
 	function addQuadServerLayer(){
-		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
 		mapObj.setBaseLayer(layer);
-
-		var center = new GeoBeans.Geometry.Point(116.35,39.8);	
+		var viewer = mapObj.viewer;
+		var level = mapObj.getLevel(viewer);
+		if(level == null){
+			level = 2;
+		}
+		var center = mapObj.center;
+		if(center == null){
+			center = new GeoBeans.Geometry.Point(0,0);	
+		}
 		mapObj.setCenter(center);
-		mapObj.setLevel(10);	
+		mapObj.setLevel(level);	
 		mapObj.draw();
 	}
 
 
-	function addInfoWindow(){
-		// 注册弹框事件
-		mapObj.registerInfoWindowEvent();
 
-		// 定义marker
-		var x = 116.37751;
-		var y = 39.9268;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：西直门内大街69号</div><div>电话:010-62252767</div></div>";
-		var options = {
-			title : "新街口电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
+	function drawPoint(){
+		// var point = new GeoBeans.Geometry.Point(117.2148,39.0281);
+		var renderer = mapObj.renderer;
+		for(var i = 0; i < 100;++i){
+			var x = Math.random() * (118.063406 - 116.702314 ) + 116.702314;
+			var y = Math.random() * (40.252049 - 38.554891 ) + 38.554891;
+			var point = new GeoBeans.Geometry.Point(x,y);
+			var color1 = new GeoBeans.Color();
+			// color1.setByHex("#B080D7",0.9);
+			// color1.setByHex("#6b0fb2",1);
+			// color1.setByHex("#5CA2D1",0.5);
+			var color = "#5CA2D1";
+			var color2 = new GeoBeans.Color();
+			// color2.setByHex("#EBDEF4",0.2);
+			color2.setByHex("#5CA2D1",0.1);
+			var radius = Math.random() * (20 - 11) + 10;
+			radiusOuter = radius + 10;
+			renderer.drawRing(point,radius,radiusOuter,color,0.5,0.1,mapObj.transformation);
+		}
 		
+		for(var i = 0; i < 1000;++i){
+			var x = Math.random() * (118.063406 - 116.702314 ) + 116.702314;
+			var y = Math.random() * (40.252049 - 38.554891 ) + 38.554891;
+			var point = new GeoBeans.Geometry.Point(x,y);
+			var color1 = new GeoBeans.Color();
+			// color1.setByHex("#B080D7",0.9);
+			// color1.setByHex("#6b0fb2",1);
+			color1.setByHex("#2167AB",0.5);
 
-		var x = 116.381510;
-		var y = 39.909310;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：西四东大街丁55号</div><div>电话:010-66175091</div></div>";
-		var options = {
-			title : "胜利电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
+			var color2 = new GeoBeans.Color();
+			// color2.setByHex("#EBDEF4",0.2);
+			color2.setByHex("#2167AB",0.1);
+			var radius = Math.random() * (20 - 11) + 10;
+			// renderer.drawRing(point,radius,12,color1,color2,mapObj.transformation);
+		}
+		for(var i = 0; i < 1000;++i){
+			var x = Math.random() * (118.063406 - 116.702314 ) + 116.702314;
+			var y = Math.random() * (40.252049 - 38.554891 ) + 38.554891;
+			var point = new GeoBeans.Geometry.Point(x,y);
+			var color1 = new GeoBeans.Color();
+			// color1.setByHex("#B080D7",0.9);
+			// color1.setByHex("#6b0fb2",1);
+			color1.setByHex("#6B0FB2",0.5);
 
+			var color2 = new GeoBeans.Color();
+			// color2.setByHex("#EBDEF4",0.2);
+			color2.setByHex("#6B0FB2",0.1);
+			var radius = Math.random() * (20 - 11) + 10;
+			// renderer.drawRing(point,radius,12,color1,color2,mapObj.transformation);
+		}
 
-		var x = 116.366640;
-		var y = 39.869190;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：白广路8号</div></div>";
-		var options = {
-			title : "广安门电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// renderer.setSymbolizer(symbolizer);
+		// renderer.drawPoint(point,symbolizer,mapObj.transformation);
+		// var color1 = new GeoBeans.Color();
+		// color1.setByHex("#B080D7",0.5);
 
-
-
-		var x = 116.346760;
-		var y = 39.978640;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：成府路23号</div><div>电话:010-62313624</div></div>";
-		var options = {
-			title : "五道口工人俱乐部电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-		mapObj.draw();
-		
+		// var color2 = new GeoBeans.Color();
+		// color2.setByHex("#EBDEF4",0.5);
+		// renderer.drawRing(point,10,10,color1,color2,mapObj.transformation);
+		// mapObj.draw();
 	}
-
 	
 
 </script>
 <body onload="init()">
-	<button onclick="addInfoWindow()">弹框</button>
+	<button onclick="addQuadServerLayer()">加载QuadServer图层</button>
+	<button onclick="drawPoint()">draw point</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	
