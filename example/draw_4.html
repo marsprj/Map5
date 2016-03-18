@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-<script type="text/javascript" src="../lib/Map5.min.js"></script>
-
-<!-- <script type="text/javascript" src="../lib/GeoBeans.js"></script>
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
@@ -100,125 +100,113 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/HeatMapLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polyline.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Overlay/Circle.js"></script> -->
-
+<script type="text/javascript" src="../lib/heatmap.min.js"></script>
+<!-- <script type="text/javascript" src="../lib/heatmap.min-2.js"></script> -->
+<!-- <script type="text/javascript" src="../lib/heatmap.js"></script> -->
 <script type="text/javascript">
-	var mapObj = null;
-	function init(){
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		mapObj = new GeoBeans.Map(null,"mapDiv","name",extent,4326);
-		if(mapObj == null){
-			return;
+
+var mapManager = null;
+
+var countryLayer = null;
+var citiesLayer = null;
+var aqiLayer = null;
+var aqiLayer2 = null;
+var heatMapLayer = null;
+
+var mapObj = null;
+var username = "user1";
+var mapName = "world_tt";
+function init(){
+	var user = new GeoBeans.User(username);
+	var mapManager = user.getMapManager();
+	mapObj = mapManager.getMap("mapDiv",mapName);
+	if(mapObj == null){
+		alert("没有该地图");
+		return;
+	}
+	mapObj.draw();
+}
+
+function addLayerHeatMap_cities_db(){
+	mapObj.addHeatMap("cities","populat");
+	mapObj.draw();
+}
+
+function addLayerHeatMap_aqi_db(){
+	mapObj.addHeatMap("aqi","pm2_5");
+	mapObj.draw();
+}
+
+
+function removeHeatMap_cities(){
+	mapObj.removeHeatMap("cities");
+	mapObj.draw();
+}
+
+function removeHeatMap_aqi(){
+	mapObj.removeHeatMap("aqi");
+	mapObj.draw();	
+}
+
+var flag = false;
+function setHeatMapVisible(){
+	mapObj.setHeatMapVisible("cities",flag);
+	if(flag){
+		flag = false;
+	}else{
+		flag = true;
+	}
+	mapObj.draw();	
+}
+
+
+function addHeatMap(layerName){
+	var layer = mapObj.getLayer(layerName);
+	layer.setVisiable(true);
+	var config = {
+		gradient : {
+		    '0.2' : 'blue',
+		    '0.4' : 'cyan',
+		    '0.6' : 'lightgreen',
+		    '0.8' : 'yellow',
+		    '0.9' : 'orange',
+		    '1.0' : 'red'
 		}
-		
-		addQuadServerLayer();
-
-	}
-
-	function addQuadServerLayer(){
-		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
-		mapObj.setBaseLayer(layer);
-
-		var center = new GeoBeans.Geometry.Point(116.35,39.8);	
-		mapObj.setCenter(center);
-		mapObj.setLevel(10);	
-		mapObj.baseLayer.MAX_ZOOM_LEVEL = 13;
-		mapObj.draw();
-	}
-
-
-	function addInfoWindow(){
-		// 注册弹框事件
-		mapObj.registerInfoWindowEvent();
-
-		// 定义marker
-		var x = 116.37751;
-		var y = 39.9268;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：西直门内大街69号</div><div>电话:010-62252767</div></div>";
-		var options = {
-			title : "新街口电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-		
-
-		var x = 116.381510;
-		var y = 39.909310;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：西四东大街丁55号</div><div>电话:010-66175091</div></div>";
-		var options = {
-			title : "胜利电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-
-		var x = 116.366640;
-		var y = 39.869190;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：白广路8号</div></div>";
-		var options = {
-			title : "广安门电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-
-
-		var x = 116.346760;
-		var y = 39.978640;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.icon_url = "marker.png";
-		symbolizer.icon_offset_x = 0;
-		symbolizer.icon_offset_y = 0;
-		var html = "<div><div>地址：成府路23号</div><div>电话:010-62313624</div></div>";
-		var options = {
-			title : "五道口工人俱乐部电影院",
-		};
-		var infoWindow = new GeoBeans.InfoWindow(html,options);
-		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
-		mapObj.addOverlay(marker);
-
-		mapObj.draw();
-		
-	}
-
-	
-
+		// gradient : {
+		//     '0.2' : '#c4d7e2',
+		//     '0.4' : '#A2C7E2',
+		//     '0.6' : '#5CA2D1',
+		//     '0.8' : '#2166AB',
+		//     '0.9' : '#0F3B82',
+		//     '1.0' : '#081B47'
+		// }
+	};
+	mapObj.addHeatMap(layerName,'aqi',null,config);
+	mapObj.draw();	
+}
 </script>
+
+
+<title>heatmap</title>
+</head>
+
 <body onload="init()">
-	<button onclick="addInfoWindow()">弹框</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
+<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px">
 	</div>
-	
+	增加：
+	<button onclick="addHeatMap('aqi')">热力图</button>
 </body>
+</html>
+
+
+
+
