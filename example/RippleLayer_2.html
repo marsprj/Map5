@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
+<script type="text/javascript" src='../lib/requestNextAnimationFrame.js'></script>
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/File/FileManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/TileDB/TileDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Line/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Circle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Label.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Label/PointLabel.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/IDFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/UnaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/ColorMap.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Symbol.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GeoLineLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+
+
+
+<script type="text/javascript">
+	var mapObj = null;
+	var username = "user1";
+	var mapName = "0407";
+	function init(){
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		// mapObj.setDrawLayerSingle(true);
+		// mapObj.setDrawFeatureLayerLocal(true);
+		var color = new GeoBeans.Color();
+		color.setByHex("#404A59",1);
+		mapObj.setBackground(color);
+		mapObj.draw();
+
+	}
+
+
+
+	function addQuadServerLayer(){
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		mapObj.setBaseLayer(layer);
+		var viewer = mapObj.viewer;
+		var level = mapObj.getLevel(viewer);
+		if(level == null){
+			level = 2;
+		}
+		var center = mapObj.center;
+		if(center == null){
+			center = new GeoBeans.Geometry.Point(0,0);	
+		}
+		mapObj.setCenter(center);
+		mapObj.setLevel(11);	
+		mapObj.baseLayer.MAX_ZOOM_LEVEL = 17;
+		mapObj.draw();
+	}
+
+
+	function addLayer(){
+		var name = "a";
+		var dbName = "gisdb";
+		// var typeName = "china_city_point";
+		var typeName = "anhui";
+		// var typeName = "earthquake_1973_2015";
+		var option = {
+			// 缩放比例
+			scale : 2.5,
+			// 波纹颜色
+			color : "#00ffff",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : 1,
+			// 波纹时间
+			period : 4,
+			alpha: 0.7,
+			showEffect : false
+		};
+
+		var filter = new GeoBeans.BinaryComparisionFilter();
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("城市代码");
+		var literal =  new GeoBeans.Literal();
+		// literal.setValue("2016-04-08 12:00:00");
+		literal.setValue("557");
+		filter.expression1 = prop;
+		filter.expression2 = literal;
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,filter);
+		mapObj.addLayer(layer,addLayer_callback);
+	}
+
+
+	function addLayer_callback(){
+		mapObj.draw();
+	}
+
+
+
+	function loadData(){
+		$.ajax({
+			url : "xizang.txt",
+			success: function(data,textStatus){
+				console.log(textStatus);
+				parseData(data);
+			}
+		});
+	}
+
+	function parseData(data){
+		var line = data.split('\n');
+		console.log(line.length);
+		var lineArray = null;
+		var renderer = mapObj.renderer;
+		for(var i = 0; i< line.length; ++i){
+			lineArray = line.split(",");
+			var x = lineArray[3];
+			var y = lineArray[4];
+			var point = mapObj.transformation.toScreenPoint(x,y);
+			renderer.drawGeometry(point,null,mapObj.transformation);
+		}
+	}
+
+
+	function addXiZang_ruo(){
+		var name = "2";
+		var dbName = "gisdb";
+		// var typeName = "china_city_point";
+		var typeName = "xizang";
+		// var typeName = "earthquake_1973_2015";
+		var option = {
+			// 缩放比例
+			scale : 2.5,
+			// 波纹颜色
+			// color : "#00ffff",
+			color : "#258CF9",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : 1,
+			// 波纹时间
+			period : 4,
+			alpha: 0.8,
+			showEffect : false
+		};
+
+		var filter = new GeoBeans.BinaryComparisionFilter();
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
+		// filter.operator =  GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("field8");
+		var literal =  new GeoBeans.Literal();
+		// literal.setValue("2016-04-08 12:00:00");
+		literal.setValue("100");
+		filter.expression1 = prop;
+		filter.expression2 = literal;
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,filter);
+		mapObj.addLayer(layer,addLayer_callback);
+	}
+
+	function addXiZang_qiang(){
+		var name = "3";
+		var dbName = "gisdb";
+		// var typeName = "china_city_point";
+		var typeName = "xizang";
+		// var typeName = "earthquake_1973_2015";
+		var option = {
+			// 缩放比例
+			scale : 2.5,
+			// 波纹颜色
+			// color : "#00ffff",
+			color : "#ffffff",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : 1,
+			// 波纹时间
+			period : 4,
+			alpha: 0.8,
+			showEffect : false
+		};
+
+		var filter = new GeoBeans.BinaryComparisionFilter();
+		// filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
+		filter.operator =  GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("field8");
+		var literal =  new GeoBeans.Literal();
+		// literal.setValue("2016-04-08 12:00:00");
+		literal.setValue("1000");
+		filter.expression1 = prop;
+		filter.expression2 = literal;
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,filter);
+		mapObj.addLayer(layer,addLayer_callback);
+	}	
+
+
+	function addXiZang_zhong(){
+		var name = "4";
+		var dbName = "gisdb";
+		// var typeName = "china_city_point";
+		var typeName = "xizang";
+		// var typeName = "earthquake_1973_2015";
+		var option = {
+			// 缩放比例
+			scale : 2.5,
+			// 波纹颜色
+			// color : "#00ffff",
+			color : "#0EF1F2",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : 1,
+			// 波纹时间
+			period : 4,
+			alpha: 0.8,
+			showEffect : false
+		};
+
+		var filter = new GeoBeans.BinaryLogicFilter();
+		filter.type = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+
+		var filter1 = new GeoBeans.BinaryComparisionFilter();
+		filter1.operator =  GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("field8");
+		var literal =  new GeoBeans.Literal();
+		literal.setValue("100");
+		filter1.expression1 = prop;
+		filter1.expression2 = literal;
+
+		var filter2 = new GeoBeans.BinaryComparisionFilter();
+		filter2.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("field8");
+		var literal =  new GeoBeans.Literal();
+		literal.setValue("1000");
+		filter1.expression1 = prop;
+		filter1.expression2 = literal;
+		filter.addFilter(filter1);
+		filter.addFilter(filter2);
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,filter);
+		mapObj.addLayer(layer,addLayer_callback);
+	}
+
+
+	function addHospital(){
+		var name = "hos";
+		var dbName = "base";
+		// var typeName = "china_town_point";
+		var typeName = "china_hospital_point";
+		// var typeName = "earthquake_1973_2015";
+		var option = {
+			// 缩放比例
+			scale : 2.5,
+			// 波纹颜色
+			// color : "#00ffff",
+			color : "#258CF9",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : 1,
+			// 波纹时间
+			period : 4,
+			alpha: 0.8,
+			showEffect : false
+		};	
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option);
+		mapObj.addLayer(layer,addLayer_callback);	
+	}
+
+
+
+	// function createJson(){
+	// 	var typeName = "china_hospital_point";
+	// 	var mapName = "0407";
+	// 	var url = "http://192.168.111.82/ows/user1/mgr";
+	// 	var params = "service=wfs&version=1.0.0&request=getFeature&typeName=" + typeName + "&mapName=" + mapName + "&maxFeatures=1&offset=0"
+	// 	$.ajax({
+	// 		type	:"get",
+	// 		url		: url,
+	// 		data	: encodeURI(encodeURI(params)),
+	// 		dataType: "xml",
+	// 		async	: false,
+	// 		beforeSend: function(XMLHttpRequest){
+	// 		},
+	// 		success	: function(xml, textStatus){
+	// 			// alert(xml);
+	// 			createJson2(xml);
+	// 		},
+	// 		complete: function(XMLHttpRequest, textStatus){
+	// 		},
+	// 		error	: function(){
+	// 		}
+	// 	});		
+	// }
+
+	function createJson(){
+		var layer = mapObj.getLayer("hos");
+		var features = layer.features;
+		var json = "[";
+		var feature = null,geometry = null,x = null,y = null,values = null;
+		// for(var i = 0; i < 1;++i){
+		for(var i = 0; i < features.length;++i){	
+			feature = features[i];
+			values = feature.values;
+			geometry = feature.geometry;
+			id = values[0];
+			name = values[1];
+			json += '{'
+				+ '"id":' +  id  + ','
+				// + '"name":' +  name  + ','
+				+ '"x":' + geometry.x + ','
+				+ '"y":' + geometry.y + '}';
+			if(i < features.length - 1){
+				json += ',';
+			}
+		}
+
+		json += ']';
+		console.log(json);
+	}
+
+
+	function loadJson(){
+		var time = new Date();
+		$.getJSON('hospital.json',function(data){
+
+		});
+		console.log(new Date() - time);
+	}
+</script>
+<body onload="init()">
+
+
+	<button onclick="addLayer()">anhui</button>
+	<button onclick="addXiZang_ruo()">xizang-弱</button>
+	<button onclick="addXiZang_zhong()">xizang-中</button>
+	<button onclick="addXiZang_qiang()">xizang-强</button>
+
+	<button onclick="addHospital()">医院</button>
+
+	<button onclick="createJson()">生成json</button>	
+	<button onclick="loadJson()">生成json</button>	
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+	
+</body>

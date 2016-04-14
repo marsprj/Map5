@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
+
+<script type="text/javascript" src="../lib/GeoBeans.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/File/FileManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/TileDB/TileDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Line/LinearRing.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/Circle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Label.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Label/PointLabel.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/IDFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/UnaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/MapWorkspace.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/ColorMap.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/InfoWindow.js"></script>
+
+<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
+
+
+<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+
+<script src='requestNextAnimationFrame.js'></script>
+
+<script type="text/javascript">
+	var mapObj = null;
+	var username = "user1";
+	var mapName = "0330";
+	function init(){
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		mapObj.setDrawLayerSingle(true);
+		mapObj.draw();
+
+		// 定义marker
+		var x = 116.4551;
+		var y = 40.2539;
+		var point = new GeoBeans.Geometry.Point(x,y);
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.icon_url = "marker.png";
+		symbolizer.icon_offset_x = 0;
+		symbolizer.icon_offset_y = 0;
+
+		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,null);	
+		mapObj.addOverlay(marker);
+
+
+
+		var x = 91.1865;
+		var y = 30.1465;
+		var point = new GeoBeans.Geometry.Point(x,y);
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.icon_url = "marker.png";
+		symbolizer.icon_offset_x = 0;
+		symbolizer.icon_offset_y = 0;
+
+		var marker = new GeoBeans.Overlay.Marker("2",point,symbolizer,null);	
+		mapObj.addOverlay(marker);
+		// addQuadServerLayer();
+	}
+
+
+	function addQuadServerLayer(){
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		mapObj.setBaseLayer(layer);
+		var viewer = mapObj.viewer;
+		var level = mapObj.getLevel(viewer);
+		if(level == null){
+			level = 2;
+		}
+		var center = mapObj.center;
+		if(center == null){
+			center = new GeoBeans.Geometry.Point(0,0);	
+		}
+		mapObj.setCenter(center);
+		mapObj.setLevel(11);	
+		mapObj.baseLayer.MAX_ZOOM_LEVEL = 17;
+		mapObj.draw();
+	}
+
+
+	function setRed(){
+		var style = '<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" version="1.0.0"><sld:UserLayer><sld:LayerFeatureConstraints><sld:FeatureTypeConstraint/></sld:LayerFeatureConstraints><sld:UserStyle><sld:Name>0316_p_3</sld:Name><sld:FeatureTypeStyle><sld:Rule><sld:PolygonSymbolizer><sld:WellKnownName>SimpleRegion</sld:WellKnownName><sld:Fill><sld:CssParameter name="fill">#ff7474</sld:CssParameter><sld:CssParameter name="fill-opacity">0.8</sld:CssParameter></sld:Fill><sld:Stroke><sld:CssParameter name="stroke">#ffffff</sld:CssParameter><sld:CssParameter name="stroke-opacity">0.2</sld:CssParameter><sld:CssParameter name="stroke-width">1</sld:CssParameter></sld:Stroke></sld:PolygonSymbolizer></sld:Rule></sld:FeatureTypeStyle><sld:StyleClass>single</sld:StyleClass></sld:UserStyle></sld:UserLayer></sld:StyledLayerDescriptor>';
+		
+		updateStyle("0316_p_3",style);
+	}
+
+	function updateStyle(styleName,styleXML){
+		if(styleName == null || styleXML == null){
+			return;
+		}
+
+		var url = "http://192.168.111.82/ows/user1/mgr?";
+		var params = "service=ims&version=1.0.0&request=UpdateStyle&type=point&name=" + styleName
+			+ "&style=" + styleXML; 
+
+		$.ajax({
+			type	:"post",
+			url		: url,
+			data 	: encodeURI(params),
+			// contentType: "application/xml",
+			contentType :"application/x-www-form-urlencoded",
+			dataType: "xml",
+			async	: true,
+			beforeSend: function(XMLHttpRequest){
+			},
+			success	: function(xml, textStatus){
+				mapObj.draw();
+				mapObj.setStyle("quxian_1",styleName,setStyle_callback);
+			},
+			complete: function(XMLHttpRequest, textStatus){
+			},
+			error	: function(){
+			}
+		});	
+	}
+
+	function setStyle_callback(){
+		mapObj.draw();
+	}
+
+
+
+	function setBackground(){
+		var hex = $("#hex").val();
+		var color = new GeoBeans.Color();
+		color.setByHex(hex,1);
+		mapObj.setBackground(color);
+		mapObj.draw();
+	}
+
+	function drawLine(){
+		var renderer = mapObj.renderer;
+
+
+		var context = renderer.context;
+		context.beginPath();
+		
+		// var distance = Math.sqrt((point_beijing.x - point_lasa.x)* (point_beijing.x - point_lasa.x)
+		// + (point_beijing.y - point_lasa.y)*(point_beijing.y - point_lasa.y));
+		// var point_center_x = (point_beijing.x + point_lasa.x)/2;
+		// var point_center_y = (point_beijing.y + point_lasa.y)/2;
+
+		var point_beijing = new GeoBeans.Geometry.Point(116.4551,40.253);
+		var point_lasa = new GeoBeans.Geometry.Point(91.1865,30.1465);
+		// var point_beijing = new GeoBeans.Geometry.Point(100,60);
+		// var point_lasa = new GeoBeans.Geometry.Point(100,0);		
+		var point = getPoint(point_beijing,point_lasa,0.2);
+		console.log(point);
+
+		var point_beijing_s = mapObj.transformation.toScreenPoint(point_beijing.x,point_beijing.y);
+		var point_lasa_s = mapObj.transformation.toScreenPoint(point_lasa.x,point_lasa.y);
+		var point_s = mapObj.transformation.toScreenPoint(point.x,point.y);
+
+		context.moveTo(point_beijing_s.x,point_beijing_s.y);
+		
+		context.quadraticCurveTo(point_s.x,point_s.y,point_lasa_s.x,point_lasa_s.y);
+		context.stroke();
+
+		// var point_beijing = new GeoBeans.Geometry.Point(116.4551,40.253);
+		// var point_lasa = new GeoBeans.Geometry.Point(91.1865,30.1465);
+		// var points = [point_beijing,point_lasa];
+		// var line = new GeoBeans.Geometry.LineString(points);
+		// var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+
+		// renderer.drawGeometry(line,symbolizer,mapObj.transformation);
+		// mapObj.draw();
+
+	}
+
+	function getPoint(point_begin,point_end,curveness){
+		var point_center = new GeoBeans.Geometry.Point(point_begin.x/2 + point_end.x/2,
+			point_begin.y/2 + point_end.y/2);
+
+		var distance = Math.sqrt((point_begin.x-point_end.x) * (point_begin.x-point_end.x) + 
+			(point_begin.y-point_end.y) * (point_begin.y-point_end.y));
+		console.log(distance);
+
+		var k = (point_begin.x - point_end.x)/(point_begin.y - point_end.y);
+		var angle = Math.atan(k);
+		angle = Math.PI/2 - angle;
+		console.log(angle*180/Math.PI);
+		var distance_cur = distance * curveness;
+		console.log(distance_cur);
+		var x_cur = Math.sin(angle) * distance_cur;
+		var y_cur = Math.cos(angle) * distance_cur;
+		var x = point_center.x + x_cur;
+		var y = point_center.y - y_cur;
+		var point = new GeoBeans.Geometry.Point(x,y);
+		return point;
+	}
+
+	// var disc = {
+	// 	x : 20,
+	// 	y : 20,
+	// 	deltax : 0.3,
+	// 	deltay : 0.2,
+	// 	radius : 10
+	// };
+	var disc = {
+		beginPoint : new GeoBeans.Geometry.Point(116.4551,40.253),
+		endPoint : new GeoBeans.Geometry.Point(91.1865,30.1465),
+		radius : 4,
+		time : 4 ,//单位秒
+		mapDelta : 4, //按照秒走的距离
+		curveness : 0.2
+	};
+	var lastTime = null;
+	// 直线
+	function drawCircle(time){
+		var elapsedTime = 0;
+		if(lastTime == null){
+			lastTime = time;
+			disc.x = disc.beginPoint.x;
+			disc.y = disc.beginPoint.y;
+		}else{
+			elapsedTime = time - lastTime;
+			lastTime = time;
+		}
+
+		disc.x = disc.x + disc.deltax * elapsedTime;
+		disc.y = disc.y + disc.deltay * elapsedTime;
+		if((disc.beginPoint.x >= disc.endPoint.x&& disc.x <= disc.endPoint.x)
+			|| (disc.beginPoint.x <= disc.endPoint.x&& disc.x >= disc.endPoint.x)){
+			disc.x = disc.beginPoint.x;
+			disc.y = disc.beginPoint.y;
+		}
+
+		var point = mapObj.transformation.toScreenPoint(disc.x,disc.y);
+
+		var renderer = mapObj.renderer;
+		var context = renderer.context;
+		context.save();
+      	context.beginPath();
+      	context.arc(point.x, point.y, disc.radius, 0, Math.PI*2, false);
+      	context.fill();
+      	context.stroke();
+      	context.restore();
+	} 
+
+	var beginTime = null;
+	function drawCurveLine(time){
+		// var elapsedTime = 0;
+		// if(lastTime == null){
+		// 	lastTime = time;
+		// 	disc.x = disc.beginPoint.x;
+		// 	disc.y = disc.beginPoint.y;
+		// }else{
+		// 	elapsedTime = time - lastTime;
+		// 	lastTime = time;
+		// }
+		var p0 = disc.beginPoint;
+		var p1 = disc.centerPoint;
+		var p2 = disc.endPoint;
+		var alltime = Math.sqrt((p2.x - p0.x)*(p2.x - p0.x) + (p2.y - p0.y)*(p2.y - p0.y))/disc.mapDelta*1000;
+		var elapsedTime = 0;
+		if(beginTime == null){
+			beginTime = time;
+		}else{
+			elapsedTime = time - beginTime;
+			if(elapsedTime >= alltime){
+				elapsedTime = 0;
+				beginTime = time;
+			}
+		}
+
+		var t = elapsedTime / alltime;
+		var x = (1-t) * (1-t)*p0.x + 2*t*(1-t)*p1.x + t*t*p2.x;
+		var y = (1-t) * (1-t)*p0.y + 2*t*(1-t)*p1.y + t*t*p2.y;
+		var point = mapObj.transformation.toScreenPoint(x,y);
+
+		var renderer = mapObj.renderer;
+		var context = renderer.context;
+		var color = new GeoBeans.Color();
+		var rgba = color.getRgba();
+		context.fillStyle = rgba;
+		context.save();
+      	context.beginPath();
+      	context.arc(point.x, point.y, disc.radius, 0, Math.PI*2, false);
+      	context.fill();
+      	context.stroke();
+      	context.restore();
+
+	}
+	function animate(time) {
+		var renderer = mapObj.renderer;
+		var context = renderer.context;
+		// context.clearRect(0,0,mapObj.canvas.width,mapObj.canvas.height);
+
+		// drawCircle(time);
+		drawCurveLine(time);
+
+		window.requestNextAnimationFrame(animate); 
+	}
+
+	function beginAnimate(){
+		// calculateLine();
+		calcuateCurveLine();
+		window.requestNextAnimationFrame(animate);
+	}
+
+	function calculateLine(){
+		var distance = Math.sqrt((disc.beginPoint.x - disc.endPoint.x)*(disc.beginPoint.x - disc.endPoint.x) + (disc.beginPoint.y - disc.endPoint.y)*(disc.beginPoint.y - disc.endPoint.y));
+		var distance_x = disc.endPoint.x - disc.beginPoint.x;
+		var distance_y = disc.endPoint.y - disc.beginPoint.y;
+
+		var deltax = distance_x / (disc.time*1000);
+		var deltay = distance_y/ (disc.time*1000);
+		disc.deltax = deltax;
+		disc.deltay = deltay;
+
+	}
+
+	function calcuateCurveLine(){
+		var point = getPoint(disc.beginPoint,disc.endPoint,disc.curveness);
+		disc.centerPoint = point;
+	}
+</script>
+<body onload="init()">
+	<input type="text" id="hex" value="#404A59">
+	<button onclick="setBackground()">红色</button>
+
+	<button onclick="drawLine()">线</button>
+
+	<button onclick="beginAnimate()">动画</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
+	</div>
+	
+</body>

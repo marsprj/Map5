@@ -8,7 +8,7 @@
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
-
+<script type="text/javascript" src='../lib/requestNextAnimationFrame.js'></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
@@ -106,14 +106,22 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GeoLineLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
 
+
+<script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+
+
+
 <script type="text/javascript">
 	var mapObj = null;
 	var username = "user1";
-	var mapName = "chart2";
+	var mapName = "0330";
 	function init(){
 		var user = new GeoBeans.User(username);
 		var mapManager = user.getMapManager();
@@ -122,195 +130,300 @@
 			alert("没有该地图");
 			return;
 		}
+		// mapObj.setDrawLayerSingle(true);
+		
+		var color = new GeoBeans.Color();
+		color.setByHex("#404A59",1);
+		mapObj.setBackground(color);
 		mapObj.draw();
+
+		// 定义marker
+		// var x = 116.4551;
+		// var y = 40.2539;
+		// var point = new GeoBeans.Geometry.Point(x,y);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.icon_url = "marker.png";
+		// symbolizer.icon_offset_x = 0;
+		// symbolizer.icon_offset_y = 0;
+
+		// var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,null);	
+		// mapObj.addOverlay(marker);
+
+
+
+		// var x = 91.1865;
+		// var y = 30.1465;
+		// var point = new GeoBeans.Geometry.Point(x,y);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.icon_url = "marker.png";
+		// symbolizer.icon_offset_x = 0;
+		// symbolizer.icon_offset_y = 0;
+
+		// var marker = new GeoBeans.Overlay.Marker("2",point,symbolizer,null);	
+		// mapObj.addOverlay(marker);
+
+
+		// var x = 108.479;
+		// var y = 23.1152;
+		// var point = new GeoBeans.Geometry.Point(x,y);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.icon_url = "marker.png";
+		// symbolizer.icon_offset_x = 0;
+		// symbolizer.icon_offset_y = 0;
+
+		// var marker = new GeoBeans.Overlay.Marker("3",point,symbolizer,null);	
+		// mapObj.addOverlay(marker);
+		// addQuadServerLayer();
 	}
 
-	function addChart(){
-		var name = "tu";
-		var baseLayerName = "china_prov_point";
-		var baseLayerField = "prov_fname";
-		var dbName = "gisdb";
-		var tableName = "gongye";
-		var tableField = "地区";
-		var chartFields = ["发电量_亿千瓦小时"];
 
 
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#6b0fb2",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
-		};
-
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		mapObj.draw();
-
-	}
-
-
-	function addChart2(){
-		var name = "gangcai";
-		var baseLayerName = "china_prov_point";
-		var baseLayerField = "prov_fname";
-		var dbName = "gisdb";
-		var tableName = "gongye";
-		var tableField = "地区";
-		var chartFields = ["钢材产量_万吨"];
-
-
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#2167ab",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
-		};
-
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		mapObj.draw();
-
-	} 
-
-
-	function aqi(){
-		var name = "aqi";
-		var baseLayerName = "gc_aqi_city";
-		var baseLayerField = "name";
-		var dbName = "base";
-		var tableName = "gc_aqi_ranking_2016_01_04_12";
-		var tableField = "area";
-		var chartFields = ["aqi"];		
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#5CA2D1",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
-		};
-
-
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		layer.renderer.context.globalCompositeOperation = "xor";
+	function addQuadServerLayer(){
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		mapObj.setBaseLayer(layer);
+		var viewer = mapObj.viewer;
+		var level = mapObj.getLevel(viewer);
+		if(level == null){
+			level = 2;
+		}
+		var center = mapObj.center;
+		if(center == null){
+			center = new GeoBeans.Geometry.Point(0,0);	
+		}
+		mapObj.setCenter(center);
+		mapObj.setLevel(11);	
+		mapObj.baseLayer.MAX_ZOOM_LEVEL = 17;
 		mapObj.draw();
 	}
 
 
-
-
-
-	function aqi_source_over(){
-		mapObj.removeLayer("aqi");
-		var name = "aqi";
-		var baseLayerName = "gc_aqi_city";
-		var baseLayerField = "name";
+	function addLayer(){
+		var name = "a";
 		var dbName = "base";
-		var tableName = "gc_aqi_ranking_2016_01_04_12";
-		var tableField = "area";
-		var chartFields = ["aqi"];		
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#5CA2D1",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
+		// var typeName = "china_city_point";
+		var typeName = "gc_aqi_ranking_2016_01_04_12";
+		// var typeName = "earthquake_1973_2015";
+		var option = {
+			// 缩放比例
+			scale : 2.5,
+			// 波纹颜色
+			color : "#00ffff",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : 10,
+			// 波纹时间
+			period : 4,
+			alpha: 0.7
+			// showEffect : false
 		};
-
-
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		layer.renderer.context.globalCompositeOperation = "source-over";
-		mapObj.draw();		
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option);
+		mapObj.addLayer(layer,addLayer_callback);
 	}
 
 
-	function aqi_lighter(){
-		mapObj.removeLayer("aqi");
-		var name = "aqi";
-		var baseLayerName = "gc_aqi_city";
-		var baseLayerField = "name";
-		var dbName = "base";
-		var tableName = "gc_aqi_ranking_2016_01_04_12";
-		var tableField = "area";
-		var chartFields = ["aqi"];		
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#5CA2D1",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
-		};
-
-
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		// layer.renderer.context.globalCompositeOperation = "lighter";
-		mapObj.draw();				
+	function addLayer_callback(){
+		mapObj.draw();
 	}
 
-	function aqi_multiply(){
-		mapObj.removeLayer("aqi");
-		var name = "aqi";
-		var baseLayerName = "gc_aqi_city";
-		var baseLayerField = "name";
+	function addLayerByField(){
+		var name = "b";
 		var dbName = "base";
-		var tableName = "gc_aqi_ranking_2016_01_04_12";
-		var tableField = "area";
-		var chartFields = ["aqi"];		
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#5CA2D1",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
+		// var typeName = "china_city_point";
+		var typeName = "gc_aqi_ranking_2016_01_04_12";
+		var option = {
+			// 缩放比例
+			scale : 5,
+			// 波纹颜色
+			color : "#ff0000",
+			// 初始透明度
+			alpha : 0.6,
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radiusField : "aqi",
+			radius : function(value){
+				return value / 20;
+			},
+			// 波纹时间
+			period : 4
 		};
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option);
+		mapObj.addLayer(layer,addLayer_callback);			
+	}
+
+	function removeLayer(name){
+		mapObj.removeLayer(name);
+		mapObj.draw();
+	}
 
 
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		layer.renderer.context.globalCompositeOperation = "multiply";
-		mapObj.draw();				
-	}	
+	function addLayerByFilter(){
+		var timeFilter = new GeoBeans.BinaryComparisionFilter();
+		timeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("time_point");
+		var literal =  new GeoBeans.Literal();
+		// literal.setValue("2016-04-08 12:00:00");
+		literal.setValue("2016-04-12 10:00:00");
+		timeFilter.expression1 = prop;
+		timeFilter.expression2 = literal;
 
-	function aqi_xor(){
-		mapObj.removeLayer("aqi");
-		var name = "aqi";
-		var baseLayerName = "gc_aqi_city";
-		var baseLayerField = "name";
+		var name = "c";
 		var dbName = "base";
-		var tableName = "gc_aqi_ranking_2016_01_04_12";
-		var tableField = "area";
-		var chartFields = ["aqi"];		
-		var chartOption = {
-			maxsize : 30,
-			outerRadius : 20,
-			color : "#5CA2D1",
-			opacityInner : 0.5,
-			opacityOuter : 0.1
+		// var typeName = "china_city_point";
+		var typeName = "gc_aqi_ranking";
+		var option = {
+			// 缩放比例
+			scale : 5,
+			// 波纹颜色
+			color : "#ffff00",
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radiusField : "aqi",
+			radius : function(value){
+				return value / 20;
+			},
+			// 波纹时间
+			period : 4
 		};
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,timeFilter);
+		mapObj.addLayer(layer,addLayer_callback);
+	}
+
+	function addLayerColor(){
+		var timeFilter = new GeoBeans.BinaryComparisionFilter();
+		timeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("time_point");
+		var literal =  new GeoBeans.Literal();
+		literal.setValue("2016-04-12 10:00:00");
+		timeFilter.expression1 = prop;
+		timeFilter.expression2 = literal;
+
+		var name = "d";
+		var dbName = "base";
+		// var typeName = "china_city_point";
+		var typeName = "gc_aqi_ranking";
+		var option = {
+			// 缩放比例
+			scale : 5,
+			// 波纹颜色
+			color : colorClass,
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			field : "aqi",
+			radius : function(value){
+				return value / 20;
+			},
+			// 波纹时间
+			period : 4,
+			// 半径参数字段
+			radiusField : "aqi",
+			// 颜色参数字段
+			colorField : "aqi",
+			alpha : 0.8
+
+		};
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,timeFilter);
+		mapObj.addLayer(layer,addLayer_callback);		
+	}
 
 
-		var layer = new GeoBeans.Layer.RingChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
-		mapObj.addLayer(layer,null);
-		layer.renderer.context.globalCompositeOperation = "xor";
-		mapObj.draw();				
-	}	
+	function colorClass(value){
+		if(value <= 50){
+			return "#008000";
+		}else if(value > 50 && value <= 100){
+			return "#FFFF00";
+		}else if(value > 100 && value <= 150){
+			return "#FFA500";
+		}else if(value > 150 && value <= 200){
+			return "#FF0000";
+		}else if(value > 200 && value <= 300){
+			return "#800080";
+		}else if(value > 300){
+			return "#A52A2A";
+		}
+	}
+
+
+
+	function setShowEffect(name){
+		var layer = mapObj.getLayer(name);
+		if(layer == null){
+			return;
+		}
+		var showEffect = layer.option.showEffect;
+		if(showEffect){
+			layer.option.showEffect = false;
+		}else{
+			layer.option.showEffect = true;
+		}
+	}
+
+	function setLayerShow(name){
+		var layer = mapObj.getLayer(name);
+		if(layer == null){
+			return;
+		}
+		if(layer.visible){
+			layer.visible = false;
+		}else{
+			layer.visible = true;
+		}
+	}
+
+	function registerEvent(name){
+		var content = "{area} : {aqi}";
+		mapObj.registerRippleHitEvent(name,content);
+	}
+
+
+	function unRegisterEvent(name){
+		mapObj.unRegisterRippleHitEvent(name);
+	}
+
+	function registerEvent2(name){
+		var content = "{area}-PM2.5 : {pm2_5}";
+		mapObj.registerRippleHitEvent(name,content);		
+	}
+
 </script>
 <body onload="init()">
-	<button onclick="addChart()">图表</button>
-	<button onclick="addChart2()">图表2</button>
-	<button onclick="aqi()">aqi</button>
 
+
+	<button onclick="addLayer()">a-相同半径</button>
+	<button onclick="addLayerByField()">b-aqi字段</button>
+	<button onclick="addLayerByFilter()">c-aqi时刻</button>
+	<button onclick="addLayerColor()">d-颜色</button>
 	<br/>
-	设置aqi的样式<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation">globalCompositeOperation介绍</a>
-	<button onclick="aqi_source_over()">source-over</button>
-	<button onclick="aqi_lighter()">lighter</button>
-	<button onclick="aqi_multiply()">multiply</button>
-	<button onclick="aqi_xor()">xor</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px;">
+	<button onclick="removeLayer('a')">a-删除</button>
+	<button onclick="removeLayer('b')">b-删除</button>
+	<button onclick="removeLayer('c')">c-删除</button>
+	<button onclick="removeLayer('d')">d-删除</button>
+	<!-- <br/> -->
+	<button onclick="setShowEffect('a')">a-效果</button>
+	<button onclick="setShowEffect('b')">b-效果</button>
+	<button onclick="setShowEffect('c')">c-效果</button>	
+	<button onclick="setShowEffect('d')">d-效果</button>	
+
+	<button onclick="setLayerShow('a')">a-隐藏</button>
+	<button onclick="setLayerShow('b')">b-隐藏</button>
+	<button onclick="setLayerShow('c')">c-隐藏</button>	
+	<button onclick="setLayerShow('d')">d-隐藏</button>	
+	<br/>
+
+	<button onclick="registerEvent('a')">a- 注册</button>	
+	<button onclick="registerEvent('b')">b- 注册</button>	
+	<button onclick="registerEvent('c')">c- 注册</button>
+	<button onclick="registerEvent('d')">d- 注册</button>	
+	<button onclick="registerEvent2('a')">a- pm2.5</button>	
+	<button onclick="registerEvent2('b')">b- pm2.5</button>	
+	<button onclick="registerEvent2('c')">c- pm2.5</button>
+	<button onclick="registerEvent2('d')">d- pm2.5</button>	
+	<button onclick="unRegisterEvent('a')">a- 注销</button>	
+	<button onclick="unRegisterEvent('b')">b- 注销</button>	
+	<button onclick="unRegisterEvent('c')">c- 注销</button>
+	<button onclick="unRegisterEvent('d')">d- 注销</button>	
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 	
 </body>

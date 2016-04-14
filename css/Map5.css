@@ -382,3 +382,20 @@
 	font-size: 16px;
 	font-weight: bold;
 }
+
+.map5-tooltip{
+	position: absolute;
+	display: none;
+    border: 0px solid rgb(51, 51, 51);
+    white-space: nowrap;
+    z-index: 9999999;
+    transition: left 0.2s cubic-bezier(0.23, 1, 0.32, 1), top 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 21px;
+    font-family: 'Microsoft YaHei';
+    padding: 5px;
+    background-color: rgba(50,50,50,0.7);
+}
+
