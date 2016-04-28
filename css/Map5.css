@@ -190,6 +190,7 @@
 	bottom: 10px;
 	padding: 8px;
 	background-color: #fff;
+	z-index: 99;
 	/*display: none;*/
 }
 .chart-legend-range{
@@ -381,6 +382,7 @@
 	bottom: 0px;
 	font-size: 16px;
 	font-weight: bold;
+	z-index: 4;
 }
 
 .map5-tooltip{
@@ -399,3 +401,20 @@
     background-color: rgba(50,50,50,0.7);
 }
 
+
+
+.map5-animate-canvas,.map5-base-canvas{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+.map5-animate-canvas{
+	z-index: 3;
+}
+.map5-base-canvas{
+	z-index: 1;
+}
+.mapCanvas{
+	z-index: 2;
+	position:absolute;
+}

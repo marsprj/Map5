@@ -8,7 +8,6 @@
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
-
 <script type="text/javascript" src='../lib/requestNextAnimationFrame.js'></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
@@ -102,120 +101,75 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GeoLineLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/ClusterLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AirLineLayer.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
 
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+
 <script type="text/javascript">
 	var mapObj = null;
 	var username = "user1";
-	var mapName = "world_tt";
+	var mapName = "t6";
 	var mapManager = null;
-	// var mapName = "chart2";
-	var symbolizer_g = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	var color = new GeoBeans.Color();
-	color.setByHex("#ff0000",1);
-	symbolizer_g.fill.color = color;
-	color = new GeoBeans.Color();
-	color.setByHex("#ffffff",1);
-	symbolizer_g.stroke.color = color;
+	var serviceManager = null;
 	function init(){
 		var user = new GeoBeans.User(username);
 		mapManager = user.getMapManager();
-		
-	}
-
-	function addCluster(){
-		var pointLayer = mapObj.getLayer("cities");
-		
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
-		mapObj.addLayer(layer);
-		mapObj.draw();
-	}
-
-	function addWorldMap(){
-		if(mapObj != null){
-			mapObj.close();
-		}
-		mapObj = mapManager.getMap("mapDiv","world_tt");
+		mapObj = mapManager.getMap("mapDiv",mapName);
 		if(mapObj == null){
 			alert("没有该地图");
 			return;
 		}
-		mapObj.draw();
-	}
-
-	function addCities(){
-		var pointLayer = mapObj.getLayer("cities");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
-		mapObj.addLayer(layer);
+		// mapObj.setDrawLayerSingle(true);
+		var color = new GeoBeans.Color();
+		color.setByHex("#404A59",1);
+		// mapObj.setBackground(color);
 		mapObj.draw();
 
-		// var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-		// var color = new GeoBeans.Color();
-		// color.setByHex("#3399CC",1);
-		// symbolizer.fill.color = color;
-		// color = new GeoBeans.Color();
-		// color.setByHex("#ffffff",1);
-		// symbolizer.stroke.color = color;
-		// var pointLayer2 = mapObj.getLayer("china_city_point");
-		// var layer2 = new GeoBeans.Layer.ClusterLayer("china_city_point_c",pointLayer2,symbolizer);
-		// mapObj.addLayer(layer2);
+		serviceManager = user.getServiceManager();
+
+		// addQuadServerLayer();
 	}
 
-	function addProv(){
-		if(mapObj != null){
-			mapObj.close();
-		}
-		mapObj = mapManager.getMap("mapDiv","chart2");
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
-		var pointLayer = mapObj.getLayer("china_prov_point");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer);
-		mapObj.addLayer(layer);
-		mapObj.draw();
+
+	function getServices(){
+		serviceManager.describeServices(getServices_callback);
 	}
 
-	function addGuoan(){
-		if(mapObj != null){
-			mapObj.close();
-		}
-		mapObj = mapManager.getMap("mapDiv","guoan");
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
-		// var pointLayer = mapObj.getLayer("wwjz");
-		var pointLayer = mapObj.getLayer("whjy");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
-		mapObj.addLayer(layer);
-		mapObj.draw();		
+
+	function getServices_callback(result){
+		console.log(result);
 	}
+
+
+	function getService(){
+		var name = "world";
+		serviceManager.describeService(name,getServices_callback);
+	}
+
 
 </script>
 <body onload="init()">
-	<button onclick="addWorldMap()">cities聚类地图</button>
-	<button onclick="addCities()">cities聚类</button>
-	<button onclick="addProv()">城市聚类</button>
-	<button onclick="addGuoan()">天津聚类</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
+
+
+	<button onclick="getServices()">列表</button>
+	<button onclick="getService()">one</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
+	<!-- <div id="mapDiv" style="height:400px;width:600px;position:absolute;top:30px;"> -->
 	</div>
 	
 </body>

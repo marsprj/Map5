@@ -131,10 +131,10 @@
 			return;
 		}
 		// mapObj.setDrawLayerSingle(true);
-		
+
 		var color = new GeoBeans.Color();
 		color.setByHex("#404A59",1);
-		mapObj.setBackground(color);
+		// mapObj.setBackground(color);
 		mapObj.draw();
 
 		// 定义marker
@@ -295,7 +295,7 @@
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("time_point");
 		var literal =  new GeoBeans.Literal();
-		literal.setValue("2016-04-12 10:00:00");
+		literal.setValue("2016-04-13 10:00:00");
 		timeFilter.expression1 = prop;
 		timeFilter.expression2 = literal;
 
@@ -328,6 +328,45 @@
 	}
 
 
+	function addLayerStat(){
+		var timeFilter = new GeoBeans.BinaryComparisionFilter();
+		timeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("time_point");
+		var literal =  new GeoBeans.Literal();
+		literal.setValue("2016-04-12 10:00:00");
+		timeFilter.expression1 = prop;
+		timeFilter.expression2 = literal;
+
+		var name = "e";
+		var dbName = "base";
+		// var typeName = "china_city_point";
+		var typeName = "gc_aqi";
+		var option = {
+			// 缩放比例
+			scale : 5,
+			// 波纹颜色
+			color : colorClass,
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			field : "aqi",
+			radius : function(value){
+				return value / 20;
+			},
+			// 波纹时间
+			period : 4,
+			// 半径参数字段
+			radiusField : "aqi",
+			// 颜色参数字段
+			colorField : "aqi",
+			alpha : 0.8
+
+		};
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,timeFilter);
+		mapObj.addLayer(layer,addLayer_callback);			
+	}
+
+
 	function colorClass(value){
 		if(value <= 50){
 			return "#008000";
@@ -345,6 +384,160 @@
 	}
 
 
+	function addLayerColorMap(){
+		var timeFilter = new GeoBeans.BinaryComparisionFilter();
+		timeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("time_point");
+		var literal =  new GeoBeans.Literal();
+		literal.setValue("2016-04-12 10:00:00");
+		timeFilter.expression1 = prop;
+		timeFilter.expression2 = literal;
+
+		var name = "f";
+		var dbName = "base";
+		// var typeName = "china_city_point";
+		var typeName = "gc_aqi";
+		var option = {
+			// 缩放比例
+			scale : 5,
+			// 波纹颜色
+			color : colorByColorMap,
+			// 波纹样式，是线还是填充
+			type : "stroke",
+			radius : function(value){
+				return value / 20;
+			},
+			// 波纹时间
+			period : 4,
+			// 半径参数字段
+			radiusField : "aqi",
+			// 颜色参数字段
+			colorField : "aqi",
+			alpha : 0.8
+
+		};
+		var layer = new GeoBeans.Layer.RippleLayer(name,dbName,typeName,option,timeFilter);
+		mapObj.addLayer(layer,addLayer_callback);			
+	}
+
+	function colorByColorMap(value){
+		var minMaxValue = getMinMaxValue("aqi");
+		var min = minMaxValue.min;
+		var max = minMaxValue.max;
+
+		// var begin = "#edf8fb";
+		// var end = "#005824";
+		var begin = "#ff0000";
+		var end = "#00ff00";
+
+		var beginColor = new GeoBeans.Color();
+		beginColor.setByHex(begin,1);
+		var beginColor_hsl = beginColor.getHsl();
+		var endColor = new GeoBeans.Color();
+		endColor.setByHex(end,1);
+		var endColor_hsl = endColor.getHsl();
+
+
+		var h = beginColor_hsl.h + (value - min)* (endColor_hsl.h - beginColor_hsl.h)/(max - min);
+		var s = beginColor_hsl.s + (value - min)* (endColor_hsl.s - beginColor_hsl.s)/(max - min);
+		var l = beginColor_hsl.l + (value - min)* (endColor_hsl.l - beginColor_hsl.l)/(max - min);
+
+		var color = new GeoBeans.Color();
+		color.setByHsl(h,s,l);
+		return color.getHex();
+	}
+
+	function getMinMaxValue(chartField){
+		var min = 0;
+		var max = 500;
+		switch(chartField){
+			case "aqi":{
+				min = 0;
+				max = 500;
+				break;
+			}
+			case "co":{
+				min = 0;
+				max = 90;
+				break;
+			}
+			case "co_24h":{
+				min = 0;
+				max = 90;
+				break;
+			}
+			case "no2":{
+				min = 0;
+				max = 100;
+				break;
+			}
+			case "no2_24h":{
+				min = 0;
+				max = 100;
+				break;
+			}
+			case "o3":{
+				min = 0;
+				max = 200;
+				break;
+			}
+			case "o3_24h":{
+				min = 0;
+				max = 200;
+				break;
+			}
+			case "o3_8h":{
+				min = 0;
+				max = 200;
+				break;
+			}
+			case "o3_8h_24h":{
+				min = 0;
+				max = 200;
+				break;
+			}
+			case "pm10":{
+				min = 0;
+				max = 500;
+				break;
+			}
+			case "pm10_24":{
+				min = 0;
+				max = 500;
+				break;
+			}
+			case "pm2_5":{
+				min = 0;
+				max = 300;
+				break;
+			}
+			case "pm_2_5_24h":{
+				min = 0;
+				max = 300;
+				break;
+			}
+			case "so2":{
+				min = 0;
+				max = 500;
+				break;
+			}
+			case "so2_24h":{
+				min = 0;
+				max = 500;
+				break;
+			}
+			default:{
+				min = 0;
+				max = 500;
+				break;
+			}
+		}
+		return {
+			min : min,
+			max : max
+		}
+	}
 
 	function setShowEffect(name){
 		var layer = mapObj.getLayer(name);
@@ -369,6 +562,7 @@
 		}else{
 			layer.visible = true;
 		}
+		mapObj.draw();
 	}
 
 	function registerEvent(name){
@@ -386,6 +580,10 @@
 		mapObj.registerRippleHitEvent(name,content);		
 	}
 
+
+	function closeMap(){
+		mapObj.close();
+	}
 </script>
 <body onload="init()">
 
@@ -394,35 +592,51 @@
 	<button onclick="addLayerByField()">b-aqi字段</button>
 	<button onclick="addLayerByFilter()">c-aqi时刻</button>
 	<button onclick="addLayerColor()">d-颜色</button>
+	<button onclick="addLayerStat()">e-站点</button>
+	<button onclick="addLayerColorMap()">f-渐变</button>
+
+	<span>&nbsp;&nbsp;&nbsp;</span>
+	<button onclick="closeMap()">关闭地图</button>
 	<br/>
 	<button onclick="removeLayer('a')">a-删除</button>
 	<button onclick="removeLayer('b')">b-删除</button>
 	<button onclick="removeLayer('c')">c-删除</button>
 	<button onclick="removeLayer('d')">d-删除</button>
+	<button onclick="removeLayer('e')">e-删除</button>
+	<button onclick="removeLayer('f')">f-删除</button>
 	<!-- <br/> -->
 	<button onclick="setShowEffect('a')">a-效果</button>
 	<button onclick="setShowEffect('b')">b-效果</button>
 	<button onclick="setShowEffect('c')">c-效果</button>	
-	<button onclick="setShowEffect('d')">d-效果</button>	
+	<button onclick="setShowEffect('d')">d-效果</button>
+	<button onclick="setShowEffect('e')">e-效果</button>
+	<button onclick="setShowEffect('f')">f-效果</button>	
 
 	<button onclick="setLayerShow('a')">a-隐藏</button>
 	<button onclick="setLayerShow('b')">b-隐藏</button>
 	<button onclick="setLayerShow('c')">c-隐藏</button>	
 	<button onclick="setLayerShow('d')">d-隐藏</button>	
+	<button onclick="setLayerShow('e')">e-隐藏</button>	
+	<button onclick="setLayerShow('f')">f-隐藏</button>	
 	<br/>
 
 	<button onclick="registerEvent('a')">a- 注册</button>	
 	<button onclick="registerEvent('b')">b- 注册</button>	
 	<button onclick="registerEvent('c')">c- 注册</button>
 	<button onclick="registerEvent('d')">d- 注册</button>	
+	<button onclick="registerEvent('e')">e- 注册</button>
+	<button onclick="registerEvent('f')">f- 注册</button>	
 	<button onclick="registerEvent2('a')">a- pm2.5</button>	
 	<button onclick="registerEvent2('b')">b- pm2.5</button>	
 	<button onclick="registerEvent2('c')">c- pm2.5</button>
 	<button onclick="registerEvent2('d')">d- pm2.5</button>	
+	<button onclick="registerEvent2('e')">e- pm2.5</button>	
 	<button onclick="unRegisterEvent('a')">a- 注销</button>	
 	<button onclick="unRegisterEvent('b')">b- 注销</button>	
 	<button onclick="unRegisterEvent('c')">c- 注销</button>
 	<button onclick="unRegisterEvent('d')">d- 注销</button>	
+	<button onclick="unRegisterEvent('e')">e- 注销</button>
+	<button onclick="unRegisterEvent('f')">e- 注销</button>	
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 	

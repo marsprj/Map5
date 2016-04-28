@@ -8,7 +8,6 @@
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
-
 <script type="text/javascript" src='../lib/requestNextAnimationFrame.js'></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
@@ -102,120 +101,217 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GeoLineLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/ClusterLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AirLineLayer.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
 
+
+
 <script type="text/javascript">
 	var mapObj = null;
 	var username = "user1";
-	var mapName = "world_tt";
-	var mapManager = null;
-	// var mapName = "chart2";
-	var symbolizer_g = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	var color = new GeoBeans.Color();
-	color.setByHex("#ff0000",1);
-	symbolizer_g.fill.color = color;
-	color = new GeoBeans.Color();
-	color.setByHex("#ffffff",1);
-	symbolizer_g.stroke.color = color;
+	var mapName = "0418";
 	function init(){
 		var user = new GeoBeans.User(username);
-		mapManager = user.getMapManager();
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		// mapObj.setDrawLayerSingle(true);
+		var color = new GeoBeans.Color();
+		color.setByHex("#404A59",1);
+		// mapObj.setBackground(color);
+		mapObj.draw();
+
+		// 定义marker
+		// var x = 116.4551;
+		// var y = 40.2539;
+		// var point = new GeoBeans.Geometry.Point(x,y);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.icon_url = "marker.png";
+		// symbolizer.icon_offset_x = 0;
+		// symbolizer.icon_offset_y = 0;
+
+		// var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,null);	
+		// mapObj.addOverlay(marker);
+
+
+
+		// var x = 91.1865;
+		// var y = 30.1465;
+		// var point = new GeoBeans.Geometry.Point(x,y);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.icon_url = "marker.png";
+		// symbolizer.icon_offset_x = 0;
+		// symbolizer.icon_offset_y = 0;
+
+		// var marker = new GeoBeans.Overlay.Marker("2",point,symbolizer,null);	
+		// mapObj.addOverlay(marker);
+
+
+		// var x = 108.479;
+		// var y = 23.1152;
+		// var point = new GeoBeans.Geometry.Point(x,y);
+		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.icon_url = "marker.png";
+		// symbolizer.icon_offset_x = 0;
+		// symbolizer.icon_offset_y = 0;
+
+		// var marker = new GeoBeans.Overlay.Marker("3",point,symbolizer,null);	
+		// mapObj.addOverlay(marker);
+		// addQuadServerLayer();
+	}
+
+
+
+
+	var curveness = 0.4;
+	var dbName = "osm";
+	var typeName = "osm_airports";
+	function addAirPort(){
 		
+		getFeatures();
+
 	}
 
-	function addCluster(){
-		var pointLayer = mapObj.getLayer("cities");
-		
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
+	function getFeatures(){
+		var workspace = new GeoBeans.WFSWorkspace("tmp",
+			mapObj.server,"1.0.0");
+		var featureType = new GeoBeans.FeatureType(workspace,typeName);
+		if(featureType.fields == null){
+			featureType.fields = featureType.getFields(null,dbName);
+		}
+		var fields = ["shape","name"];
+		featureType.getFeaturesFilterAsync2(null,dbName,null,null,null,fields,
+			null,null,getFeatures_callback);
+	}
+
+	function getFeatures_callback(obj,features){
+		// var first = features[0];
+		// var from = first.geometry;
+
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		var color = new GeoBeans.Color();
+		color.setByHex("#950dfc",0.1);
+
+		symbolizer.stroke.color = color;
+		symbolizer.stroke.width = 0.2;
+
+		// 绘制到overlay中
+		var layer = new GeoBeans.Layer("test");
 		mapObj.addLayer(layer);
+		var renderer = layer.renderer;
+		renderer.setSymbolizer(symbolizer);
+		// renderer.context.globalCompositeOperation = "lighter";
+
+
+		var time = new Date();
+		var from = null, from_geometry = null,to = null,to_geometry = null,control = null;
+		for(var i = 0;i < features.length;++i){
+		// for(var i = 0;i < 10;++i){	
+			from = features[i];
+			if(from == null){
+				continue;
+			}
+			from_geometry = from.geometry;
+			if(from_geometry == null){
+				continue;
+			}
+
+			// for(var j = i+1; j < features.length;++j){
+			for(var j = i+1; j < 10;++j){
+				if(j <= i){
+					continue;
+				}
+				to = features[j];
+				if(to == null){
+					continue;
+				}
+				to_geometry = to.geometry;
+				if(to_geometry == null){
+					continue;
+				}
+				control = getBezierControlPoint(from_geometry,to_geometry,curveness);
+				renderer.drawBezierLine(from_geometry,to_geometry,control,mapObj.transformation);
+
+			}
+		}
+		console.log(new Date() - time);
 		mapObj.draw();
 	}
 
-	function addWorldMap(){
-		if(mapObj != null){
-			mapObj.close();
+
+	function getBezierControlPoint(from,to,curveness){
+		if(from == null || to == null){
+			return null;
 		}
-		mapObj = mapManager.getMap("mapDiv","world_tt");
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
+		var center = new GeoBeans.Geometry.Point(from.x/2+to.x/2,from.y/2+to.y/2);
+		// var distance = this.getDistance(from,to);
+		var distance = Math.sqrt((from.x-to.x)*(from.x-to.x) + (from.y-to.y)*(from.y-to.y));
+		var k = (from.x-to.x)/(from.y-to.y);
+		var angle = Math.atan(k);
+		angle = Math.PI/2 - angle;
+		var distance_cur = distance * curveness;
+		var x_cur = Math.sin(angle) * distance_cur;
+		var y_cur = Math.cos(angle) * distance_cur;
+		var x = center.x + x_cur;
+		var y = center.y - y_cur;
+		var point = new GeoBeans.Geometry.Point(x,y);
+		return point;		
 	}
 
-	function addCities(){
-		var pointLayer = mapObj.getLayer("cities");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
-		mapObj.addLayer(layer);
-		mapObj.draw();
 
-		// var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-		// var color = new GeoBeans.Color();
-		// color.setByHex("#3399CC",1);
-		// symbolizer.fill.color = color;
-		// color = new GeoBeans.Color();
-		// color.setByHex("#ffffff",1);
-		// symbolizer.stroke.color = color;
-		// var pointLayer2 = mapObj.getLayer("china_city_point");
-		// var layer2 = new GeoBeans.Layer.ClusterLayer("china_city_point_c",pointLayer2,symbolizer);
-		// mapObj.addLayer(layer2);
+	function addAirLine(){
+		var dbName = "osm";
+		var typeName = "osm_airports";
+
+		var option = {
+			curveness : 0.4
+		};
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		var color = new GeoBeans.Color();
+		color.setByHex("#9494E5",0.8);
+		// color.setByHex("#4a53ff",0.8);
+		// color.setByHex("#FFFFFF",0.8);
+		symbolizer.stroke.color = color;
+		symbolizer.stroke.width = 0.6;
+
+		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		pointSymbolizer.size = 5;
+		var color  = new GeoBeans.Color(); 
+		color.setByHex("#ffff00",0.8);
+		pointSymbolizer.fill.color = color;
+		pointSymbolizer.stroke = null;
+
+
+		var layer = new GeoBeans.Layer.AirLineLayer("air",dbName,typeName,symbolizer,pointSymbolizer,option);
+		mapObj.addLayer(layer,addLayer_callback);
 	}
 
-	function addProv(){
-		if(mapObj != null){
-			mapObj.close();
-		}
-		mapObj = mapManager.getMap("mapDiv","chart2");
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
-		var pointLayer = mapObj.getLayer("china_prov_point");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer);
-		mapObj.addLayer(layer);
+	function addLayer_callback(){
 		mapObj.draw();
 	}
-
-	function addGuoan(){
-		if(mapObj != null){
-			mapObj.close();
-		}
-		mapObj = mapManager.getMap("mapDiv","guoan");
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
-		// var pointLayer = mapObj.getLayer("wwjz");
-		var pointLayer = mapObj.getLayer("whjy");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
-		mapObj.addLayer(layer);
-		mapObj.draw();		
-	}
-
 </script>
 <body onload="init()">
-	<button onclick="addWorldMap()">cities聚类地图</button>
-	<button onclick="addCities()">cities聚类</button>
-	<button onclick="addProv()">城市聚类</button>
-	<button onclick="addGuoan()">天津聚类</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
+
+
+	<button onclick="addAirPort()">机场</button>
+	<button onclick="addAirLine()">航线图层</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
 	</div>
 	
 </body>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<style>
+    body{ background-color: ivory; }
+    #container{
+    	position: relative;
+    }
+    canvas{
+    	border:1px solid red;
+    	position: absolute;
+    	top: 0px;
+    	left: 0px;
+    }
+
+</style>
+<script>
+
+function addImage(){
+	var canvas1Html = "<canvas width='300' height='300' id='canvas1'></canvas>";
+	$("#canvas2").before(canvas1Html);
+
+
+	var url = "test/maprequest.png";
+
+
+    var image2 = document.getElementById("map2");
+	var canvas2 = document.getElementById("canvas2");
+	var context2 = canvas2.getContext("2d");
+
+	try{
+		context2.drawImage(image2,20,60,256,256);	
+	}
+	catch (e) {
+        console.log("drawImage failed: " + e);                
+    }
+
+	var canvas1 = document.getElementById("canvas1");
+	var context1 = canvas1.getContext("2d");
+	var image = document.getElementById("map");
+	 // context1.drawImage(image,0,0,256,256);
+	try{
+		context1.drawImage(image,0,0,256,256);	
+	}
+	catch (e) {
+        console.log("drawImage failed: " + e);                
+    }
+
+
+
+}
+
+</script>
+</head>
+<body>
+<img src="test/maprequest.png" id="map" />
+<img src="world_1.png" id="map2" />
+<button onclick="addImage()">绘制</button>
+<div id="container">
+    <!-- <canvas id="canvas1" width="300" height="300"></canvas> -->
+    <canvas id="canvas2" width="300" height="300"></canvas>
+</div>
+</body>
+</html>
