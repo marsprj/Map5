@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
 <script type="text/javascript" src='../lib/requestNextAnimationFrame.js'></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
@@ -118,158 +118,72 @@
 
 <script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
+
+
+
 <script type="text/javascript">
-
-
-var features = null;
-
-var mapObj = null;
-var tracker = null;
-var mapManager = null;
-var url = "/ows/user1/mgr";
-var features = null;
-var url = "/ows/user1/mgr";
-var userName = "user1";
-var mapName = "0503";
-function init(){
-	var user = new GeoBeans.User(userName);
-	var mapManager = user.getMapManager();
-
-	mapObj = mapManager.getMap("mapDiv",mapName);
-
-	if(mapObj == null){
-		alert("没有该地图");
-		return;
-	}
-	mapObj.setViewer(mapObj.extent);
-	mapObj.setNavControl(false);
-	mapObj.draw();
-}
-
-function onMapMove(evt){
-	var mapX = evt.mapX;
-	var mapY = evt.mapY;
-	
-	//var str = mapX + "," + mapY;
-	var str = evt.X + "," + evt.Y;
-	document.getElementById("xy").innerHTML = str;
-}
-// function Query_point(){
-// 	mapObj.queryByRect("cities",query_callback);
-// }
-
-// function Query_line(){
-// 	mapObj.queryByRect("rivers",query_callback);
-// }
-
-// function Query_polygon(){
-// 	mapObj.queryByRect("country",query_callback);
-// }
-
-// function query_callback(layer,count){
-// 	// alert("查询的个数：" + count);
-// 	features = mapObj.queryByRectPage();
-// 	$("#features_count").html(count);
-
-// }
-
-// function setFeatureBlink(){
-// 	// var feature = v
-// 	var id = $("#feature_id").val();
-// 	var feature = features[id];
-// 	var count = parseInt($("#blink_count").val());
-// 	// var count = 1;
-// 	mapObj.setFeatureBlink(feature,count);
-// }
-
-function query_cities(){
-	mapObj.queryByClick("cities",query_callback);
-}
-
-function query_rivers(){
-	mapObj.queryByClick("rivers",query_callback);
-}
-function query_country(){
-	mapObj.queryByClick("country",query_callback);
-}
-
-function query_callback(layer,feature,point){
-	if(feature == null || layer == null){
-		return;
-	}
-	var fields = layer.getFields();
-	if(fields == null){
-		return;
-	}
-	var values = feature.values;
-	if(values == null){
-		return;
-	}
-	var html = "<table class='table table-striped'>"
-			+ 	"<thead>"
-			+ 	"<tr>"
-			+ 	"<th>Field</th>"
-			+ 	"<th>Value</th>"
-			+	"</tr>"
-			+	"</thead>"
-			+ 	"<tbody>";
-	for(var i = 0; i < fields.length;++i){
-		field = fields[i];
-		if(field == null){
-			continue;
+	var mapObj = null;
+	var username = "user1";
+	// var mapName = "0330";
+	// var mapName = "lvdi";
+	var mapName = "t2";
+	function init(){
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
 		}
-		type = field.type;
-		if(type != "geometry"){
-			name = field.name;
-			value = values[i];
-			html += "<tr>"
-			+  "	<td>" + name + "</td>"
-			+  "	<td>" + value + "</td>"
-			+  "	</tr>"
-		}
+		// mapObj.setDrawLayerSingle(true);
+
+		var color = new GeoBeans.Color();
+		color.setByHex("#404A59",1);
+		// mapObj.setBackground(color);
+		mapObj.draw();
 	}
-	html += "</tbody>";
-	html += "</table>";
 
-	var options = {
-		title : layer.name
-	};
-	var infoWindow = new GeoBeans.InfoWindow(html,options);
-	mapObj.openInfoWindow(infoWindow,point);
 
-}
 
-function end_query(){
-	mapObj.endQuery();
-}
+	function addQuadServerLayer(){
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		mapObj.setBaseLayer(layer);
+		var viewer = mapObj.viewer;
+		var level = mapObj.getLevel(viewer);
+		if(level == null){
+			level = 2;
+		}
+		var center = mapObj.center;
+		if(center == null){
+			center = new GeoBeans.Geometry.Point(0,0);	
+		}
+		mapObj.setCenter(center);
+		mapObj.setLevel(11);	
+		mapObj.baseLayer.MAX_ZOOM_LEVEL = 17;
+		mapObj.draw();
+	}
 
+
+	function zoomIn(){
+		mapObj.zoomIn();
+	}
+
+
+	function zoomOut(){
+		mapObj.zoomOut();
+	}
+	function endZoom(){
+		mapObj.endZoom();
+	}
 </script>
-
-
-<title>Map5--Query by click</title>
-</head>
-
 <body onload="init()">
 
-<!-- <input type="button" value="Point" onclick="Query_point();">
-<input type="button" value="Line" onclick="Query_line();">
-<input type="button" value="Polygon" onclick="Query_polygon();">
-选择的个数：<span id="features_count"></span>
 
-闪烁：ID<input type="text" value="1" id="feature_id">
-次数<input type="text" value="3" id="blink_count">
-<input type="button" value="闪烁" onclick="setFeatureBlink();"> -->
-<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-	<div id="mapDiv" style="height:800px;width:100%">
+	<button onclick="zoomIn()">放大</button>
+	<button onclick="zoomOut()">缩小</button>
+	<button onclick="endZoom()">停止</button>
+
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<input type="button" value="query_cities" onclick="query_cities();">
-<input type="button" value="query_rivers" onclick="query_rivers();">
-<input type="button" value="query_country" onclick="query_country();">
-<input type="button" value="end_query" onclick="end_query();">
-<!-- <div id="xy" style="width:200px;height:30px;line-height:30px"/>   -->
+	
 </body>
-</html>
-
-
-
-
