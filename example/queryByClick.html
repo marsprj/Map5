@@ -128,9 +128,12 @@ var tracker = null;
 var mapManager = null;
 var url = "/ows/user1/mgr";
 var features = null;
-var url = "/ows/user1/mgr";
-var userName = "user1";
-var mapName = "0503";
+// var url = "/ows/user1/mgr";
+// var url 
+var userName = "radi";
+var mapName = "省会";
+// var userName = "user1";
+// var mapName = "0503";
 function init(){
 	var user = new GeoBeans.User(userName);
 	var mapManager = user.getMapManager();
@@ -243,6 +246,10 @@ function end_query(){
 	mapObj.endQuery();
 }
 
+function query_layer(){
+	mapObj.queryByClick("g_省级行政区",query_callback);
+}
+
 </script>
 
 
@@ -262,6 +269,7 @@ function end_query(){
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%">
 	</div>
+<input type="button" value="query_layer" onclick="query_layer();">
 <input type="button" value="query_cities" onclick="query_cities();">
 <input type="button" value="query_rivers" onclick="query_rivers();">
 <input type="button" value="query_country" onclick="query_country();">

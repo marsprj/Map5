@@ -25,6 +25,8 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
@@ -71,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -106,13 +109,14 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
 
 <script type="text/javascript">
 	var mapObj = null;
-	var username = "user1";
-	var mapName = "chart2";
+	var username = "radi";
+	var mapName = "map";
 	function init(){
 		var user = new GeoBeans.User(username);
 		var mapManager = user.getMapManager();
@@ -152,9 +156,34 @@
 
 	}
 
+
+	function addCitiesChart(){
+		var name = "cities-chart";
+		var baseLayerName = "cities";
+		var baseLayerField = "gid";
+		var dbName = "gisdb";
+		var tableName = "cities";
+		var tableField =  "gid";
+		var chartFields = ["populat"];
+		var chartOption = {
+			color : "#FF0000",
+			opacity : 0.6,
+			border : "#000000",
+			borderOpacity : 0.5,
+			level : 10,
+			maxsize : 10,
+			byLevel : true,
+
+		};
+
+		var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
+		mapObj.addLayer(layer,null);
+		mapObj.draw();
+	}
 </script>
 <body onload="init()">
-	<button onclick="addChart()">图表</button>
+	<!-- <button onclick="addChart()">图表</button> -->
+	<button onclick="addCitiesChart()">cities</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	
