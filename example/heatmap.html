@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
@@ -21,6 +21,8 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
@@ -67,6 +69,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -118,8 +121,9 @@ var aqiLayer2 = null;
 var heatMapLayer = null;
 
 var mapObj = null;
-var username = "user1";
-var mapName = "world_tt";
+var username = "radi";
+// var mapName = "world_tt";
+var mapName = "北京高等学校";
 function init(){
 	var user = new GeoBeans.User(username);
 	var mapManager = user.getMapManager();
@@ -133,6 +137,15 @@ function init(){
 
 function addLayerHeatMap_cities_db(){
 	mapObj.addHeatMap("cities","populat");
+	mapObj.draw();
+}
+
+function addLayerHeatMap_bj(){
+	var config = {
+		radius : 16
+	};
+	// mapObj.addHeatMap("bj_高等院校",null,1,config);
+	mapObj.addHeatMap("bj_高等院校","gid",null,config);
 	mapObj.draw();
 }
 
@@ -170,9 +183,10 @@ function setHeatMapVisible(){
 
 <body onload="init()">
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-	<div id="mapDiv" style="height:800px;width:100%">
+	<div id="mapDiv" style="height:800px;width:100%;position:relative">
 	</div>
 	增加：
+	<input type="button" value="heatMap-bj-db" onclick="addLayerHeatMap_bj()">
 	<input type="button" value="heatMap-cities-db" onclick="addLayerHeatMap_cities_db()">
 	<input type="button" value="heatMap-aqi-db" onclick="addLayerHeatMap_aqi_db()"><br/>
 	删除：
