@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
+
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+
+<script type="text/javascript">
+	var mapObj = null;
+	var username = "user1";
+	var mapName = "0330";
+	// var mapName = "chart2";
+	function init(){
+		var user = new GeoBeans.User(username);
+		var mapManager = user.getMapManager();
+		mapObj = mapManager.getMap("mapDiv",mapName);
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		mapObj.draw();
+	}
+
+
+	function addEventListenter_scroll(){
+		mapObj.addWheelEventListener(scrollHanlder);
+	}
+
+	function removeEventListener_scroll(){
+		mapObj.removeWheelEventListener(scrollHanlder);
+	}
+
+	function scrollHanlder(args){
+		console.log("mapLevel: " + args.level);
+	}
+
+
+
+</script>
+<body onload="init()">
+
+
+	<button onclick="addEventListenter_scroll()">滚轮事件</button>
+	<button onclick="removeEventListener_scroll()">注销</button>
+	<div id="mapDiv" style="height:70%;width:100%;position:absolute;top:30px;">
+	</div>
+	
+</body>
