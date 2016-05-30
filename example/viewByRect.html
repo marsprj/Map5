@@ -27,6 +27,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
@@ -123,10 +124,12 @@
 
 <script type="text/javascript">
 	var mapObj = null;
-	var username = "user1";
+	var username = "radi";
+	// var username = "user1";
 	// var mapName = "0330";
 	// var mapName = "lvdi";
-	var mapName = "t2";
+	// var mapName = "t2";
+	var mapName = "莆田系医院";
 	function init(){
 		var user = new GeoBeans.User(username);
 		var mapManager = user.getMapManager();
@@ -173,6 +176,7 @@
 		mapObj.zoomOut();
 	}
 	function endZoom(){
+		mapObj.endQuery();
 		mapObj.endZoom();
 	}
 </script>
