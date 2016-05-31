@@ -27,7 +27,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -200,13 +200,13 @@
 		var symbolOption = {
 			border: "#000000",
 			borderOpacity: 0.2,
-			byLevel: true,
+			byLevel: false,
 			color: "#f7e302",
 			level: 5,
 			maxsize: 2,
 			opacity: 0.5
 		};
-		layer = new GeoBeans.Layer.RangeSymbolChartLayer("图","prov_bount_4m","name","水泥产量_万吨","china_prov_point","prov_fname","发电量_亿千瓦小时","gisdb","gongye","地区",rangeOption,symbolOption);
+		layer = new GeoBeans.Layer.RangeSymbolChartLayer("图","prov_bount_4m","name","水泥产量_万吨","china_prov_point","prov_fname","水泥产量_万吨","gisdb","gongye","地区",rangeOption,symbolOption);
 		mapObj.addLayer(layer);
 		mapObj.draw();
 	}
