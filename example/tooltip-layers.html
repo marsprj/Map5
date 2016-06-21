@@ -2,163 +2,68 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
-
-
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
-<!--
-<script type="text/javascript" src="../lib/GeoBeans/Layer/OsmLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/BaiduLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/BingLayer.js"></script>
--->
-<script type="text/javascript" src="../lib/GeoBeans/Layer/AMapLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
-
-
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
-<style type="text/css">
-#info {
-	position: absolute;
-	height: 1px;
-	width: 1px;
-	z-index: 100;
-}	
-</style>
 <script type="text/javascript">
 
 var mapObj = null;
-var citiesLayer = null;	
-var countryLayer = null;
-
 function init(){
-	mapObj = new GeoBeans.Map("mapDiv");
-	var center = new GeoBeans.Geometry.Point(0,0);	
-	// layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
-	// mapObj.setBaseLayer(layer);
+	var extent = new GeoBeans.Envelope(-180,-90,180,90);
+	mapObj = new GeoBeans.Map(null,"mapDiv","name",extent,4326);
+	if(mapObj == null){
+		return;
+	}
 
-	
-
-	citiesLayer = new GeoBeans.Layer.WFSLayer("cities",
-										"/ows/user1/world/ims?",
-										"cities",
+	var server = "/geoserver/radi/ows?";
+	var countryLayer = new GeoBeans.Layer.WFSLayer("country_2",
+										server,
+										"radi:country_2",
 										"GML2");
-	mapObj.addLayer(citiesLayer);	
-
-	countryLayer = new GeoBeans.Layer.WFSLayer("country",
-										"/ows/user1/world/ims?",
-										"country",
-										"GML2");	
+	
 	mapObj.addLayer(countryLayer);
-	mapObj.addLayer(citiesLayer);	
 
-	mapObj.setViewer(new GeoBeans.Envelope(-180,-90,180,90));
+	var server = "/geoserver/radi/ows?";
+	var citiesLayer = new GeoBeans.Layer.WFSLayer("cities_2",
+										server,
+										"radi:cities_2",
+										"GML2");
+	mapObj.addLayer(citiesLayer);
 
-	// mapObj.setCenter(center);
-	// mapObj.setLevel(2);	
-	mapObj.draw();	
-
+	mapObj.draw();
 }
 
 function registerHitTooltip_cities(){
+	var citiesLayer = mapObj.getLayer("cities_2");
 	citiesLayer.registerHitTooltipEvent(onFeatureHitTooltip);
 }
 
 function unregisterHitTooltip_cities(){
+	var citiesLayer = mapObj.getLayer("cities_2");
 	citiesLayer.unregisterHitTooltipEvent();
 }
 
 function registerHitTooltip_country(){
+	var countryLayer = mapObj.getLayer("country_2");
 	countryLayer.registerHitTooltipEvent(onFeatureHitTooltip);
 }
 
 function unregisterHitTooltip_country(){
+	var countryLayer = mapObj.getLayer("country_2");
 	countryLayer.unregisterHitTooltipEvent();
 }
-
 function onFeatureHitTooltip(layer, x, y,feature){
-	var info = $("#info");
-	info.tooltip({
-		animation: false,
-		trigger: 'manual'
-	});
-
-	info.css("left",x + "px");
-	info.css("top",y + "px");
-
 	if(feature == null){
-		info.tooltip('hide');
+		mapObj.closeTooltip();
 		return;
 	}
+	var point = new GeoBeans.Geometry.Point(x,y);
 	var title = feature.featureType.title;
 	var fieldIndex = feature.featureType.getFieldIndex('name');
-	var value = feature.values[fieldIndex];
-
-	var html = "<div style='min-height:60px;width:100px;'><div>select " + layer.typeName + " is</div><br/><strong>" + value + "</strong></div>";
-	info.tooltip('hide')
-	.attr("data-original-title",html)
-		.tooltip('show');
-
+	var value = feature.values[fieldIndex];	
+	mapObj.tooltip(point,value);
 }
 </script>
 
@@ -166,11 +71,8 @@ function onFeatureHitTooltip(layer, x, y,feature){
 </head>
 
 <body onload="init()">
-
-	<div id="mapDiv" style="height:400px;width:100%">
-		<div id='info' data-toggle='tooltip' data-html="true" data-placement='top'></div>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<div id="xy" style="width:200px;height:30px;line-height:30px">
 </div>
 
 cities<input type='button' value='registerHitTooltip' onclick="registerHitTooltip_cities();">

@@ -29,8 +29,6 @@ function init(){
 										server,
 										"radi:rivers_2",
 										"GML2");
-	var extent = new GeoBeans.Envelope(-180,-90,180,90);
-	layer.extent = extent;
 	mapObj.addLayer(layer);
 	layer.registerHitEvent(onFeatureHit);
 	mapObj.draw();

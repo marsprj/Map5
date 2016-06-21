@@ -26,8 +26,6 @@ function init(){
 										server,
 										"radi:country_2",
 										"GML2");
-	var extent = new GeoBeans.Envelope(-180,-90,180,90);
-	layer.extent = extent;
 
 	var style = createStyle();
 	layer.setStyle(style);
@@ -188,17 +186,6 @@ function createSymbolizer1(){
 	symbolizer.stroke = null;
 	return symbolizer;
 }
-
-function createSymbolizer2(){
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Style.PolygonSymbolizer();
-	symbolizer.fillColor = "Blue";
-	symbolizer.outLineColor = "#471953";
-	symbolizer.showOutline = true;
-	
-	return symbolizer;
-}
-
 
 </script>
 

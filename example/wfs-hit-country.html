@@ -13,8 +13,6 @@
 var g_s_hited  = createSymbolizer1();
 
 var mapObj = null;
-
-var mapObj = null;
 var username = "user1";
 var mapName = "0330";
 function init(){
@@ -30,8 +28,6 @@ function init(){
 										server,
 										"radi:country_2",
 										"GML2");
-	var extent = new GeoBeans.Envelope(-180,-90,180,90);
-	layer.extent = extent;
 	mapObj.addLayer(layer);
 	layer.registerHitEvent(onFeatureHit);
 	mapObj.draw();
@@ -42,7 +38,6 @@ function onFeatureHit(layer, selection){
 	len = selection.length;
 	for(i=0; i<len; i++){
 		var f = selection[i];
-		// layer.drawFeature(f, g_s_hited);
 		layer.drawHitFeature(f, g_s_hited);
 	}
 }
@@ -51,9 +46,9 @@ function createSymbolizer1(){
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 	symbolizer.fill.color.set(255,0,0,1);
-	
 	return symbolizer;
 }
+
 </script>
 
 <title>wfs-hit-country</title>

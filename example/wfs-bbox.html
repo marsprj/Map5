@@ -23,8 +23,6 @@ function init(){
 										server,
 										"radi:cities_2",
 										"GML2");
-	var extent = new GeoBeans.Envelope(-180,-90,180,90);
-	layer.extent = extent;
 	mapObj.addLayer(layer);
 	mapObj.setViewer(new GeoBeans.Envelope(60,21,101,30));
 	mapObj.draw();

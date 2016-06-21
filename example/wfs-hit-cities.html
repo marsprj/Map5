@@ -28,8 +28,6 @@ function init(){
 										server,
 										"radi:cities_2",
 										"GML2");
-	var extent = new GeoBeans.Envelope(-180,-90,180,90);
-	layer.extent = extent;
 	mapObj.addLayer(layer);
 	layer.registerHitEvent(onFeatureHit);
 	mapObj.draw();
@@ -48,22 +46,10 @@ function createSymbolizer1(){
 	var symbolizer, rule, style;
 	symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 	symbolizer.size = 5;
-	symbolizer.fillColor = "Red";
-	symbolizer.showOutline = false;
-	
+	symbolizer.fill.color.set(255, 0, 0,0.7);
+	symbolizer.stroke.color.set(0,255, 0,1);
 	return symbolizer;
 }
-
-function createSymbolizer2(){
-	var symbolizer, rule, style;
-	symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-	symbolizer.fillColor = "Blue";	
-	symbolizer.outLineColor = "#471953";
-	symbolizer.showOutline = true;
-	
-	return symbolizer;
-}
-
 
 
 </script>
