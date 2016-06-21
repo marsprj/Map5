@@ -25,7 +25,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -71,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -215,9 +218,11 @@
 
 </script>
 <body onload="init()">
+	<h5>测试页面，非示例页面</h5>
+
 	<button onclick="addQuadServerLayer()">加载QuadServer图层</button>
 	<button onclick="drawPoint()">draw point</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 	
 </body>

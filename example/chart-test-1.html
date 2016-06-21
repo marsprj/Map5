@@ -28,7 +28,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -74,6 +76,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -109,6 +112,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/AQIChartLayer.js"></script>
@@ -132,10 +136,6 @@
 			return;
 		}
 		mapObj.draw();
-
-		$("#removeSymbol").click(function(){
-			alert(12);
-		});
 	}
 
 	function addChart(){
@@ -191,18 +191,6 @@
 		var layer = new GeoBeans.Layer.SymbolChartLayer(name,baseLayerName,baseLayerField,dbName,tableName,tableField,chartFields,chartOption);
 		mapObj.addLayer(layer,null);
 		mapObj.draw();		
-	}
-
-	function addAQI(){
-		var option = {
-			colorMapID : 10
-		};
-
-
-		var layer = new GeoBeans.Layer.AQIChartLayer("aqi","gisdb",
-			"gc_aqi","pm2_5","position_name","station_code","time_point","2014-05-19 08:00:00",option);
-		mapObj.addLayer(layer,null);
-		mapObj.draw();
 	}
 
 
@@ -350,11 +338,12 @@
 
 	function addAQIChart(){
 		var option = {
-			colorMapID : 10
+			colorMapID : 10,
+			type : "point"
 		};
 
 		var layer = new GeoBeans.Layer.AQIChartLayer("aqi","base",
-			"gc_aqi","pm2_5","position_name","station_code","time_point","2016-03-10 13:00:00",option);
+			"gc_aqi","pm2_5","position_name","station_code","time_point","2016-05-10 13:00:00",option);
 		mapObj.addLayer(layer,null);
 		mapObj.draw();		
 	}
@@ -367,7 +356,8 @@
 
 	function addAQITimeline(){
 		var option = {
-			colorMapID : 10
+			colorMapID : 10,
+			type : "point"
 		};
 		var timePoints = ["2016-03-10 10:00:00",
 						  "2016-03-10 11:00:00",						
@@ -385,7 +375,7 @@
 	}
 </script>
 <body onload="init()">
-	
+	<h5>测试添加多种chart图层</h5>
 	添加<button onclick="addSymbolChart()">symbol</button>
 	<button onclick="addRangeSymbolChart()">rangesymbol</button>
 	<button onclick="addRangeChart()">range</button>
@@ -394,7 +384,7 @@
 	<button onclick="addAQIChart()">aqi</button>
 	<button onclick="addAQITimeline()">aqi timeline</button>
 
-	<br/><br/>
+	<br/>
 	删除<button onclick="removeSymbolChart()">symbol</button>
 	<button onclick="removeRangeSymbolChart()">rangesymbol</button>
 	<button onclick="removeRangeChart()">range</button>

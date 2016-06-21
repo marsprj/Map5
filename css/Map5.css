@@ -4,6 +4,7 @@
 	position: absolute;
 	bottom: 70px;
 	right:40px;
+	z-index: 1001;
 	/*border: 1px solid #ccc;*/
 }
 .map-nav-wrapper div{

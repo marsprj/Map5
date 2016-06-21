@@ -27,7 +27,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -73,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -103,6 +104,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
@@ -249,9 +251,8 @@
 	}
 </script>
 <body onload="init()">
+	<h5>测试 - 设置面图层的样式</h5>
 	<button onclick="setRed()">红色</button>
-
-
 	<button onclick="setBlueRed()">蓝红</button>
 	<button onclick="setRedRange()">红色色阶</button>
 	<button onclick="setBlue()">蓝色</button>

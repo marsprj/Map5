@@ -8,6 +8,9 @@
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/echarts-all.js"></script>
+
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
+
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
@@ -18,7 +21,6 @@
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
@@ -41,13 +43,13 @@
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter/BinaryLogicFilter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/IDFilter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/UnaryLogicFilter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
@@ -55,12 +57,13 @@
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Style/ColorMap.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Symbolizer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
@@ -73,23 +76,23 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/QueryLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WMTSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/ChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/AQIChartLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/MapLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureDBLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/RasterDBLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Layer/GeoLineLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/AirLineLayer.js"></script>
 
 
 
@@ -101,6 +104,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/MapManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/User.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/AQI/AQIIndexChart.js"></script>
@@ -114,7 +118,10 @@
 <script type="text/javascript" src="../lib/GeoBeans/DBS/DataSet.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/File/FileManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/RasterDB/Raster.js"></script>
@@ -162,7 +169,7 @@ function onMapMove(evt){
 function addAQIBarChart(){
 	// var container = document.getElementById("chart");
 	var container = document.getElementById("chart_panel");
-	var aqiIndexChart = new GeoBeans.AQIIndexChart("统计图",container,"gisdb",
+	var aqiIndexChart = new GeoBeans.AQIIndexChart("统计图",container,"base",
 		"gc_aqi",["aqi","pm2_5"],"station_code","1023A","time_point",
 		"2014-05-20 00:00","2014-05-21 00:00");
 	aqiIndexChart.setMap(mapObj);

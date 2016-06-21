@@ -27,7 +27,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -134,147 +134,7 @@
 			alert("没有该地图");
 			return;
 		}
-		// mapObj.setDrawLayerSingle(true);
-		var color = new GeoBeans.Color();
-		color.setByHex("#404A59",1);
-		// mapObj.setBackground(color);
 		mapObj.draw();
-
-		// 定义marker
-		// var x = 116.4551;
-		// var y = 40.2539;
-		// var point = new GeoBeans.Geometry.Point(x,y);
-		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		// symbolizer.icon_url = "marker.png";
-		// symbolizer.icon_offset_x = 0;
-		// symbolizer.icon_offset_y = 0;
-
-		// var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,null);	
-		// mapObj.addOverlay(marker);
-
-
-
-		// var x = 91.1865;
-		// var y = 30.1465;
-		// var point = new GeoBeans.Geometry.Point(x,y);
-		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		// symbolizer.icon_url = "marker.png";
-		// symbolizer.icon_offset_x = 0;
-		// symbolizer.icon_offset_y = 0;
-
-		// var marker = new GeoBeans.Overlay.Marker("2",point,symbolizer,null);	
-		// mapObj.addOverlay(marker);
-
-
-		// var x = 108.479;
-		// var y = 23.1152;
-		// var point = new GeoBeans.Geometry.Point(x,y);
-		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		// symbolizer.icon_url = "marker.png";
-		// symbolizer.icon_offset_x = 0;
-		// symbolizer.icon_offset_y = 0;
-
-		// var marker = new GeoBeans.Overlay.Marker("3",point,symbolizer,null);	
-		// mapObj.addOverlay(marker);
-		// addQuadServerLayer();
-	}
-
-
-
-
-	var curveness = 0.4;
-	var dbName = "osm";
-	var typeName = "osm_airports";
-	function addAirPort(){
-		
-		getFeatures();
-
-	}
-
-	function getFeatures(){
-		var workspace = new GeoBeans.WFSWorkspace("tmp",
-			mapObj.server,"1.0.0");
-		var featureType = new GeoBeans.FeatureType(workspace,typeName);
-		if(featureType.fields == null){
-			featureType.fields = featureType.getFields(null,dbName);
-		}
-		var fields = ["shape","name"];
-		featureType.getFeaturesFilterAsync2(null,dbName,null,null,null,fields,
-			null,null,getFeatures_callback);
-	}
-
-	function getFeatures_callback(obj,features){
-		// var first = features[0];
-		// var from = first.geometry;
-
-		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
-		var color = new GeoBeans.Color();
-		color.setByHex("#950dfc",0.1);
-
-		symbolizer.stroke.color = color;
-		symbolizer.stroke.width = 0.2;
-
-		// 绘制到overlay中
-		var layer = new GeoBeans.Layer("test");
-		mapObj.addLayer(layer);
-		var renderer = layer.renderer;
-		renderer.setSymbolizer(symbolizer);
-		// renderer.context.globalCompositeOperation = "lighter";
-
-
-		var time = new Date();
-		var from = null, from_geometry = null,to = null,to_geometry = null,control = null;
-		for(var i = 0;i < features.length;++i){
-		// for(var i = 0;i < 10;++i){	
-			from = features[i];
-			if(from == null){
-				continue;
-			}
-			from_geometry = from.geometry;
-			if(from_geometry == null){
-				continue;
-			}
-
-			// for(var j = i+1; j < features.length;++j){
-			for(var j = i+1; j < 10;++j){
-				if(j <= i){
-					continue;
-				}
-				to = features[j];
-				if(to == null){
-					continue;
-				}
-				to_geometry = to.geometry;
-				if(to_geometry == null){
-					continue;
-				}
-				control = getBezierControlPoint(from_geometry,to_geometry,curveness);
-				renderer.drawBezierLine(from_geometry,to_geometry,control,mapObj.transformation);
-
-			}
-		}
-		console.log(new Date() - time);
-		mapObj.draw();
-	}
-
-
-	function getBezierControlPoint(from,to,curveness){
-		if(from == null || to == null){
-			return null;
-		}
-		var center = new GeoBeans.Geometry.Point(from.x/2+to.x/2,from.y/2+to.y/2);
-		// var distance = this.getDistance(from,to);
-		var distance = Math.sqrt((from.x-to.x)*(from.x-to.x) + (from.y-to.y)*(from.y-to.y));
-		var k = (from.x-to.x)/(from.y-to.y);
-		var angle = Math.atan(k);
-		angle = Math.PI/2 - angle;
-		var distance_cur = distance * curveness;
-		var x_cur = Math.sin(angle) * distance_cur;
-		var y_cur = Math.cos(angle) * distance_cur;
-		var x = center.x + x_cur;
-		var y = center.y - y_cur;
-		var point = new GeoBeans.Geometry.Point(x,y);
-		return point;		
 	}
 
 

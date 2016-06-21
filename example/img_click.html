@@ -9,7 +9,7 @@
   <script language="javascript">
 
 	function init(){
-		document.getElementByID("id1").addEventListener("click", image_click);
+		document.getElementById("id1").addEventListener("click", image_click);
 	}
 
 	function image_click(){
@@ -19,6 +19,11 @@
  </HEAD>
 
  <BODY onload="init();">
+ 
+</head>
+
+<body onload="init()">
+
  <img id="id1" src="images/pin-32.png" onclick="image_click();"/>
 <!--  <img src="images/pin-32.png" onclick="image_click();"/>-->
  </BODY>

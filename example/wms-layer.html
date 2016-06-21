@@ -3,91 +3,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
-
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="bootstrap.min.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Color.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Transformation.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
 
-<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WMS/WMSWorkspace.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/Tile.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/TileCache.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/QSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/MapLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WMSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/FeatureLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/WFSLayer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Layer/OverlayLayer.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Control.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/TrackControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Events.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Map.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Style.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/StyleReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/StyleWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Rule.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/FeatureStyle.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Symbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/PointSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/LineSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/TextSymbolizer.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Font.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Stroke.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Style/Fill.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterReader.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/LogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryLogicFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/ComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/BinaryComparisionFilter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/Expression.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/PropertyName.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Filter/Literal.js"></script>
 <script type="text/javascript">
 
 var mapObj = null;
 var wmsWorkspace = null;
 var layer = null;
 var styleMgr = null;
-var url = '/ows/user1/world/ims?';
+var url = "/geoserver/radi/ows?";
 var mgrUrl = "/ows/user1/mgr?";
-
+var mapName = "world";
+var username = "user1";
 
 $().ready(function(e) {
 	
-	var center = new GeoBeans.Geometry.Point(0,0);	
-	mapObj = new GeoBeans.Map("mapDiv");
+	var user = new GeoBeans.User(username);
+	var mapManager = user.getMapManager();
+	mapObj = mapManager.getMap("mapDiv",mapName);
+	if(mapObj == null){
+		alert("没有该地图");
+		return;
+	}
+	mapObj.draw();
 
-	
-	var layer = null;
-	layer = new GeoBeans.Layer.QSLayer("gaode","/QuadServer/maprequest?services=world_image");				
-	mapObj.setBaseLayer(layer);
-
-
-	mapObj.setCenter(center);
-	mapObj.setLevel(2);	
-	mapObj.draw();	
-	styleMgr = new GeoBeans.StyleManager(mgrUrl);
+	// styleMgr = new GeoBeans.StyleManager(mgrUrl);
+	styleMgr = user.getStyleManager();
 });
 
 function getLayers(){
@@ -121,10 +65,11 @@ function addWMSLayer(){
 		alert("请选择图层");
 		return;
 	}
-	layer = new GeoBeans.Layer.WMSLayer(wmsWorkspace,"wms",
-										url,
-										layers,
-										[]);
+	// layer = new GeoBeans.Layer.WMSLayer(wmsWorkspace,"wms",
+	// 									url,
+	// 									layers,
+	// 									[]);
+	layer = new GeoBeans.Layer.WMSLayer("wms",url,layers,[],null);
 	mapObj.addLayer(layer);
 	mapObj.draw();
 
@@ -139,26 +84,8 @@ function addWMSLayer(){
 }
 
 function getStyles(){
-	// var mapLayerChecked = $("input[name='mapLayer']:checked");
-	// var html = "";
-	// var mapLayerName = null;
-	// var mapLayerId = null;
-	// if(mapLayerChecked.length != 0){
-	// 	mapLayerName = mapLayerChecked.val();
-	// 	mapLayerId = mapLayerChecked.attr("index");
-	// 	html += "mapLayer: " + mapLayerName + "<br/>";
-	// }else{
-	// 	alert("请选择图层");
-	// 	return;
-	// }	
-	styleMgr.getStyles(styles_callback);
-	// var mapLayer = layer.mapLayers[mapLayerId];
-	// var type = GeoBeans.WMSStyle.Type.POINT;
-	// var styles = styleMgr.getStyleByType(type);
-	// styles_callback(styles);
-}
-
-function styles_callback(styles){
+	
+	var styles = styleMgr.getStyles();
 	var html = "<ul>"; 
 	for(var i = 0; i < styles.length; ++i){
 		var style = styles[i];
@@ -170,6 +97,8 @@ function styles_callback(styles){
 	html += "</ul>";
 	$("#styles").html(html);
 }
+
+
 
 function setStyle(){
 	var mapLayerChecked = $("input[name='mapLayer']:checked");
@@ -194,9 +123,10 @@ function setStyle(){
 		alert("请选择样式");
 		return;
 	}
-
+	var styleName = "islands";
 	var mapLayer = layer.mapLayers[mapLayerId];
 	var style = styleMgr.getStyle(styleName);
+	// var style = styleMgr.getStyle("islands");
 	if(mapLayer == null || style == null){
 		alert("有问题!");
 		return;
@@ -221,7 +151,7 @@ function callback(result){
 </head>
 
 <body>
-	<div id="mapDiv" style="height:400px;width:100%">
+	<div id="mapDiv" style="height:400px;width:100%;position:relative;">
 
 	</div>
 <!--<input type='button' value='offset' onclick="btnoffset();">-->

@@ -127,7 +127,6 @@
 			return;
 		}
 		mapObj.draw();
-		// mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, onMapMove);
 	}
 
 
@@ -148,19 +147,11 @@
 		mapObj.draw();			
 	}
 
-	function onMapMove(evt){
-		var mapX = evt.mapX;
-		var mapY = evt.mapY;
-		
-		var str = mapX + "," + mapY;
-		document.getElementById("xy").innerHTML = str;
-	}
 
 </script>
+<title>Map5 -- 绘制图片</title>
 <body onload="init()">
 	<button onclick="drawImage()">绘制图片</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
-	<div id="xy" style="width:200px;height:30px;line-height:30px"/>  
-
 </body>

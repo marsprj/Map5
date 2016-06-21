@@ -23,7 +23,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -135,11 +135,6 @@ function init(){
 	mapObj.draw();
 }
 
-function addLayerHeatMap_cities_db(){
-	mapObj.addHeatMap("cities","populat");
-	mapObj.draw();
-}
-
 function addLayerHeatMap_bj(){
 	var config = {
 		radius : 16
@@ -149,25 +144,19 @@ function addLayerHeatMap_bj(){
 	mapObj.draw();
 }
 
-function addLayerHeatMap_aqi_db(){
-	mapObj.addHeatMap("aqi","pm2_5");
+
+
+
+function removeHeatMap_bj(){
+	mapObj.removeHeatMap("bj_高等院校");
 	mapObj.draw();
 }
 
 
-function removeHeatMap_cities(){
-	mapObj.removeHeatMap("cities");
-	mapObj.draw();
-}
-
-function removeHeatMap_aqi(){
-	mapObj.removeHeatMap("aqi");
-	mapObj.draw();	
-}
 
 var flag = false;
 function setHeatMapVisible(){
-	mapObj.setHeatMapVisible("cities",flag);
+	mapObj.setHeatMapVisible("bj_高等院校",flag);
 	if(flag){
 		flag = false;
 	}else{
@@ -187,11 +176,9 @@ function setHeatMapVisible(){
 	</div>
 	增加：
 	<input type="button" value="heatMap-bj-db" onclick="addLayerHeatMap_bj()">
-	<input type="button" value="heatMap-cities-db" onclick="addLayerHeatMap_cities_db()">
-	<input type="button" value="heatMap-aqi-db" onclick="addLayerHeatMap_aqi_db()"><br/>
+	
 	删除：
-	<input type="button" value="removeHeatMap_cities" onclick="removeHeatMap_cities()">
-	<input type="button" value="removeHeatMap_aqi" onclick="removeHeatMap_aqi()">
+	<input type="button" value="removeHeatMap_bj" onclick="removeHeatMap_bj()">
 	显示
 	<input type="button" value="setHeatMapVisible" onclick="setHeatMapVisible()">
 </body>

@@ -24,7 +24,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -111,31 +111,19 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RangeChartLayer.js"></script>
 <script type="text/javascript">
 
-	var mapObj = null;
-	var username = "user1";
-	var mapName = "chart";
-	function init(){
-		var user = new GeoBeans.User(username);
-		var mapManager = user.getMapManager();
-		mapObj = mapManager.getMap("mapDiv",mapName);
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
+var mapObj = null;
+var username = "user1";
+var mapName = "chart";
+function init(){
+	var user = new GeoBeans.User(username);
+	var mapManager = user.getMapManager();
+	mapObj = mapManager.getMap("mapDiv",mapName);
+	if(mapObj == null){
+		alert("没有该地图");
+		return;
 	}
-
-function onMapMove(evt){
-	var mapX = evt.mapX;
-	var mapY = evt.mapY;
-	
-	var str = mapX + "," + mapY + ";";
-	str += evt.X + "," + evt.Y + "<br/>";
-	var map = mapObj.transformation.toMapPoint(mapX,mapY);
-	// str += map.x + "," + map.y;
-	document.getElementById("xy").innerHTML = str;
+	mapObj.draw();
 }
-
 
 function addLayer_callback(result){
 	if(result == "success"){
@@ -161,12 +149,6 @@ function onAddChartLayer2(){
 }
 
 function removeChart(){
-	// var layer = mapObj.getLayer("china_prov_region");
-	// if(layer == null){
-	// 	return;
-	// }
-	// layer.removeChart();
-	// mapObj.draw();
 	mapObj.removeLayer("range");
 	mapObj.draw();
 }
@@ -188,15 +170,13 @@ function setVisiable(){
 <body onload="init()">
 
 
-<!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
 	<div id="mapDiv" style="height:800px;width:100%;border:1px solid #ccc;position:relative">
-		
 	</div>
 
 	<div id="xy" style="width:200px;height:30px;line-height:30px"></div> 
 
-<input type="button" value="onAddChartLayer2" onclick="onAddChartLayer2();">
-<input type="button" value="removeChart" onclick="removeChart();">
+<input type="button" value="分级图" onclick="onAddChartLayer2();">
+<input type="button" value="删除分级图" onclick="removeChart();">
 <input type="button" value="隐藏其它图层" onclick="setVisiable();">
 
 

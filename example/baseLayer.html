@@ -25,7 +25,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -71,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -132,17 +135,12 @@
 			alert("没有该地图");
 			return;
 		}
-		// mapObj.setDrawLayerSingle(true);
-		var color = new GeoBeans.Color();
-		color.setByHex("#404A59",1);
-		// mapObj.setBackground(color);
+		
 		mapObj.draw();
 
-
-		// addQuadServerLayer();
 	}
 
-
+	// 本地添加，不注册到用户
 	function addQuadServerLayer(){
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 		mapObj.setBaseLayer(layer);
@@ -181,11 +179,6 @@
 	}
 
 	function addBaseLayerImage(){
-		// if(this.baseLayer != null){
-		// 	var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
-		// 	mapObj.setBaseLayer(layer);
-		// 	mapObj.draw();
-		// }
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
 		mapObj.setBaseLayer(layer);
 		var center = mapObj.center;
@@ -248,7 +241,7 @@
 
 	function addWMTSLayer(){
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		var layer = new GeoBeans.Layer.WMTSLayer("c5","/ows/user1/mgr","c5",
+		var layer = new GeoBeans.Layer.WMTSLayer("base","/ows/user1/mgr","quanqiu",
 			extent,"GoogleCRS84Quad","image/png","tfs");
 		mapObj.setBaseLayer(layer);
 		mapObj.setLevel(3);
@@ -258,7 +251,7 @@
 
 	function registerWMTSLayer(){
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		var layer = new GeoBeans.Layer.WMTSLayer("c5","/ows/user1/mgr","c5",
+		var layer = new GeoBeans.Layer.WMTSLayer("base","/ows/user1/mgr","quanqiu",
 			extent,"GoogleCRS84Quad","image/png","tfs",1,5);
 		layer.MIN_ZOOM_LEVEL = 1;
 		layer.MAX_ZOOM_LEVEL = 4;

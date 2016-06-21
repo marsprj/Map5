@@ -2,33 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
-<script type="text/javascript" src="../lib/GeoBeans.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
 
-<!-- Geometry -->
-<script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Point.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/LinearRing.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/Polygon.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPoint.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiLineString.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/MultiPolygon.js"></script>
-
-<script type="text/javascript" src="../lib/GeoBeans/Geometry/GML.js"></script>
-
-<!-- Feature -->
-<script type="text/javascript" src="../lib/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Field.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Feature.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/FeatureType.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Workspace.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/WFS/WFSWorkspace.js"></script>
 
 
 <script type="text/javascript">
@@ -48,7 +26,8 @@ function onSchema(){
 }
 
 function onFeatures(){
-	featureType.getFeatures(features_callback);
+	// featureType.getFeatures(features_callback);
+	featureType.getFeaturesAsync(null,null,null,null,null,features_callback);
 }
 
 function getWorkspace(){
@@ -104,7 +83,7 @@ function schema_callback(fields){
 	
 }
 
-function features_callback(featureType, features){
+function features_callback( features){
 	var fields = featureType.fields;
 	
 	

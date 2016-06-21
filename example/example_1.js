@@ -28,7 +28,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
 */
-
+var fps  = null;
 var canvas = document.getElementById('canvas'),
     context = canvas.getContext('2d'),
     paused = true,

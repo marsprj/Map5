@@ -25,6 +25,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
@@ -71,6 +74,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -135,38 +139,6 @@ function init(){
 	mapObj.draw();
 }
 
-function addLayerHeatMap_cities_db(){
-	mapObj.addHeatMap("cities","populat");
-	mapObj.draw();
-}
-
-function addLayerHeatMap_aqi_db(){
-	mapObj.addHeatMap("aqi","pm2_5");
-	mapObj.draw();
-}
-
-
-function removeHeatMap_cities(){
-	mapObj.removeHeatMap("cities");
-	mapObj.draw();
-}
-
-function removeHeatMap_aqi(){
-	mapObj.removeHeatMap("aqi");
-	mapObj.draw();	
-}
-
-var flag = false;
-function setHeatMapVisible(){
-	mapObj.setHeatMapVisible("cities",flag);
-	if(flag){
-		flag = false;
-	}else{
-		flag = true;
-	}
-	mapObj.draw();	
-}
-
 
 function addHeatMap(layerName){
 	var layer = mapObj.getLayer(layerName);
@@ -200,10 +172,11 @@ function addHeatMap(layerName){
 
 <body onload="init()">
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px">
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px">
 	</div>
-	增加：
-	<button onclick="addHeatMap('aqi')">热力图</button>
+	
+	<h5>测试 - 设置热力图的样式</h5>
+	<button onclick="addHeatMap('aqi')">增加热力图</button>
 </body>
 </html>
 

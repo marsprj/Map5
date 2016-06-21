@@ -10,6 +10,8 @@
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/jquery.nouislider.js"></script>
 <script type="text/javascript" src="../lib/echarts-all.js"></script>
+
+<!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Envelope.js"></script>
@@ -25,6 +27,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
@@ -72,6 +77,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -129,9 +135,8 @@
 var mapObj = null;
 var tracker = null;
 var mapManager = null;
-var url = "/ows/user1/mgr";
 var userName = "user1";
-var mapName = "0330"; 
+var mapName = "chart"; 
 var station_code = null;
 function init(){
 	var user = new GeoBeans.User(userName);
@@ -170,17 +175,10 @@ function addLayer_callback(result){
 }
 
 function onAddChartLayer(){
-	// var option = {
-	// 	colorMapID 		: 4,
-	// 	opacity 		: 0.6,
-	// 	border 			: "#efefef",
-	// 	borderOpacity	: 1.0
-	// };
 	var option = {
 		colorMapID : 2,
 		type : "tip"
 	};
-
 
 	var layer = new GeoBeans.Layer.AQIChartLayer("aqi","base",
 		"gc_aqi","pm2_5","position_name","station_code","time_point","2014-05-19 08:00:00",option);

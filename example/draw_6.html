@@ -8,7 +8,7 @@
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <!-- <script type="text/javascript" src="../lib/Map5.min.js"></script> -->
-
+<script type="text/javascript" src='../lib/requestNextAnimationFrame.js'></script>
 <script type="text/javascript" src="../lib/GeoBeans.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
@@ -27,7 +27,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -73,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -116,7 +117,6 @@
 <script type="text/javascript" src="../lib/GeoBeans/Overlay.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Overlay/Marker.js"></script>
 
-<script src='requestNextAnimationFrame.js'></script>
 
 <script type="text/javascript">
 	var mapObj = null;
@@ -418,9 +418,10 @@
 	}
 </script>
 <body onload="init()">
+	<h5>测试 - 贝塞尔曲线</h5>
 	<input type="text" id="hex" value="#404A59">
-	<button onclick="setBackground()">红色</button>
-
+<!-- 	<button onclick="setBackground()">红色</button>
+ -->
 	<button onclick="drawLine()">线</button>
 
 	<button onclick="beginAnimate()">动画</button>

@@ -25,7 +25,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -71,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -130,51 +133,7 @@
 			alert("没有该地图");
 			return;
 		}
-		// mapObj.setDrawLayerSingle(true);
-		// 本地绘制
-		mapObj.setDrawFeatureLayerLocal(true);
-		// var color = new GeoBeans.Color();
-		// color.setByHex("#404A59",1);
-		// mapObj.setBackground(color);
 		mapObj.draw();
-
-		// 定义marker
-		// var x = 116.4551;
-		// var y = 40.2539;
-		// var point = new GeoBeans.Geometry.Point(x,y);
-		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		// symbolizer.icon_url = "marker.png";
-		// symbolizer.icon_offset_x = 0;
-		// symbolizer.icon_offset_y = 0;
-
-		// var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,null);	
-		// mapObj.addOverlay(marker);
-
-
-
-		// var x = 91.1865;
-		// var y = 30.1465;
-		// var point = new GeoBeans.Geometry.Point(x,y);
-		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		// symbolizer.icon_url = "marker.png";
-		// symbolizer.icon_offset_x = 0;
-		// symbolizer.icon_offset_y = 0;
-
-		// var marker = new GeoBeans.Overlay.Marker("2",point,symbolizer,null);	
-		// mapObj.addOverlay(marker);
-
-
-		// var x = 108.479;
-		// var y = 23.1152;
-		// var point = new GeoBeans.Geometry.Point(x,y);
-		// var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		// symbolizer.icon_url = "marker.png";
-		// symbolizer.icon_offset_x = 0;
-		// symbolizer.icon_offset_y = 0;
-
-		// var marker = new GeoBeans.Overlay.Marker("3",point,symbolizer,null);	
-		// mapObj.addOverlay(marker);
-		// addQuadServerLayer();
 	}
 
 
@@ -285,13 +244,10 @@
 	}
 
 
-	function drawPoints(){
 
-	}
 </script>
 <body onload="init()">
-
-
+	<h5>测试 - 波纹点</h5>
 	<button onclick="beginAnimate()">动画</button>
 	<div id="mapDiv" style="height:70%;width:100%;position:absolute;top:30px;">
 	<!-- <div id="mapDiv" style="height:300px;width:400px;position:absolute;top:30px;"> -->

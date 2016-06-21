@@ -26,6 +26,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
@@ -72,6 +75,8 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
+
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -135,7 +140,7 @@
 	function init(){
 		var user = new GeoBeans.User(username);
 		mapManager = user.getMapManager();
-		
+		addWorldMap();
 	}
 
 	function addCluster(){
@@ -146,6 +151,7 @@
 		mapObj.draw();
 	}
 
+	// 加载地图
 	function addWorldMap(){
 		if(mapObj != null){
 			mapObj.close();
@@ -159,21 +165,21 @@
 	}
 
 	function addCities(){
+		if(mapObj != null){
+			mapObj.close();
+		}
+		mapObj = mapManager.getMap("mapDiv","world_tt");
+		if(mapObj == null){
+			alert("没有该地图");
+			return;
+		}
+		mapObj.draw();
+
 		var pointLayer = mapObj.getLayer("cities");
 		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
 		mapObj.addLayer(layer);
 		mapObj.draw();
 
-		// var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-		// var color = new GeoBeans.Color();
-		// color.setByHex("#3399CC",1);
-		// symbolizer.fill.color = color;
-		// color = new GeoBeans.Color();
-		// color.setByHex("#ffffff",1);
-		// symbolizer.stroke.color = color;
-		// var pointLayer2 = mapObj.getLayer("china_city_point");
-		// var layer2 = new GeoBeans.Layer.ClusterLayer("china_city_point_c",pointLayer2,symbolizer);
-		// mapObj.addLayer(layer2);
 	}
 
 	function addProv(){
@@ -187,7 +193,7 @@
 		}
 		mapObj.draw();
 		var pointLayer = mapObj.getLayer("china_prov_point");
-		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer);
+		var layer = new GeoBeans.Layer.ClusterLayer("cluster",pointLayer,symbolizer_g);
 		mapObj.addLayer(layer);
 		mapObj.draw();
 	}
@@ -211,7 +217,7 @@
 
 </script>
 <body onload="init()">
-	<button onclick="addWorldMap()">cities聚类地图</button>
+	
 	<button onclick="addCities()">cities聚类</button>
 	<button onclick="addProv()">城市聚类</button>
 	<button onclick="addGuoan()">天津聚类</button>

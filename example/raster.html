@@ -5,21 +5,18 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="bootstrap.min.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
 
-
-<script type="text/javascript" src="../lib/GeoBeans/File/Folder.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/File/File.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/RasterDB/RasterDBManager.js"></script>
 
 <script type="text/javascript">
 
 
-var url = "/ows/user1/mgr";
+// var url = "/ows/user1/mgr";
+var username = "user1";
 var rasterDBManager = null;
 function init(){
-	rasterDBManager = new GeoBeans.RasterDBManager(url);
+	var user = new GeoBeans.User(username);
+	rasterDBManager = user.getRasterDBManager();
 }
 
 function getList(){
@@ -54,7 +51,7 @@ function getList_callback(list){
 		}else {
 			html += "<tr>"
 			+ "<td>" + f.name + "</td>"
-			+ "<td>" + "File" + "</td>"
+			+ "<td>" + "Folder" + "</td>"
 			+ "<td>" + f.accessTime + "</td>"
 			+ "<td>" + f.lastTime + "</td>"
 			+ "<td></td>"

@@ -25,7 +25,9 @@
 <script type="text/javascript" src="../lib/GeoBeans/GPS/GPSManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Poi/PoiManager.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Subscribe/SubManager.js"></script>
-
+<script type="text/javascript" src="../lib/GeoBeans/Service/Service.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Service/ServiceManager.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/JobManager.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Geometry/GeometryCollection.js"></script>
@@ -71,6 +73,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Control/DragMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/SrollMapControl.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Control/ZoomControl.js"></script>
 
 <script type="text/javascript" src="../lib/GeoBeans/Renderer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Style/StyleManager.js"></script>
@@ -106,6 +109,7 @@
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../lib/GeoBeans/Layer/RippleLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/SymbolChartLayer.js"></script>
 <script type="text/javascript" src="../lib/GeoBeans/Layer/chart/RingChartLayer.js"></script>
@@ -300,6 +304,7 @@
 	}	
 </script>
 <body onload="init()">
+	<h5>测试页面，非示例页面</h5>
 	<button onclick="addChart()">图表</button>
 	<button onclick="addChart2()">图表2</button>
 	<button onclick="aqi()">aqi</button>
@@ -310,7 +315,7 @@
 	<button onclick="aqi_lighter()">lighter</button>
 	<button onclick="aqi_multiply()">multiply</button>
 	<button onclick="aqi_xor()">xor</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px;">
+	<div id="mapDiv" style="height:800px;width:100%;position:realtive;top:60px;">
 	</div>
 	
 </body>
