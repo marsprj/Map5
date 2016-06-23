@@ -3,11 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/Map5.css"/>
-
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
 <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
 
 
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 
 <script type="text/javascript">
 
@@ -16,7 +17,13 @@ var url = "/ows/user1/mgr";
 var username = "user1";
 var mapName = "world_tt"; 
 function init(){
-	
+	var extent = new GeoBeans.Envelope(-180,-90,180,90);
+	mapObj = new GeoBeans.Map(null,"mapDiv","name",extent,4326);
+	if(mapObj == null){
+		return;
+	}
+
+	mapObj.draw();
 	// var ww = window.document.body.clientWidth;
 	// var wh = window.document.body.clientHeight;
 	// var canvas = document.getElementById('myCanvas');
@@ -26,15 +33,14 @@ function init(){
 	// context.fillStyle = 'rgba(0,255,0,0.25)';
 	// context.fillRect(0,0,ww,wh);
 	
-		var user = new GeoBeans.User(username);
-		var mapManager = user.getMapManager();
-		mapObj = mapManager.getMap("mapDiv",mapName);
-		if(mapObj == null){
-			alert("没有该地图");
-			return;
-		}
-		mapObj.draw();
-	// mapObj.addEventListener(GeoBeans.Events.MOUSE_MOVE, onMapMove);
+		// var user = new GeoBeans.User(username);
+		// var mapManager = user.getMapManager();
+		// mapObj = mapManager.getMap("mapDiv",mapName);
+		// if(mapObj == null){
+		// 	alert("没有该地图");
+		// 	return;
+		// }
+		// mapObj.draw();
 	
 	var layer = null;
 	//var center = new GeoBeans.Geometry.Point(0,0);	
@@ -89,32 +95,25 @@ function init(){
 	//tile.draw();
 }
 
-function btnoffset(){
-	
-}
 
-function onMapClick(evt){
-	alert("onMapClick");
-}
-
-function onMapMove(evt){
-	var mapX = evt.mapX;
-	var mapY = evt.mapY;
-	
-	var str = mapX + "," + mapY;
-	document.getElementById("xy").innerHTML = str;
-}
 
 function amap(){
-	var center = new GeoBeans.Geometry.Point(0,0);	
-	var layer = new GeoBeans.Layer.AMapLayer("gaode","/appmaptile?lang=zh_cn&size=1&scale=1&style=8");
+	console.profile();
+	var layer = new GeoBeans.Layer.AMapLayer("gaode");
 	
 	mapObj.setBaseLayer(layer);
-		mapObj.setCenter(center);
-	mapObj.setLevel(2);	
+	mapObj.setLevel(3);	
 	mapObj.draw();	
+	console.profileEnd();
 }
 
+
+function baidumap(){
+	var layer = new GeoBeans.Layer.BaiduLayer("baidu");
+	mapObj.setBaseLayer(layer);
+	mapObj.setLevel(3);	
+	mapObj.draw();	
+}
 </script>
 
 
@@ -124,8 +123,9 @@ function amap(){
 <body onload="init()">
 
 <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
-<div id="mapDiv" style="height:800px;width:100%"></div>
+<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;"></div>
 <input type='button' value='amap' onclick="amap();">
+<input type='button' value='baidumap' onclick="baidumap();">
 <div id="xy" style="width:200px;height:30px;line-height:30px"/>  
 </body>
 </html>
