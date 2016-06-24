@@ -124,8 +124,10 @@
 
 <script type="text/javascript">
 	var mapObj = null;
-	var username = "user1";
-	var mapName = "t6";
+	// var username = "user1";
+	// var mapName = "t6";
+	var username = "radi";
+	var mapName = "莆田系医院";	
 	var mapManager = null;
 	function init(){
 		var user = new GeoBeans.User(username);
@@ -142,19 +144,34 @@
 
 	// 本地添加，不注册到用户
 	function addQuadServerLayer(){
-		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
 		mapObj.setBaseLayer(layer);
 		var viewer = mapObj.viewer;
-		var level = mapObj.getLevel(viewer);
-		if(level == null){
-			level = 2;
-		}
+		// var level = mapObj.getLevel(viewer);
+		// if(level == null){
+		// 	level = 2;
+		// }
 		var center = mapObj.center;
 		if(center == null){
 			center = new GeoBeans.Geometry.Point(0,0);	
 		}
 		mapObj.setCenter(center);
-		mapObj.setLevel(2);	
+		// mapObj.setLevel(2);	
+		mapObj.baseLayer.MAX_ZOOM_LEVEL = 10;
+		mapObj.draw();
+	}
+
+	// 本地添加，不注册到用户
+	function addQuadServerLayer2(){
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+		mapObj.setBaseLayer(layer);
+		var viewer = mapObj.viewer;
+		var center = mapObj.center;
+		if(center == null){
+			center = new GeoBeans.Geometry.Point(0,0);	
+		}
+		mapObj.setCenter(center);
+		mapObj.setLevel(3);	
 		mapObj.baseLayer.MAX_ZOOM_LEVEL = 10;
 		mapObj.draw();
 	}
@@ -259,11 +276,24 @@
 	}
 
 
+	function zoomIn(){
+		mapObj.zoomIn();
+	}
+
+	function zoomOut(){
+		mapObj.zoomOut();
+	}
+
+	function endQuery(){
+		mapObj.endZoom();
+	}
+
 </script>
 <body onload="init()">
 
 
 	<button onclick="addQuadServerLayer()">本地添加</button>
+	<button onclick="addQuadServerLayer2()">本地添加-设置级别</button>
 	<button onclick="removeBaseLayer()">本地删除</button>
 	
 	<!-- <button onclick="addBaseLayerImage()">影像</button> -->
@@ -283,6 +313,10 @@
 	<button onclick="addWMTSLayer()">本地添加-WMTS</button>
 
 	<button onclick="registerWMTSLayer()">注册-WMTS</button>
+	<br/>
+
+	<button onclick="zoomIn()">拉框放大</button>
+	<button onclick="zoomOut()">拉框缩小</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
 	<!-- <div id="mapDiv" style="height:400px;width:600px;position:absolute;top:30px;"> -->
 	</div>
