@@ -76,24 +76,23 @@ var g_catalog = [
 				"link" : ""
 			}
 		]
-
-	// },{
-	// 	"name" : "专题图",
-	// 	"items":[
-	// 		{
-	// 			"name" : "柱状图",
-	// 			"link" : ""
-	// 		},{
-	// 			"name" : "饼状图",
-	// 			"link" : ""
-	// 		},{
-	// 			"name" : "热力图",
-	// 			"link" : ""
-	// 		},{
-	// 			"name" : "点聚合图",
-	// 			"link" : ""
-	// 		}
-	// 	]
+	},{
+		"name" : "专题图",
+		"items":[
+			{
+				"name" : "柱状图",
+				"link" : ""
+			},{
+				"name" : "饼状图",
+				"link" : ""
+			},{
+				"name" : "热力图",
+				"link" : ""
+			},{
+				"name" : "点聚合图",
+				"link" : ""
+			}
+		]
 	},{
 		"name" : "WFS查询",
 		"items":[
@@ -103,9 +102,6 @@ var g_catalog = [
 			},{
 				"name" : "拉框查询",
 				"link" : "wfsQueryRect.html"
-			// },{
-			// 	"name" : "hit查询",
-			// 	"link" : ""
 			}
 		]
 	},{
