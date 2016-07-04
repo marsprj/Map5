@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"> -->
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="catalog.js"></script>
+<style type="text/css">
+	body{
+		margin: 0px;
+		font-size: 12px;
+		font-family: "Microsoft Yahei";
+	}
+	ul{
+		margin: 0px;
+		padding: 0px;
+	}
+	li{
+		list-style: none;
+	}
+	a{
+		text-decoration: none;
+	}
+	.main{
+		position: absolute;
+		height: 100%;
+		width: 100%;
+	}
+
+	.left{
+		float: left;
+		width: 300px;
+		height: 100%;
+		overflow: auto;
+		border-right: 1px solid #cfcfcf;
+	}
+	.right{
+		float: right;
+		width: calc(100% - 301px);
+		height: 100%;
+	}
+	#item_list{
+		padding-left: 20px;
+	}
+	.item-li{
+		border-left: 1px solid #dfdfdf;
+	}
+	.item-li a{
+		color: #666;
+    	border: none;
+    	margin-left: 0px;
+   		background: url(images/js_demo_nav_icon.png) no-repeat 0 center;
+   		padding-left: 32px;
+   		display: block;
+	 	height: 30px;
+	  	line-height: 30px;
+	  	font-size: 14px;
+	}
+	.item-li.open a{
+		background: url(images/js_demo_nav_icon_1.png) no-repeat 0 center;
+	}
+	.item-li.open .children{
+		display: block;
+	}
+
+	.item-li.close .children{
+		display: none;
+	}
+
+	ul.children li{
+		padding-left: 40px;
+		height: 24px;
+		line-height: 24px;
+		background: url(./images/list_icon.png) no-repeat 30px 10px;
+		cursor: pointer;
+	}
+
+	ul.children li.active{
+		color: 
+	}
+</style>
+<script type="text/javascript">
+	function init(){
+		var html = "";
+
+		for(var i = 0; i < g_catalog.length;++i){
+			var item = g_catalog[i];
+			var itemName = item.name;
+			var items = item.items;
+			html += '<li class="item-li close">'
+				+	'	<a href="javascript:void(0)">' + itemName + '</a>'
+				+	'	<ul class="children">';
+			for(var j = 0; j < items.length;++j){
+				var o = items[j];
+				var name = o.name;
+				var link = o.link;
+				html += '<li xlink="' +  link + '">' + name + '</li>';
+			}
+			html += "</ul></li>";
+		}
+
+		$("#item_list").html(html);
+
+		$("#item_list .item-li a").click(function(){
+			var parent = $(this).parent();
+			if(parent.hasClass("open")){
+				parent.removeClass("open").addClass("close");
+			}else{
+				parent.removeClass("close").addClass("open");
+			}
+		});
+
+
+		$("#item_list .children li").click(function(){
+			var link = $(this).attr("xlink");
+			if(link != null && link != ""){
+				$("#apiID").attr("src",link);
+			}
+		});
+
+	}
+</script>
+<title>Map5 -- API </title>
+<body onload="init()">
+	<div class="main">
+		<div class="left">
+			<ul id="item_list">
+			</ul>
+		</div>
+		<div class="right">
+			<iframe src="initMap.html" style="width:100%;height:100%" frameborder="no" id="apiID"></iframe>
+		</div>
+	</div>
+	
+
+</body>
