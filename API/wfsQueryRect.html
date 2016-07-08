@@ -7,7 +7,6 @@
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
-<script type="text/javascript" src="../lib/GeoBeans/Control/MapNavControl.js"></script>
 
 <style type="text/css">
 	body{
@@ -20,6 +19,11 @@
 
 	// 查询结果
 	var featuresResult = null;
+
+
+	var maxFeatures = 10;
+
+	var offset = null;
 
 	function  init(){
 		
@@ -35,8 +39,8 @@
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
-		// 设置为底图
-		mapObj.setBaseLayer(layer);
+		// 添加图层
+		mapObj.addLayer(layer);
 
 		// 设置中心点
 		var center = new GeoBeans.Geometry.Point(0,0);	
@@ -75,8 +79,10 @@
 
 
 	function queryByRect_cities(){
-		mapObj.queryByRect("cities",queryByRect_callback);
-
+		// 第一个参数是名称，第二个参数是返回结果的回调函数，
+		// 第三个是返回的个数，可以为空
+		// 第四个是偏移个数，可以为空
+		mapObj.queryByRect("cities",queryByRect_callback,maxFeatures,offset);
 	}
 
 

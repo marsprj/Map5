@@ -141,6 +141,19 @@
 	top:110px;
 	background-position: 0 -443px;
 }
+.map-nav-zoom-level{
+	left: -20px;
+	height: 24px;
+	width: 24px;
+	border-radius: 12px;
+	background-color: #81ABFF;
+	border: 2px solid #fff;
+	color: #F4F3F0;
+	background-image: none;
+	text-align: center;
+    vertical-align: middle;
+}
+
 
 .infoWindow{
 	position: absolute;

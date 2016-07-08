@@ -30,7 +30,7 @@
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 设置为底图
-		mapObj.setBaseLayer(layer);
+		mapObj.addLayer(layer);
 
 		// 设置中心点
 		var center = new GeoBeans.Geometry.Point(0,0);	

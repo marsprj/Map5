@@ -49,6 +49,9 @@ var g_catalog = [
 				"name" : "QuadServer图层",
 				"link" : "QSLayer.html"
 			},{
+				"name" : "多个QuadServer图层",
+				"link" : "QSLayers.html"
+			},{
 				"name" : "WFS图层",
 				"link" : "WFSLayer.html"
 			},{
@@ -97,11 +100,17 @@ var g_catalog = [
 		"name" : "WFS查询",
 		"items":[
 			{
+				"name" : "点击查询",
+				"link" : "layerClickEvent.html"
+			},{
 				"name" : "缓冲区查询",
 				"link" : "wfsBuffer.html"
 			},{
 				"name" : "拉框查询",
 				"link" : "wfsQueryRect.html"
+			},{
+				"name" : "简单查询",
+				"link" : "wfsQuery.html"
 			}
 		]
 	},{
