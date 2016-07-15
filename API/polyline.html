@@ -19,6 +19,9 @@
 
 	// 线标注
 	var polyline = null;
+
+	// 多线标注
+	var multiPolyline = null;
 	function  init(){
 		
 		// 地图的范围
@@ -77,25 +80,50 @@
 		mapObj.draw();		
 	}
 
+
+	function addPolylineByWKT(){
+		var wkt = "MULTILINESTRING ((10 10, 20 20, 10 40),(40 40, 30 30, 40 20, 30 10))";
+
+		var lineString = GeoBeans.Utility.createGeometryFromWKT(wkt);
+		// 线
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		
+		// 设定线样式的颜色，stroke必须设定
+		symbolizer.stroke.color.set(123,56,210,1.0);
+
+		// 设定线样式的宽度，默认宽度为2
+		symbolizer.stroke.width = 5;
+
+		// 定义多线标注
+		multiPolyline = new GeoBeans.Overlay.Polyline("E45AEJ7",lineString,symbolizer);
+
+		// 增加标注
+		mapObj.addOverlay(multiPolyline);
+
+		mapObj.draw();			
+	}
+
+
 	function removePolyline(){
-		// 按照添加顺序删除
-		mapObj.removeOverlay(0);
+		// 按照id值删除
+		mapObj.removeOverlay("polyline");
 		mapObj.draw();
 	}
 
 
 	function removePolyline_2(){
-		// 删除polyline标注
-		mapObj.removeOverlayObj(polyline);
+		// 删除multiPolyline标注
+		mapObj.removeOverlayObj(multiPolyline);
 		mapObj.draw();
 	}
 </script>
-<title>Map5 -- 线 标注</title>
+<title>Map5 -- 线标注</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	<button onclick="addPolyline()">增加线标注</button>
+	<button onclick="addPolylineByWKT()">增加线标注(wkt)</button>
 	<button onclick="removePolyline()">删除标注</button>
 	<button onclick="removePolyline_2()">删除标注2</button>
 </body>

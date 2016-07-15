@@ -60,6 +60,29 @@ var g_catalog = [
 			}
 		]
 	},{
+		"name" : "要素图层",
+		"items":[
+			{
+				"name" : "点要素图层",
+				"link" : "pointFeatureLayer.html"
+			},{
+				"name" : "多点要素图层",
+				"link" : "multiPointFeatureLayer.html"
+			},{
+				"name" : "线要素图层",
+				"link" : "lineFeatureLayer.html"
+			},{
+				"name" : "多线要素图层",
+				"link" : "multiLineStringFeatureLayer.html"
+			},{
+				"name" : "面要素图层",
+				"link" : "polygonFeatureLayer.html"
+			},{
+				"name" : "多面要素图层",
+				"link" : "multiPolygonFeatureLayer.html"
+			}
+		]
+	},{
 		"name" : "样式设置",
 		"items":[
 			{
@@ -114,6 +137,23 @@ var g_catalog = [
 			}
 		]
 	},{
+		"name" : "要素图层查询",
+		"items":[
+			{
+				"name" : "点击查询",
+				"link" : "featureLayerClickEvent.html"
+			},{
+				"name" : "缓冲区查询(未实现)",
+				"link" : ""
+			},{
+				"name" : "拉框查询",
+				"link" : "featureLayerQueryRect.html"
+			},{
+				"name" : "简单查询",
+				"link" : "featureLayerQuery.html"
+			}
+		]		
+	},{
 		"name" : "标注",
 		"items":[
 			{
@@ -128,6 +168,9 @@ var g_catalog = [
 			},{
 				"name" : "infoWindow标注",
 				"link" : "infoWindow.html"
+			},{
+				"name" : "标注操作",
+				"link" : "overlay.html"
 			}
 		]
 	},{

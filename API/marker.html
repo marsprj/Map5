@@ -75,17 +75,23 @@
 		// 设定符号样式
 		symbolizer.symbol = symbol;
 
-		// 定义一个marker ,参数分别为名称、坐标点和样式
-		marker = new GeoBeans.Overlay.Marker("maker",point,symbolizer);
+		// 定义一个marker ,参数分别为id、坐标点和样式,id 不可以重复，否则无法添加
+		marker = new GeoBeans.Overlay.Marker("marker",point,symbolizer);
 
 		//增加一个标注，增加标注的通用接口 
 		mapObj.addOverlay(marker);
 		mapObj.draw();
 	}
+
+	function getMarker(){
+		// 按照id值获取该overlay
+		var overlay = mapObj.getOverlay("marker");
+		console.log(overlay);
+	}
 	
 	function removeMarker(){
-		// 删除添加的第0个元素
-		mapObj.removeOverlay(0);
+		// 删除id
+		mapObj.removeOverlay("marker");
 		mapObj.draw();
 	}
 
@@ -101,6 +107,7 @@
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	<button onclick="addMarker()">增加标注</button>
+	<button onclick="getMarker()">获取标注</button>
 	<button onclick="removeMarker()">删除标注</button>
 	<button onclick="removeMarker_2()">删除标注2</button>
 </body>

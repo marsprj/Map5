@@ -54,15 +54,20 @@
 		var x = 116.37751;
 		var y = 39.9268;
 		var point = new GeoBeans.Geometry.Point(x,y);
+
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		var symbol = new GeoBeans.Symbol();
 		symbol.icon = "./images/pin.png";
 		symbolizer.symbol = symbol;
-		var html = "<div><div>地址：西直门内大街69号</div><div>电话:010-62252767</div></div>";
+		// 设置弹窗的高度和宽度，通过CSS进行设置,否则是按照内容自动调整大小
+		var html = "<div style='width:300px;height:120px'><div>地址：西直门内大街69号</div><div>电话:010-62252767</div></div>";
 		var options = {
-			title : "新街口电影院",
+			title : "新街口电影院" //弹窗名称
 		};
+		// 定义弹窗，第一个参数是弹窗内部HTML代码，第二个参数是设置
 		var infoWindow = new GeoBeans.InfoWindow(html,options);
+
+		// 第一个参数id,第二个点坐标,第三个参数样式,第四个参数弹窗
 		var marker = new GeoBeans.Overlay.Marker("1",point,symbolizer,infoWindow);	
 		mapObj.addOverlay(marker);
 		

@@ -5,6 +5,9 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../css/Map5.css">
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/countryValue.js"></script>
+<script type="text/javascript" src="js/riversValue.js"></script>
+<script type="text/javascript" src="js/citiesValue.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
 
@@ -49,38 +52,168 @@
 		// 设置级别
 		mapObj.setLevel(2);	
 
-		var server = "/geoserver/radi/ows?";
-		// 增加country图层
-		var countryLayer = new GeoBeans.Layer.WFSLayer("country", //在地图中的名称
-											server, //服务器
-											"radi:country_2", //图层在geoserver的名称
-											"GML2"); // 格式
-		mapObj.addLayer(countryLayer);
-		var countryStyle = createCountryStyle();
-		countryLayer.setStyle(countryStyle);
-
-
-		// 增加rivers图层
-		var riversLayer = new GeoBeans.Layer.WFSLayer("rivers", //在地图中的名称
-											server, //服务器
-											"radi:rivers_2", //图层在geoserver的名称
-											"GML2"); // 格式
-		mapObj.addLayer(riversLayer);
-		var riversStyle = createRiversStyle();
-		riversLayer.setStyle(riversStyle);
-
-		// 增加cities图层
-		var citiesLayer = new GeoBeans.Layer.WFSLayer("cities", //在地图中的名称
-											server, //服务器
-											"radi:cities_2", //图层在geoserver的名称
-											"GML2"); // 格式
-		mapObj.addLayer(citiesLayer);
-		var citiesStyle = createCitiesStyle();
-		citiesLayer.setStyle(citiesStyle);
+		addCountryLayer();
+		addRiversLayer();
+		addCitiesLayer();
 
 		// 绘图
 		mapObj.draw();
 	}
+
+	function addCountryLayer(){
+		var fields = [
+			{
+				name : "fname",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 多面
+		var geomType  = GeoBeans.Geometry.Type.MULTIPOLYGON;
+		var name = "country";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多面图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+		
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_countryValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_countryValue[i];
+			var name = v.name;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+		// 设定样式
+		var	style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer(); 
+		symbolizer.fill.color.set(242,149,47,0.8);
+		symbolizer.stroke.color.set(252,240,244,0.9);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		featureLayer.setStyle(style);
+		mapObj.draw();
+
+	}
+
+
+	function addCitiesLayer(){
+		var fields = [
+			{
+				name : "name",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "populat",
+				type : "int"
+			},{
+				name : "capital",
+				type : "string"
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 多面
+		var geomType  = GeoBeans.Geometry.Type.POINT;
+		var name = "cities";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多面图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_citiesValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_citiesValue[i];
+			var name = v.name;
+			var populat = v.populat;
+			var capital = v.capital;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,populat,capital,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke.color.set(0,255, 0,1);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		featureLayer.setStyle(style);
+		mapObj.draw();
+	}
+
+
+	function addRiversLayer(){
+		var fields = [
+			{
+				name : "fname",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 多线
+		var geomType  = GeoBeans.Geometry.Type.MULTILINESTRING;
+		var name = "rivers";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多线图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+		
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_riversValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_riversValue[i];
+			var name = v.name;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+		// 设定样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		featureLayer.setStyle(style);
+		mapObj.draw();
+	}
+
 
 	function clickLayer_cities(){
 		var style = new GeoBeans.Style.FeatureStyle();

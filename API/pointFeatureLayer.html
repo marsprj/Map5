@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	function  init(){
+		
+		// 地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		
+		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
+		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+		if(mapObj == null){
+			return;
+		}
+		
+		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+
+		// 添加图层
+		mapObj.addLayer(layer);
+
+		// 设置中心点
+		var center = new GeoBeans.Geometry.Point(0,0);	
+		mapObj.setCenter(center);
+
+		// 设置级别
+		mapObj.setLevel(2);	
+
+		// 绘图
+		mapObj.draw();
+	}
+
+
+
+
+	function addFeatureLayer(){
+		// 不是new 出来的
+		var fields = [
+			{
+				name : "fname",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			},{
+				name : "status",
+				type : "string"
+			}
+		];
+		var geomType  = GeoBeans.Geometry.Type.POINT;
+		var name = "testLayer";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（点图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+		
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+
+		// 增加要素
+		for(var i = 0; i < 10000; ++i){
+			var x = Math.random() * 360 - 180;
+			var y = Math.random() * 180 - 90;
+			// var x = Math.random() * 2 + 114;
+			// var y = Math.random() * 2 + 38;			
+			var point = new GeoBeans.Geometry.Point(x,y);
+			var id = "id_" + i;
+			var status = Math.random() > 0.5 ?"on":"off";
+			var name = "name" + i;
+			var values = [name,point,status];
+
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,point,values); 
+		}
+
+		// 设定样式
+		var style = createPointStyle();
+		featureLayer.setStyle(style);
+		mapObj.draw();
+	}
+
+	function createPointStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		// 状态为on的要素，标记为红色
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke.color.set(255,255, 0,1);
+		rule.symbolizer = symbolizer;
+		var filter = new GeoBeans.BinaryComparisionFilter();
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("status");
+		var literal = new GeoBeans.Literal();
+		literal.setValue("on");
+		filter.expression1 = prop;
+		filter.expression2 = literal;
+		rule.filter = filter;
+		style.addRule(rule);
+
+		// 状态为off的要素，标记为绿色
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(0, 126, 0,1);
+		symbolizer.stroke.color.set(0,255, 0,1);
+		rule.symbolizer = symbolizer;
+		var filter = new GeoBeans.BinaryComparisionFilter();
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("status");
+		var literal = new GeoBeans.Literal();
+		literal.setValue("off");
+		filter.expression1 = prop;
+		filter.expression2 = literal;
+		rule.filter = filter;
+		style.addRule(rule);		
+
+		return style;
+	}
+
+	function changeStatus(){
+		var layer = mapObj.getLayer("testLayer");
+
+		// 随机改变元素的字段值
+		for(var i = 0 ; i < 10000; ++i){
+			if(Math.random() > 0.5){
+				var id = "id_" + i;
+				// 根据id值，获得该要素
+				var feature = layer.getFeatureByID(id);
+
+				// 获取某一个字段的值
+				var status = layer.getFeatureValue(feature,"status")
+				var newStatus = (status == "on") ? "off" : "on";
+
+				// 设置字段的值
+				layer.setFeatureValue(feature,"status",newStatus);
+			}
+		}
+
+		// 设置完调用绘制
+		mapObj.draw();
+	}
+</script>
+<title>Map5 -- 点要素图层</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+<!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
+	</div> -->
+	<button onclick="addFeatureLayer()">点要素图层</button>
+	<button onclick="changeStatus()">动态改变状态</button>
+</body>
+	

@@ -79,19 +79,47 @@
 
 
 	function queryByRect_cities(){
-		// 第一个参数是名称，第二个参数是返回结果的回调函数，
-		// 第三个是返回的个数，可以为空
-		// 第四个是偏移个数，可以为空
-		mapObj.queryByRect("cities",queryByRect_callback,maxFeatures,offset);
+		// 第一个参数是名称，
+		// 第二个参数是样式
+		// 第三个参数是返回结果的回调函数，
+		// 第四个是返回的个数，可以为空
+		// 第五个是偏移个数，可以为空
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/marker.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures,offset);
 	}
 
 
 	function queryByRect_rivers(){
-		mapObj.queryByRect("rivers",queryByRect_callback);		
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		mapObj.queryByRect("rivers",style,queryByRect_callback);		
 	}
 
 	function queryByRect_country(){
-		mapObj.queryByRect("country",queryByRect_callback);			
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(0, 255, 0,0.6);
+		symbolizer.stroke.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.width = 1;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		mapObj.queryByRect("country",style,queryByRect_callback);			
 	}
 
 	function queryByRect_callback(features){

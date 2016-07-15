@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+
+	// 圆标注
+	var circle = null;
+	function  init(){
+		
+		// 地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		
+		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
+		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+		if(mapObj == null){
+			return;
+		}
+		
+		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+
+		// 设置为底图
+		mapObj.addLayer(layer);
+
+		// 设置中心点
+		var center = new GeoBeans.Geometry.Point(0,0);	
+		mapObj.setCenter(center);
+
+		// 设置级别
+		mapObj.setLevel(2);	
+
+		addInfoWindow();
+
+		addPolygon();
+
+		addPolylineByWKT();
+
+		addMarker();
+
+		// 绘图
+		mapObj.draw();
+	}
+
+	function addInfoWindow(){
+		mapObj.registerInfoWindowEvent();
+
+		// 定义marker
+		var x = -43.20;
+		var y = -22.9;
+		var point = new GeoBeans.Geometry.Point(x,y);
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/circle.png";
+		symbolizer.symbol = symbol;
+		var html = "<div><div>2016年里约奥运会</div><div>开幕时间：2016年8月6日</div></div>";
+		var options = {
+			title : "巴西",
+		};
+		var infoWindow = new GeoBeans.InfoWindow(html,options);
+		var marker = new GeoBeans.Overlay.Marker("2",point,symbolizer,infoWindow);	
+		mapObj.addOverlay(marker);		
+
+	}
+
+
+	function addPolygon(){
+
+		// var wkt = "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))";
+
+		var wkt = "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 10 30, 10 10, 30 5, 45 20, 20 35),(30 20, 20 15, 20 25, 30 20)))";
+
+		var geometry_multiPolygon = GeoBeans.Utility.createGeometryFromWKT(wkt);
+
+
+		// 定义面样式
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+
+		// 定义面样式的填充颜色
+		symbolizer.fill.color.set(126, 40, 0,0.6);
+
+		// 定义面样式的边框的颜色
+		symbolizer.stroke.color.set(255, 0, 0,0.6);
+
+		// 定义面样式的边框的宽度，默认为2
+		symbolizer.stroke.width = 1;
+
+		// 定义面标注
+		multiPolygon = new GeoBeans.Overlay.Polygon("multiPolygon",geometry_multiPolygon,symbolizer);	
+
+		// 增加标注
+		mapObj.addOverlay(multiPolygon);
+
+	}
+
+	function addPolylineByWKT(){
+		var wkt = "MULTILINESTRING ((10 10, 20 20, 10 40),(40 40, 30 30, 40 20, 30 10))";
+
+		var lineString = GeoBeans.Utility.createGeometryFromWKT(wkt);
+		// 线
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		
+		// 设定线样式的颜色，stroke必须设定
+		symbolizer.stroke.color.set(123,56,210,1.0);
+
+		// 设定线样式的宽度，默认宽度为2
+		symbolizer.stroke.width = 5;
+
+		// 定义多线标注
+		multiPolyline = new GeoBeans.Overlay.Polyline("E45AEJ7",lineString,symbolizer);
+
+		// 增加标注
+		mapObj.addOverlay(multiPolyline);
+
+	}
+
+	function addMarker(){
+		// marker点的位置
+		var point = new GeoBeans.Geometry.Point(116,39);
+
+		// 定义点样式，设定一个图片作为样式
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+
+		// symbol用来设置图片的样式
+		var symbol = new GeoBeans.Symbol();
+
+		// 图片的路径
+		symbol.icon = "./images/pin.png";
+
+		// 图片的大小，如果不设定则为图片本身的大小
+		// symbol.icon_width = 12;
+		// symbol.icon_height = 12;
+
+		// 图片的偏移，默认为图片的中心点，可以不设定
+		// x方向向右为正
+		// symbol.icon_offset_x = 12;
+
+		// y方向向上为正
+		// symbol.icon_offset_y = -12;
+
+		// 设定符号样式
+		symbolizer.symbol = symbol;
+
+		// 定义一个marker ,参数分别为id、坐标点和样式,id 不可以重复，否则无法添加
+		marker = new GeoBeans.Overlay.Marker("marker",point,symbolizer);
+
+		//增加一个标注，增加标注的通用接口 
+		mapObj.addOverlay(marker);
+	}
+
+
+	function getOverlay(){
+		// 根据id获取标注
+		var overlay = mapObj.getOverlay("marker");
+		alert("标注ID:" + (overlay == null)? "null" : overlay.id);
+	}
+
+	function getOverlays(){
+		// 获取所有标注
+		var overlays = mapObj.getOverlays();
+		alert("标注个数:" + overlays.length);
+	}
+
+
+	function addOverlays(){
+		var markers = [];
+		for(var i = 0; i < 1000; ++i){
+			var id = "marker" +　i;
+			var x = (Math.random() - 1) * 360 + 180;
+			var y = (Math.random() - 1) * 180 + 90;
+			var point = new GeoBeans.Geometry.Point(x,y);
+			var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+			var symbol = new GeoBeans.Symbol();
+			symbol.icon = "./images/pin.png";
+			symbolizer.symbol = symbol;
+
+			var marker = new GeoBeans.Overlay.Marker(id,point,symbolizer);	
+			markers.push(marker);
+		}
+
+		// 批量添加标注
+		mapObj.addOverlays(markers);
+		mapObj.draw();
+	}
+
+
+	function removeOverlays(){
+		var markersID = [];
+		for(var i = 0; i < 1000; ++i){
+			var id = "marker" + i;
+			markersID.push(id);
+		}
+
+		// 批量删除标注，markersID为删除标注的id数组
+		mapObj.removeOverlays(markersID);
+		mapObj.draw();
+	}
+
+	function removeOverlay(){
+		// 根据id删除标注
+		mapObj.removeOverlay("multiPolygon");
+		mapObj.draw();
+	}
+
+	function clearOverlays(){
+		// 清空标注
+		mapObj.clearOverlays();
+		mapObj.draw();
+	}
+
+	function setOverlayCenter(){
+		var overlay = mapObj.getOverlay("E45AEJ7");
+		// 使overlay居中
+		mapObj.setFitView(overlay);
+	}
+
+	function setOverlayVisible(){
+		var overlay = mapObj.getOverlay("E45AEJ7");
+		if(overlay == null){
+			return;
+		}
+		var visible = overlay.visible;
+		if(visible){
+			// 设置是否可见
+			mapObj.setOverlayVisible(overlay,false);	
+		}else{
+			mapObj.setOverlayVisible(overlay,true);
+		}
+		mapObj.draw();
+	}
+
+</script>
+<title>Map5 -- 标注操作</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:600px;width:100%;position:absolute;top:30px;">
+	</div>
+	<button onclick="getOverlay()">获取标注</button>
+	<button onclick="getOverlays()">获取所有标注</button>
+	<button onclick="addOverlays()">批量添加标注</button>
+	<button onclick="removeOverlay()">删除标注</button>
+	<button onclick="removeOverlays()">批量删除标注</button>
+	<button onclick="clearOverlays()">删除所有标注</button>
+	<button onclick="setOverlayCenter()">标注居中</button>
+	<button onclick="setOverlayVisible()">标注可见</button>
+</body>
+	
