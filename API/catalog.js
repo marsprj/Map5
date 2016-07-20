@@ -117,6 +117,9 @@ var g_catalog = [
 			},{
 				"name" : "点聚合图",
 				"link" : ""
+			},{
+				"name" : "分级图",
+				"link" : "rangeChart.html"
 			}
 		]
 	},{
@@ -171,6 +174,17 @@ var g_catalog = [
 			},{
 				"name" : "标注操作",
 				"link" : "overlay.html"
+			}
+		]
+	},{
+		"name" : "标绘",
+		"items":[
+			{
+				"name" : "点线面标绘",
+				"link" : "drawOverlay.html"
+			},{
+				"name" : "标绘&标注点击事件",
+				"link" : "overlayClick.html"
 			}
 		]
 	},{

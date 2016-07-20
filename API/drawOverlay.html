@@ -76,15 +76,12 @@
 		// trackOverlayControl.trackPolygon(callbackTrackOverlay);	
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		symbolizer.fill.color.set(126, 40, 0,0.6);
-		symbolizer.stroke.color.set(255, 0, 0,0.6);
-		symbolizer.stroke.width = 1;
+		// symbolizer.stroke.color.set(255, 0, 0,0.6);
+		// symbolizer.stroke.width = 1;
+		symbolizer.stroke = null;
 		mapObj.drawPolygon(symbolizer,callbackTrackOverlay);
 	}
 
-
-	function registerClickEvent(){
-		mapObj.registerOverlayClickEvent(callback);
-	}
 
 	function callback(overlay){
 		if(overlay == null){
@@ -93,6 +90,8 @@
 			console.log("click overlay is " + overlay.id);
 		}
 	}
+
+
 </script>
 <title>Map5 -- 标绘</title>
 <body onload="init()">
@@ -102,8 +101,5 @@
 	<button onclick="drawMarker()">添加marker</button>
 	<button onclick="drawPolyline()">添加polyline</button>
 	<button onclick="drawPolygon()">添加polygon</button>
-
-	<button onclick="registerClickEvent()">注册点击事件</button>
-
 </body>
 	
