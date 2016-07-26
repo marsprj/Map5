@@ -30,6 +30,7 @@
 		
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		// var layer = new GeoBeans.Layer.QSLayer("base","http://192.168.111.109:9090/QuadServer/maprequest?services=pgis_vector");
 
 		// 设置为底图
 		mapObj.addLayer(layer);

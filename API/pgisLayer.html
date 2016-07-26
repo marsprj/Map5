@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/tianjinValue.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	function  init(){
+		
+		// 地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		
+		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
+		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+		if(mapObj == null){
+			return;
+		}
+
+		// pgis图层的范围，通过该范围，确定获取瓦片的范围
+		var layerExtent = new GeoBeans.Envelope(113.9414,38.10546,119.01953,42.16015);
+		// 名称，地址，范围
+		var layer = new GeoBeans.Layer.PGISLayer("pgis","/PGIS_S_TileMapServerTDT/Maps/vec_tj_tdt/EzMap",layerExtent);
+		mapObj.addLayer(layer);
+
+		// 设置中心点
+		var center = new GeoBeans.Geometry.Point(117.38,39.35);	
+		mapObj.setCenter(center);
+
+		// 设置级别
+		mapObj.setLevel(9);	
+
+		addTianjinLayer();
+
+		addExtentPolygon();
+
+		// 绘图
+		mapObj.draw();
+
+	}
+
+	function addTianjinLayer(){
+		// 不是new 出来的
+		var fields = [
+			{
+				name : "fname",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 面
+		var geomType  = GeoBeans.Geometry.Type.POLYGON;
+		var name = "tianjin";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（面图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+		
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_tianjinValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_tianjinValue[i];
+			var name = v.name;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+		// 设定样式
+		var style = createStyle();
+		featureLayer.setStyle(style);
+		mapObj.draw();
+	}
+
+
+	function createStyle(){
+
+		// 定义元素的样式
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		// 定义一个规则
+		var rule = new GeoBeans.Rule();
+
+		// 定义一个面样式
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+
+		// 定义面样式的填充颜色
+		symbolizer.fill = null;
+
+		// 定义面样式的边框的颜色
+		symbolizer.stroke.color.set(255, 0, 0,0.6);
+
+		// 定义面样式的边框的宽度，默认为2
+		symbolizer.stroke.width = 1;
+
+		// 定义该规则的样式
+		rule.symbolizer = symbolizer;
+
+		// 添加该项规则
+		style.addRule(rule);
+		
+		return style;
+	}	
+
+	function addPGISLayer(){
+		var extent = new GeoBeans.Envelope(113.9414,38.10546,119.01953,42.16015);
+		var layer = new GeoBeans.Layer.PGISLayer("pgis","/PGIS_S_TileMapServerTDT/Maps/vec_tj_tdt/EzMap",extent);
+		mapObj.addLayer(layer);
+		mapObj.draw();
+	}
+
+
+	function setLayerMaxLevel(){
+		var layer = mapObj.getLayer("pgis");
+		if(layer == null){
+			return;
+		}
+		// 设置该图层的最大级别
+		layer.setMaxLevel(19);
+	}
+
+	function setLayerMinLevel(){
+		var layer = mapObj.getLayer("pgis");
+		if(layer == null){
+			return;
+		}
+		// 设置该图层的最小级别
+		layer.setMinLevel(9);
+	}
+
+
+	function setOpacity(){
+		var layer = mapObj.getLayer("pgis");
+		if(layer == null){
+			return;
+		}
+		// 设置图层的透明度
+		layer.setOpacity(0.5);
+		mapObj.draw();
+	}
+
+
+
+	function addExtentPolygon(){
+		var extent = new GeoBeans.Envelope(113.9414,38.10546,119.01953,42.16015);
+		var wkt = "POLYGON ((113.9414 42.16015, 119.01953 42.16015, 119.01953 38.10546, 113.9414 38.10546, 113.9414 42.1601))";
+
+		
+		var geometry_polygon = GeoBeans.Utility.createGeometryFromWKT(wkt);
+
+
+		// 定义面样式
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+
+		// 定义面样式的填充颜色
+		symbolizer.fill = null;
+
+		// 定义面样式的边框的颜色
+		symbolizer.stroke.color.set(255, 0, 0,0.6);
+
+		// 定义面样式的边框的宽度，默认为2
+		symbolizer.stroke.width = 1;
+
+		// 定义面标注
+		var polygon = new GeoBeans.Overlay.Polygon("multiPolygon",geometry_polygon,symbolizer);	
+
+		// 增加标注
+		mapObj.addOverlay(polygon);
+
+		mapObj.draw();	
+	}
+</script>
+<title>Map5 -- WMTS 图层</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+	<button onclick="addPGISLayer()">添加图层</button>
+	<button onclick="setLayerMaxLevel()">设置图层的最大级别</button>
+	<button onclick="setLayerMinLevel()">设置图层的最小级别</button>
+	<button onclick="setOpacity()">设置透明度</button>
+</body>
+	

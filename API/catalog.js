@@ -52,6 +52,9 @@ var g_catalog = [
 				"name" : "多个QuadServer图层",
 				"link" : "QSLayers.html"
 			},{
+				"name" : "PGIS图层",
+				"link" : "pgisLayer.html"
+			},{
 				"name" : "WFS图层",
 				"link" : "WFSLayer.html"
 			},{
@@ -95,6 +98,15 @@ var g_catalog = [
 				"name" : "面样式设置",
 				"link" : "polygonStyle.html"
 			},{
+				"name" : "点图层文字样式",
+				"link" : "pointStyle_text.html"
+			},{
+				"name" : "线图层文字样式",
+				"link" : "lineStyle_text.html"
+			},{
+				"name" : "面图层文字样式",
+				"link" : "polygonStyle_text.html"
+			},{
 				"name" : "唯一值样式设置",
 				"link" : "uniqueStyle.html"
 			},{
@@ -115,8 +127,14 @@ var g_catalog = [
 				"name" : "热力图",
 				"link" : ""
 			},{
-				"name" : "点聚合图",
-				"link" : ""
+				"name" : "点聚合图-示例1",
+				"link" : "clusterLayer.html"
+			},{
+				"name" : "点聚合图-示例2",
+				"link" : "clusterLayer1.html"
+			},{
+				"name" : "点聚合图-示例3",
+				"link" : "clusterLayer2.html"
 			},{
 				"name" : "分级图",
 				"link" : "rangeChart.html"
@@ -168,6 +186,9 @@ var g_catalog = [
 			},{
 				"name" : "面标注",
 				"link" : "polygon.html"
+			},{
+				"name" : "文字标注",
+				"link" : "label.html"
 			},{
 				"name" : "infoWindow标注",
 				"link" : "infoWindow.html"

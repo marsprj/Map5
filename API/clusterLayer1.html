@@ -38,13 +38,13 @@
 		mapObj.setCenter(center);
 
 		// 设置级别
-		mapObj.setLevel(2);	
+		mapObj.setLevel(3);	
+
+		addFeatureLayer();
 
 		// 绘图
 		mapObj.draw();
 	}
-
-
 
 
 	function addFeatureLayer(){
@@ -94,7 +94,7 @@
 		mapObj.draw();
 	}
 
-	function createPointStyle(){
+		function createPointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 
 		// 状态为on的要素，标记为红色
@@ -136,84 +136,37 @@
 
 		return style;
 	}
-
-	// // 定义图片样式
-	// function createStyle_icon(){
-	// 	// 定义元素的样式
-	// 	var style = new GeoBeans.Style.FeatureStyle();
-
-	// 	// 定义一个规则
-	// 	var rule = new GeoBeans.Rule();
-
-	// 	// 定义点样式，设定一个图片作为样式
-	// 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-
-	// 	// symbol用来设置图片的样式
-	// 	var symbol = new GeoBeans.Symbol();
-
-	// 	// 图片的路径
-	// 	symbol.icon = "./images/circle.png";
-	// 	// symbol.icon = "./images/a.gif";
-
-	// 	// 图片的大小，如果不设定则为图片本身的大小
-	// 	symbol.icon_width = 12;
-	// 	symbol.icon_height = 12;
-
-	// 	// 图片的偏移，默认为图片的中心点，可以不设定
-	// 	// x方向向右为正
-	// 	symbol.icon_offset_x = 12;
-
-	// 	// y方向向上为正
-	// 	symbol.icon_offset_y = -12;
-
-	// 	// 设定符号样式
-	// 	symbolizer.symbol = symbol;
-
-	// 	// 定义该规则的样式
-	// 	rule.symbolizer = symbolizer;
-
-
-	// 	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
-	// 	textSymbolizer.labelProp = "status";
-	// 	rule.textSymbolizer = textSymbolizer;
-
-	// 	// 添加该项规则
-	// 	style.addRule(rule);
-
-	// 	return style;
-	// }
-
-	function changeStatus(){
-		var layer = mapObj.getLayer("testLayer");
-
-		// 随机改变元素的字段值
-		for(var i = 0 ; i < 10000; ++i){
-			if(Math.random() > 0.5){
-				var id = "id_" + i;
-				// 根据id值，获得该要素
-				var feature = layer.getFeatureByID(id);
-
-				// 获取某一个字段的值
-				var status = layer.getFeatureValue(feature,"status")
-				var newStatus = (status == "on") ? "off" : "on";
-
-				// 设置字段的值
-				layer.setFeatureValue(feature,"status",newStatus);
-			}
-		}
-
-		// 设置完调用绘制
+	function addChart(){
+		var layerName = "chart";
+		var baseLayerName = "testLayer";
+		var layer = new GeoBeans.Layer.ClusterLayer(layerName,baseLayerName);
+		mapObj.addLayer(layer);
 		mapObj.draw();
 	}
+
+	function setLayerVisible(){
+		var layer = mapObj.getLayer("testLayer");
+		if(layer.visible){
+			layer.setVisiable(false);
+		}else{
+			layer.setVisiable(true);
+		}
+		mapObj.draw();
+	}
+
+	function removeChartLayer(){
+		mapObj.removeLayer("chart");
+		mapObj.draw();
+	}
+
 </script>
-<title>Map5 -- 点要素图层</title>
+<title>Map5 -- 点聚合图</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
-	</div> -->
-	<button onclick="addFeatureLayer()">点要素图层</button>
-	<button onclick="changeStatus()">动态改变状态</button>
+	<button onclick="addChart()">点聚合图(模拟数据)</button>
+	<button onclick="setLayerVisible()">隐藏/显示原始图</button>
+	<button onclick="removeChartLayer()">删除点聚合图</button>
 </body>
 	
