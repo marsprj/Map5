@@ -29,6 +29,9 @@ var g_catalog = [
 				"name" : "地图中心点",
 				"link" : "mapCenter.html"
 			},{
+				"name" : "地图范围",
+				"link" : "viewer.html"
+			},{
 				"name" : "导航条",
 				"link" : "mapNav.html"
 			}

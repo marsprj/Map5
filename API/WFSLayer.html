@@ -76,6 +76,16 @@
 		mapObj.draw();		
 	}
 
+	function addWFSLayer_points(){
+		var server = "/geoserver/radi/ows?";
+		var layer = new GeoBeans.Layer.WFSLayer("points", //在地图中的名称
+											server, //服务器
+											"radi:random_points", //图层在geoserver的名称
+											"GML2",true,6000); // 格式
+		mapObj.addLayer(layer);
+		mapObj.draw();				
+	}
+
 
 	function removeLayer(layerName){
 		// 删除图层
@@ -92,6 +102,7 @@
 	<button onclick="addWFSLayer_cities()">cities图层</button>
 	<button onclick="addWFSLayer_country()">country图层</button>
 	<button onclick="addWFSLayer_rivers()">rivers图层</button>
+	<button onclick="addWFSLayer_points()">points</button>
 	<br/>
 	<span>删除：</span>
 	<button onclick="removeLayer('cities')">cities图层</button>

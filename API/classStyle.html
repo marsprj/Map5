@@ -134,14 +134,14 @@
 		var style = new GeoBeans.Style.FeatureStyle();
 
 
-		// 1.定义第一个规则，gdp < 1000
+		// 1.定义第一个规则，gdp <= 1000
 		// 定义一个规则
 		var rule = new GeoBeans.Rule();
 
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 
 		// 定义面样式的填充颜色
-		symbolizer.fill.color.set(12,44,132,0.8);
+		symbolizer.fill.color.set(255,77,77,1);
 
 		// 定义面样式的边框的颜色
 		symbolizer.stroke = null;
@@ -157,11 +157,11 @@
 
 		// 字段条件
 		var prop = new GeoBeans.PropertyName();
-		prop.setName("continent");
+		prop.setName("gdp");
 		
 		// 值
 		var literal = new GeoBeans.Literal();
-		literal.setValue("Europe");
+		literal.setValue("1000");
 		
 		// 定义过滤条件的表达式
 		filter.expression1 = prop;
@@ -172,6 +172,64 @@
 
 		// 添加该项规则
 		style.addRule(rule);
+
+
+		// 2.定义第二个规则，1000 < gdp <= 2000
+		rule = new GeoBeans.Rule();
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(93,255,38,1);
+		symbolizer.stroke = null;
+		rule.symbolizer = symbolizer;
+
+		filter = new GeoBeans.BinaryLogicFilter();
+		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		var filter_1 = new GeoBeans.BinaryComparisionFilter();
+		filter_1.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("gdp");
+		var literal = new GeoBeans.Literal();
+		literal.setValue("1000");
+		filter_1.expression1 = prop;
+		filter_1.expression2 = literal;
+		filter.addFilter(filter_1);
+
+		var filter_2 = new GeoBeans.BinaryComparisionFilter();
+		filter_2.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("gdp");
+		var literal = new GeoBeans.Literal();
+		literal.setValue("2000");
+		filter_2.expression1 = prop;
+		filter_2.expression2 = literal;
+		filter.addFilter(filter_2);
+
+		rule.filter = filter;
+		style.addRule(rule);
+
+
+		// 3.定义第三个规则，2000 < gdp
+		rule = new GeoBeans.Rule();
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(0,128,255,1);
+		symbolizer.stroke = null;
+		rule.symbolizer = symbolizer;
+		filter = new GeoBeans.BinaryComparisionFilter();
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("gdp");
+		var literal = new GeoBeans.Literal();
+		literal.setValue("2000");
+		filter.expression1 = prop;
+		filter.expression2 = literal;
+		rule.filter = filter;
+		style.addRule(rule);
+
+
+
+		var layer = mapObj.getLayer("tianjin");
+		layer.setStyle(style);
+		mapObj.draw();
+
 	}
 </script>
 <title>Map5 -- 分级样式设置</title>

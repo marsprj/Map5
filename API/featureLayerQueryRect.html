@@ -222,9 +222,8 @@
 		style.addRule(rule);
 
 		var maxFeatures = 10;
-		var offset = null;
 
-		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures,offset);
+		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures);
 	}
 
 
@@ -238,8 +237,7 @@
 		style.addRule(rule);
 
 		var maxFeatures = null;
-		var offset = null;
-		mapObj.queryByRect("rivers",style,queryByRect_callback,maxFeatures,offset);		
+		mapObj.queryByRect("rivers",style,queryByRect_callback,maxFeatures);		
 	}
 
 	function queryByRect_country(){
@@ -254,8 +252,7 @@
 
 
 		var maxFeatures = null;
-		var offset = null;
-		mapObj.queryByRect("country",style,queryByRect_callback,maxFeatures,offset);			
+		mapObj.queryByRect("country",style,queryByRect_callback,maxFeatures);			
 	}
 
 

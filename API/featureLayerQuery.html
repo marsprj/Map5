@@ -139,7 +139,7 @@
 
 			// 使用wkt转换为geometry
 			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
-			var id = "id_" + i;
+			var id = "id_" + (i+1);
 			var values = [name,populat,capital,geometry];
 			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
 			featureLayer.addFeatureObj(id,geometry,values); 	
@@ -190,9 +190,9 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		// 查询图层名称，查询过滤条件，maxFeatures返回结果数，offset偏移量，
+		// 查询图层名称，查询过滤条件，maxFeatures返回结果数，fields为请求的字段
 		// style为查询结果的绘制样式，callback返回查询结果
-		mapObj.getFeatureFilter("country",filter,null,null,null,style,queryFeatures_callback);
+		mapObj.getFeatureFilter("country",filter,null,null,style,queryFeatures_callback);
 	}
 
 
@@ -224,7 +224,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		mapObj.getFeatureFilter("cities",filter,null,null,null,style,queryFeatures_callback);
+		mapObj.getFeatureFilter("cities",filter,null,null,style,queryFeatures_callback);
 	}
 
 
@@ -275,17 +275,17 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		mapObj.getFeatureFilter("cities",filter,null,null,null,style,queryFeatures_callback);		
+		mapObj.getFeatureFilter("cities",filter,null,null,style,queryFeatures_callback);		
 	}
 
 
-	// 逻辑查询，暂未实现
+	// 逻辑查询，
 	function queryFeatures_4(){
 		// 逻辑查询
 		var filter = new GeoBeans.BinaryLogicFilter();
 		// 操作符为and
-		// filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
-		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		// filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
 
 
 		// 查询条件为首都
@@ -325,10 +325,81 @@
 
 		// 查询字段 ，注意添加空间字段
 		var fields = ["capital","populat","shape"];
-		mapObj.getFeatureFilter("cities",filter,null,null,fields,style,queryFeatures_callback);		
+		mapObj.getFeatureFilter("cities",filter,null,fields,style,queryFeatures_callback);		
 	}
 
 
+	function queryFeatures_5(){
+		// 逻辑查询
+		var filter = new GeoBeans.BinaryLogicFilter();
+		// 操作符为not
+		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprNot;
+
+
+		// 查询条件为首都
+		var filter_continent = new GeoBeans.BinaryComparisionFilter();
+		filter_continent.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("capital");
+		var literal = new GeoBeans.Literal();
+		literal.setValue("Y");
+		filter_continent.expression1 = prop;
+		filter_continent.expression2 = literal;
+		// 添加子过滤条件
+		filter.addFilter(filter_continent);
+
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/marker.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+		textSymbolizer.labelProp = "name";
+		textSymbolizer.fill.color.setByHex("#000000",1);
+		textSymbolizer.stroke.color.set(0,126,122,1);
+		textSymbolizer.stroke.width = 0.5;
+		textSymbolizer.font.size = 16;
+		textSymbolizer.font.family = "Microsoft YaHei";
+		textSymbolizer.font.style = GeoBeans.Font.StyleType.Italic;
+		textSymbolizer.font.weight = GeoBeans.Font.WeightType.Bold;
+		textSymbolizer.displaceX = 5;
+		textSymbolizer.displaceY = -15;
+		rule.textSymbolizer = textSymbolizer;
+		style.addRule(rule);
+
+		mapObj.getFeatureFilter("cities",filter,null,null,style,queryFeatures_callback);	
+	}
+
+	function queryFeatures_6(){
+		var filter = new GeoBeans.BinaryComparisionFilter();
+		// like查询 
+		// % 替代一个或多个字符
+		// _ 仅替代一个字符
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprIsLike;
+		
+
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("name");
+		var literal = new GeoBeans.Literal();
+		// literal.setValue("%sk");
+		literal.setValue("%a_");
+		filter.expression1 = prop;
+		filter.expression2 = literal;		
+
+
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/circle.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		mapObj.getFeatureFilter("cities",filter,null,null,style,queryFeatures_callback);
+	}
 </script>
 <title>Map5 -- 属性要素图层简单属性查询</title>
 <body onload="init()">
@@ -338,7 +409,9 @@
 	<button onclick="queryFeatures_1()">查询示例1</button>
 	<button onclick="queryFeatures_2()">查询示例2</button>
 	<button onclick="queryFeatures_3()">查询示例3</button>
-	<button onclick="queryFeatures_4()" disabled>查询示例4(暂未实现)</button>
+	<button onclick="queryFeatures_4()">查询示例4</button>
+	<button onclick="queryFeatures_5()">查询示例5</button>
+	<button onclick="queryFeatures_6()">查询示例6</button>
 	
 	<button onclick="clearQuery()">停止查询</button>
 	

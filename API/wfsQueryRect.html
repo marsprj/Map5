@@ -21,9 +21,6 @@
 	var featuresResult = null;
 
 
-	var maxFeatures = 10;
-
-	var offset = null;
 
 	function  init(){
 		
@@ -82,8 +79,7 @@
 		// 第一个参数是名称，
 		// 第二个参数是样式
 		// 第三个参数是返回结果的回调函数，
-		// 第四个是返回的个数，可以为空
-		// 第五个是偏移个数，可以为空
+		// 第四个是返回的个数，可以为空,为空的情况下则返回所有的结果
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -93,7 +89,9 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures,offset);
+
+		var maxFeatures = 10;
+		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures);
 	}
 
 
@@ -122,6 +120,7 @@
 		mapObj.queryByRect("country",style,queryByRect_callback);			
 	}
 
+	// 回调函数返回的是结果数组
 	function queryByRect_callback(features){
 		if(!$.isArray(features)){
 			alert(features);

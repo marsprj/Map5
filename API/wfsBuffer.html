@@ -70,175 +70,153 @@
 
 
 	function onCitiesBuffer_circle(){
-		var layer = mapObj.getLayer("cities");
-		if(layer == null){
-			return;
-		}
+
 		// 圆缓冲区
-		layer.queryByBufferCircle(citiesBuffer_callback);
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/marker.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		var maxFeatures = 5;
+		mapObj.queryByBufferCircle("cities",style,getBuffer_callback,maxFeatures);
 	}
 
 	function onCitiesBuffer_line(){
-		var layer = mapObj.getLayer("cities");
-		if(layer == null){
-			return;
-		}	
+
+		// 线缓冲区
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/marker.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
 
 		// 设置缓冲区的距离
 		var distance = 6;
 
-		// 线缓冲区
-		layer.queryByBufferLine(distance,citiesBuffer_callback);
+		var maxFeatures = null;
+		// 线缓冲区	
+		mapObj.queryByBufferLine("cities",distance,style,getBuffer_callback,maxFeatures);
 	}
 
-	function citiesBuffer_callback(features){
-		// 返回的结果是要素的合集
-		var layer = mapObj.getLayer("cities");
-		if(layer == null){
-			return;
-		}
+	// 查询有问题
+	// function onCitiesBuffer_polygon(){
+	// 	// 面缓冲区
+	// 	var style = new GeoBeans.Style.FeatureStyle();
+	// 	var rule = new GeoBeans.Rule();
+	// 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+	// 	var symbol = new GeoBeans.Symbol();
+	// 	symbol.icon = "./images/marker.png";
+	// 	symbolizer.symbol = symbol;
+	// 	rule.symbolizer = symbolizer;
+	// 	style.addRule(rule);
 
-		$("#result span").html(features.length);
+	// 	// 设置缓冲区的距离
+	// 	var distance = 0.001;
 
-		// 设置一个样式，点图层设置点样式
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.stroke = null;
-		symbolizer.fill.color.set(255,0,0,1);
-		symbolizer.size = 6;
-
-		// 按照指定的样式绘制
-		layer.drawBufferFeatures(features,symbolizer);
-
-		// 遍历返回的要素
-		for(var i = 0; i < features.length;++i){
-			var feature = features[i];
-			var values = feature.values;
-			console.log(values);
-			var geometry = feature.geometry;
-			var fid = feature.fid;
-		}
-	}
-
-
-	function removeCitiesBuffer(){
-		var layer = mapObj.getLayer("cities");
-		if(layer == null){
-			return;
-		}
-		layer.clearBufferFeatures();
-	}
+	// 	var maxFeatures = null;
+	// 	// 线缓冲区	
+	// 	mapObj.queryByBufferPolygon("cities",distance,style,getBuffer_callback,maxFeatures);		
+	// }
 
 
 	function onRiversBuffer_circle(){
-		var layer = mapObj.getLayer("rivers");
-		if(layer == null){
-			return;
-		}
-		layer.queryByBufferCircle(riversBuffer_callback);
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		var maxFeatures = null;
+		mapObj.queryByBufferCircle("rivers",style,getBuffer_callback,maxFeatures);
 	}
 
 	function onRiversBuffer_line(){
-		var layer = mapObj.getLayer("rivers");
-		if(layer == null){
-			return;
-		}
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
 
 		var distance = 6;
-		layer.queryByBufferLine(distance,riversBuffer_callback);
+		var maxFeatures = null;
+		mapObj.queryByBufferLine("rivers",distance,style,getBuffer_callback,maxFeatures);
 	}
 
-	function riversBuffer_callback(features){
-		// 返回的结果是要素的合集
-		var layer = mapObj.getLayer("rivers");
-		if(layer == null){
-			return;
-		}
-
-		$("#result span").html(features.length);
-
-		// 设置一个样式，线图层设置线样式
-		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
-		symbolizer.stroke.color.set(255,0,0,1);
-		symbolizer.width = 6;
-
-		// 按照指定的样式绘制
-		layer.drawBufferFeatures(features,symbolizer);
-	}
-
-	function removeRiversBuffer(){
-		var layer = mapObj.getLayer("rivers");
-		if(layer == null){
-			return;
-		}
-		layer.clearBufferFeatures();		
-	}
 
 	function onCountryBuffer_circle(){
-		var layer = mapObj.getLayer("country");
-		if(layer == null){
-			return;
-		}
-		layer.queryByBufferCircle(countryBuffer_callback);
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(0, 255, 0,0.6);
+		symbolizer.stroke.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.width = 1;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		var maxFeatures = null;
+		mapObj.queryByBufferCircle("country",style,getBuffer_callback,maxFeatures);
+
 	}
 
 	function onCountryBuffer_line(){
-		var layer = mapObj.getLayer("country");
-		if(layer == null){
-			return;
-		}
-		var distance = 6;
-		layer.queryByBufferLine(distance,countryBuffer_callback);		
-	}
-
-	function countryBuffer_callback(features){	
-		// 返回的结果是要素的合集
-		var layer = mapObj.getLayer("country");
-		if(layer == null){
-			return;
-		}
-
-		$("#result span").html(features.length);
-
-		// 设置一个样式，面图层设置面样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-		symbolizer.fill.color.set(255,0,0,1);
-		symbolizer.stroke.color.set(255,0,0,1);
+		symbolizer.fill.color.set(0, 255, 0,0.6);
+		symbolizer.stroke.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.width = 1;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
 
-		// 按照指定的样式绘制
-		layer.drawBufferFeatures(features,symbolizer);		
+		var distance = 6;
+		var maxFeatures = null;
+
+		mapObj.queryByBufferLine("country",distance,style,getBuffer_callback,maxFeatures);	
 	}
 
-
-	function removeCountryBuffer(){
-		var layer = mapObj.getLayer("country");
-		if(layer == null){
+	function getBuffer_callback(features){
+		if(!$.isArray(features)){
 			return;
 		}
-		layer.clearBufferFeatures();	
+		$("#result span").html(features.length);
 	}
 
+	function endQueryBuffer(){
+		mapObj.endQuery();
+	}
 </script>
 <title>Map5 -- WFS图层</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
+	<div id="mapDiv" style="height:600px;width:100%;position:absolute;top:120px;">
 	</div>
 	<span>点图层：</span>
 	<button onclick="onCitiesBuffer_circle()">圆缓冲区</button>
 	<button onclick="onCitiesBuffer_line()">线缓冲区</button>
-	<button onclick="removeCitiesBuffer()">清空</button>
+	<!-- <button onclick="onCitiesBuffer_polygon()">面缓冲区</button> -->
+	
 	<br/>
 	<span>线图层：</span>
 	<button onclick="onRiversBuffer_circle()">圆缓冲区</button>
 	<button onclick="onRiversBuffer_line()">线缓冲区</button>
-	<button onclick="removeRiversBuffer()">清空</button>
 	<br/>
 	<span>面图层：</span>
 	<button onclick="onCountryBuffer_circle()">圆缓冲区</button>
 	<button onclick="onCountryBuffer_line()">线缓冲区</button>
-	<button onclick="removeCountryBuffer()">清空</button>
 
 	<br/>
+	<button onclick="endQueryBuffer()">停止查询</button>
 	<div id="result">
 		返回的结果个数：<span></span>
 	</div>

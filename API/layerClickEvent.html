@@ -101,15 +101,33 @@
 		// symbolizer.stroke.color.set(0,255, 0,1);
 		// rule.symbolizer = symbolizer;
 		// style.addRule(rule);
-		
+
+
+		// 注册点击事件
+		// 第一个参数，图层名称，第二个参数，设置点击后的样式，第三个回调函数
 		mapObj.registerClickEvent("cities",style,clickLayer_cities_callback);
 	}
 
-	function clickLayer_cities_callback(feature){
+	// 回调函数，第一个参数是返回的元素，第二个、第三个参数是点击点的地图坐标
+	function clickLayer_cities_callback(feature,x,y){
 		if(feature == null){
 			return;
 		}
 		console.log("cities:"  + feature.fid);
+		console.log(x + "," + y);
+
+
+		// 下面是定义弹窗的代码
+		var name = feature.getValue("name");
+		var html = "<div><div>" + name +  "</div></div>";
+		var option = {
+			title : "城市"
+		};
+		// 定义infoWindow
+		var infoWindow = new GeoBeans.InfoWindow(html,option);
+		var point = new GeoBeans.Geometry.Point(x,y);
+		// 弹出框
+		mapObj.openInfoWindow(infoWindow,point);
 	}
 
 	function createCitiesStyle(){
@@ -121,13 +139,11 @@
 		symbolizer.stroke.color.set(255,255, 0,1);
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
-
 		return style;
 	}
 
 
 	function createCountryStyle(){
-		// 定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -140,7 +156,6 @@
 	}
 
 	function createRiversStyle(){
-		// 定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
@@ -154,7 +169,6 @@
 
 
 	function clickLayer_country(){
-
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
