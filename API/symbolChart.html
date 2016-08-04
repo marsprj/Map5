@@ -109,10 +109,10 @@
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 
 		// 定义面样式的填充颜色
-		symbolizer.fill.color.set(0, 255, 0,0.6);
+		symbolizer.fill.color.setByHex("#474452",0.9);
 
 		// 定义面样式的边框的颜色
-		symbolizer.stroke.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.color.setByHex("#fafafa",0.9);
 
 		// 定义面样式的边框的宽度，默认为2
 		symbolizer.stroke.width = 1;
@@ -128,14 +128,16 @@
 
 
 	function addChart(){
-		// 分级图的参数
 		var option = {
-			startColor 		: "#00ff00", //最小值对应的颜色
-			endColor 		: "#ff0000", //最大值对应的颜色
-			opacity 		: 1.0,		 //填充的透明度
-			border 			: "#ffffff", //边界的颜色
-			borderOpacity 	: 0.6,		 //边界的透明度	
-			borderWidth 	: 0			 //边界的宽度，设置为0，则不显示边界
+			color  			: "#f5e900",
+			opacity 		: 1.0,
+			border 			: "#eeeeee",
+			borderOpacity 	: 1.0,
+			borderWidth		: 0,
+			maxsize 		: 30,
+			byLevel 		: false,
+			level 			: 4
+
 		};
 
 		var layerName = "chart";  		//图层名称
@@ -143,7 +145,7 @@
 		var baseLayerField = "gdp";		//底图的字段
 
 		// 定义分级图
-		var chartLayer = new GeoBeans.Layer.RangeChartLayer(layerName,baseLayerName,baseLayerField,option);
+		var chartLayer = new GeoBeans.Layer.SymbolChartLayer(layerName,baseLayerName,baseLayerField,option);
 
 		// 通过添加图层的方式添加专题图
 		mapObj.addLayer(chartLayer);
@@ -155,19 +157,14 @@
 		// 定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 6;
-		symbolizer.fill.color.set(0, 0, 255,1);
-		symbolizer.stroke.color.set(0,255, 0,0.6);
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
 		// 通用接口，注册点击事件
 		mapObj.registerClickEvent("chart",style,clickLayer_callback);
-	}
-
-	function unRegisterClickEvent(){
-		mapObj.unRegisterClickEvent("chart");
 	}
 
 	function clickLayer_callback(feature,x,y){
@@ -197,7 +194,10 @@
 	}
 
 	function setLayerVisible(){
-		var layer = mapObj.getLayer("tianjin");
+		var layer = mapObj.getLayer("chart");
+		if(layer == null){
+			return;
+		}
 		if(layer.visible){
 			layer.setVisiable(false);
 		}else{
@@ -205,14 +205,20 @@
 		}
 		mapObj.draw();
 	}
+
+	function unRegisterClickEvent(){
+		mapObj.unRegisterClickEvent("chart");
+	}
 </script>
-<title>Map5 -- 分级图</title>
+<title>Map5 -- 等级符号图</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-	<button onclick="addChart()">分级图</button>
-	<button onclick="setLayerVisible()">隐藏/显示原始图</button>
+<!-- 	<div id="mapDiv" style="height:400px;width:600px;position:absolute;top:80px;">
+	</div> -->
+	<button onclick="addChart()">等级符号图</button>
+	<button onclick="setLayerVisible()">隐藏/显示</button>
 	<button onclick="registerClickEvent()">点击事件</button>
 	<button onclick="unRegisterClickEvent()">注销点击事件</button>
 	<button onclick="removeChart()">删除分级图</button>

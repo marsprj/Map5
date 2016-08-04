@@ -5,9 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../css/Map5.css">
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="js/tianjin_gongchangValue.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
-<script type="text/javascript" src="../lib/heatmap.min.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
 
 <style type="text/css">
@@ -40,27 +38,27 @@
 		mapObj.setCenter(center);
 
 		// 设置级别
-		mapObj.setLevel(3);	
-
-		addFeatureLayer();
+		mapObj.setLevel(2);	
 
 		// 绘图
 		mapObj.draw();
 	}
 
 
+
+
 	function addFeatureLayer(){
 		// 不是new 出来的
 		var fields = [
 			{
-				name : "name",  // 字段名称
+				name : "fname",  // 字段名称
 				type : "string"  // 字段类型
-			},{
-				name : "type",
-				type : "int"
 			},{
 				name : "shape",
 				type : "geometry"
+			},{
+				name : "status",
+				type : "string"
 			}
 		];
 		var geomType  = GeoBeans.Geometry.Type.POINT;
@@ -73,20 +71,21 @@
 		// 添加图层
 		mapObj.addLayer(featureLayer);
 
-		var length = g_gongchangValue.length;
-		for(var i = 0; i < length;++i){
-			var v = g_gongchangValue[i];
-			var name = v.name;
-			var type = v.type;
-			
-			var wkt = v.shape;
 
-			// 使用wkt转换为geometry
-			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+		// 增加要素
+		for(var i = 0; i < 10000; ++i){
+			var x = Math.random() * 360 - 180;
+			var y = Math.random() * 180 - 90;
+			// var x = Math.random() * 2 + 114;
+			// var y = Math.random() * 2 + 38;			
+			var point = new GeoBeans.Geometry.Point(x,y);
 			var id = "id_" + i;
-			var values = [name,type,geometry];
+			var status = Math.random() > 0.5 ?"on":"off";
+			var name = "name" + i;
+			var values = [name,point,status];
+
 			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
-			featureLayer.addFeatureObj(id,geometry,values); 	
+			featureLayer.addFeatureObj(id,point,values); 
 		}
 
 		// 设定样式
@@ -95,40 +94,28 @@
 		mapObj.draw();
 	}
 
-	function createPointStyle(){
-
-	}
-	function addChart(){
-		var layerName = "chart";
-		var baseLayerName = "testLayer";
-		var layer = new GeoBeans.Layer.ClusterLayer(layerName,baseLayerName);
-		mapObj.addLayer(layer);
+	function addKML(){
+		var name = "kml";
+		var url = "data/point.kml";
+		// var url = "data/line.kml";
+		// var url = "data/polygon.kml";
+		// var url = "data/polygon2.kml";
+		// var url = "data/2012-02-10.kml";
+		// var url = "data/test1.kml";
+		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
+		console.log(featureLayer);
+		mapObj.addLayer(featureLayer);
 		mapObj.draw();
 	}
-
-	function setLayerVisible(){
-		var layer = mapObj.getLayer("testLayer");
-		if(layer.visible){
-			layer.setVisiable(false);
-		}else{
-			layer.setVisiable(true);
-		}
-		mapObj.draw();
-	}
-
-	function removeChartLayer(){
-		mapObj.removeLayer("chart");
-		mapObj.draw();
-	}
-
 </script>
-<title>Map5 -- 点聚合图</title>
+<title>Map5 -- KML图层</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-	<button onclick="addChart()">点聚合图(天津市工厂数据)</button>
-	<button onclick="setLayerVisible()">隐藏/显示原始图</button>
-	<button onclick="removeChartLayer()">删除点聚合图</button>
+<!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
+	</div> -->
+	<button onclick="addKML()">加载KML</button>
+	
 </body>
 	

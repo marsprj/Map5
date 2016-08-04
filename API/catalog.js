@@ -122,10 +122,13 @@ var g_catalog = [
 		"items":[
 			{
 				"name" : "柱状图",
-				"link" : ""
+				"link" : "barChart.html"
 			},{
 				"name" : "饼状图",
-				"link" : ""
+				"link" : "pieChart.html"
+			},{
+				"name" : "等级符号图",
+				"link" : "symbolChart.html"
 			},{
 				"name" : "热力图",
 				"link" : ""

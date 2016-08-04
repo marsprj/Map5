@@ -7,6 +7,7 @@
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="js/tianjinValue.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
 
 <style type="text/css">
@@ -65,7 +66,7 @@
 			}
 		];
 		// 面
-		var geomType  = GeoBeans.Geometry.Type.POLYGON;
+		var geomType  = GeoBeans.Geometry.Type.MULTIPOLYGON;
 		var name = "tianjin";
 
 		// 创建一个featureLayer
@@ -109,13 +110,13 @@
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 
 		// 定义面样式的填充颜色
-		symbolizer.fill.color.set(0, 255, 0,0.6);
+		symbolizer.fill.color.setByHex("#474452",0.9);
 
 		// 定义面样式的边框的颜色
-		symbolizer.stroke.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.color.setByHex("#fafafa",0.9);
 
 		// 定义面样式的边框的宽度，默认为2
-		symbolizer.stroke.width = 1;
+		symbolizer.stroke.width = 0.1;
 
 		// 定义该规则的样式
 		rule.symbolizer = symbolizer;
@@ -128,22 +129,24 @@
 
 
 	function addChart(){
-		// 分级图的参数
 		var option = {
-			startColor 		: "#00ff00", //最小值对应的颜色
-			endColor 		: "#ff0000", //最大值对应的颜色
-			opacity 		: 1.0,		 //填充的透明度
-			border 			: "#ffffff", //边界的颜色
-			borderOpacity 	: 0.6,		 //边界的透明度	
-			borderWidth 	: 0			 //边界的宽度，设置为0，则不显示边界
+			height		: 100,				//每个柱状图的高度，图上距离
+			width 		: 60,				//每个柱状图的宽度，图上距离
+			colors 		: ["#e1c72d","#b171f6"], // 字段对应的颜色
+			offsetX 	: 0,				// x方向偏移量，向右为正
+			offsetY 	: 0,				// y方向偏移量，向上为正
+			showLabel 	: false,			// 是否显示标签
+			opacity 	: 1.0,				// 透明度
+			x_axisLine  : false,				// 每个柱状图x向坐标轴
+			y_axisLine  : false,				// 每个柱状图y向坐标轴
 		};
 
 		var layerName = "chart";  		//图层名称
 		var baseLayerName = "tianjin";	//要显示分级图的底图名称
-		var baseLayerField = "gdp";		//底图的字段
+		var baseLayerFields = ["gdp","populat"]; // 要制图的字段
 
-		// 定义分级图
-		var chartLayer = new GeoBeans.Layer.RangeChartLayer(layerName,baseLayerName,baseLayerField,option);
+		// 定义柱状图
+		var chartLayer = new GeoBeans.Layer.BarChartLayer(layerName,baseLayerName,baseLayerFields,option);
 
 		// 通过添加图层的方式添加专题图
 		mapObj.addLayer(chartLayer);
@@ -151,44 +154,7 @@
 		mapObj.draw();
 	}
 
-	function registerClickEvent(){
-		// 定义元素的样式
-		var style = new GeoBeans.Style.FeatureStyle();
-		var rule = new GeoBeans.Rule();
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 6;
-		symbolizer.fill.color.set(0, 0, 255,1);
-		symbolizer.stroke.color.set(0,255, 0,0.6);
-		rule.symbolizer = symbolizer;
-		style.addRule(rule);
 
-		// 通用接口，注册点击事件
-		mapObj.registerClickEvent("chart",style,clickLayer_callback);
-	}
-
-	function unRegisterClickEvent(){
-		mapObj.unRegisterClickEvent("chart");
-	}
-
-	function clickLayer_callback(feature,x,y){
-		// 返回结果，feature为点击的数据，x,y为点击点的地图坐标
-		console.log(feature);
-		if(feature != null){
-			// 获取字段值
-			var gdp = feature.getValue("gdp");
-			var name = feature.getValue("fname");
-
-			var html = "<div><div>" + name + ":" + gdp +  "</div></div>";
-			var option = {
-				title : "天津市GDP产量"
-			};
-			// 定义infoWindow
-			var infoWindow = new GeoBeans.InfoWindow(html,option);
-			var point = new GeoBeans.Geometry.Point(x,y);
-			// 弹出框
-			mapObj.openInfoWindow(infoWindow,point);
-		}
-	}
 
 	function removeChart(){
 		// 删除图层的方式删除专题图
@@ -196,8 +162,11 @@
 		mapObj.draw();
 	}
 
-	function setLayerVisible(){
-		var layer = mapObj.getLayer("tianjin");
+	function setChartVisible(){
+		var layer = mapObj.getLayer("chart");
+		if(layer == null){
+			return;
+		}
 		if(layer.visible){
 			layer.setVisiable(false);
 		}else{
@@ -205,17 +174,19 @@
 		}
 		mapObj.draw();
 	}
+	
 </script>
-<title>Map5 -- 分级图</title>
+<title>Map5 -- 柱状图</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	<div id="mapDiv" style="height:700px;width:100%;position:absolute;top:30px;">
 	</div>
-	<button onclick="addChart()">分级图</button>
-	<button onclick="setLayerVisible()">隐藏/显示原始图</button>
-	<button onclick="registerClickEvent()">点击事件</button>
-	<button onclick="unRegisterClickEvent()">注销点击事件</button>
-	<button onclick="removeChart()">删除分级图</button>
+	<!-- <div id="mapDiv" style="height:400px;width:600px;position:absolute;top:80px;"> -->
+	</div>
+	<button onclick="addChart()">柱状图</button>
+	<button onclick="setChartVisible()">隐藏/显示柱状图</button>
+	<button onclick="removeChart()">删除</button>
+	
 	
 </body>
 	
