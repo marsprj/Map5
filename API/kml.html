@@ -96,16 +96,42 @@
 
 	function addKML(){
 		var name = "kml";
-		var url = "data/point.kml";
+		// var url = "data/point.kml";
 		// var url = "data/line.kml";
 		// var url = "data/polygon.kml";
 		// var url = "data/polygon2.kml";
-		// var url = "data/2012-02-10.kml";
+		var url = "data/2012-02-10.kml";
+		// var url = "data/2012_Earthquakes_Mag5.kml";
 		// var url = "data/test1.kml";
+		// var url = "data/timezones.kml";
 		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
 		console.log(featureLayer);
 		mapObj.addLayer(featureLayer);
+		
+
+		mapObj.setCenter(new GeoBeans.Geometry.Point(7.5,46.44));
+		mapObj.setLevel(13);
 		mapObj.draw();
+	}
+
+
+	function addKML_2(){
+		var name = "2";
+		var url = "data/2012_Earthquakes_Mag5.kml";
+		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
+		console.log(featureLayer);
+		mapObj.addLayer(featureLayer);
+		
+		mapObj.draw();		
+	}
+	function addKML_3(){
+		var name = "3";
+		var url = "data/timezones.kml";
+		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
+		console.log(featureLayer);
+		mapObj.addLayer(featureLayer);
+		
+		mapObj.draw();		
 	}
 </script>
 <title>Map5 -- KML图层</title>
@@ -116,6 +142,8 @@
 <!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
 	</div> -->
 	<button onclick="addKML()">加载KML</button>
+	<button onclick="addKML_2()">earthquake</button>
+	<button onclick="addKML_3()">timezone</button>
 	
 </body>
 	
