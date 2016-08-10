@@ -44,94 +44,20 @@
 		mapObj.draw();
 	}
 
+	// KML文件中的要素按照指定的样式进行绘制，如果没有指定样式，则按照系统设定的默认样式进行绘制
+	// 该数据是时区，数据来自openlayers
+	// 该数据是的几何要素是MultiGeometry
+	function addKML(){
+		var name = "kml";
+		var url = "data/timezones.kml";
 
+		// 第一个参数为图层的名称，第二个参数为KML文件所在的地址
+		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
 
-
-	function addFeatureLayer(){
-		// 不是new 出来的
-		var fields = [
-			{
-				name : "fname",  // 字段名称
-				type : "string"  // 字段类型
-			},{
-				name : "shape",
-				type : "geometry"
-			},{
-				name : "status",
-				type : "string"
-			}
-		];
-		var geomType  = GeoBeans.Geometry.Type.POINT;
-		var name = "testLayer";
-
-		// 创建一个featureLayer
-		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（点图层）
-		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
-		
 		// 添加图层
 		mapObj.addLayer(featureLayer);
 
-
-		// 增加要素
-		for(var i = 0; i < 10000; ++i){
-			var x = Math.random() * 360 - 180;
-			var y = Math.random() * 180 - 90;
-			// var x = Math.random() * 2 + 114;
-			// var y = Math.random() * 2 + 38;			
-			var point = new GeoBeans.Geometry.Point(x,y);
-			var id = "id_" + i;
-			var status = Math.random() > 0.5 ?"on":"off";
-			var name = "name" + i;
-			var values = [name,point,status];
-
-			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
-			featureLayer.addFeatureObj(id,point,values); 
-		}
-
-		// 设定样式
-		var style = createPointStyle();
-		featureLayer.setStyle(style);
 		mapObj.draw();
-	}
-
-	function addKML(){
-		var name = "kml";
-		// var url = "data/point.kml";
-		// var url = "data/line.kml";
-		// var url = "data/polygon.kml";
-		// var url = "data/polygon2.kml";
-		var url = "data/2012-02-10.kml";
-		// var url = "data/2012_Earthquakes_Mag5.kml";
-		// var url = "data/test1.kml";
-		// var url = "data/timezones.kml";
-		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
-		console.log(featureLayer);
-		mapObj.addLayer(featureLayer);
-		
-
-		mapObj.setCenter(new GeoBeans.Geometry.Point(7.5,46.44));
-		mapObj.setLevel(13);
-		mapObj.draw();
-	}
-
-
-	function addKML_2(){
-		var name = "2";
-		var url = "data/2012_Earthquakes_Mag5.kml";
-		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
-		console.log(featureLayer);
-		mapObj.addLayer(featureLayer);
-		
-		mapObj.draw();		
-	}
-	function addKML_3(){
-		var name = "3";
-		var url = "data/timezones.kml";
-		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
-		console.log(featureLayer);
-		mapObj.addLayer(featureLayer);
-		
-		mapObj.draw();		
 	}
 
 	function click_timezone(){
@@ -144,7 +70,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		mapObj.registerClickEvent("3",style,clickLayer_timezone_callback);
+		mapObj.registerClickEvent("kml",style,clickLayer_timezone_callback);
 	}
 
 	function clickLayer_timezone_callback(feature,x,y){
@@ -164,19 +90,13 @@
 		// 弹出框
 		mapObj.openInfoWindow(infoWindow,point);
 	}
-
 </script>
 <title>Map5 -- KML图层</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
-	</div> -->
 	<button onclick="addKML()">加载KML</button>
-	<button onclick="addKML_2()">earthquake</button>
-	<button onclick="addKML_3()">timezone</button>
-	<button onclick="click_timezone()">点击timezone</button>
-	
+	<button onclick="click_timezone()">点击查询</button>
 </body>
 	

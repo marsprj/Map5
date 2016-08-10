@@ -5,7 +5,7 @@
   <open>1</open>
   <Style id="linestyleExample">
     <LineStyle>
-      <color>7f0000ff</color>
+      <color>7f00ffff</color>
       <width>4</width>
     </LineStyle>
   </Style>
@@ -17,6 +17,16 @@
       <tessellate>1</tessellate>
       <coordinates>
         -122.364383,37.824664,0 -12.364152,44.824322,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>LineStyle Example</name>
+    <LineString>
+      <extrude>1</extrude>
+      <tessellate>1</tessellate>
+      <coordinates>
+        10,20,0 12.364152,49,0
       </coordinates>
     </LineString>
   </Placemark>

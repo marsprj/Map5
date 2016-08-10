@@ -228,5 +228,28 @@ var g_catalog = [
 				"link" : "wheelEvent.html"
 			}
 		]
+	},{
+		"name" : "加载KML文件",
+		"items":[
+			{
+				"name" : "点",
+				"link" : "kml_point.html"
+			},{
+				"name" : "线",
+				"link" : "kml_line.html"
+			},{
+				"name" : "面",
+				"link" : "kml_polygon.html"
+			},{
+				"name" : "例子1",
+				"link" : "kml_example_1.html"
+			},{
+				"name" : "例子2",
+				"link" : "kml_example_2.html"
+			},{
+				"name" : "例子3",
+				"link" : "kml_example_3.html"
+			}
+		]
 	}
 ];

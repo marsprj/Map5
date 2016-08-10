@@ -9,8 +9,7 @@
   	  <colorMode>normal</colorMode>
     </LabelStyle>
   	<IconStyle>
-         <color>ff00ff00</color>
-        <colorMode>random</colorMode>
+        <color>ff00ff00</color>
          <scale>1.1</scale>
          <Icon>
             <href>images/marker.png</href>
@@ -20,8 +19,7 @@
   <Style id="exampleStyleDocument2">
     <LabelStyle>
       <color>ff0000cc</color>
-  	  <scale>2</scale>
-  	  <colorMode>random</colorMode>
+  	  <scale>0</scale>
     </LabelStyle>
   </Style>
   <Placemark>
@@ -35,7 +33,7 @@
     <name>Document Feature 2</name>
     <styleUrl>#exampleStyleDocument2</styleUrl>
     <Point>
-      <coordinates>122.370,37.817,0</coordinates>
+      <coordinates>22.370,37.817,0</coordinates>
     </Point>
   </Placemark>
 </Document>

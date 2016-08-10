@@ -4,33 +4,33 @@
     <name>KmlFile</name>
     <Style id="transBluePoly">
       <LineStyle>
-		<color>ff00ff00</color>
+		<color>33000f0f</color>
         <width>1.5</width>
       </LineStyle>
       <PolyStyle>
         <color>7dff0000</color>
       </PolyStyle>
     </Style>
-	<Placemark>
-      <name>Absolute</name>
-      <visibility>1</visibility>
-      <styleUrl>#transBluePoly</styleUrl>
-      <Polygon>
-        <tessellate>1</tessellate>
-        <altitudeMode>absolute</altitudeMode>
-        <outerBoundaryIs>
-          <LinearRing>
-    		<coordinates>
-              130,10
-              140,40
-              120,40
-              110,20
-              130,10
-            </coordinates>
-    	 </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
+		<Placemark>
+	      <name>Absolute</name>
+	      <visibility>1</visibility>
+	      <styleUrl>#transBluePoly</styleUrl>
+	      <Polygon>
+	        <tessellate>1</tessellate>
+	        <altitudeMode>absolute</altitudeMode>
+	        <outerBoundaryIs>
+	          <LinearRing>
+	    		<coordinates>
+	              130,10
+	              140,40
+	              120,40
+	              110,20
+	              130,10
+	            </coordinates>
+	    	 </LinearRing>
+	        </outerBoundaryIs>
+	      </Polygon>
+	    </Placemark>
     <Placemark>
       <name>Absolute2</name>
       <visibility>1</visibility>
@@ -40,21 +40,21 @@
         <altitudeMode>absolute</altitudeMode>
         <outerBoundaryIs>
         <LinearRing>
-          <coordinates>
-           35,10
-		   45,45
-		   15,40
-		   10,20
+		  <coordinates>
 		   35,10
-          </coordinates>
+		   10,20
+		   15,40
+		   45,45
+		   35,10
+		</coordinates>
         </LinearRing>
       </outerBoundaryIs>
       <innerBoundaryIs>
         <LinearRing>
           <coordinates>
 			20,30
-			35,35
 			30,20
+			35,35
 			20,30
           </coordinates>
         </LinearRing>
