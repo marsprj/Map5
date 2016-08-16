@@ -78,6 +78,40 @@
 	ul.children li.active{
 		color: 
 	}
+	.right_tab{
+		height: 100%;
+		width: 100%;
+		display: none;
+	}
+
+	.btn{
+	    height: 40px;
+	    width: 200px;
+	    display: block;
+	    text-align: center;
+	    background-color: #5cb85c;
+	    vertical-align: middle;
+	    font-size: 16px;
+	    line-height: 2;
+	    border: 1px solid transparent;
+	    border-radius: 4px;
+	    color: #fff;
+	    cursor: pointer;
+	}
+	.version_div{
+		padding: 20px;
+	}
+	.version-number{
+		float:  left;
+		width: 200px;
+
+	}
+	.version-text{
+		float: left;;
+	}
+	#version_tab{
+		display: block;
+	}
 </style>
 <script type="text/javascript">
 	function init(){
@@ -114,7 +148,8 @@
 		$("#item_list .children li").click(function(){
 			var link = $(this).attr("xlink");
 			if(link != null && link != ""){
-				$("#apiID").attr("src",link);
+				$(".right_tab").hide();
+				$("#apiID").show().attr("src",link);
 			}
 		});
 
@@ -128,9 +163,30 @@
 			</ul>
 		</div>
 		<div class="right">
-			<iframe src="initMap.html" style="width:100%;height:100%" frameborder="no" id="apiID"></iframe>
+			<iframe src="initMap.html" style="width:100%;height:100%" frameborder="no" id="apiID" class="right_tab"></iframe>
+			<div class="right_tab" id="version_tab">
+				<div class="version_div">
+					<div class="version-number">
+						<div>Version : 1.0.0</div>
+						<div>Time : 2016.08.16</div>
+					</div>
+					<div class="version-text">
+					<div>
+						<p>版本说明:</p>
+						<p>主要实现的功能有:</p>
+						<p>①地图的基本操作</p>
+						<p>②地图状态控制</p>
+						<p>③样式设置</p>
+						<p>④专题图</p>
+						<p>⑤标注、标绘</p>
+						<p>⑥查询操作</p>
+						<p>⑦加载KML文件和GeoJson文件</p>
+					</div>
+					<a class="btn" href='../Map5_1.0.0.rar'>下载</a>
+					</div>
+					<div style="clear:both"></div>
+				</div>
+			</div>
 		</div>
 	</div>
-	
-
 </body>

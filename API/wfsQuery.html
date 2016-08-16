@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../css/Map5.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.min.css">
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
@@ -69,6 +69,7 @@
 
 
 
+	// sql continent == Africa
 	function queryFeatures_1(){
 
 		// 定义一个二维比较
@@ -108,15 +109,15 @@
 		mapObj.getFeatureFilter("country",filter,maxFeatures,fields,style,queryFeatures_callback);
 	}
 
-
+	// sql populat < 100000
 	function queryFeatures_2(){
 		var filter = new GeoBeans.BinaryComparisionFilter();
 		// 小于操作符 <
-		// filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
+		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
 		// 大于操作符 >
 		// filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
 		// 小于等于操作符 <= 
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+		// filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
 		// 大于等于操作符 >= 
 		// filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
 
@@ -162,6 +163,7 @@
 	}
 
 
+	// sql  100000  < populat < 500000
 	function queryFeatures_3(){
 		var filter = new GeoBeans.BinaryComparisionFilter();
 		//  between 
@@ -193,6 +195,7 @@
 
 
 	// 逻辑查询
+	// sql (capital == Y) and  (populat < 100000)
 	function queryFeatures_4(){
 		// 逻辑查询
 		var filter = new GeoBeans.BinaryLogicFilter();
@@ -241,7 +244,7 @@
 		mapObj.getFeatureFilter("cities",filter,null,fields,style,queryFeatures_callback);		
 	}
 
-
+	// sql not ( capital == Y ) 
 	function queryFeatures_5(){
 		// 逻辑查询
 		var filter = new GeoBeans.BinaryLogicFilter();
@@ -273,7 +276,7 @@
 		mapObj.getFeatureFilter("cities",filter,200,null,style,queryFeatures_callback);	
 	}
 
-
+	// sql where name like '%a_'
 	function queryFeatures_6(){
 		var filter = new GeoBeans.BinaryComparisionFilter();
 		// like查询 

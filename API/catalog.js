@@ -114,7 +114,7 @@ var g_catalog = [
 				"link" : "uniqueStyle.html"
 			},{
 				"name" : "分级样式设置",
-				"link" : ""
+				"link" : "classStyle.html"
 			}
 		]
 	},{
@@ -131,7 +131,7 @@ var g_catalog = [
 				"link" : "symbolChart.html"
 			},{
 				"name" : "热力图",
-				"link" : ""
+				"link" : "heatMap.html"
 			},{
 				"name" : "点聚合图-示例1",
 				"link" : "clusterLayer.html"
@@ -249,6 +249,34 @@ var g_catalog = [
 			},{
 				"name" : "例子3",
 				"link" : "kml_example_3.html"
+			}
+		]
+	},{
+		"name" : "加载GeoJson文件",
+		"items":[
+			{
+				"name" : "点",
+				"link" : "geojson_point.html"
+			},{
+				"name" : "线",
+				"link" : "geojson_line.html"
+			},{
+				"name" : "面",
+				"link" : "geojson_polygon.html"
+			},{
+				"name" : "例子1",
+				"link" : "geojson_example_1.html"
+			},{
+				"name" : "例子2",
+				"link" : "geojson_example_2.html"
+			}
+		]		
+	},{
+		"name" : "动画",
+		"items":[
+			{
+				"name" : "动画轨迹（未全部实现）",
+				"link" : "animation.html"
 			}
 		]
 	}

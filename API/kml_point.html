@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../css/Map5.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.min.css">
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
@@ -48,7 +48,7 @@
 	// 备注，如果不想绘制label,则将LabelStyle的scale设置为0
 	function addKML(){
 		var name = "kml";
-		var url = "data/point.kml";
+		var url = "data/kml/point.kml";
 
 		// 第一个参数为图层的名称，第二个参数为KML文件所在的地址
 		var featureLayer = mapObj.createFeatureLayerByKML(name,url);

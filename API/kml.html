@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../css/Map5.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.min.css">
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
 <script type="text/javascript" src="../lib/Map5.min.js"></script>
@@ -96,14 +96,14 @@
 
 	function addKML(){
 		var name = "kml";
-		// var url = "data/point.kml";
-		// var url = "data/line.kml";
-		// var url = "data/polygon.kml";
-		// var url = "data/polygon2.kml";
-		var url = "data/2012-02-10.kml";
-		// var url = "data/2012_Earthquakes_Mag5.kml";
-		// var url = "data/test1.kml";
-		// var url = "data/timezones.kml";
+		// var url = "data/kml/point.kml";
+		// var url = "data/kml/line.kml";
+		// var url = "data/kml/polygon.kml";
+		// var url = "data/kml/polygon2.kml";
+		var url = "data/kml/2012-02-10.kml";
+		// var url = "data/kml/2012_Earthquakes_Mag5.kml";
+		// var url = "data/kml/test1.kml";
+		// var url = "data/kml/timezones.kml";
 		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
 		console.log(featureLayer);
 		mapObj.addLayer(featureLayer);
@@ -117,7 +117,7 @@
 
 	function addKML_2(){
 		var name = "2";
-		var url = "data/2012_Earthquakes_Mag5.kml";
+		var url = "data/kml/2012_Earthquakes_Mag5.kml";
 		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
 		console.log(featureLayer);
 		mapObj.addLayer(featureLayer);
@@ -126,7 +126,7 @@
 	}
 	function addKML_3(){
 		var name = "3";
-		var url = "data/timezones.kml";
+		var url = "data/kml/timezones.kml";
 		var featureLayer = mapObj.createFeatureLayerByKML(name,url);
 		console.log(featureLayer);
 		mapObj.addLayer(featureLayer);
