@@ -34,11 +34,11 @@
 		mapObj.addLayer(layer);
 
 		// 设置中心点
-		var center = new GeoBeans.Geometry.Point(0,0);	
+		var center = new GeoBeans.Geometry.Point(107.9,33.8);	
 		mapObj.setCenter(center);
 
 		// 设置级别
-		mapObj.setLevel(2);	
+		mapObj.setLevel(5);	
 
 		// 绘图
 		mapObj.draw();
@@ -67,7 +67,10 @@
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		var symbol = new GeoBeans.Symbol();
-		symbol.icon = "./images/circle.png";
+		// symbol.icon = "./images/circle.png";
+		symbol.icon = 'http://openlayers.org/en/v3.17.1/examples/data/dot.png';
+		symbol.icon_width = 12;
+		symbol.icon_height = 12;
 		symbolizer.symbol = symbol;
 		rule.symbolizer = symbolizer;
 

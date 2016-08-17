@@ -97,12 +97,12 @@
 	function createPointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 
-		// 状态为on的要素，标记为红色
+		// 状态为on的要素，标记为紫色
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 6;
-		symbolizer.fill.color.set(255, 0, 0,1);
-		symbolizer.stroke.color.set(255,255, 0,1);
+		symbolizer.fill.color.setByHex('#800080',1);
+		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
 		var filter = new GeoBeans.BinaryComparisionFilter();
 		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
@@ -115,12 +115,12 @@
 		rule.filter = filter;
 		style.addRule(rule);
 
-		// 状态为off的要素，标记为绿色
+		// 状态为off的要素，标记为黄色
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 6;
-		symbolizer.fill.color.set(0, 126, 0,1);
-		symbolizer.stroke.color.set(0,255, 0,1);
+		symbolizer.fill.color.setByHex('#ddb926',1);
+		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
 		var filter = new GeoBeans.BinaryComparisionFilter();
 		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
@@ -211,8 +211,6 @@
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
-	</div> -->
 	<button onclick="addFeatureLayer()">点要素图层</button>
 	<button onclick="changeStatus()">动态改变状态</button>
 </body>

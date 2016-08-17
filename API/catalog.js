@@ -277,6 +277,9 @@ var g_catalog = [
 			{
 				"name" : "动画轨迹（未全部实现）",
 				"link" : "animation.html"
+			},{
+				"name" : "动态迁徙图",
+				"link" : "geoLineLayer.html"
 			}
 		]
 	}
