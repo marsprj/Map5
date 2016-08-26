@@ -128,12 +128,12 @@
 		var symbol = new GeoBeans.Symbol();
 
 		// 图片的路径
-		symbol.icon = "./images/circle.png";
+		symbol.icon = "./images/parking_lot.png";
 		// symbol.icon = "./images/a.gif";
 
 		// 图片的大小，如果不设定则为图片本身的大小
-		symbol.icon_width = 12;
-		symbol.icon_height = 12;
+		symbol.icon_width = 16;
+		symbol.icon_height = 16;
 
 		// 图片的偏移，默认为图片的中心点，可以不设定
 		// x方向向右为正
@@ -141,6 +141,9 @@
 
 		// y方向向上为正
 		symbol.icon_offset_y = -12;
+
+		// 图片顺时针旋转角度
+		symbol.rotate = 45;
 
 		// 设定符号样式
 		symbolizer.symbol = symbol;
