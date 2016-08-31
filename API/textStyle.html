@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.min.css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/countryValue.js"></script>
+<script type="text/javascript" src="js/riversValue.js"></script>
+<script type="text/javascript" src="js/citiesValue.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+
+	// 查询结果
+	var featuresResult = null;
+
+
+	var maxFeatures = 10;
+
+	var offset = null;
+
+	function  init(){
+		
+		// 地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		
+		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
+		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+		if(mapObj == null){
+			return;
+		}
+		
+		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+
+		// 添加图层
+		mapObj.addLayer(layer);
+
+		// 设置中心点
+		var center = new GeoBeans.Geometry.Point(106,31);	
+		mapObj.setCenter(center);
+
+		// 设置级别
+		mapObj.setLevel(6);	
+
+		addCountryLayer();
+		addRiversLayer();
+		addCitiesLayer();
+
+		// 绘图
+		mapObj.draw();
+	}
+
+	function addCitiesLayer(){
+		var fields = [
+			{
+				name : "name",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "populat",
+				type : "int"
+			},{
+				name : "capital",
+				type : "string"
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 多面
+		var geomType  = GeoBeans.Geometry.Type.POINT;
+		var name = "cities";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多面图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_citiesValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_citiesValue[i];
+			var name = v.name;
+			var populat = v.populat;
+			var capital = v.capital;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,populat,capital,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke.color.set(0,255, 0,1);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		featureLayer.setStyle(style);
+		mapObj.draw();
+	}
+
+
+	function addCountryLayer(){
+		var fields = [
+			{
+				name : "fname",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 多面
+		var geomType  = GeoBeans.Geometry.Type.MULTIPOLYGON;
+		var name = "country";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多面图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+		
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_countryValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_countryValue[i];
+			var name = v.name;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+		// 设定样式
+		var	style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer(); 
+		symbolizer.fill.color.set(242,149,47,0.8);
+		symbolizer.stroke.color.set(252,240,244,0.9);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		featureLayer.setStyle(style);
+		mapObj.draw();
+
+	}
+
+	function addRiversLayer(){
+		var fields = [
+			{
+				name : "fname",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		// 多线
+		var geomType  = GeoBeans.Geometry.Type.MULTILINESTRING;
+		var name = "rivers";
+
+		// 创建一个featureLayer
+		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多线图层）
+		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
+		
+		// 添加图层
+		mapObj.addLayer(featureLayer);
+
+		var length = g_riversValue.length;
+		for(var i = 0; i < length;++i){
+			var v = g_riversValue[i];
+			var name = v.name;
+			var wkt = v.shape;
+
+			// 使用wkt转换为geometry
+			var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+			var id = "id_" + i;
+			var values = [name,geometry];
+			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
+			featureLayer.addFeatureObj(id,geometry,values); 	
+		}
+
+		// 设定样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		featureLayer.setStyle(style);
+		mapObj.draw();
+	}
+
+
+	function createCitiesStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 2;
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke = null;
+		rule.symbolizer = symbolizer;
+
+
+		// 定义一个文字样式
+		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+
+		// 文字样式的标注字段
+		textSymbolizer.labelProp = "name";
+
+		// 文字填充设置，不设置，则随机颜色
+		textSymbolizer.fill.color.setByHex("#000000",1);
+		// textSymbolizer.fill = null;
+
+		// 文字边框设置，不设置，则随机颜色
+		textSymbolizer.stroke.color.set(0,126,122,1);
+		textSymbolizer.stroke.width = 0.5;
+		// textSymbolizer.stroke = null;
+		
+		// 文字样式的文字设置，默认大小是12
+		textSymbolizer.font.size = 16;
+		// 设置文字的字体，默认字体是Times New Roman
+		textSymbolizer.font.family = "Microsoft YaHei";
+
+		// 字体样式，默认是正常的，
+		// GeoBeans.Font.StyleType.Normal
+		// GeoBeans.Font.StyleType.Italic
+		// GeoBeans.Font.StyleType.Oblique
+		textSymbolizer.font.style = GeoBeans.Font.StyleType.Italic;
+
+		// 字体粗细，默认是正常
+		// GeoBeans.Font.WeightType.Normal
+		// GeoBeans.Font.WeightType.Bold
+		textSymbolizer.font.weight = GeoBeans.Font.WeightType.Bold;
+
+		// 文字标注的偏移量，x方向，向右是正
+		textSymbolizer.displaceX = 5;
+
+		// 文字标注的偏移量，y方向，向上是正
+		textSymbolizer.displaceY = -15;
+
+		// 设置规则的文字样式。
+		rule.textSymbolizer = textSymbolizer;
+
+		style.addRule(rule);
+		
+		var layer = mapObj.getLayer("cities");
+		layer.setStyle(style);
+		mapObj.draw();
+	}
+
+	function createRiversStyle(){
+		// 定义元素的样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+
+
+		// 定义一个文字样式
+		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+
+		// 文字样式的标注字段
+		textSymbolizer.labelProp = "fname";
+
+		// 文字填充设置，不设置，则随机颜色
+		textSymbolizer.fill.color.setByHex("#0000ff",1);
+		// textSymbolizer.fill = null;
+
+		textSymbolizer.stroke = null;
+		
+		// 文字样式的文字设置，默认大小是12
+		textSymbolizer.font.size = 12;
+		// 设置文字的字体，默认字体是Times New Roman
+		textSymbolizer.font.family = "Microsoft YaHei";
+
+		// 字体样式，默认是正常的，
+		// GeoBeans.Font.StyleType.Normal
+		// GeoBeans.Font.StyleType.Italic
+		// GeoBeans.Font.StyleType.Oblique
+		textSymbolizer.font.style = GeoBeans.Font.StyleType.Italic;
+
+		// 字体粗细，默认是正常
+		// GeoBeans.Font.WeightType.Normal
+		// GeoBeans.Font.WeightType.Bold
+		textSymbolizer.font.weight = GeoBeans.Font.WeightType.Bold;
+
+		// 文字标注的偏移量，x方向，向右是正
+		// textSymbolizer.displaceX = 5;
+
+		// 文字标注的偏移量，y方向，向上是正
+		// textSymbolizer.displaceY = -15;
+
+		// 设置规则的文字样式。
+		rule.textSymbolizer = textSymbolizer;
+
+		style.addRule(rule);
+		
+		var layer = mapObj.getLayer("rivers");
+		layer.setStyle(style);
+		mapObj.draw();
+	}
+
+
+	function createPolygonStyle(){
+
+		// 定义元素的样式
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		// 定义一个规则
+		var rule = new GeoBeans.Rule();
+
+		// 定义一个面样式
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+
+		// 定义面样式的填充颜色
+		symbolizer.fill.color.set(12, 237, 185,0.8);
+
+		// 定义面样式的边框的颜色
+		symbolizer.stroke.color.set(237,245, 244,1);
+
+		// 定义面样式的边框的宽度，默认为2
+		symbolizer.stroke.width = 1;
+
+		// 定义该规则的样式
+		rule.symbolizer = symbolizer;
+
+		// 定义一个文字样式
+		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+
+		// 文字样式的标注字段
+		textSymbolizer.labelProp = "fname";
+
+		// 文字填充设置，不设置，则随机颜色
+		textSymbolizer.fill.color.setByHex("#000000",1);
+		// textSymbolizer.fill = null;
+
+		// 文字边框设置，不设置，则随机颜色
+		// textSymbolizer.stroke.color.set(0,126,122,1);
+		// textSymbolizer.stroke.width = 2;
+		textSymbolizer.stroke = null;
+		
+		// 文字样式的文字设置，默认大小是12
+		textSymbolizer.font.size = 12;
+		// 设置文字的字体，默认字体是Times New Roman
+		textSymbolizer.font.family = "Microsoft YaHei";
+
+		// 字体样式，默认是正常的，
+		// GeoBeans.Font.StyleType.Normal
+		// GeoBeans.Font.StyleType.Italic
+		// GeoBeans.Font.StyleType.Oblique
+		textSymbolizer.font.style = GeoBeans.Font.StyleType.Normal;
+
+		// 字体粗细，默认是正常
+		// GeoBeans.Font.WeightType.Normal
+		// GeoBeans.Font.WeightType.Bold
+		textSymbolizer.font.weight = GeoBeans.Font.WeightType.Normal;
+
+		// 文字标注的偏移量，x方向，向右是正
+		// textSymbolizer.displaceX = 5;
+
+		// 文字标注的偏移量，y方向，向上是正
+		// textSymbolizer.displaceY = -15;
+
+		// 设置规则的文字样式。
+		rule.textSymbolizer = textSymbolizer;
+
+		style.addRule(rule);
+		
+		var layer = mapObj.getLayer("country");
+		layer.setStyle(style);
+		mapObj.draw();
+	}
+</script>
+<title>Map5 -- 多图层-文字样式</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
+	<!-- <div id="mapDiv" style="height:400px;width:600px;position:absolute;top:120px;"> -->
+	</div>
+	<button onclick="createCitiesStyle()">cities</button>
+	<button onclick="createRiversStyle()">rivers</button>
+	<button onclick="createPolygonStyle()">country</button>
+</body>
+	

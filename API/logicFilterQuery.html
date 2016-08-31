@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/Map5.min.css">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/countryValue.js"></script>
+<script type="text/javascript" src="js/riversValue.js"></script>
+<script type="text/javascript" src="js/citiesValue.js"></script>
+<script type="text/javascript" src="../lib/bootstrap-3.2.0-dist/bootstrap.min.js"></script>
+<script type="text/javascript" src="../lib/Map5.min.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	function  init(){
+		
+		// 地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		
+		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
+		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+		if(mapObj == null){
+			return;
+		}
+		
+		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+
+		// 添加图层
+		mapObj.addLayer(layer);
+
+		// 设置中心点
+		var center = new GeoBeans.Geometry.Point(0,0);	
+		mapObj.setCenter(center);
+
+		// 设置级别
+		mapObj.setLevel(3);	
+
+		var server = "/geoserver/radi/ows?";
+		// 增加country图层
+		var countryLayer = new GeoBeans.Layer.WFSLayer("country", //在地图中的名称
+											server, //服务器
+											"radi:country_2", //图层在geoserver的名称
+											"GML2"); // 格式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(220,121,198,0.04);
+		symbolizer.stroke.color.set(36,47,87,0.46);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		countryLayer.setStyle(style);
+		mapObj.addLayer(countryLayer);
+
+
+		// 增加rivers图层
+		var riversLayer = new GeoBeans.Layer.WFSLayer("rivers", //在地图中的名称
+											server, //服务器
+											"radi:rivers_2", //图层在geoserver的名称
+											"GML2"); // 格式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(255,65,65,1);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		riversLayer.setStyle(style);
+		mapObj.addLayer(riversLayer);
+
+		// 增加cities图层
+		var citiesLayer = new GeoBeans.Layer.WFSLayer("cities", //在地图中的名称
+											server, //服务器
+											"radi:cities_2", //图层在geoserver的名称
+											"GML2"); // 格式
+		
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.fill.color.set(220,121,198,0.8);
+		symbolizer.stroke = null;
+		symbolizer.size = 6;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		citiesLayer.setStyle(style);		
+		mapObj.addLayer(citiesLayer);
+
+		// 绘图
+		mapObj.draw();
+	}
+
+/*----
+	逻辑查询
+	通过组合逻辑谓词来连接查询条件，返回满足的记录。
+	组合逻辑谓词包括And、Or、Not等。
+
+	逻辑查询的基类是GeoBeans.LogicFilter。
+
+	查询的逻辑类型有
+	GeoBeans.LogicFilter.OperatorType.LogicOprAnd : and
+	GeoBeans.LogicFilter.OperatorType.LogicOprOr : or
+	GeoBeans.LogicFilter.OperatorType.LogicOprNot : not
+
+
+	1、其中And和or查询是二元逻辑查询
+	var filter = new GeoBeans.BinaryLogicFilter(operator);
+	operator 为逻辑操作符（GeoBeans.LogicFilter.OperatorType.LogicOprAnd、GeoBeans.LogicFilter.OperatorType.LogicOprOr）
+
+	添加查询条件filter.addFilter(subFilter);
+	可以添加若干个子查询条件filter,它们之间是并列的关系。
+
+	2、Not查询是一元逻辑查询
+	var filter = GeoBeans.UnaryLogicFilter(subFilter);
+	其中subFilter为要查询的条件，只可以添加一个
+
+	3、子条件可以是属性查询、空间查询和逻辑查询等
+	
+----*/
+
+
+
+/* ---
+	1、LogicOprAnd查询
+	各个子查询条件之间都同时满足
+---*/
+
+	function queryFeatures_and(){
+		var operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		var filter = new GeoBeans.BinaryLogicFilter(operator);
+
+		// 添加属性查询条件，城市为首都
+		var operator_continent = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		// 定义字段
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("capital");
+		// 定义值
+		var literal = new GeoBeans.Literal();
+		literal.setValue("Y");
+		var filter_continent = new GeoBeans.BinaryComparisionFilter(operator_continent,prop,literal);
+		// 添加子过滤条件
+		filter.addFilter(filter_continent);
+
+
+		// 添加空间查询条件
+		var propName = "shape";
+		var extent = new GeoBeans.Envelope(30,40,60,60);
+		var filter_bbox = new GeoBeans.BBoxFilter(propName,extent);
+		// 添加子过滤条件
+		filter.addFilter(filter_bbox);
+
+		// 设定样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/circle.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
+		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
+		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
+		var maxFeatures = null;
+		var fields = null;
+		mapObj.getFeatureFilter("cities",filter,maxFeatures,fields,style,queryFeatures_callback);	
+
+		// 辅助显示查询的geometry
+		var polygonSymbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		polygonSymbolizer.fill.color.set(126, 40, 0,0.6);
+		polygonSymbolizer.stroke.color.set(255, 0, 0,0.6);
+		polygonSymbolizer.stroke.width = 1;
+		var wkt = "POLYGON ((30 40,30 60, 60 60, 60 40, 30 40))";
+		var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+		var polygon = new GeoBeans.Overlay.Polygon("test",geometry,polygonSymbolizer);
+		mapObj.removeOverlay("test");
+		mapObj.addOverlay(polygon);	
+		mapObj.draw();
+	}
+
+
+
+/* ---
+	2、LogicOprOr查询
+	各个子查询条件之间只需满足一个
+---*/
+
+	function queryFeatures_or(){
+		var operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+		var filter = new GeoBeans.BinaryLogicFilter(operator);
+
+		// 添加属性查询条件，城市为首都
+		var operator_continent = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		// 定义字段
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("capital");
+		// 定义值
+		var literal = new GeoBeans.Literal();
+		literal.setValue("Y");
+		var filter_continent = new GeoBeans.BinaryComparisionFilter(operator_continent,prop,literal);
+		// 添加子过滤条件
+		filter.addFilter(filter_continent);
+
+
+		// 添加空间查询条件
+		var propName = "shape";
+		var extent = new GeoBeans.Envelope(30,40,60,60);
+		var filter_bbox = new GeoBeans.BBoxFilter(propName,extent);
+		// 添加子过滤条件
+		filter.addFilter(filter_bbox);
+
+		// 设定样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/circle.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
+		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
+		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
+		var maxFeatures = null;
+		var fields = null;
+		mapObj.getFeatureFilter("cities",filter,maxFeatures,fields,style,queryFeatures_callback);	
+
+		// 辅助显示查询的geometry
+		var polygonSymbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		polygonSymbolizer.fill.color.set(126, 40, 0,0.6);
+		polygonSymbolizer.stroke.color.set(255, 0, 0,0.6);
+		polygonSymbolizer.stroke.width = 1;
+		var wkt = "POLYGON ((30 40,30 60, 60 60, 60 40, 30 40))";
+		var geometry = GeoBeans.Utility.createGeometryFromWKT(wkt);
+		var polygon = new GeoBeans.Overlay.Polygon("test",geometry,polygonSymbolizer);
+		mapObj.removeOverlay("test");
+		mapObj.addOverlay(polygon);	
+		mapObj.draw();
+	}	
+
+/* ---
+	3、LogicOprNot查询
+	子查询条件的对立面
+---*/
+
+	function queryFeatures_not(){
+		var operator_continent = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		// 定义字段
+		var prop = new GeoBeans.PropertyName();
+		prop.setName("capital");
+		// 定义值
+		var literal = new GeoBeans.Literal();
+		literal.setValue("Y");
+		var filter_continent = new GeoBeans.BinaryComparisionFilter(operator_continent,prop,literal);
+
+
+		var filter = new GeoBeans.UnaryLogicFilter(filter_continent);
+
+	
+		// 设定样式
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Symbol();
+		symbol.icon = "./images/circle.png";
+		symbolizer.symbol = symbol;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+
+		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
+		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
+		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
+		var maxFeatures = null;
+		var fields = null;
+		mapObj.getFeatureFilter("cities",filter,maxFeatures,fields,style,queryFeatures_callback);		
+	}
+
+	function queryFeatures_callback(features){
+		// 返回查询的features
+		if(!$.isArray(features)){
+			return;
+		}
+
+		$("#result span").html(features.length);
+		for(var i = 0; i< features.length;++i){
+			var feature = features[i];
+			var fid = feature.fid;
+			console.log(fid);
+		}
+	}
+
+	function clearQuery(){
+		// 停止查询
+		mapObj.endQuery();
+
+		// 删除辅助显示的geometry
+		mapObj.removeOverlay("test");
+		mapObj.draw();
+
+		//删除结果
+		$("#result span").html("");
+	}
+
+
+
+</script>
+<title>Map5 -- WFS图层-- 逻辑查询</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px;">
+	</div>
+	
+	<button onclick="queryFeatures_and()">and</button>
+	<button onclick="queryFeatures_or()">or</button>
+	<button onclick="queryFeatures_not()">not</button>
+	<button onclick="clearQuery()">停止查询</button>
+	
+	<br/>
+	<div id="result">
+		返回的结果个数：<span></span>
+	</div>
+</body>
+	

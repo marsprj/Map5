@@ -158,9 +158,18 @@ var g_catalog = [
 			},{
 				"name" : "拉框查询",
 				"link" : "wfsQueryRect.html"
+			// },{
+			// 	"name" : "简单查询",
+			// 	"link" : "wfsQuery.html"
 			},{
-				"name" : "简单查询",
-				"link" : "wfsQuery.html"
+				"name" : "属性查询",
+				"link" : "ComparisionFilterQuery.html"
+			},{
+				"name" : "空间查询",
+				"link" : "spatialFilterQuery.html"
+			},{
+				"name" : "逻辑查询",
+				"link" : "logicFilterQuery.html"
 			}
 		]
 	},{
@@ -170,14 +179,11 @@ var g_catalog = [
 				"name" : "点击查询",
 				"link" : "featureLayerClickEvent.html"
 			},{
-				"name" : "缓冲区查询(未实现)",
-				"link" : ""
-			},{
 				"name" : "拉框查询",
 				"link" : "featureLayerQueryRect.html"
 			},{
-				"name" : "简单查询",
-				"link" : "featureLayerQuery.html"
+				"name" : "属性查询",
+				"link" : "featureLayerComparisionFilterQuery.html"
 			}
 		]		
 	},{
