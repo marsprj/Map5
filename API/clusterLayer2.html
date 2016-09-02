@@ -96,13 +96,32 @@
 	}
 
 	function createPointStyle(){
-
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 1;
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke = null;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
 	}
+
+
 	function addChart(){
+		// 1、设置图层名称
 		var layerName = "chart";
+
+		// 2、选取底图名称
 		var baseLayerName = "testLayer";
+
+		// 3、定义点聚合图
 		var layer = new GeoBeans.Layer.ClusterLayer(layerName,baseLayerName);
+
+		// 4、添加图层
 		mapObj.addLayer(layer);
+
+		// 5、绘图
 		mapObj.draw();
 	}
 
@@ -117,7 +136,11 @@
 	}
 
 	function removeChartLayer(){
+
+		// 1、根据名称删除图层
 		mapObj.removeLayer("chart");
+
+		// 2、绘图
 		mapObj.draw();
 	}
 

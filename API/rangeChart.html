@@ -128,7 +128,7 @@
 
 
 	function addChart(){
-		// 分级图的参数
+		// 1、设置分级图的参数
 		var option = {
 			startColor 		: "#00ff00", //最小值对应的颜色
 			endColor 		: "#ff0000", //最大值对应的颜色
@@ -138,16 +138,22 @@
 			borderWidth 	: 0			 //边界的宽度，设置为0，则不显示边界
 		};
 
-		var layerName = "chart";  		//图层名称
-		var baseLayerName = "tianjin";	//要显示分级图的底图名称
-		var baseLayerField = "gdp";		//底图的字段
+		// 2、设置图层名称
+		var layerName = "chart";  		
 
-		// 定义分级图
+		// 3、选取分级图底图的名称
+		var baseLayerName = "tianjin";	
+
+		// 4、底图字段
+		var baseLayerField = "gdp";		
+
+		// 5、定义分级图
 		var chartLayer = new GeoBeans.Layer.RangeChartLayer(layerName,baseLayerName,baseLayerField,option);
 
-		// 通过添加图层的方式添加专题图
+		// 6、通过添加图层的方式添加专题图
 		mapObj.addLayer(chartLayer);
 
+		// 7、绘图
 		mapObj.draw();
 	}
 
@@ -167,6 +173,7 @@
 	}
 
 	function unRegisterClickEvent(){
+		// 注销图层的点击事件
 		mapObj.unRegisterClickEvent("chart");
 	}
 
@@ -191,8 +198,11 @@
 	}
 
 	function removeChart(){
-		// 删除图层的方式删除专题图
+		
+		// 1、删除图层的方式删除专题图
 		mapObj.removeLayer("chart");
+		
+		// 2、绘图
 		mapObj.draw();
 	}
 

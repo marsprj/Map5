@@ -17,11 +17,6 @@
 	// 地图变量
 	var mapObj = null;
 
-	// 查询结果
-	var featuresResult = null;
-
-
-
 	function  init(){
 		
 		// 地图的范围
@@ -52,6 +47,8 @@
 											server, //服务器
 											"radi:country_2", //图层在geoserver的名称
 											"GML2"); // 格式
+		var countryStyle = createCountryStyle();
+		countryLayer.setStyle(countryStyle);
 		mapObj.addLayer(countryLayer);
 
 
@@ -60,6 +57,8 @@
 											server, //服务器
 											"radi:rivers_2", //图层在geoserver的名称
 											"GML2"); // 格式
+		var riversStyle = createRiversStyle();
+		riversLayer.setStyle(riversStyle);
 		mapObj.addLayer(riversLayer);
 
 		// 增加cities图层
@@ -68,18 +67,52 @@
 											"radi:cities_2", //图层在geoserver的名称
 											"GML2"); // 格式
 		mapObj.addLayer(citiesLayer);
+		var citiesStyle = createCitiesStyle();
+		citiesLayer.setStyle(citiesStyle);
 
 		// 绘图
 		mapObj.draw();
 	}
 
 
+	function createCitiesStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 126, 0,1);
+		symbolizer.stroke.color.set(255,255, 0,1);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
+
+	function createCountryStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.color.set(0,255, 0,0.6);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
+
+	function createRiversStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
 
 	function queryByRect_cities(){
-		// 第一个参数是名称，
-		// 第二个参数是样式
-		// 第三个参数是返回结果的回调函数，
-		// 第四个是返回的个数，可以为空,为空的情况下则返回所有的结果
+
+		// 1、设置查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -89,13 +122,21 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-
+		// 2、设置返回的最大个数
 		var maxFeatures = 10;
+
+		// 3、拉框查询
+		// 第一个参数是图层名称，
+		// 第二个参数是样式
+		// 第三个参数是返回结果的回调函数，
+		// 第四个是返回的个数，可以为空,为空的情况下则返回所有的结果
 		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures);
 	}
 
 
 	function queryByRect_rivers(){
+
+		// 1、设置查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
@@ -104,10 +145,17 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、拉框查询
+		// 第一个参数是图层名称，
+		// 第二个参数是样式
+		// 第三个参数是返回结果的回调函数，
+		// 第四个是返回的个数，可以为空,为空的情况下则返回所有的结果
 		mapObj.queryByRect("rivers",style,queryByRect_callback);		
 	}
 
 	function queryByRect_country(){
+
+		// 1、设置查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -117,6 +165,11 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、拉框查询
+		// 第一个参数是图层名称，
+		// 第二个参数是样式
+		// 第三个参数是返回结果的回调函数，
+		// 第四个是返回的个数，可以为空,为空的情况下则返回所有的结果
 		mapObj.queryByRect("country",style,queryByRect_callback);			
 	}
 
@@ -126,8 +179,6 @@
 			alert(features);
 		}
 		$("#result span").html(features.length);
-		featuresResult = features;
-		mapObj.draw();
 	}
 
 	function endQuery(){
@@ -137,13 +188,23 @@
 	function setFeatureBlink(){
 		var id = $("#featureID").val();
 		var count = $("#count").val();
-		if(featuresResult != null){
-			var feature = featuresResult[id];
-			mapObj.setFeatureBlink(feature,count);
+
+		// 1、获取查询的所有结果
+		var querySelection = mapObj.getQuerySelection();
+
+		if(querySelection != null){
+			
+			// 2、选取第几个结果
+			var feature = querySelection[id];
+			if(feature != null){
+
+				// 3、对查询结果进行闪烁，第一个参数为要素，第二个参数为闪烁次数
+				mapObj.setFeatureBlink(feature,count);
+			}
 		}
 	}
 </script>
-<title>Map5 -- WFS图层</title>
+<title>Map5 -- 拉框查询</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">

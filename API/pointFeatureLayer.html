@@ -18,79 +18,90 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
 		
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 设置中心点
+		// 4、设置中心点
 		var center = new GeoBeans.Geometry.Point(0,0);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 5、设置级别
 		mapObj.setLevel(2);	
 
-		// 绘图
+		// 6、绘图
 		mapObj.draw();
 	}
 
-
-
-
 	function addFeatureLayer(){
-		// 不是new 出来的
+		// 1、定义字段数组
 		var fields = [
 			{
 				name : "fname",  // 字段名称
-				type : "string"  // 字段类型
+				type : "string"  // 字段类型，为字符串类型
 			},{
-				name : "shape",
-				type : "geometry"
+				name : "shape",  
+				type : "geometry"// 字段类型为空间类型
 			},{
 				name : "status",
 				type : "string"
 			}
 		];
+
+		// 2、定义图层的空间数据的类型，包含以下几类
+		// 点：GeoBeans.Geometry.Type.POINT 
+		// 多点：GeoBeans.Geometry.Type.MULTIPOINT
+		// 线：GeoBeans.Geometry.Type.LINESTRING
+		// 多线：GeoBeans.Geometry.Type.MULTILINESTRING
+		// 面：GeoBeans.Geometry.Type.POLYGON
+		// 多面：GeoBeans.Geometry.Type.MULTIPOLYGON
 		var geomType  = GeoBeans.Geometry.Type.POINT;
+
+		// 3、定义图层的名称
 		var name = "testLayer";
 
-		// 创建一个featureLayer
+		// 4、创建一个featureLayer
 		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（点图层）
 		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
 		
-		// 添加图层
+		// 5、添加图层
 		mapObj.addLayer(featureLayer);
 
 
-		// 增加要素
+		// 6、为图层增加要素
 		for(var i = 0; i < 10000; ++i){
 			var x = Math.random() * 360 - 180;
 			var y = Math.random() * 180 - 90;
-			// var x = Math.random() * 2 + 114;
-			// var y = Math.random() * 2 + 38;			
 			var point = new GeoBeans.Geometry.Point(x,y);
 			var id = "id_" + i;
 			var status = Math.random() > 0.5 ?"on":"off";
 			var name = "name" + i;
+			// 每个字段对应的值
 			var values = [name,point,status];
 
+			// 添加要素
 			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
 			featureLayer.addFeatureObj(id,point,values); 
 		}
 
-		// 设定样式
+		// 7、设定样式，如果不设定样式，则为随机样式
 		var style = createPointStyle();
 		featureLayer.setStyle(style);
+
+		// 8、绘图
 		mapObj.draw();
 	}
 
@@ -104,14 +115,13 @@
 		symbolizer.fill.color.setByHex('#800080',1);
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var filter = new GeoBeans.BinaryComparisionFilter();
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		
+		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("status");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("on");
-		filter.expression1 = prop;
-		filter.expression2 = literal;
+		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 		rule.filter = filter;
 		style.addRule(rule);
 
@@ -122,14 +132,12 @@
 		symbolizer.fill.color.setByHex('#ddb926',1);
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var filter = new GeoBeans.BinaryComparisionFilter();
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("status");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("off");
-		filter.expression1 = prop;
-		filter.expression2 = literal;
+		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 		rule.filter = filter;
 
 		style.addRule(rule);		
@@ -137,72 +145,35 @@
 		return style;
 	}
 
-	// // 定义图片样式
-	// function createStyle_icon(){
-	// 	// 定义元素的样式
-	// 	var style = new GeoBeans.Style.FeatureStyle();
-
-	// 	// 定义一个规则
-	// 	var rule = new GeoBeans.Rule();
-
-	// 	// 定义点样式，设定一个图片作为样式
-	// 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-
-	// 	// symbol用来设置图片的样式
-	// 	var symbol = new GeoBeans.Symbol();
-
-	// 	// 图片的路径
-	// 	symbol.icon = "./images/circle.png";
-	// 	// symbol.icon = "./images/a.gif";
-
-	// 	// 图片的大小，如果不设定则为图片本身的大小
-	// 	symbol.icon_width = 12;
-	// 	symbol.icon_height = 12;
-
-	// 	// 图片的偏移，默认为图片的中心点，可以不设定
-	// 	// x方向向右为正
-	// 	symbol.icon_offset_x = 12;
-
-	// 	// y方向向上为正
-	// 	symbol.icon_offset_y = -12;
-
-	// 	// 设定符号样式
-	// 	symbolizer.symbol = symbol;
-
-	// 	// 定义该规则的样式
-	// 	rule.symbolizer = symbolizer;
-
-
-	// 	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
-	// 	textSymbolizer.labelProp = "status";
-	// 	rule.textSymbolizer = textSymbolizer;
-
-	// 	// 添加该项规则
-	// 	style.addRule(rule);
-
-	// 	return style;
-	// }
-
+	// 随机改变元素的字段值
 	function changeStatus(){
-		var layer = mapObj.getLayer("testLayer");
 
-		// 随机改变元素的字段值
+		// 1、获取该图层
+		var layer = mapObj.getLayer("testLayer");
+		if(layer == null){
+			return;
+		}
+
+		
 		for(var i = 0 ; i < 10000; ++i){
 			if(Math.random() > 0.5){
 				var id = "id_" + i;
-				// 根据id值，获得该要素
+
+				// 2、根据id值，获得该要素
 				var feature = layer.getFeatureByID(id);
 
-				// 获取某一个字段的值
-				var status = layer.getFeatureValue(feature,"status")
+				// 3、获取某一个字段的值
+				var status = layer.getFeatureValue(feature,"status");
+
+				// 4、随机改变值
 				var newStatus = (status == "on") ? "off" : "on";
 
-				// 设置字段的值
+				// 5、设置字段的值
 				layer.setFeatureValue(feature,"status",newStatus);
 			}
 		}
 
-		// 设置完调用绘制
+		// 6、设置完调用绘制
 		mapObj.draw();
 	}
 </script>

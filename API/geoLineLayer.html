@@ -47,7 +47,10 @@
 
 
 	function addLayer(){
+		// 1、定义图层明恒
 		var name = "geoline";
+
+		// 2、定义数据
 		var data = [{
 			from : new GeoBeans.Geometry.Point(116.4551,40.253),
 			to : new GeoBeans.Geometry.Point(91.1865,30.1465),
@@ -57,6 +60,8 @@
 			to : new GeoBeans.Geometry.Point(108.479,23.1152),
 			value : 10
 		}];
+
+		// 3、定义点样式
 		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		pointSymbolizer.size = 4;
 		var color = new GeoBeans.Color();
@@ -64,20 +69,29 @@
 		pointSymbolizer.fill.color = color;
 		pointSymbolizer.stroke = null;
 
+		// 4、定义线样式
 		var lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 		var color = new GeoBeans.Color();
 		color.setByHex("#A6C84C",1);
 		lineSymbolizer.stroke.color = color;
 		lineSymbolizer.fill = null;
+
+		// 5、定义参数
 		var option = {
-			curveness : 0.2,
-			mapDelta : 4, //按照秒走的距离
-			symbolizer : lineSymbolizer, //贝塞尔曲线的样式
-			pointSymbolizer : pointSymbolizer ,// 动态迁移点的样式
-			trailLength : 0.2 , //拖尾比例
+			curveness : 0.2,	 				// 曲率，若曲率为0，则为直线
+			mapDelta : 4, 						//按照秒走的距离
+			symbolizer : lineSymbolizer,		//贝塞尔曲线的样式
+			pointSymbolizer : pointSymbolizer ,	// 动态迁移点的样式
+			trailLength : 0.2 , 				//拖尾比例
 		};
+
+		// 6、定义一个图层
 		var layer = new GeoBeans.Layer.GeoLineLayer(name,data,option);
+
+		// 7、添加图层
 		mapObj.addLayer(layer);
+
+		// 8、绘制
 		mapObj.draw();		
 	}
 

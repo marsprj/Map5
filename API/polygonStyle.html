@@ -18,72 +18,82 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
 		
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 设置中心点
+		// 4、设置中心点
 		var center = new GeoBeans.Geometry.Point(0,0);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 5、设置级别
 		mapObj.setLevel(2);	
 
-		// 绘图
+		// 6、绘图
 		mapObj.draw();
 	}
 
 
 	function addWFSLayer_country(){
+
+		// 1、设置WFS图层的地址
 		var server = "/geoserver/radi/ows?";
+
+		// 2、定义WFS图层
 		var layer = new GeoBeans.Layer.WFSLayer("country", //在地图中的名称
 											server, //服务器
 											"radi:country_2", //图层在geoserver的名称
 											"GML2"); // 格式
+		
+		// 3、添加图层
 		mapObj.addLayer(layer);
 
+		// 4、设定样式
 		var style = createStyle();
 		layer.setStyle(style);
 
+		// 5、绘图
 		mapObj.draw();
 	}
 
 
 	function createStyle(){
 
-		// 定义元素的样式
+		// 1、定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 
-		// 定义一个规则
+		// 2、定义一个规则
 		var rule = new GeoBeans.Rule();
 
-		// 定义一个面样式
+		// 3、定义一个面样式
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 
-		// 定义面样式的填充颜色
+		// 4、定义面样式的填充颜色，也可以设定填充为空
 		symbolizer.fill.color.set(50, 60, 72,1.0);
 
-		// 定义面样式的边框的颜色
+		// 5、定义面样式的边框的颜色，也可以设定边框为空
 		symbolizer.stroke.color.set(17, 17, 17,0.6);
 
-		// 定义面样式的边框的宽度，默认为2
+		// 6、定义面样式的边框的宽度，默认为2
 		symbolizer.stroke.width = 1;
 
-		// 定义该规则的样式
+		// 7、定义该规则的样式
 		rule.symbolizer = symbolizer;
 
-		// 添加该项规则
+		// 8、添加该项规则
 		style.addRule(rule);
 		
 		return style;

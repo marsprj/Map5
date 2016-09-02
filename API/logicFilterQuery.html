@@ -131,9 +131,14 @@
 ---*/
 
 	function queryFeatures_and(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+
+		// 2、定义逻辑查询过滤条件，参数为查询操作符
 		var filter = new GeoBeans.BinaryLogicFilter(operator);
 
+		// 3、定义一个查询条件，这里采用一个属性查询条件
 		// 添加属性查询条件，城市为首都
 		var operator_continent = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		// 定义字段
@@ -143,18 +148,20 @@
 		var literal = new GeoBeans.Literal();
 		literal.setValue("Y");
 		var filter_continent = new GeoBeans.BinaryComparisionFilter(operator_continent,prop,literal);
-		// 添加子过滤条件
+		
+		// 4、添加子过滤条件
 		filter.addFilter(filter_continent);
 
 
-		// 添加空间查询条件
+		// 5、定义一个查询过滤条件，这里采用一个空间查询条件
 		var propName = "shape";
 		var extent = new GeoBeans.Envelope(30,40,60,60);
 		var filter_bbox = new GeoBeans.BBoxFilter(propName,extent);
-		// 添加子过滤条件
+
+		// 6、添加子过滤条件
 		filter.addFilter(filter_bbox);
 
-		// 设定样式
+		// 7、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -164,6 +171,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 8、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -171,7 +179,8 @@
 		var fields = null;
 		mapObj.getFeatureFilter("cities",filter,maxFeatures,fields,style,queryFeatures_callback);	
 
-		// 辅助显示查询的geometry
+
+		// 9、辅助显示查询的geometry
 		var polygonSymbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		polygonSymbolizer.fill.color.set(126, 40, 0,0.6);
 		polygonSymbolizer.stroke.color.set(255, 0, 0,0.6);
@@ -192,9 +201,14 @@
 ---*/
 
 	function queryFeatures_or(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+
+		// 2、定义逻辑查询过滤条件，参数为查询操作符
 		var filter = new GeoBeans.BinaryLogicFilter(operator);
 
+		// 3、定义一个查询过滤条件为子查询条件，这里采用一个属性查询条件
 		// 添加属性查询条件，城市为首都
 		var operator_continent = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		// 定义字段
@@ -204,18 +218,21 @@
 		var literal = new GeoBeans.Literal();
 		literal.setValue("Y");
 		var filter_continent = new GeoBeans.BinaryComparisionFilter(operator_continent,prop,literal);
-		// 添加子过滤条件
+
+		// 4、添加子过滤条件
 		filter.addFilter(filter_continent);
 
-
-		// 添加空间查询条件
+		// 5、定义一个查询过滤条件，这里采用一个空间查询条件 
+		// 添加空间查询条件，bbox查询
 		var propName = "shape";
 		var extent = new GeoBeans.Envelope(30,40,60,60);
 		var filter_bbox = new GeoBeans.BBoxFilter(propName,extent);
-		// 添加子过滤条件
+
+
+		// 6、添加子过滤条件
 		filter.addFilter(filter_bbox);
 
-		// 设定样式
+		// 7、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -225,6 +242,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 8、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -232,7 +250,7 @@
 		var fields = null;
 		mapObj.getFeatureFilter("cities",filter,maxFeatures,fields,style,queryFeatures_callback);	
 
-		// 辅助显示查询的geometry
+		// 9、辅助显示查询的geometry
 		var polygonSymbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		polygonSymbolizer.fill.color.set(126, 40, 0,0.6);
 		polygonSymbolizer.stroke.color.set(255, 0, 0,0.6);
@@ -251,6 +269,8 @@
 ---*/
 
 	function queryFeatures_not(){
+
+		// 1、定义一个查询过滤子条件
 		var operator_continent = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		// 定义字段
 		var prop = new GeoBeans.PropertyName();
@@ -260,11 +280,11 @@
 		literal.setValue("Y");
 		var filter_continent = new GeoBeans.BinaryComparisionFilter(operator_continent,prop,literal);
 
-
+		// 2、定义查询过滤条件，参数为子查询条件
 		var filter = new GeoBeans.UnaryLogicFilter(filter_continent);
 
 	
-		// 设定样式
+		// 3、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -274,6 +294,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 4、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -297,6 +318,7 @@
 	}
 
 	function clearQuery(){
+		
 		// 停止查询
 		mapObj.endQuery();
 
@@ -307,8 +329,6 @@
 		//删除结果
 		$("#result span").html("");
 	}
-
-
 
 </script>
 <title>Map5 -- WFS图层-- 逻辑查询</title>

@@ -19,31 +19,34 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
 		
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 设置中心点
+		// 4、添加tianjin图层
+		addFeatureLayer();
+
+		// 5、设置中心点
 		var center = new GeoBeans.Geometry.Point(117.38,39.35);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 6、设置级别
 		mapObj.setLevel(10);	
 
-
-		addFeatureLayer();
-		// 绘图
+		// 7、绘图
 		mapObj.draw();
 	}
 
@@ -128,33 +131,42 @@
 
 
 	function addChart(){
+
+		// 1、定义参数
 		var option = {
-			color  			: "#f5e900",
-			opacity 		: 1.0,
-			border 			: "#eeeeee",
-			borderOpacity 	: 1.0,
-			borderWidth		: 0,
-			maxsize 		: 30,
-			byLevel 		: false,
-			level 			: 4
+			color  			: "#f5e900",	//符号的颜色
+			opacity 		: 1.0,			//透明度
+			border 			: "#eeeeee",    //线段的颜色
+			borderOpacity 	: 1.0,          //线段的透明度
+			borderWidth		: 0,			//线段的宽度，设置为0，则不设置线段
+			maxsize 		: 30,			//最大的符号的半径
+			byLevel 		: false,		//是否按照等级进行绘制
+			level 			: 4				//如果按照等级绘制，设置的级别个数
 
 		};
 
-		var layerName = "chart";  		//图层名称
-		var baseLayerName = "tianjin";	//要显示分级图的底图名称
-		var baseLayerField = "gdp";		//底图的字段
+		// 2、定义图层的名称
+		var layerName = "chart";  		
 
-		// 定义分级图
+		// 3、定义要显示等级符号图的底图
+		var baseLayerName = "tianjin";	
+
+		// 4、底图的字段
+		var baseLayerField = "gdp";		
+
+		// 5、定义分级图
 		var chartLayer = new GeoBeans.Layer.SymbolChartLayer(layerName,baseLayerName,baseLayerField,option);
 
-		// 通过添加图层的方式添加专题图
+		// 6、通过添加图层的方式添加专题图
 		mapObj.addLayer(chartLayer);
 
+		// 7、绘图
 		mapObj.draw();
 	}
 
 	function registerClickEvent(){
-		// 定义元素的样式
+
+		// 1、定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -163,50 +175,63 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		// 通用接口，注册点击事件
+		// 2、通用接口，注册点击事件
 		mapObj.registerClickEvent("chart",style,clickLayer_callback);
 	}
 
 	function clickLayer_callback(feature,x,y){
-		// 返回结果，feature为点击的数据，x,y为点击点的地图坐标
+		// 1、返回结果，feature为点击的数据，x,y为点击点的地图坐标
 		console.log(feature);
 		if(feature != null){
-			// 获取字段值
+
+			// 2、获取字段值
 			var gdp = feature.getValue("gdp");
 			var name = feature.getValue("fname");
 
+			// 3、构造弹窗内容
 			var html = "<div><div>" + name + ":" + gdp +  "</div></div>";
 			var option = {
 				title : "天津市GDP产量"
 			};
-			// 定义infoWindow
+			// 4、定义infoWindow
 			var infoWindow = new GeoBeans.InfoWindow(html,option);
 			var point = new GeoBeans.Geometry.Point(x,y);
-			// 弹出框
+
+			// 5、弹出框
 			mapObj.openInfoWindow(infoWindow,point);
 		}
 	}
 
 	function removeChart(){
-		// 删除图层的方式删除专题图
+
+		// 1、删除图层的方式删除专题图
 		mapObj.removeLayer("chart");
+
+		// 2、绘图
 		mapObj.draw();
 	}
 
 	function setLayerVisible(){
+
+		// 1、获取专题图
 		var layer = mapObj.getLayer("chart");
 		if(layer == null){
 			return;
 		}
+
+		// 2、设置图层是否显示
 		if(layer.visible){
 			layer.setVisiable(false);
 		}else{
 			layer.setVisiable(true);
 		}
+
+		// 3、绘图
 		mapObj.draw();
 	}
 
 	function unRegisterClickEvent(){
+		// 注销点击事件
 		mapObj.unRegisterClickEvent("chart");
 	}
 </script>
@@ -215,8 +240,6 @@
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<!-- 	<div id="mapDiv" style="height:400px;width:600px;position:absolute;top:80px;">
-	</div> -->
 	<button onclick="addChart()">等级符号图</button>
 	<button onclick="setLayerVisible()">隐藏/显示</button>
 	<button onclick="registerClickEvent()">点击事件</button>

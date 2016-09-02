@@ -18,40 +18,38 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
 		
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 设置中心点
+		// 4、设置中心点
 		var center = new GeoBeans.Geometry.Point(0,0);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 5、设置级别
 		mapObj.setLevel(2);	
 
-		var server = "/geoserver/radi/ows?";
-		var layer = new GeoBeans.Layer.WFSLayer("cities", //在地图中的名称
-											server, //服务器
-											"radi:cities_2", //图层在geoserver的名称
-											"GML2"); // 格式
-		// 绘图
+		// 6、绘图
 		mapObj.draw();
 	}
 
 
 	function addFeatureLayer(){
-		// 不是new 出来的
+
+		// 1、定义字段数组
 		var fields = [
 			{
 				name : "fname",  // 字段名称
@@ -61,38 +59,56 @@
 				type : "geometry"
 			}
 		];
+
+		// 2、定义图层的空间数据的类型，包含以下几类
+		// 点：GeoBeans.Geometry.Type.POINT 
+		// 多点：GeoBeans.Geometry.Type.MULTIPOINT
+		// 线：GeoBeans.Geometry.Type.LINESTRING
+		// 多线：GeoBeans.Geometry.Type.MULTILINESTRING
+		// 面：GeoBeans.Geometry.Type.POLYGON
+		// 多面：GeoBeans.Geometry.Type.MULTIPOLYGON
 		var geomType  = GeoBeans.Geometry.Type.MULTIPOINT;
+
+		// 3、定义图层的名称
 		var name = "testLayer";
 
-		// 创建一个featureLayer
+		// 4、创建一个featureLayer
 		// 第一个参数图层名称，第二个参数字段设置，第三个参数，图层的类型（多点图层）
 		var featureLayer = mapObj.createFeatureLayer(name,fields,geomType);
 		
-		// 添加图层
+		// 5、添加图层
 		mapObj.addLayer(featureLayer);
 
 
-		// 增加要素
+		// 6、为图层增加要素
 		for(var i = 0; i < 1000; ++i){
 			var x = Math.random() * 360 - 180;
 			var y = Math.random() * 180 - 90;
+			// 随机生成两个点
 			var point1 = new GeoBeans.Geometry.Point(x,y);
-
 			var point2 = new GeoBeans.Geometry.Point(x+2,y-2);
 
+			// 定义点数组
 			var points = [point1,point2];
+
+			// 定义多点
 			var geometry = new GeoBeans.Geometry.MultiPoint(points);
 			var id = "id_" + i;
 			var name = "name" + i;
+
+			// 每个字段对应的值
 			var values = [name,geometry];
 
+			// 添加要素
 			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
 			featureLayer.addFeatureObj(id,geometry,values); 
 		}
 
-		// 设定样式
+		// 7、设定样式，如果不设定样式，则为随机样式
 		var style = createStyle();
 		featureLayer.setStyle(style);
+
+		// 8、绘图
 		mapObj.draw();
 	}
 
@@ -124,40 +140,6 @@
 		return style;		
 	}
 
-	// function createStyle(){
-	// 	// 定义元素的样式
-	// 	var style = new GeoBeans.Style.FeatureStyle();
-
-	// 	// 定义一个规则
-	// 	var rule = new GeoBeans.Rule();
-
-	// 	// 定义一个点样式
-	// 	// 点样式包括的属性有：填充（fill）、边框（stroke）、大小（size）、符号（symbol）
-	// 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-
-	// 	// 点符号的大小
-	// 	symbolizer.size = 6;
-
-	// 	// 点符号填充的颜色，前三位为rgb,最后为透明度
-	// 	symbolizer.fill.color.set(255, 0, 0,1);
-
-	// 	// 如果不设置填充，则设为空
-	// 	// symbolizer.fill = null;
-
-	// 	// 点符号边框的颜色，
-	// 	symbolizer.stroke.color.set(0,255, 0,1);
-
-	// 	// 如果不设置边框，则设为空,但是fill和stroke应该至少设定一项
-	// 	// symbolizer.stroke = null;
-
-	// 	// 定义该规则的样式
-	// 	rule.symbolizer = symbolizer;
-
-	// 	// 添加该项规则
-	// 	style.addRule(rule);
-
-	// 	return style;
-	// }
 
 </script>
 <title>Map5 -- 多点要素图层</title>
@@ -165,8 +147,6 @@
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-<!-- 	<div id="mapDiv" style="height:300px;width:400px;position:absolute;top:80px;">
-	</div> -->
 	<button onclick="addFeatureLayer()">多点要素图层</button>
 </body>
 	

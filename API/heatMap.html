@@ -20,32 +20,34 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
 		
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 设置中心点
+		// 4、添加cities图层
+		addCitiesLayer();
+
+		// 5、设置中心点
 		var center = new GeoBeans.Geometry.Point(0,0);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 6、设置级别
 		mapObj.setLevel(2);	
 
-		// 添加cities图层
-		addCitiesLayer();
-
-		// 绘图
+		// 7、绘图
 		mapObj.draw();
 	}
 
@@ -110,20 +112,28 @@
 	}
 
 	// 热力图的添加，注意两个问题，
-	// 一个是字段，如果设置了底图的字段，则按照底图的字段数值来绘制热力图
+	// 一个是字段，如果设置了底图的字段，则按照底图的字段数值z作为权重来绘制热力图
 	// 如果没有设置字段，则所有的点都是相同的权重
 	// 另一个是参数里的半径，如果设置了半径，则按照该半径来绘制该点，否认默认半径为40px
-	function addHeatMap(){
+	function addHeatMap_1(){
+		// 1、设置参数
 		var option = {
 
 		};
+
+		// 2、定义热力图
 		// 图层名称为heat,底图图层为cities图层，注意是点图层，字段是populat,参数为option
 		var layer = new GeoBeans.Layer.HeatMapLayer("heat","cities","populat",option);
+
+		// 3、添加图层
 		mapObj.addLayer(layer);
+
+		// 4、绘图
 		mapObj.draw();
 	}
 
-	function addHeatMap_1(){
+	function addHeatMap_2(){
+
 		// 设置每个点的半径为10，可以看到效果不是很明显
 		var option = {
 			radius : 10  
@@ -133,41 +143,57 @@
 		mapObj.draw();
 	}
 
-	function addHeatMap_2(){
+	function addHeatMap_3(){
 		var option = {
 
 		};
+
 		// 不设置字段，则按照同样的权重进行绘制，而且没有设置半径，则采用默认半径40px
+		// 可以看到效果太夸张
 		var layer = new GeoBeans.Layer.HeatMapLayer("heat","cities",null,option);
 		mapObj.addLayer(layer);
 		mapObj.draw();		
 	}
 
 
-	function addHeatMap_3(){
+	function addHeatMap_4(){
+
 		// 设置半径为10
 		var option = {
 			radius : 10
 		};
+		// 不设置字段，只设置半径
 		var layer = new GeoBeans.Layer.HeatMapLayer("heat","cities",null,option);
 		mapObj.addLayer(layer);
 		mapObj.draw();		
 	}
+
+
 	function removeHeatMap(){
+
+		// 1、按照名称删除图层
 		mapObj.removeLayer("heat");
+		
+		// 2、绘图
 		mapObj.draw();
 	}
 
 	function setBaseLayerVisible(){
+
+		// 1、按照名称获取图层
 		var layer = mapObj.getLayer("cities");
 		if(layer == null){
 			return;
 		}
+		
+		// 2、设置图层显示
 		if(layer.visible){
 			layer.setVisiable(false);
 		}else{
 			layer.setVisiable(true);
 		}
+
+		// 3、绘图
 		mapObj.draw();
 	}
 
@@ -177,12 +203,11 @@
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:120px;">
 	</div>
-	<button onclick="addHeatMap()">热力图1</button>
-	<button onclick="addHeatMap_1()">热力图2</button>
-	<button onclick="addHeatMap_2()">热力图3</button>
-	<button onclick="addHeatMap_3()">热力图4</button>
+	<button onclick="addHeatMap_1()">热力图1</button>
+	<button onclick="addHeatMap_2()">热力图2</button>
+	<button onclick="addHeatMap_3()">热力图3</button>
+	<button onclick="addHeatMap_4()">热力图4</button>
 	<button onclick="removeHeatMap()">删除热力图</button>
 	<button onclick="setBaseLayerVisible()">隐藏/显示底图</button>
-	
 </body>
 	

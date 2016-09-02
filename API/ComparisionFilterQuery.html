@@ -19,6 +19,7 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
+
 	function  init(){
 		
 		// 地图的范围
@@ -144,19 +145,24 @@
 ---*/
 
 	function queryFeatures_equal(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("continent");
 
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		literal.setValue("Africa");
 
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -165,7 +171,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -174,7 +180,10 @@
 		mapObj.getFeatureFilter("country",filter,maxFeatures,fields,style,queryFeatures_callback);	
 	}
 
+
+	// 查询结果回调函数
 	function queryFeatures_callback(features){
+		
 		// 返回查询的features
 		if(!$.isArray(features)){
 			return;
@@ -182,21 +191,21 @@
 
 		$("#result span").html(features.length);
 		for(var i = 0; i< features.length;++i){
+
 			var feature = features[i];
+			
+			// 查询id
 			var fid = feature.fid;
 			console.log(fid);
 		}
 	}
 
 	function clearQuery(){
+
 		// 停止查询
 		mapObj.endQuery();
 
-		// 删除辅助显示的geometry
-		mapObj.removeOverlay("test");
-		mapObj.draw();
-
-		//删除结果
+		//删除结果个数显示
 		$("#result span").html("");
 	}
 
@@ -205,20 +214,25 @@
 	返回与查询属性值不相同的记录
 ---*/
 	function queryFeatures_notequal(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprNotEqual;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("continent");
 		
 
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		literal.setValue("Africa");
 
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -227,7 +241,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -241,20 +255,25 @@
 	返回属性数值小于指定值的记录 ( < )
 ---*/
 	function queryFeatures_lessthan(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("populat");
 		
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		literal.setValue("100000");
 
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		// sql populat < 100000
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -264,7 +283,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -279,20 +298,25 @@
 	返回属性数值大于指定值的记录 ( > )
 ---*/
 	function queryFeatures_greaterthan(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("populat");
 		
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		literal.setValue("100000");
 
 		// sql populat > 100000
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -302,7 +326,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -317,20 +341,25 @@
 	返回属性数值小于等于指定值的记录 ( <= )
 ---*/
 	function queryFeatures_lessthanorequal(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("populat");
 		
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		literal.setValue("100000");
 
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		// sql populat <= 100000
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -341,6 +370,7 @@
 		style.addRule(rule);
 
 		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -355,21 +385,27 @@
 	6、ComOprGreaterThanOrEqual查询
 	返回属性数值小于等于指定值的记录 ( >= )
 ---*/
+
 	function queryFeatures_greaterthanorequal(){
+
+		// 1、定义查询操作符
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("populat");
 		
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		literal.setValue("100000");
 
 		// sql populat >= 100000
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -379,7 +415,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -394,21 +430,26 @@
 	Like_为单字符通配查询 ，返回字段名称为单字符匹配的记录。
 ---*/
 	function queryFeatures_like(){
+
+		// 1、定义查询操作符 
 		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprIsLike;
 
-		// 定义字段
+		// 2、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("name");
 		
-		// 定义值
+		// 3、定义查询值
 		var literal = new GeoBeans.Literal();
 		// literal.setValue("%sk");
 		literal.setValue("%a_");
 
+		// 4、定义查询过滤条件
+		// 第一个参数为查询操作符
+		// 第二个和第三个分别为字段和查询值
 		// sql where name like '%sk'
 		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -418,7 +459,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -433,14 +474,14 @@
 ---*/
 	function queryFeatures_isnull(){
 
-		// 定义字段
+		// 1、定义字段
 		var prop = new GeoBeans.PropertyName();
-		// prop.setName("LANAME");
 		prop.setName("CAPITAL");
 
+		// 2、定义查询过滤条件，参数为查询的字段
 		var filter = new GeoBeans.IsNullFilter(prop);
 
-		// 设定样式
+		// 3、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -449,6 +490,7 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 4、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
@@ -463,25 +505,24 @@
 ---*/
 	function queryFeatures_between(){
 
-		// 定义字段
+		// 1、定义字段
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("populat");
 
-		// 设定最小值
+		// 2、设定最小值
 		var lowerLiteral = new GeoBeans.Literal();
 		lowerLiteral.setValue("100000");
 
-		// 设定最大值
+		// 3、设定最大值
 		var upperLiteral = new GeoBeans.Literal();
 		upperLiteral.setValue("500000");
 
 		// sql  100000  <= populat <= 500000
+		// 4、查询
+		// 参数一：查询字段，参数二：查询的最小值，参数三：查询的最大值
 		var filter = new GeoBeans.IsBetweenFilter(prop,lowerLiteral,upperLiteral);
 
-
-		
-
-		// 设定样式
+		// 5、设定查询返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -491,14 +532,13 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		
+		// 6、查询
 		// 参数一：查询图层名称，参数二：filter查询过滤条件，如果为null,则返回所有的结果
 		// 参数三：maxFeatures返回结果数，参数四：fields为请求的字段
 		// 参数五：style为查询结果的绘制样式，参数六：callback回调函数返回查询结果
 		var maxFeatures = null;
 		var fields = null;
 		mapObj.getFeatureFilter("cities",filter,maxFeatures,fields,style,queryFeatures_callback);	
-
 	}
 
 </script>

@@ -19,33 +19,37 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
 		
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 设置中心点
+		// 4、添加天津图层
+		addFeatureLayer();
+
+		// 5、设置中心点
 		var center = new GeoBeans.Geometry.Point(117.38,39.35);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 6、设置级别
 		mapObj.setLevel(10);	
 
-
-		addFeatureLayer();
-		// 绘图
+		// 6、绘图
 		mapObj.draw();
 	}
+
 
 	function addFeatureLayer(){
 		
@@ -94,6 +98,7 @@
 		// 设定样式
 		var style = createStyle();
 		featureLayer.setStyle(style);
+
 		mapObj.draw();
 	}
 
@@ -129,6 +134,7 @@
 
 	function setStyle(){
 		// 选择一个数值字段，选择gdp，给定不同的区间段，来设置每个区间段的样式
+		// 关于filter的定义请参见WFS图层=》逻辑查询，属性查询等
 
 		// 定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
@@ -149,11 +155,8 @@
 		// 定义该规则的样式
 		rule.symbolizer = symbolizer;
 
-		// 定义一个过滤条件，比较过滤
-		var filter = new GeoBeans.BinaryComparisionFilter();
-
 		// 操作符为小于
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
 
 		// 字段条件
 		var prop = new GeoBeans.PropertyName();
@@ -163,9 +166,8 @@
 		var literal = new GeoBeans.Literal();
 		literal.setValue("500");
 		
-		// 定义过滤条件的表达式
-		filter.expression1 = prop;
-		filter.expression2 = literal;
+		// 定义一个过滤条件，比较过滤
+		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 
 		// 定义该规则的过滤条件
 		rule.filter = filter;
@@ -181,26 +183,25 @@
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
 
-		filter = new GeoBeans.BinaryLogicFilter();
-		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
-		var filter_1 = new GeoBeans.BinaryComparisionFilter();
-		filter_1.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+
+		var operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		filter = new GeoBeans.BinaryLogicFilter(operator);
+		
+		
+		var operator_1 = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("gdp");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("500");
-		filter_1.expression1 = prop;
-		filter_1.expression2 = literal;
+		var filter_1 = new GeoBeans.BinaryComparisionFilter(operator_1,prop,literal);
 		filter.addFilter(filter_1);
-
-		var filter_2 = new GeoBeans.BinaryComparisionFilter();
-		filter_2.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+		
+		var operator_2 = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("gdp");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("1000");
-		filter_2.expression1 = prop;
-		filter_2.expression2 = literal;
+		var filter_2 = new GeoBeans.BinaryComparisionFilter(operator_2,prop,literal);
 		filter.addFilter(filter_2);
 
 		rule.filter = filter;
@@ -213,14 +214,13 @@
 		symbolizer.fill.color.set(255,65,65,1);
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		filter = new GeoBeans.BinaryComparisionFilter();
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("gdp");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("1000");
-		filter.expression1 = prop;
-		filter.expression2 = literal;
+		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 		rule.filter = filter;
 		style.addRule(rule);
 

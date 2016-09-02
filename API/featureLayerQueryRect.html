@@ -207,11 +207,9 @@
 
 
 	function queryByRect_cities(){
-		// 第一个参数是名称，
-		// 第二个参数是样式
-		// 第三个参数是返回结果的回调函数，
-		// 第四个是返回的个数，可以为空
-		// 第五个是偏移个数，可以为空
+
+		// 1、设定查询返回结果的样式
+		
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -221,8 +219,14 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、设置返回结果的最大个数
 		var maxFeatures = 10;
 
+		// 3、拉框查询
+		// 参数一：layerName 图层名称
+		// 参数二：style 查询结果的样式
+		// 参数三：callback 返回结果的回调函数，
+		// 参数四：maxFeatures 返回的个数，可以为空
 		mapObj.queryByRect("cities",style,queryByRect_callback,maxFeatures);
 	}
 
@@ -250,7 +254,6 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-
 		var maxFeatures = null;
 		mapObj.queryByRect("country",style,queryByRect_callback,maxFeatures);			
 	}
@@ -261,20 +264,32 @@
 			alert(features);
 		}
 		$("#result span").html(features.length);
-		featuresResult = features;
+	
 		mapObj.draw();
 	}
 
 	function endQuery(){
+
+		// 停止查询
 		mapObj.endQuery();
 	}
 
 	function setFeatureBlink(){
 		var id = $("#featureID").val();
 		var count = $("#count").val();
-		if(featuresResult != null){
-			var feature = featuresResult[id];
-			mapObj.setFeatureBlink(feature,count);
+
+		// 1、获取查询的所有结果
+		var querySelection = mapObj.getQuerySelection();
+
+		if(querySelection != null){
+			
+			// 2、选取第几个结果
+			var feature = querySelection[id];
+			if(feature != null){
+
+				// 3、对查询结果进行闪烁，第一个参数为要素，第二个参数为闪烁次数
+				mapObj.setFeatureBlink(feature,count);
+			}
 		}
 	}
 </script>

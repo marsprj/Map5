@@ -44,24 +44,30 @@
 		mapObj.draw();
 	}
 
+	// GeoJson文件中不包含样式，所以需要对图层进行样式的设置
 	function addGeoJson(){
+
+		// 1、图层名称
 		var name = "geojson";
+
+		// 2、GeoJson文件所在的地址
 		var url = "data/geojson/polygon-samples.geojson";
 
-		// 第一个参数为图层的名称，第二个参数为GeoJson文件所在的地址
+		// 3、创建一个图层
+		// 参数一：图层的名称
+		// 参数二：GeoJson文件所在的地址
 		var featureLayer = mapObj.createFeatureLayerByGeoJson(name,url);
 
-		// 需要设置样式
+		// 4、设置样式
 		var style = createPolygonStyle();
 		featureLayer.setStyle(style);
 		
-		// 添加图层
+		// 5、添加图层
 		mapObj.addLayer(featureLayer);
 
+		// 6、绘图
 		mapObj.draw();
 	}
-
-
 
 	function createPolygonStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();

@@ -93,54 +93,62 @@
 		featureLayer.setStyle(style);
 		mapObj.draw();
 	}
-
-		function createPointStyle(){
+	
+	function createPointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 
-		// 状态为on的要素，标记为红色
+		// 状态为on的要素，标记为紫色
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 6;
-		symbolizer.fill.color.set(255, 0, 0,1);
-		symbolizer.stroke.color.set(255,255, 0,1);
+		symbolizer.fill.color.setByHex('#800080',1);
+		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var filter = new GeoBeans.BinaryComparisionFilter();
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		
+		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("status");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("on");
-		filter.expression1 = prop;
-		filter.expression2 = literal;
+		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 		rule.filter = filter;
 		style.addRule(rule);
 
-		// 状态为off的要素，标记为绿色
+		// 状态为off的要素，标记为黄色
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 6;
-		symbolizer.fill.color.set(0, 126, 0,1);
-		symbolizer.stroke.color.set(0,255, 0,1);
+		symbolizer.fill.color.setByHex('#ddb926',1);
+		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var filter = new GeoBeans.BinaryComparisionFilter();
-		filter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("status");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("off");
-		filter.expression1 = prop;
-		filter.expression2 = literal;
+		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
 		rule.filter = filter;
 
 		style.addRule(rule);		
 
 		return style;
 	}
+
+
 	function addChart(){
+		// 1、设置图层名称
 		var layerName = "chart";
+
+		// 2、选取底图名称
 		var baseLayerName = "testLayer";
+
+		// 3、定义点聚合图
 		var layer = new GeoBeans.Layer.ClusterLayer(layerName,baseLayerName);
+
+		// 4、添加图层
 		mapObj.addLayer(layer);
+
+		// 5、绘图
 		mapObj.draw();
 	}
 
@@ -155,7 +163,11 @@
 	}
 
 	function removeChartLayer(){
+
+		// 1、按照名称删除图层
 		mapObj.removeLayer("chart");
+		
+		// 2、绘图
 		mapObj.draw();
 	}
 

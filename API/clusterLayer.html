@@ -106,7 +106,7 @@
 		mapObj.draw();
 	}
 
-		function addCountryLayer(){
+	function addCountryLayer(){
 		var fields = [
 			{
 				name : "fname",  // 字段名称
@@ -151,13 +151,24 @@
 		style.addRule(rule);
 		featureLayer.setStyle(style);
 		mapObj.draw();
-
 	}
+
+
 	function addChart(){
+
+		// 1、设置图层名称
 		var layerName = "chart";
+
+		// 2、设置底图名称
 		var baseLayerName = "cities";
+
+		// 3、定义聚合图
 		var layer = new GeoBeans.Layer.ClusterLayer(layerName,baseLayerName);
+
+		// 4、添加图层
 		mapObj.addLayer(layer);
+
+		// 5、绘图
 		mapObj.draw();
 	}
 
@@ -172,7 +183,11 @@
 	}
 
 	function removeChartLayer(){
+
+		// 1、根据名称删除图层 
 		mapObj.removeLayer("chart");
+
+		// 2、绘图
 		mapObj.draw();
 	}
 

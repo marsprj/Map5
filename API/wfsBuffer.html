@@ -46,6 +46,8 @@
 											server, //服务器
 											"radi:country_2", //图层在geoserver的名称
 											"GML2"); // 格式
+		var countryStyle = createCountryStyle();
+		countryLayer.setStyle(countryStyle);
 		mapObj.addLayer(countryLayer);
 
 
@@ -54,6 +56,8 @@
 											server, //服务器
 											"radi:rivers_2", //图层在geoserver的名称
 											"GML2"); // 格式
+		var riversStyle = createRiversStyle();
+		riversLayer.setStyle(riversStyle);
 		mapObj.addLayer(riversLayer);
 
 		// 增加cities图层
@@ -62,16 +66,54 @@
 											"radi:cities_2", //图层在geoserver的名称
 											"GML2"); // 格式
 		mapObj.addLayer(citiesLayer);
+		var citiesStyle = createCitiesStyle();
+		citiesLayer.setStyle(citiesStyle);
 
 		// 绘图
 		mapObj.draw();
 	}
 
 
+	function createCitiesStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 126, 0,1);
+		symbolizer.stroke.color.set(255,255, 0,1);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
+
+	function createCountryStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 0, 0,0.6);
+		symbolizer.stroke.color.set(0,255, 0,0.6);
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
+
+	function createRiversStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(0,0,255,0.6);
+		symbolizer.stroke.width = 3;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
 
 	function onCitiesBuffer_circle(){
 
 		// 圆缓冲区
+
+		// 1、设置返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -81,13 +123,22 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、设置返回的最大个数
 		var maxFeatures = 5;
+
+		// 3、查询圆缓冲区
+		// a、查询的图层名称
+		// b、查询结果的样式
+		// c、回调函数，返回查询结果
+		// d、查询结果的个数，如果不设定则为所有结果
 		mapObj.queryByBufferCircle("cities",style,getBuffer_callback,maxFeatures);
 	}
 
 	function onCitiesBuffer_line(){
 
 		// 线缓冲区
+
+		// 1、设置返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -97,36 +148,27 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
-		// 设置缓冲区的距离
+		// 2、设置缓冲区的距离
 		var distance = 6;
 
+		// 3、设置返回的最大个数
 		var maxFeatures = null;
+
 		// 线缓冲区	
+		// 查询圆缓冲区
+		// a、查询的图层名称
+		// b、缓冲区的距离
+		// c、查询结果的样式
+		// d、回调函数，返回查询结果
+		// e、查询结果的个数，如果不设定则为所有结果
 		mapObj.queryByBufferLine("cities",distance,style,getBuffer_callback,maxFeatures);
 	}
 
-	// 查询有问题
-	// function onCitiesBuffer_polygon(){
-	// 	// 面缓冲区
-	// 	var style = new GeoBeans.Style.FeatureStyle();
-	// 	var rule = new GeoBeans.Rule();
-	// 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-	// 	var symbol = new GeoBeans.Symbol();
-	// 	symbol.icon = "./images/marker.png";
-	// 	symbolizer.symbol = symbol;
-	// 	rule.symbolizer = symbolizer;
-	// 	style.addRule(rule);
 
-	// 	// 设置缓冲区的距离
-	// 	var distance = 0.001;
-
-	// 	var maxFeatures = null;
-	// 	// 线缓冲区	
-	// 	mapObj.queryByBufferPolygon("cities",distance,style,getBuffer_callback,maxFeatures);		
-	// }
-
-
+	// 圆缓冲区
 	function onRiversBuffer_circle(){
+
+		// 1、设置返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
@@ -135,11 +177,22 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、设置返回的最大个数
 		var maxFeatures = null;
+
+		// 3、查询圆缓冲区
+		// a、查询的图层名称
+		// b、查询结果的样式
+		// c、回调函数，返回查询结果
+		// d、查询结果的个数，如果不设定则为所有结果
 		mapObj.queryByBufferCircle("rivers",style,getBuffer_callback,maxFeatures);
 	}
 
+
+	// 线缓冲区
 	function onRiversBuffer_line(){
+
+		// 1、设置返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
@@ -148,13 +201,27 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、设置缓冲区的距离
 		var distance = 6;
+
+		// 3、设置返回的最大个数
 		var maxFeatures = null;
+
+		// 线缓冲区	
+		// 查询圆缓冲区
+		// a、查询的图层名称
+		// b、缓冲区的距离
+		// c、查询结果的样式
+		// d、回调函数，返回查询结果
+		// e、查询结果的个数，如果不设定则为所有结果
 		mapObj.queryByBufferLine("rivers",distance,style,getBuffer_callback,maxFeatures);
 	}
 
 
+	// 圆缓冲区
 	function onCountryBuffer_circle(){
+
+		// 1、设置返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -164,12 +231,22 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、设置返回的最大个数
 		var maxFeatures = null;
-		mapObj.queryByBufferCircle("country",style,getBuffer_callback,maxFeatures);
 
+		// 3、查询圆缓冲区
+		// a、查询的图层名称
+		// b、查询结果的样式
+		// c、回调函数，返回查询结果
+		// d、查询结果的个数，如果不设定则为所有结果
+		mapObj.queryByBufferCircle("country",style,getBuffer_callback,maxFeatures);
 	}
 
+
+	// 线缓冲区
 	function onCountryBuffer_line(){
+
+		// 1、设置返回结果的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
@@ -179,9 +256,20 @@
 		rule.symbolizer = symbolizer;
 		style.addRule(rule);
 
+		// 2、设置缓冲区的距离
 		var distance = 6;
+
+		// 3、设置返回的最大个数
 		var maxFeatures = null;
 
+
+		// 线缓冲区	
+		// 查询圆缓冲区
+		// a、查询的图层名称
+		// b、缓冲区的距离
+		// c、查询结果的样式
+		// d、回调函数，返回查询结果
+		// e、查询结果的个数，如果不设定则为所有结果
 		mapObj.queryByBufferLine("country",distance,style,getBuffer_callback,maxFeatures);	
 	}
 
@@ -193,6 +281,7 @@
 	}
 
 	function endQueryBuffer(){
+		// 停止查询
 		mapObj.endQuery();
 	}
 </script>

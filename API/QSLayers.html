@@ -18,42 +18,49 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 地图的范围
+		// 1、设置地图的范围
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 		
+		// 2、初始化地图变量，参数分别为:
 		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 		if(mapObj == null){
 			return;
 		}
-		
+
+		// 3、添加第一个QS图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		var layerImage = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+		
 		// 添加图层
 		mapObj.addLayer(layerImage);
 		
 
+		// 4、添加第二个QS图层
 		var layerTrans = new GeoBeans.Layer.QSLayer("trans","/QuadServer/maprequest?services=world_trans");
+		
 		// 添加图层，后添加的在上面
 		mapObj.addLayer(layerTrans);
-		 
+		
+		//5、对图层进行设置 
 		// 设置该图层的最大级别
 		layerTrans.setMaxLevel(10);
 
 		// 设置该图层的最小级别
 		layerTrans.setMinLevel(3);
 
-		// 设置中心点
+
+		// 6、设置中心点
 		var center = new GeoBeans.Geometry.Point(116.9,39.9);	
 		mapObj.setCenter(center);
 
-		// 设置级别
+		// 7、设置级别
 		mapObj.setLevel(6);	
 
-		// 显示导航条
+		// 8、显示导航条
 		mapObj.setNavControl(true);
 
-		// 绘图
+		// 9、绘图
 		mapObj.draw();
 	}
 

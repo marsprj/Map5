@@ -34,6 +34,9 @@ var g_catalog = [
 			},{
 				"name" : "导航条",
 				"link" : "mapNav.html"
+			// },{
+			// 	"name" : "地图旋转",
+			// 	"link" : "rotate.html"
 			}
 		]
 	},{
@@ -158,9 +161,6 @@ var g_catalog = [
 			},{
 				"name" : "拉框查询",
 				"link" : "wfsQueryRect.html"
-			// },{
-			// 	"name" : "简单查询",
-			// 	"link" : "wfsQuery.html"
 			},{
 				"name" : "属性查询",
 				"link" : "ComparisionFilterQuery.html"
@@ -275,6 +275,9 @@ var g_catalog = [
 			},{
 				"name" : "例子2",
 				"link" : "geojson_example_2.html"
+			},{
+				"name" : "例子3",
+				"link" : "geojson_example_3.html"
 			}
 		]		
 	},{
