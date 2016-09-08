@@ -63,9 +63,9 @@
 		mapObj.draw();
 	}
 
-	function removeBaseLayer(){
+	function removeQSLayer(){
 
-		// 1、删除底图
+		// 1、删除QS图层
 		mapObj.removeLayer("base");
 
 		// 2、绘图
@@ -78,6 +78,6 @@
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
 	</div>
 	<button onclick="removeLayer()">删除WFS图层</button>
-	<button onclick="removeBaseLayer()">删除底图</button>
+	<button onclick="removeQSLayer()">删除QS图层</button>
 </body>
 	
