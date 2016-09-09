@@ -49,53 +49,55 @@ if(platform == "win32"){
 /***************************************************************************/
 
 	// 统一压缩Map5
-	gulp.task('map5-task',['map5','map5-css'],function(){
+	gulp.task('map5-task',['map5','map5-css','map5-images'],function(){
 
 	});
 
-	// 压缩Map5
-	var map5List = ["Map5/lib/GeoBeans.js",
-			"Map5/lib/requestNextAnimationFrame.js", 
-			'Map5/lib/GeoBeans/BaseTypes/*.js',
-			'Map5/lib/GeoBeans/*.js',
-			'Map5/lib/GeoBeans/AQI/*.js',
-			'Map5/lib/GeoBeans/Control/*.js',
-			'Map5/lib/GeoBeans/Control/*/*.js',
-			'Map5/lib/GeoBeans/Filter/*.js',
-			'Map5/lib/GeoBeans/Filter/*/*.js',
-			'Map5/lib/GeoBeans/Geometry/*.js',
-			'Map5/lib/GeoBeans/Geometry/*/*.js',
-			'Map5/lib/GeoBeans/Label/*.js',
-			'Map5/lib/GeoBeans/Animation/*.js',
-			'Map5/lib/GeoBeans/Layer/DBLayer.js',
-			'Map5/lib/GeoBeans/Layer/FeatureDBLayer.js',
-			'Map5/lib/GeoBeans/Layer/RasterDBLayer.js',
-			'Map5/lib/GeoBeans/Layer/GroupLayer.js',
-			'Map5/lib/GeoBeans/Layer/FeatureLayer.js',
-			'Map5/lib/GeoBeans/Layer/ChartLayer.js',
-			'Map5/lib/GeoBeans/Layer/MapLayer.js',
-			'Map5/lib/GeoBeans/Layer/OverlayLayer.js',
-			'Map5/lib/GeoBeans/Layer/PanoramaLayer.js',
-			'Map5/lib/GeoBeans/Layer/QueryLayer.js',
-			'Map5/lib/GeoBeans/Layer/Tile.js',
-			'Map5/lib/GeoBeans/Layer/TileCache.js',
-			'Map5/lib/GeoBeans/Layer/TileLayer.js',
-			'Map5/lib/GeoBeans/Layer/WFSLayer.js',
-			'Map5/lib/GeoBeans/Layer/WMSLayer.js',
-			'Map5/lib/GeoBeans/Layer/ImageLayer.js',
-			'Map5/lib/GeoBeans/Layer/GeoLineLayer.js',
-			'Map5/lib/GeoBeans/Layer/RippleLayer.js',
-			'Map5/lib/GeoBeans/Layer/AirlineLayer.js',
-			'Map5/lib/GeoBeans/Layer/AnimationLayer.js',
-			'Map5/lib/GeoBeans/Layer/*/*.js',
-			'Map5/lib/GeoBeans/Overlay/*.js',
-			'Map5/lib/GeoBeans/Style/*.js',
-			'Map5/lib/GeoBeans/WFS/*.js',
-			'Map5/lib/GeoBeans/WMS/*.js',
-			'Map5/lib/GeoBeans/WMTS/*.js',
-			'Map5/lib/GeoBeans/Manager/*.js',
-			'Map5/lib/GeoBeans/Manager/*/*.js',
-			];
+	// 压缩map5
+	var map5List = [
+			'Map5/src/depends/requestNextAnimationFrame.js',
+			'Map5/src/depends/jquery-1.11.1.js',
+			'Map5/src/depends/jquery.nouislider.js',
+			'Map5/src/depends/heatmap.min.js',
+			'Map5/src/depends/echarts-all.js',
+			'Map5/src/depends/bootstrap.min.js',
+			'Map5/src/*.js',
+			'Map5/src/GeoBeans/BaseTypes/*.js',
+			'Map5/src/GeoBeans/*.js',
+			'Map5/src/GeoBeans/Animation/*.js',
+			'Map5/src/GeoBeans/AQI/*.js',
+			'Map5/src/GeoBeans/Control/*.js',
+			'Map5/src/GeoBeans/Control/*/*.js',
+			'Map5/src/GeoBeans/Filter/*.js',
+			'Map5/src/GeoBeans/Filter/*/*.js',
+			'Map5/src/GeoBeans/Format/*.js',
+			'Map5/src/GeoBeans/Geometry/*.js',
+			'Map5/src/GeoBeans/Geometry/*/*.js',
+			'Map5/src/GeoBeans/Layer/DBLayer.js',
+			'Map5/src/GeoBeans/Layer/FeatureDBLayer.js',
+			'Map5/src/GeoBeans/Layer/RasterDBLayer.js',
+			'Map5/src/GeoBeans/Layer/GroupLayer.js',
+			'Map5/src/GeoBeans/Layer/FeatureLayer.js',
+			'Map5/src/GeoBeans/Layer/ChartLayer.js',
+			'Map5/src/GeoBeans/Layer/ImageLayer.js',
+			'Map5/src/GeoBeans/Layer/MapLayer.js',
+			'Map5/src/GeoBeans/Layer/OverlayLayer.js',
+			'Map5/src/GeoBeans/Layer/PanoramaLayer.js',
+			'Map5/src/GeoBeans/Layer/QueryLayer.js',
+			'Map5/src/GeoBeans/Layer/Tile.js',
+			'Map5/src/GeoBeans/Layer/TileCache.js',
+			'Map5/src/GeoBeans/Layer/TileLayer.js',
+			'Map5/src/GeoBeans/Layer/*/*.js',
+			'Map5/src/GeoBeans/Manager/*.js',
+			'Map5/src/GeoBeans/Manager/*/*.js',
+			'Map5/src/GeoBeans/Overlay/*.js',
+			'Map5/src/GeoBeans/Render/*.js',
+			'Map5/src/GeoBeans/Render/*/*.js',		
+			'Map5/src/GeoBeans/Source/*/*/*.js',
+			'Map5/src/GeoBeans/Style/*.js',	
+			'Map5/src/GeoBeans/Utility/*.js',
+
+	];			
 	var map5Dest = 'Map5/lib/';	
 	if(platform == "linux"){
 		map5List = changeToLinuxList(linuxPath,map5List);
@@ -111,8 +113,11 @@ if(platform == "win32"){
 
 
 	// 压缩Map5 css
-	var map5cssList = ['Map5/css/Map5.css'];
-	var map5cssDest = 'Map5/css';
+	var map5cssList = ['Map5/css/bootstrap.min.css',
+			'Map5/css/custom_slider.css',
+			'Map5/css/Map5.css'
+		];
+	var map5cssDest = 'Map5/lib/css';
 	if(platform == "linux"){
 		map5cssList = changeToLinuxList(linuxPath,map5cssList);
 		map5cssDest = linuxPath + map5cssDest;
@@ -120,8 +125,21 @@ if(platform == "win32"){
 	gulp.task('map5-css',function(){
 		return gulp.src(map5cssList)
 			.pipe(minifycss())
-			.pipe(rename('Map5.min.css'))
+			.pipe(concat('Map5.min.css'))
 			.pipe(gulp.dest(map5cssDest));
+	});
+
+
+	// 移动images
+	var map5ImageList = ['Map5/images/*.*'];
+	var map5ImageDest = 'Map5/lib/images';
+	if(platform == "linux"){
+		map5ImageList = changeToLinuxList(linuxPath,map5ImageList);
+		map5ImageDest = linuxPath + map5ImageDest;
+	}
+	gulp.task('map5-images',function(){
+		gulp.src(map5ImageList)
+			.pipe(gulp.dest(map5ImageDest));
 	});
 
 
