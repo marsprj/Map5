@@ -5,13 +5,17 @@ GeoBeans.Map = GeoBeans.Class({
 	TOLERANCE : 20,
 	
 	mapDiv : null,
-	/*
-	 * HTML 5 canvas
-	 */
+
 	canvas : null,
 	
+	/**
+	 * Map的事件集合
+	 */
 	events : null,
 	
+	/**
+	 * Map的控件集合
+	 */
 	controls : null,
 	
 	/**
@@ -23,85 +27,68 @@ GeoBeans.Map = GeoBeans.Class({
 	 * center有默认值(0,0)
 	 **/
 	center : null,
+
+	// srid : "EPGS : 4326",
+	srid : 4326,
+	
+	minScale : null,	
+	maxScale : null,
+	
+	width : null,	
+	height : null,
 	
 	/**
 	 * level有默认值null
 	 **/
-	level  : null,
-	
+	level  : null,	
 	resolution : null,
 	
-	layers : null,
-	
+	layers : null,	
 	baseLayer : null,
-
 	overlayLayer : null,
+	queryLayer : null,
+	panoramaLayer : null,		// 全景图
+	imageLayer : null,			// 图片图层
+	hitRippleLayers : null,		// rippleLayer hit layers
+	animationLayer : null,		// 动画图层
 	
-	// srid : "EPGS : 4326",
-	srid : 4326,
-	
-	minScale : null,
-	
-	maxScale : null,
-	
-	width : null,
-	
-	height : null,
 	
 	renderer : null,
 	
 	bgColor : 'rgba(255,255,255,1)',
 	
+	/**
+	 * 点击查询拾取的误差
+	 * @type {Number}
+	 */
 	tolerance : 5,
 	
 	transformation : null,
 	
 	snap : null,
-
 	baseLayerSnap : null,
 
 	tracker : null,
-
-	queryLayer : null,
-
 	//拉框查询
 	queryTrackLayer : null,
-
 	// 鼠标track的查询空间数据
 	queryGeometry : null,
 
 
 	infoWindow : null,
 
-	// 全景图
-	panoramaLayer : null,
-
-	// 图片图层
-	imageLayer : null,
 
 	//图例列表
 	legendList : null,
-
-
-	// rippleLayer hit layers
-	hitRippleLayers : null,
-
-	animateCanvas : null,
-
-
+	
 	baseLayerRenderer : null,
-
+	animateCanvas : null,
 	baseLayerCanvas : null,
 
 	// 授权时间
 	authTime : null,
-
-
-	// 动画图层
-	animationLayer : null,
-
 	// 旋转角度
-	rotateAngle : null,
+	rotateAngle : null,	//这个应该放到View里面
 
 	initialize: function (id,name,extent,srid,viewer) {	
 		var mapDiv = document.getElementById(id);
