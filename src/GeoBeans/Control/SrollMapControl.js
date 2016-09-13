@@ -49,7 +49,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(level);
-						viewer.setLevel(level);
+						viewer.setZoom(level);
 						map.draw();
 					}
 				}else{
@@ -69,7 +69,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(level);
-						viewer.setLevel(level);
+						viewer.setZoom(level);
 						map.draw();						
 					}
 				}

@@ -130,8 +130,8 @@ GeoBeans.Transformation = GeoBeans.Class({
 	update : function(){
 		
 		var viewer = this.mapViewer.getExtent();
-		var win_width = this.mapViewer.map.width;
-		var win_height= this.mapViewer.map.height;
+		var win_width = this.mapViewer._map.width;
+		var win_height= this.mapViewer._map.height;
 		
 		this.win_w = parseFloat(win_width);
 		this.win_h = parseFloat(win_height);
@@ -146,7 +146,7 @@ GeoBeans.Transformation = GeoBeans.Class({
 		var sacle_y = this.win_h / this.view_h;
 		this.scale = sacle_x < sacle_y ? sacle_x : sacle_y;
 		
-		this.mapViewer.map.tolerance = this.mapViewer.map.TOLERANCE / this.scale;
+		this.mapViewer._map.tolerance = this.mapViewer._map.TOLERANCE / this.scale;
 	}
 
 });

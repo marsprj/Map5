@@ -267,16 +267,16 @@ GeoBeans.Map = GeoBeans.Class({
 				if(height == that.canvas.height && width == that.canvas.width){
 					return;
 				}
-				console.log('before:height[' + that.canvas.height + "]");
-				console.log('before:width[' + that.canvas.width + "]");
+				//console.log('before:height[' + that.canvas.height + "]");
+				//console.log('before:width[' + that.canvas.width + "]");
 
 				that.canvas.height = height;
 				that.canvas.width = width;
 
 				that.baseLayerCanvas.height = height;
 				that.baseLayerCanvas.width = width;
-				console.log('after:height[' + that.canvas.height + "]");
-				console.log('after:width[' + that.canvas.width + "]");
+				//console.log('after:height[' + that.canvas.height + "]");
+				//console.log('after:width[' + that.canvas.width + "]");
 				that.height = height;
 				that.width = width;
 				// flag = "width";
@@ -322,7 +322,7 @@ GeoBeans.Map = GeoBeans.Class({
 					}
 					// that.viewer = extent;
 					that.mapViewer.viewer = extent;
-					console.log(that.getViewer().toString());
+					//console.log(that.getViewer().toString());
 
 
 					// that.transformation.update();
@@ -452,26 +452,26 @@ GeoBeans.Map = GeoBeans.Class({
 
 		var l = this.getLayer(layer.name);
 		if(l != null){
-			console.log("this map has [" + layer.name + "] layer")
+			//console.log("this map has [" + layer.name + "] layer")
 			return "this map has [" + layer.name + "] layer";
 		}
 		if(layer instanceof GeoBeans.Layer.ChartLayer ){
 			var l = this.getLayer(layer.baseLayerName);
 			if(l == null){
-				console.log("this map does not has [" + layer.baseLayerName + "] layer");
+				//console.log("this map does not has [" + layer.baseLayerName + "] layer");
 				return "this map does not has [" + layer.baseLayerName + "] layer";
 			}
 			if(layer instanceof GeoBeans.Layer.RangeChartLayer){
 				var index = l.featureType.getFieldIndex(layer.baseLayerField);
 				if(index == -1){
-					console.log("layer does not has this field[" +　layer.baseLayerField + "]");
+					//console.log("layer does not has this field[" +　layer.baseLayerField + "]");
 					return "layer does not has this field[" +　layer.baseLayerField + "]";	
 				}
 			}
 			if(layer instanceof GeoBeans.Layer.HeatMapLayer){
 				var geomType = l.getGeomType();
 				if(geomType != GeoBeans.Geometry.Type.POINT){
-					console.log("base layer is not point layer");
+					//console.log("base layer is not point layer");
 					return "base layer is not point layer";
 				}
 			}
@@ -644,7 +644,7 @@ GeoBeans.Map = GeoBeans.Class({
 			if(layer instanceof GeoBeans.Layer.TileLayer){
 				if(this.level == null){
 					var viewer = this.viewer;
-					var level = viewer.getLevelByExtent(viewer.getExtent());
+					var level = viewer.getZoomByExtent(viewer.getExtent());
 					this.level = level;
 
 				}
@@ -2039,7 +2039,7 @@ GeoBeans.Map = GeoBeans.Class({
 		var layer = this.getLayer(layerName);
 		if(layer == null || !(layer instanceof GeoBeans.Layer.FeatureLayer)){
 			if(callback != null){
-				console.log("layer is not feature layer");
+				//console.log("layer is not feature layer");
 				callback(null);
 			}
 			return;
@@ -2052,7 +2052,7 @@ GeoBeans.Map = GeoBeans.Class({
 	unRegisterClickEvent :function(layerName){
 		var layer = this.getLayer(layerName);
 		if(layer == null || !(layer instanceof GeoBeans.Layer.FeatureLayer)){
-			console.log("layer is not feature layer");
+			//console.log("layer is not feature layer");
 			return;
 		}
 		layer.unRegisterClickEvent();

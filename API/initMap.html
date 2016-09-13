@@ -67,16 +67,10 @@
 
 		var viewer = mapObj.getViewer();
 
-		// 4、设置中心点
-		var center = new GeoBeans.Geometry.Point(0,0);	
-		viewer.setCenter(center);
-
-		// 5、设置级别
-		viewer.setLevel(2);	
-
-		// 6、绘图
-		// mapObj.draw();
-		// mapObj.refresh();
+		// 4、设置中心点和显示级别
+		var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);		
+		viewer.setZoomCenter(zoom,center);
 	}
 </script>
 <title>Map5 -- 初始化地图</title>
