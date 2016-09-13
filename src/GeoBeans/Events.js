@@ -1,7 +1,15 @@
 GeoBeans.Event = {	
 	/* mouse event */
-	CLICK 		: "click",
-	DCLICK 		: "dblclick",
+	CLICK 		: "click",			
+	DBCLICK		: "dbclick",
+	RESIZE		: "resize",
+
+	CHANGE		: "change",
+	DRAG_BEGIN	: "dragbegin",
+	DRAGING		: "dragging",
+	DRAG_END	: "dragend",
+
+	/* mouse Event */
 	MOUSE_DOWN	: "mousedown",
 	MOUSE_UP 	: "mouseup",
 	MOUSE_MOVE 	: "mousemove",
@@ -9,6 +17,11 @@ GeoBeans.Event = {
 	MOUSE_OUT 	: "mouseout",
 	RESIZE		: "resize",
 	MOUSE_WHEEL : "mousewheel"
+	/* touch Event */
+	TOUCH_START	: 'touchstart',
+	TOUCH_MOVE 	: 'touchmove',
+	TOUCH_END 	: 'touchend',
+	TOUCH_WHEEL	: 'touchwheel'
 };
 
 /*
