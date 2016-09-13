@@ -313,8 +313,8 @@ GeoBeans.Map = GeoBeans.Class({
 
 							var rotateCanvas = layer.rotateCanvas;
 							if(rotateCanvas != null){
-								rotateCanvas.height = height;
-								rotateCanvas.width = width;
+								rotateCanvas.height = height*2;
+								rotateCanvas.width = width*2;
 							}
 						}
 					}
@@ -1093,7 +1093,7 @@ GeoBeans.Map = GeoBeans.Class({
 		this.baseLayerRenderer.save();
 		var width = this.width;
 		var height = this.height;
-		if(this.getRotation() != null){
+		if(this.getRotation() != 0){
 			this.baseLayerRenderer.context.translate(width/2,height/2);
 			this.baseLayerRenderer.context.rotate(this.getRotation()* Math.PI/180);
 			this.baseLayerRenderer.context.translate(-width/2,-height/2);
@@ -1107,7 +1107,7 @@ GeoBeans.Map = GeoBeans.Class({
 		for(var i = 0; i < this.layers.length;++i){
 			var l = this.layers[i];
 			if(l instanceof GeoBeans.Layer.TileLayer && l.visible){
-				if(this.getRotation() != null){
+				if(this.getRotation() != 0){
 					var rotateCanvas = l.getRotateCanvas();
 					if(rotateCanvas != null){
 						var x_2 = rotateCanvas.width/4 + x;

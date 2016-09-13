@@ -90,7 +90,7 @@ GeoBeans.Tile = GeoBeans.Class({
 				this.layer.renderer.context.clearRect(x,y,img_size,img_size);
 				this.layer.renderer.drawImage(this.image, x, y, img_size, img_size);
 				this.layer.renderer.restore();
-				if(this.map.getRotation() != null){
+				if(this.map.getRotation() != 0){
 					var rotateCanvas = this.layer.getRotateCanvas();
 					if(rotateCanvas != null){
 						var context = rotateCanvas.getContext("2d");

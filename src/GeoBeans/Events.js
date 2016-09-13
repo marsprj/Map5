@@ -86,12 +86,12 @@ GeoBeans.Events = GeoBeans.Class({
 		}
 	},
 
-	/**
-	 * 
-	 * @param  {[type]} evt [description]
-	 * @return {[type]}     [description]
-	 */
-	GeoBeans.Events.prototype.get = function(evt){		
-		return this._events[evt];
-	}
+	// *
+	//  * 
+	//  * @param  {[type]} evt [description]
+	//  * @return {[type]}     [description]
+	 
+	// GeoBeans.Events.prototype.get = function(evt){		
+	// 	return this._events[evt];
+	// }
 });
