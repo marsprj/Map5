@@ -438,7 +438,8 @@ GeoBeans.Map = GeoBeans.Class({
  		for(var i = 0; i < layers.length;++i){
  			if(layer.name == layers[i].name){
  				if(layer== this.baseLayer){
- 					this.removeBaseLayer();
+ 					//this.removeBaseLayer();
+ 					this.setBaseLayer(null);
  				}
  				this.layers.splice(i,1);
  				layer.destroy();
@@ -451,30 +452,21 @@ GeoBeans.Map = GeoBeans.Class({
  		}
 	 },
 
-	 removeBaseLayer : function(){
-	 	var baseLayerName = this.baseLayer.name;
+	//  removeBaseLayer : function(){
+	//  	var baseLayerName = this.baseLayer.name;
 
-	 	var layer = null;
-	 	for(var i = 0; i < this.layers.length;++i){
-	 		layer = this.layers[i];
-	 		if(layer instanceof GeoBeans.Layer.TileLayer && layer != this.baseLayer){
-	 			this.baseLayer = layer;
-	 		}
-	 	}
-	 	if(this.baseLayer.name == baseLayerName){
-	 		this.baseLayer = null;
-	 		this.level = null;
-	 	}
-	 	this.baseLayerRenderer.clearRect();
-	 },
-
-	
-	// setViewer : function(extent){	
-	// 	this.mapViewer.setViewer(extent);
-	// },
-
-	// getMapViewer : function(){
-	// 	return this.mapViewer;
+	//  	var layer = null;
+	//  	for(var i = 0; i < this.layers.length;++i){
+	//  		layer = this.layers[i];
+	//  		if(layer instanceof GeoBeans.Layer.TileLayer && layer != this.baseLayer){
+	//  			this.baseLayer = layer;
+	//  		}
+	//  	}
+	//  	if(this.baseLayer.name == baseLayerName){
+	//  		this.baseLayer = null;
+	//  		this.level = null;
+	//  	}
+	//  	this.baseLayerRenderer.clearRect();
 	// },
 	
 	getViewer : function(){		
@@ -2278,4 +2270,21 @@ GeoBeans.Map.prototype.un = function(event){
 	// var eventHandler = this._getEventHandler(event,handler);
 	// this.mapDiv[0].removeEventListener(event, eventHandler);
 	// this._removeEventHandler();
+}
+
+/**
+ * 设置Map的底图
+ * @param {[TileLayer]} l Baselayer必须是TileLayer
+ * @description [description]
+ */
+GeoBeans.Map.prototype.setBaseLayer = function(l){
+	if(!isValid(layer)){
+		this.baseLayer = null;
+		return true;
+	}
+	if(l instanceof TileLayer){
+		this.baseLayer = l;
+		return true;
+	}
+	return false;
 }
