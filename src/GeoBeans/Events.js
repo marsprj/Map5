@@ -12,7 +12,7 @@ GeoBeans.Event = {
 };
 
 /*
- * 榧犳爣鎸夐敭
+ * 鼠标按键
  */
 GeoBeans.Event.MouseButton = {
 	LEFT	: "left",
@@ -21,7 +21,7 @@ GeoBeans.Event.MouseButton = {
 };
 
 /*
- * 榧犳爣浜嬩欢
+ * 鼠标事件
  */
 GeoBeans.Event.MouseArgs = function(){
 	buttn : null;
@@ -86,5 +86,12 @@ GeoBeans.Events = GeoBeans.Class({
 		}
 	},
 
-
+	/**
+	 * 
+	 * @param  {[type]} evt [description]
+	 * @return {[type]}     [description]
+	 */
+	GeoBeans.Events.prototype.get = function(evt){		
+		return this._events[evt];
+	}
 });
