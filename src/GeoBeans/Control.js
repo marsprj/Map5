@@ -26,7 +26,7 @@ GeoBeans.Control = GeoBeans.Class({
 });
 
 GeoBeans.Control.Type = {
-	SCROLL_MAP	: "SrollMapControl",
+	SCROLL_MAP	: "ScrollMapControl",
 	DRAG_MAP	: "DragMapControl",
 	TRACK		: "TrackControl",
 	TRACKBUFFER : "TrackBufferControl",

@@ -85,11 +85,11 @@ GeoBeans.Map = GeoBeans.Class({
 
 
 	initialize: function (id,name,extent,srid,viewer) {	
-		var mapDiv = document.getElementById(id);
-		if(mapDiv == null){
+		var mapContainer = document.getElementById(id);
+		if(mapContainer == null){
 			return null;
 		}
-		mapDiv.innerHTML = '';
+		mapContainer.innerHTML = '';
 
 		var option = {
 			extent : extent,
@@ -121,60 +121,17 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* 初始化mapContainer的代码可以单独写一个函数 Begin
 		/**************************************************************************************/
-		this.mapDiv = $("#" + id);
-
-		var canvasID = this.id + "_canvas";
-		var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
-							+ $("#" + id).height() + "' width='" 
-							+ $("#" + id).width() + "'></canvas>";
-
-		this.mapDiv[0].innerHTML = mapCanvasHtml;
+		this.createMapContainer();
 		
-		this.width = $("#" + id).width();
-		this.height = $("#" + id).height();		
-
-
-		var baseCanvasID = id + "_basecanvas";
-		var canvasHtml = "<canvas  id='" + baseCanvasID  +"' class='map5-base-canvas' height='" 
-					+ this.height + "' width='" 
-					+ this.width + "'></canvas>";
-		this.mapDiv[0].innerHTML += canvasHtml;
-		this.baseLayerCanvas = document.getElementById(baseCanvasID);
-		this.baseLayerRenderer = new GeoBeans.Renderer(this.baseLayerCanvas);
-		
-		this.canvas = document.getElementById(canvasID);
 		/**************************************************************************************/
 		/* 初始化mapContainer的代码可以单独写一个函数 End
 		/**************************************************************************************/
 
-		this.renderer = new GeoBeans.Renderer(this.canvas);
-
 		/**************************************************************************************/
 		/* Controls Begin
-		/**************************************************************************************/
-		this.controls = new GeoBeans.Control.Controls(this);
+		// /**************************************************************************************/
+		this.initControls();
 		
-		// drag map control
-		var dragControl = new GeoBeans.Control.DragMapControl(this);
-		dragControl.enable(true);
-		this.controls.add(dragControl);
-		// scroll map control
-		var scrollControl = new GeoBeans.Control.ScrollMapControl(this);
-		scrollControl.enable(true);
-		this.controls.add(scrollControl);
-
-		//track control
-		var tracker = new GeoBeans.Control.TrackControl();
-		this.tracker = tracker;
-		this.controls.add(tracker);
-
-		var zoomControl = new GeoBeans.Control.ZoomControl();
-		this.controls.add(zoomControl);
-
-		if(this.mapNavControl == null){
-			this.mapNavControl = new GeoBeans.Control.MapNavControl(this);	
-			this.mapNavControl.setEnable(false);
-		}
 		/**************************************************************************************/
 		/* Controls End
 		/**************************************************************************************/
@@ -182,27 +139,8 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* Widgets Begin
 		/**************************************************************************************/
-		var copyRightHtml = "<div class='map5-copyright'>GeoBeans © </div>";
-		$("#" + id).append(copyRightHtml);
-
-		// tooltip
-		var tooltipHtml = "<div class='map5-tooltip'></div>";
-		this.mapDiv.append(tooltipHtml);
-
-		var infoWindowHtml = "<div class='infoWindow' data-toggle='popover' "
-			+ 	"title='Info' data-content=''></div>";
-		$("#" + id).append(infoWindowHtml);
-		this.infoWindow = this.mapDiv.find(".infoWindow");
-		if(this.infoWindow!=undefined){
-			if(this.infoWindow.popover!=undefined){
-				this.infoWindow.popover({
-					animation: false,
-					trigger: 'manual',
-					placement : 'top',
-					html : true
-				});			
-			}
-		}
+		this.initWidgets();
+		
 		/**************************************************************************************/
 		/* Widgets End
 		/**************************************************************************************/
@@ -210,21 +148,22 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* Layers Begin
 		/**************************************************************************************/
-		this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
-		this.overlayLayer.setMap(this);
+		this.initLayers();
+		// this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
+		// this.overlayLayer.setMap(this);
 
-		this.panoramaLayer = new GeoBeans.Layer.PanoramaLayer("panorama");
-		this.panoramaLayer.setMap(this);
+		// this.panoramaLayer = new GeoBeans.Layer.PanoramaLayer("panorama");
+		// this.panoramaLayer.setMap(this);
 
-		this.imageLayer = new GeoBeans.Layer.ImageLayer("imageLayer");
-		this.imageLayer.setMap(this);
+		// this.imageLayer = new GeoBeans.Layer.ImageLayer("imageLayer");
+		// this.imageLayer.setMap(this);
 
-		this.queryLayer = new GeoBeans.Layer.FeatureLayer.QueryLayer("query");
-		this.queryLayer.setMap(this);
+		// this.queryLayer = new GeoBeans.Layer.FeatureLayer.QueryLayer("query");
+		// this.queryLayer.setMap(this);
 
 
 
-		this.hitRippleLayers = [];
+		// this.hitRippleLayers = [];
 		/**************************************************************************************/
 		/* Layers End
 		/**************************************************************************************/
@@ -259,8 +198,8 @@ GeoBeans.Map = GeoBeans.Class({
 		window.onresize = function(flag){
 			clearTimeout(resizeId);
 			resizeId = setTimeout(function(){
-				var height = that.mapDiv.height();
-				var width = that.mapDiv.width();
+				var height = $(that.mapContainer).height();
+				var width = $(that.mapContainer).width();
 				if(height == 0 ||  width == 0){
 					return;
 				}
@@ -396,8 +335,8 @@ GeoBeans.Map = GeoBeans.Class({
 	destroy : function(){
 
 
-		this.mapDiv.find(".chart-legend ").remove();
-		this.mapDiv.find("canvas").remove();
+		$(this.mapContainer).find(".chart-legend ").remove();
+		$(this.mapContainer).find("canvas").remove();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.setNavControl(false);
 		this.controls.cleanup();
@@ -415,7 +354,7 @@ GeoBeans.Map = GeoBeans.Class({
 		this.controls = null;
 		this.infoWindow = null;
 		this.stopAnimate();
-		this.mapDiv = null;
+		this.mapContainer = null;
 		
 	},
 
@@ -663,7 +602,10 @@ GeoBeans.Map = GeoBeans.Class({
 		// this.renderer.restore();
 
 		//设置地图控件
-		this.mapNavControl.setZoomSlider(this.level);
+		// this.mapNavControl.setZoomSlider(this.level);
+		var index = this.controls.find(GeoBeans.Control.Type.NAV);
+		var mapNavControl = this.controls.get(index);
+		mapNavControl.setZoomSlider(this.level);
 	},
 
 	drawBaseLayerCallback:function(map){
@@ -792,7 +734,7 @@ GeoBeans.Map = GeoBeans.Class({
 		// infoWindow 
 		var that = this;
 		if(this.infoWindow != null){
-			var popover = this.mapDiv.find(".popover");
+			var popover = $(this.mapContainer).find(".popover");
 			if(popover.length == 1 ){
 				var map_x = this.infoWindow.attr("x");
 				var map_y = this.infoWindow.attr("y");
@@ -805,9 +747,9 @@ GeoBeans.Map = GeoBeans.Class({
 				this.infoWindow.css("left",point_s.x + "px");
 				this.infoWindow.css("top",(point_s.y) + "px");
 				this.infoWindow.popover('hide').popover("show");
-				this.mapDiv.find(".popover-title")
+				$(this.mapContainer).find(".popover-title")
 					.append('<button type="button" class="close">&times;</button>');
-				this.mapDiv.find(".popover-title .close").click(function(){
+				$(this.mapContainer).find(".popover-title .close").click(function(){
 					$(this).parents(".popover").popover('hide');
 				});				
 			}
@@ -1168,15 +1110,16 @@ GeoBeans.Map = GeoBeans.Class({
 
 	//设置导航
 	setNavControl:function(flag){
-		if(this.mapNavControl== null){
-			this.mapNavControl = new GeoBeans.Control.MapNavControl(this);
-		}
-		this.mapNavControl.setEnable(flag);
+		var index = this.controls.find(GeoBeans.Control.Type.NAV);
+		var mapNavControl = this.controls.get(index);
+		mapNavControl.enable(flag);
 	},
 
 	// 设置导航位置
 	setNavControlPosition : function(left,top){
-		this.mapNavControl.setPosition(left,top);
+		var index = this.controls.find(GeoBeans.Control.Type.NAV);
+		var mapNavControl = this.controls.get(index);
+		mapNavControl.setPosition(left,top);
 	},
 
 
@@ -1895,13 +1838,13 @@ GeoBeans.Map = GeoBeans.Class({
 			top = spt.y - itemHeight;
 		}
 
-		this.mapDiv.find(".map5-tooltip").css("left",left + "px");
-		this.mapDiv.find(".map5-tooltip").css("top",top + "px");
-		this.mapDiv.find(".map5-tooltip").css("display","block");
+		$(this.mapContainer).find(".map5-tooltip").css("left",left + "px");
+		$(this.mapContainer).find(".map5-tooltip").css("top",top + "px");
+		$(this.mapContainer).find(".map5-tooltip").css("display","block");
 	},
 
 	closeTooltip : function(){
-		this.mapDiv.find(".map5-tooltip").css("display","none");
+		$(this.mapContainer).find(".map5-tooltip").css("display","none");
 	},
 
 
@@ -2152,26 +2095,33 @@ GeoBeans.Map = GeoBeans.Class({
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.createMapContainer = function(){
-	// var canvasID = this.id + "_canvas";
-	// var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
-	// 					+ $("#" + id).height() + "' width='" 
-	// 					+ $("#" + id).width() + "'></canvas>";
+	this.mapContainer = $("#" + this.id)[0];
 
-	// //?为什么要用mapDiv[0]
-	// this.mapDiv[0].innerHTML = mapCanvasHtml;
-	
-	// this.width = $("#" + id).width();
-	// this.height = $("#" + id).height();		
-	// this.center = new GeoBeans.Geometry.Point(0,0);		
+	this.width = $("#" + this.id).width();
+	this.height = $("#" + this.id).height();
 
 
-	// var baseCanvasID = id + "_basecanvas";
-	// var canvasHtml = "<canvas  id='" + baseCanvasID  +"' class='map5-base-canvas' height='" 
-	// 			+ this.height + "' width='" 
-	// 			+ this.width + "'></canvas>";
-	// this.mapDiv[0].innerHTML += canvasHtml;
-	// this.baseLayerCanvas = document.getElementById(baseCanvasID);
-	// this.baseLayerRenderer = new GeoBeans.Renderer(this.baseLayerCanvas);
+	// canvas
+	var canvasID = this.id + "_canvas";
+	var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
+						+ this.height + "' width='" 
+						+ this.width + "'></canvas>";
+	this.mapContainer.innerHTML = mapCanvasHtml;
+
+
+	// baseCanvas
+	var baseCanvasID = this.id + "_basecanvas";
+	var canvasHtml = "<canvas  id='" + baseCanvasID  +"' class='map5-base-canvas' height='" 
+				+ this.height + "' width='" 
+				+ this.width + "'></canvas>";
+	this.mapContainer.innerHTML += canvasHtml;
+
+	this.baseLayerCanvas = document.getElementById(baseCanvasID);
+	this.baseLayerRenderer = new GeoBeans.Renderer(this.baseLayerCanvas);
+
+	this.canvas = document.getElementById(canvasID);
+	this.renderer = new GeoBeans.Renderer(this.canvas);
+
 }
 
 /**
@@ -2180,12 +2130,13 @@ GeoBeans.Map.prototype.createMapContainer = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initControls = function(){
-	his.controls = new GeoBeans.Control.Controls(this);
+	this.controls = new GeoBeans.Control.Controls(this);
 		
 	// drag map control
 	var dragControl = new GeoBeans.Control.DragMapControl(this);
 	dragControl.enable(true);
 	this.controls.add(dragControl);
+
 	// scroll map control
 	var scrollControl = new GeoBeans.Control.ScrollMapControl(this);
 	scrollControl.enable(true);
@@ -2199,14 +2150,28 @@ GeoBeans.Map.prototype.initControls = function(){
 	var zoomControl = new GeoBeans.Control.ZoomControl();
 	this.controls.add(zoomControl);
 
-	if(this.mapNavControl == null){
-		this.mapNavControl = new GeoBeans.Control.MapNavControl(this);	
-		this.mapNavControl.setEnable(false);
-	}
+	var mapNavControl = new GeoBeans.Control.MapNavControl(this);
+	mapNavControl.enable(false);
+	this.controls.add(mapNavControl);
+
+}
+
+/**
+ * 初始化地图Widgets
+ * @return {[type]} [description]
+ */
+GeoBeans.Map.prototype.initWidgets = function(){
+	var copyRightHtml = "<div class='map5-copyright'>GeoBeans © </div>";
+	$(this.mapContainer).append(copyRightHtml);
+
+	// tooltip
+	var tooltipHtml = "<div class='map5-tooltip'></div>";
+	$(this.mapContainer).append(tooltipHtml);
+
 	var infoWindowHtml = "<div class='infoWindow' data-toggle='popover' "
 		+ 	"title='Info' data-content=''></div>";
-	$("#" + id).append(infoWindowHtml);
-	this.infoWindow = this.mapDiv.find(".infoWindow");
+	$(this.mapContainer).append(infoWindowHtml);
+	this.infoWindow = $(this.mapContainer).find(".infoWindow");
 	if(this.infoWindow!=undefined){
 		if(this.infoWindow.popover!=undefined){
 			this.infoWindow.popover({
@@ -2216,16 +2181,8 @@ GeoBeans.Map.prototype.initControls = function(){
 				html : true
 			});			
 		}
-	}
-
-
-		var copyRightHtml = "<div class='map5-copyright'>GeoBeans © </div>";
-		$("#" + id).append(copyRightHtml);
-
-	// tooltip
-	var tooltipHtml = "<div class='map5-tooltip'></div>";
-	this.mapDiv.append(tooltipHtml);
-}
+	}	
+};
 
 /**
  * 初始化地图事件

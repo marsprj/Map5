@@ -123,11 +123,11 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 		};
 
 		// map.canvas.addEventListener('mousewheel', this.mousewheel);
-		map.mapDiv[0].addEventListener('mousewheel', this.mousewheel);
+		map.mapContainer.addEventListener('mousewheel', this.mousewheel);
 	},
 
 	destory : function(){
-		this.map.mapDiv[0].removeEventListener('mousewheel', this.mousewheel);
+		this.map.mapContainer.removeEventListener('mousewheel', this.mousewheel);
 		GeoBeans.Control.prototype.destory.apply(this, arguments);
 	},
 	
