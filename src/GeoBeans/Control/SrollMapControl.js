@@ -26,21 +26,20 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			if(trackBufferControl != null && trackBufferControl.drawing){
 				map.restoreSnap();
 			}
+
+			var viewer = map.getViewer();
+			var extent = viewer.getExtent();
 			if(map.baseLayer!=null){
 				var level = map.level;
 				if(e.wheelDelta>0){
-					// var time = new Date();
+					// 底图缩放比例不为1
 					if(map.baseLayer.imageScale != 1.0){
 						var zoom = 1/(1 + count *0.2);
-						map.getViewer().scale(zoom);
-						// level = map.getLevel(map.viewer);
-						level = map.getViewer().getLevel(map.getViewer());
+						extent.scale(zoom);
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
-						// map._setLevel(level);
-						map.getViewer()._setLevel(level);
-						// map.level = level;
+						viewer.setExtent(extent);
 						map.draw();
 					}else{
 						level = level + count;
@@ -50,21 +49,17 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(level);
-						map.getViewer().setLevel(level);
+						viewer.setLevel(level);
 						map.draw();
 					}
-					// console.log(new Date() - time);
 				}else{
 					if(map.baseLayer.imageScale != 1.0){
 						var zoom = 1 + 0.2*count;
-						map.getViewer().scale(zoom);
-						level = map.getViewer().getLevel(map.getViewer());
+						extent.scale(zoom);
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
-						// map._setLevel(level);
-						map.getViewer()._setLevel(level);
-						// map.level = level;
+						viewer.setExtent(extent);
 						map.draw();
 					}else{
 						level = level - count;
@@ -74,7 +69,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(level);
-						map.getViewer().setLevel(level);
+						viewer.setLevel(level);
 						map.draw();						
 					}
 				}
@@ -85,10 +80,8 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.saveSnap();
 					map.drawBackground();
 					map.drawLayersSnap(zoom);
-					map.getViewer().scale(zoom);
-					map.getViewer().transformation.update();
-					// map.viewer.scale(zoom);
-					// map.transformation.update();
+					extent.scale(zoom);
+					viewer.setExtent(extent);
 					map.draw();
 				}
 				else{
@@ -96,11 +89,8 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.saveSnap();
 					map.drawBackground();
 					map.drawLayersSnap(zoom);
-					// map.viewer.scale(zoom);
-					// map.transformation.update();
-					map.getViewer().scale(zoom);
-					map.getViewer().transformation.update();
-
+					extent.scale(zoom);
+					viewer.setExtent(extent);
 					map.draw();
 				}
 			}
@@ -132,11 +122,8 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			}, 200);
 		};
 
-
 		// map.canvas.addEventListener('mousewheel', this.mousewheel);
 		map.mapDiv[0].addEventListener('mousewheel', this.mousewheel);
-
-
 	},
 
 	destory : function(){

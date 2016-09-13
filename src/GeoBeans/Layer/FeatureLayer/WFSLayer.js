@@ -47,9 +47,10 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 
 	load : function(){
 
-		var mapViewer = this.map.getViewer();
-		if(mapViewer != null && this.viewer != null 
-			&& mapViewer.equal(this.viewer) && this.features != null){
+		var viewer = this.map.getViewer();
+		var extent = viewer.getExtent();
+		if(extent != null && this.viewer != null 
+			&& extent.equal(this.viewer) && this.features != null){
 			this.flag = GeoBeans.Layer.Flag.LOADED;
 			this.drawLayerSnap();
 			this.renderer.clearRect();
@@ -59,8 +60,8 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 			return;		
 		}
 
-		this.viewer = new GeoBeans.Envelope(mapViewer.xmin,mapViewer.ymin,
-			mapViewer.xmax,mapViewer.ymax);
+		this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
+			extent.xmax,extent.ymax);
 
 		
 		if(this.featureType==null){
@@ -73,7 +74,7 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 		var that = this;
 		that.flag = GeoBeans.Layer.Flag.READY;
 		this.featureType.getFeaturesBBox(function(featureType, features){
-			that.setTransformation(that.map.getMapViewer().transformation);
+			that.setTransformation(that.map.getViewer().transformation);
 			that.features = features;
 			that.drawLayerSnap();
 			that.renderer.clearRect();
