@@ -14,8 +14,6 @@ GeoBeans.Viewer = GeoBeans.Class({
 	initialize : function(map, options){
 		this._map = map;
 
-		this._transformation = new GeoBeans.Transformation(this);
-
 		this._extent = options.extent;
 		// this._viewer = options.viewer;
 		// if(this._viewer == null){
@@ -97,7 +95,7 @@ GeoBeans.Viewer.prototype.setExtent = function(val){
 	}else{
 		var extent = this.scaleView(val);
 		this._extent = val;
-		this._transformation.update();
+		this.update();
 	}
 };
 
@@ -123,7 +121,7 @@ GeoBeans.Viewer.prototype.setCenter = function(val){
 		var offset_y = val.y - this._center.y;
 		this._extent.offset(offset_x, offset_y);
 		this._center = val;
-		this._transformation.update();
+		this.update();
 	}else{
 		this._center = val;
 	}
@@ -204,7 +202,7 @@ GeoBeans.Viewer.prototype.setZoom = function(zoom){
 		var resolution = map.baseLayer.getResolutionByLevel(zoom);
 		this.setResolution(resolution);
 		this.updateMapExtent(this._resolution);
-		this._transformation.update();
+		this.update();
 	}
 
 	this._map.refresh();
@@ -220,7 +218,7 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 		var resolution = map.baseLayer.getResolutionByLevel(zoom);
 		this.setResolution(resolution);
 		this.updateMapExtent(this._resolution);
-		this._transformation.update();
+		this.update();
 	}
 
 	// set center
@@ -229,7 +227,7 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 		var offset_y = center.y - this._center.y;
 		this._extent.offset(offset_x, offset_y);
 		this._center = center;
-		this._transformation.update();
+		this.update();
 	}else{
 		this._center = center;
 	}
@@ -286,7 +284,7 @@ GeoBeans.Viewer.prototype._setZoom = function(zoom){
 		var resolution = map.baseLayer.getResolution(zoom);
 		this.setResolution(resolution);
 		this.updateMapExtent(this._resolution);
-		this._transformation.update();
+		this.update();
 	}
 };
 
@@ -417,7 +415,7 @@ GeoBeans.Viewer.prototype.offset = function(offset_x,offset_y){
 		this._extent.offset(offset_x,offset_y);
 		this._center.x += offset_x;
 		this._center.y += offset_y;
-		this._transformation.update();
+		this.update();
 	}else{
 		this._center.x += offset_x;
 		this._center.y += offset_y;
@@ -432,7 +430,10 @@ GeoBeans.Viewer.prototype.offset = function(offset_x,offset_y){
  * @return {GeoBeans.Geometry.Point}    转换后的地图坐标值
  */
 GeoBeans.Viewer.prototype.toMapPoint = function(sx,sy){
-	return this._transformation.toMapPoint(sx,sy);
+	var rotation = this.getRotation();
+	var mapX = ((sx - this.win_cx)* Math.cos(rotation * Math.PI/180) - (this.win_cy-  sy) * Math.sin(rotation * Math.PI/180) )/ this.scale + this.view_c.x;
+	var mapY = ((sx - this.win_cx)* Math.sin(rotation * Math.PI/180) + (this.win_cy-  sy) * Math.cos(rotation * Math.PI/180) )/ this.scale + this.view_c.y;
+	return new GeoBeans.Geometry.Point(mapX, mapY); 
 };
 
 
@@ -443,7 +444,10 @@ GeoBeans.Viewer.prototype.toMapPoint = function(sx,sy){
  * @return {GeoBeans.Geometry.Point}    转换后的屏幕坐标值
  */
 GeoBeans.Viewer.prototype.toScreenPoint = function(mx,my){
-	return this._transformation.toScreenPoint(mx,my);
+	var rotation = this.getRotation();
+	var screenX = this.scale *((mx - this.view_c.x)* Math.cos(rotation * Math.PI/180) + (my - this.view_c.y) * Math.sin(rotation * Math.PI/180)) + this.win_cx;
+	var screenY = this.scale *((mx - this.view_c.x)* Math.sin(rotation * Math.PI/180) - (my - this.view_c.y) * Math.cos(rotation * Math.PI/180)) + this.win_cy;
+	return  new GeoBeans.Geometry.Point(screenX, screenY); 
 };
 
 
@@ -500,4 +504,31 @@ GeoBeans.Viewer.prototype.rotateViewer = function(){
  */
 GeoBeans.Viewer.prototype.getMap = function(){
 	return this._map;
+};
+
+
+/**
+ * 更新
+ * @return 
+ */
+GeoBeans.Viewer.prototype.update = function(){
+	var extent = this.getExtent();
+	var win_width = this._map.width;
+	var win_height = this._map.height;
+
+	this.win_w = parseFloat(win_width);
+	this.win_h = parseFloat(win_height);
+	this.win_cx = win_width  / 2;
+	this.win_cy = win_height / 2;
+
+
+	this.view_w = extent.getWidth();
+	this.view_h = extent.getHeight();
+	this.view_c = extent.getCenter(); 
+
+	var scale_x = this.win_w / this.view_w;
+	var scale_y = this.win_h / this.view_h;
+	this.scale = scale_x < scale_y ? scale_x : scale_y;
+
+	this._map.tolerance = this._map.TOLERANCE / this.scale;
 };
