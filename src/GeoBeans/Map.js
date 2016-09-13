@@ -4,7 +4,7 @@ GeoBeans.Map = GeoBeans.Class({
 	// TOLERANCE : 10,
 	TOLERANCE : 20,
 	
-	mapDiv : null,
+	_container : null,
 
 	canvas : null,
 	
@@ -792,14 +792,14 @@ GeoBeans.Map = GeoBeans.Class({
 			args.level = map.level;
 			handler(args);
 		};
-		this.mapDiv[0].addEventListener(event,eventHandler);
+		this._container[0].addEventListener(event,eventHandler);
 
 		this.events.addEvent(event,handler,eventHandler);
 	},
 
 	removeEventListener : function(event,handler){
 		var eventHandler = this.events.getEventHandler(event,handler);
-		this.mapDiv[0].removeEventListener(event, eventHandler);
+		this._container[0].removeEventListener(event, eventHandler);
 		this.events.removeEventHandler(event,handler);
 	},
 
@@ -1521,9 +1521,9 @@ GeoBeans.Map = GeoBeans.Class({
 			.attr("data-content",content)
 			.attr("data-original-title",title)
 			.popover("show");
-		this.mapDiv.find(".popover-title")
+		this._container.find(".popover-title")
 			.append('<button type="button" class="close">&times;</button>');
-		this.mapDiv.find(".popover-title .close").click(function(){
+		this._container.find(".popover-title .close").click(function(){
 			$(this).parents(".popover").popover('hide');
 		});
 	},
@@ -1691,15 +1691,15 @@ GeoBeans.Map = GeoBeans.Class({
 	// 开始动画
 	beginAnimate : function(){
 		if(this.animateCanvas == null){
-			var canvas = this.mapDiv.find(".map5-animate-canvas");
+			var canvas = this._container.find(".map5-animate-canvas");
 			if(canvas.length == 0){
 				var canvasID = this.id + "_canvas";
 				var animateCanvasID = this.id + "_animatecanvas";
 				var mapCanvasHtml = "<canvas  id='" + animateCanvasID + "' class='map5-animate-canvas' height='" 
 								+ this.canvas.height + "' width='" 
 								+ this.canvas.width + "'></canvas>";
-				// map.mapDiv.find("canvas").after(mapCanvasHtml);
-				this.mapDiv.find("#" + canvasID).after(mapCanvasHtml);
+				// map._container.find("canvas").after(mapCanvasHtml);
+				this._container.find("#" + canvasID).after(mapCanvasHtml);
 				this.animateCanvas = document.getElementById(animateCanvasID);
 				var renderer = new GeoBeans.Renderer(this.animateCanvas);
 				this.animateRenderer = renderer;
@@ -1713,15 +1713,15 @@ GeoBeans.Map = GeoBeans.Class({
 	rippleLayerAnimate : function(time){
 
 		var map = this.map;
-		// var canvas = map.mapDiv.find(".map5-animate-canvas");
+		// var canvas = map._container.find(".map5-animate-canvas");
 		// if(canvas.length == 0){
 		// 	var canvasID = map.id + "_canvas";
 		// 	var animateCanvasID = map.id + "_animatecanvas";
 		// 	var mapCanvasHtml = "<canvas  id='" + animateCanvasID + "' class='map5-animate-canvas' height='" 
 		// 					+ map.canvas.height + "' width='" 
 		// 					+ map.canvas.width + "'></canvas>";
-		// 	// map.mapDiv.find("canvas").after(mapCanvasHtml);
-		// 	map.mapDiv.find("#" + canvasID).after(mapCanvasHtml);
+		// 	// map._container.find("canvas").after(mapCanvasHtml);
+		// 	map._container.find("#" + canvasID).after(mapCanvasHtml);
 		// 	map.animateCanvas = document.getElementById(animateCanvasID);
 		// }
 		// // var animateCanvas = document.getElementById("mapCanvas_animate");
@@ -1792,12 +1792,12 @@ GeoBeans.Map = GeoBeans.Class({
 		var spt = this.transformation.toScreenPoint(point.x,point.y);
 		var position = 'left:' + spt.x + "px;top:" + spt.y + "px";
 		
-		this.mapDiv.find(".map5-tooltip").html(content);
+		this._container.find(".map5-tooltip").html(content);
 		var left = spt.x;
 		var top = spt.y;
 
-		var itemHeight = this.mapDiv.find(".map5-tooltip").height();
-		var itemWidth = this.mapDiv.find(".map5-tooltip").width();
+		var itemHeight = this._container.find(".map5-tooltip").height();
+		var itemWidth = this._container.find(".map5-tooltip").width();
 		var x = itemWidth + spt.x;
 		var y = itemHeight + spt.y;
 
@@ -1887,7 +1887,7 @@ GeoBeans.Map = GeoBeans.Class({
 			}
 
 		};
-		this.mapDiv[0].addEventListener('mousemove', this.hitRippleEvent);		
+		this._container[0].addEventListener('mousemove', this.hitRippleEvent);		
 	},
 
 	// 注销某个波纹图层的hit事件
@@ -1910,7 +1910,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 	// 注销地图的波纹hit事件
 	unRegisterMapRippleHitEvent : function(){
-		this.mapDiv[0].removeEventListener('mousemove',this.hitRippleEvent);
+		this._container[0].removeEventListener('mousemove',this.hitRippleEvent);
 		this.hitRippleEvent = null;		
 	},
 
@@ -2228,7 +2228,7 @@ GeoBeans.Map.prototype.on = function(event, handler){
 	// 	args.level = map.level;
 	// 	handler(args);
 	// };
-	// this.mapDiv[0].addEventListener(event,eventHandler);
+	// this._container[0].addEventListener(event,eventHandler);
 
 	// this.events.push({
 	// 	event :event,
@@ -2246,7 +2246,7 @@ GeoBeans.Map.prototype.on = function(event, handler){
  */
 GeoBeans.Map.prototype.un = function(event){
 	// var eventHandler = this._getEventHandler(event,handler);
-	// this.mapDiv[0].removeEventListener(event, eventHandler);
+	// this._container[0].removeEventListener(event, eventHandler);
 	// this._removeEventHandler();
 }
 
