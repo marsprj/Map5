@@ -1,4 +1,4 @@
-GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
+GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 	
 	onmousewheel : null,
 	count : 0,

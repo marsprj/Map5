@@ -159,7 +159,7 @@ GeoBeans.Map = GeoBeans.Class({
 		dragControl.enable(true);
 		this.controls.add(dragControl);
 		// scroll map control
-		var scrollControl = new GeoBeans.Control.SrollMapControl(this);
+		var scrollControl = new GeoBeans.Control.ScrollMapControl(this);
 		scrollControl.enable(true);
 		this.controls.add(scrollControl);
 
@@ -2187,7 +2187,7 @@ GeoBeans.Map.prototype.initControls = function(){
 	dragControl.enable(true);
 	this.controls.add(dragControl);
 	// scroll map control
-	var scrollControl = new GeoBeans.Control.SrollMapControl(this);
+	var scrollControl = new GeoBeans.Control.ScrollMapControl(this);
 	scrollControl.enable(true);
 	this.controls.add(scrollControl);
 
