@@ -149,32 +149,10 @@ GeoBeans.Map = GeoBeans.Class({
 		/* Layers Begin
 		/**************************************************************************************/
 		this.initLayers();
-		// this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
-		// this.overlayLayer.setMap(this);
-
-		// this.panoramaLayer = new GeoBeans.Layer.PanoramaLayer("panorama");
-		// this.panoramaLayer.setMap(this);
-
-		// this.imageLayer = new GeoBeans.Layer.ImageLayer("imageLayer");
-		// this.imageLayer.setMap(this);
-
-		// this.queryLayer = new GeoBeans.Layer.FeatureLayer.QueryLayer("query");
-		// this.queryLayer.setMap(this);
-
-
-
-		// this.hitRippleLayers = [];
 		/**************************************************************************************/
 		/* Layers End
 		/**************************************************************************************/
 	
-		// 设置范围
-		// if(this.viewer != null){
-		// 	// this.setViewer(this.viewer);
-		// }
-		/**************************************************************************************/
-		/* Layers End
-		/**************************************************************************************/
 		this.maplex = new GeoBeans.Maplex(this);
 
 		/**************************************************************************************/
