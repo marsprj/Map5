@@ -144,9 +144,10 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymin);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
+		console.log(llpt);
 		var img_size = this.IMG_WIDTH * (this.imageScale);
 		if(this != this.map.baseLayer){
-			var resolution = this.map.resolution;
+			var resolution = this.map.getMapViewer().getResolution();
 			var re = this.getResolutionByLevel(this.map.level);
 			if(resolution != re){
 				img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
@@ -227,40 +228,40 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		
 	},
 	
-	drawCache : function(){
-		var tbound = this.computeTileBound();
+	// drawCache : function(){
+	// 	var tbound = this.computeTileBound();
 		
-		var row_min = tbound.rmin;
-		var row_max = tbound.rmax;
-		//var row_max = tbound.rmax;
-		var col_min = tbound.cmin;
-		var col_max = tbound.cmax;
+	// 	var row_min = tbound.rmin;
+	// 	var row_max = tbound.rmax;
+	// 	//var row_max = tbound.rmax;
+	// 	var col_min = tbound.cmin;
+	// 	var col_max = tbound.cmax;
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymin);
-		llpt.x = Math.floor(llpt.x+0.5);
-		llpt.y = Math.floor(llpt.y+0.5);
-		var img_size = this.IMG_WIDTH * this.scale;
-		var x, y;
+	// 	var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymin);
+	// 	llpt.x = Math.floor(llpt.x+0.5);
+	// 	llpt.y = Math.floor(llpt.y+0.5);
+	// 	var img_size = this.IMG_WIDTH * this.scale;
+	// 	var x, y;
 		
-		var row, col, tile;
-		var level = this.map.level;
-		y = llpt.y - (row_min+1) * img_size;
-		//y = llpt.y - img_size;
-		for(row=row_min; row<row_max; row++){
-			x = llpt.x + col_min * img_size;
-			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row, col, level);
-				turl = this.url + "&" + tid;
+	// 	var row, col, tile;
+	// 	var level = this.map.level;
+	// 	y = llpt.y - (row_min+1) * img_size;
+	// 	//y = llpt.y - img_size;
+	// 	for(row=row_min; row<row_max; row++){
+	// 		x = llpt.x + col_min * img_size;
+	// 		for(col=col_min; col<col_max; col++){
+	// 			tid = this.getTileID(row, col, level);
+	// 			turl = this.url + "&" + tid;
 				
-				tile = this.cache.getTile(turl);
-				if(tile!=null){
-					tile.draw(x, y, img_size, img_size);
-				}
-				x += img_size;
-			}
-			y -= img_size;
-		}
-	},
+	// 			tile = this.cache.getTile(turl);
+	// 			if(tile!=null){
+	// 				tile.draw(x, y, img_size, img_size);
+	// 			}
+	// 			x += img_size;
+	// 		}
+	// 		y -= img_size;
+	// 	}
+	// },
 	
 	getRows : function(){
 		
@@ -311,12 +312,20 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	},
 
 
+	// toScreenPoint : function(mx,my){
+	// 	var transformation = this.map.transformation;
+	// 	var screenX = transformation.scale * (mx - transformation.view_c.x) + transformation.win_cx;
+	// 	var screenY = transformation.win_cy - transformation.scale * (my - transformation.view_c.y);
+		
+	// 	return new GeoBeans.Geometry.Point(screenX, screenY);
+	// },
+
+
 	toScreenPoint : function(mx,my){
-		var transformation = this.map.transformation;
+		var transformation = this.map.mapViewer.transformation;
 		var screenX = transformation.scale * (mx - transformation.view_c.x) + transformation.win_cx;
 		var screenY = transformation.win_cy - transformation.scale * (my - transformation.view_c.y);
 		
 		return new GeoBeans.Geometry.Point(screenX, screenY);
 	},
-
 });

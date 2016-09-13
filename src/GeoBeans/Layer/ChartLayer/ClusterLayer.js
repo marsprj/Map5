@@ -27,7 +27,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			return;
 		}
 
-		var mapViewer = this.map.viewer;
+		var mapViewer = this.map.getViewer();
 		if(mapViewer != null && this.viewer != null &&
 			this.flag == GeoBeans.Layer.Flag.LOADED && mapViewer.equal(this.viewer)){
 			return;
@@ -93,8 +93,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	// 是否可以聚类进去
 	shouldCluster : function(cluster,geometry){
 		var cg = cluster.geometry;
-		var cg_s = this.map.transformation.toScreenPoint(cg.x,cg.y);
-		var geometry_s = this.map.transformation.toScreenPoint(geometry.x,geometry.y);
+		var cg_s = this.map.getMapViewer().toScreenPoint(cg.x,cg.y);
+		var geometry_s = this.map.getMapViewer().toScreenPoint(geometry.x,geometry.y);
 		var distance = Math.sqrt(Math.pow((cg_s.x - geometry_s.x),2) + Math.pow((cg_s.y - geometry_s.y),2));
 		return(distance < this.distance);
 	},
@@ -205,7 +205,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		for(var i = 0; i < clustersArray.length;++i){
 			var clustersItem = clustersArray[i];
 			this.renderer.setSymbolizer(this.symbolizers[i]);
-			this.renderer.drawIcons(clustersItem,this.symbolizers[i],this.map.transformation);
+			this.renderer.drawIcons(clustersItem,this.symbolizers[i],this.map.getMapViewer());
 		}
 
 		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
@@ -219,7 +219,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			if(text == 1){
 				continue;
 			}
-			var point_s = this.map.transformation.toScreenPoint(this.clusters[i].geometry.x,this.clusters[i].geometry.y);
+			var point_s = this.map.getMapViewer().toScreenPoint(this.clusters[i].geometry.x,this.clusters[i].geometry.y);
 			var textWidth = this.renderer.context.measureText(text).width;
 			this.renderer.context.fillText(text, point_s.x-textWidth/2, point_s.y+6);
 			
@@ -397,7 +397,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		for(var i = 0; i < this.clusters.length;++i){
 			cluster = this.clusters[i];
 			geometry = cluster.geometry;
-			pt = this.map.transformation.toScreenPoint(geometry.x,geometry.y);
+			pt = this.map.getMapViewer().toScreenPoint(geometry.x,geometry.y);
 			radius = cluster.radius;
 			distance = GeoBeans.Utility.getDistance(pt.x,pt.y,x,y);
 			if(distance < radius){
@@ -416,7 +416,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var extent = this.getClusterExtent(cluster);
 		extent.scale(1.2);
 		if(this.map.baseLayer != null){
-			var level = this.map.getLevel(extent);
+			var level = this.map.getMapViewer().getLevel(extent);
 			var center = extent.getCenter();
 			this.map.setCenter(center);
 			// this.map.saveSnap();

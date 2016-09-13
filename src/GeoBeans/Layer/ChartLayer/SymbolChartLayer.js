@@ -150,13 +150,13 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				continue;
 			}
 			radius = this.getRadiusByLevelMap(parseFloat(value),levelMap);
-			var center_s = this.map.transformation.toScreenPoint(center.x,center.y);
+			var center_s = this.map.getMapViewer().toScreenPoint(center.x,center.y);
 			var center_r_s = new GeoBeans.Geometry.Point(center_s.x+radius,center_s.y);
-			var center_r = this.map.transformation.toMapPoint(center_r_s.x,center_r_s.y);
+			var center_r = this.map.getMapViewer().toMapPoint(center_r_s.x,center_r_s.y);
 			radius_m = center_r.x - center.x;	
 			circle = new GeoBeans.Geometry.Circle(center,radius_m);
 			chartFeature.circle = circle;	
-			this.renderer.drawGeometry(circle,symbolizer,this.map.transformation);
+			this.renderer.drawGeometry(circle,symbolizer,this.map.getMapViewer);
 		}			
 
 	},	
@@ -203,13 +203,13 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 
 			radius = parseFloat(value)/max * this.option.maxsize;
-			var center_s = this.map.transformation.toScreenPoint(center.x,center.y);
+			var center_s = this.map.getMapViewer().toScreenPoint(center.x,center.y);
 			var center_r_s = new GeoBeans.Geometry.Point(center_s.x+radius,center_s.y);
-			var center_r = this.map.transformation.toMapPoint(center_r_s.x,center_r_s.y);
+			var center_r = this.map.getMapViewer().toMapPoint(center_r_s.x,center_r_s.y);
 			radius_m = center_r.x - center.x;	
 			circle = new GeoBeans.Geometry.Circle(center,radius_m);
 			chartFeature.circle = circle;	
-			this.renderer.drawGeometry(circle,symbolizer,this.map.transformation);
+			this.renderer.drawGeometry(circle,symbolizer,this.map.getMapViewer());
 		}			
 	},
 
@@ -498,7 +498,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 			layer.clickRenderer.clearRect();
 			layer.map.drawLayersAll();
-			var mp = map.transformation.toMapPoint(evt.layerX, evt.layerY);
+			var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);
 			
 		};
@@ -597,7 +597,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
 			if((symbolizer!=null) && (symbolizer!='undefined')){
-				this.clickRenderer.drawGeometry(feature.circle, symbolizer, this.map.transformation);
+				this.clickRenderer.drawGeometry(feature.circle, symbolizer, this.map.getMapViewer());
 			}
 		}
 		this.clickRenderer.restore();

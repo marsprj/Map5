@@ -32,12 +32,14 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					// var time = new Date();
 					if(map.baseLayer.imageScale != 1.0){
 						var zoom = 1/(1 + count *0.2);
-						map.viewer.scale(zoom);
-						level = map.getLevel(map.viewer);
+						map.getViewer().scale(zoom);
+						// level = map.getLevel(map.viewer);
+						level = map.getMapViewer().getLevel(map.getViewer());
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
-						map._setLevel(level);
+						// map._setLevel(level);
+						map.getMapViewer()._setLevel(level);
 						// map.level = level;
 						map.draw();
 					}else{
@@ -55,12 +57,13 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 				}else{
 					if(map.baseLayer.imageScale != 1.0){
 						var zoom = 1 + 0.2*count;
-						map.viewer.scale(zoom);
-						level = map.getLevel(map.viewer);
+						map.getViewer().scale(zoom);
+						level = map.getMapViewer().getLevel(map.getViewer());
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
-						map._setLevel(level);
+						// map._setLevel(level);
+						map.getMapViewer()._setLevel(level);
 						// map.level = level;
 						map.draw();
 					}else{
@@ -82,8 +85,10 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.saveSnap();
 					map.drawBackground();
 					map.drawLayersSnap(zoom);
-					map.viewer.scale(zoom);
-					map.transformation.update();
+					map.getViewer().scale(zoom);
+					map.getMapViewer().transformation().update();
+					// map.viewer.scale(zoom);
+					// map.transformation.update();
 					map.draw();
 				}
 				else{
@@ -91,8 +96,10 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.saveSnap();
 					map.drawBackground();
 					map.drawLayersSnap(zoom);
-					map.viewer.scale(zoom);
-					map.transformation.update();
+					// map.viewer.scale(zoom);
+					// map.transformation.update();
+					map.getViewer().scale(zoom);
+					map.getMapViewer().transformation().update();
 
 					map.draw();
 				}

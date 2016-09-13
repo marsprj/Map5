@@ -15,7 +15,7 @@ GeoBeans.Control.TrackControl.TrackTransactionControl =
 			that.map.enableDrag(true);
 			
 			if( (callback!=null) && (callback!=undefined)){
-				var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+				var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 				callback(pt,userCallback,layer);
 			}
 			that.map.canvas.removeEventListener("mousemove", that.onMouseMove);

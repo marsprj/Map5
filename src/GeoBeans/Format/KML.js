@@ -64,7 +64,6 @@ GeoBeans.KMLReader = GeoBeans.Class({
 
 		this.parseDocumentXML(documentXML);
 
-		console.log(this.styles);
 	},
 
 	parseDocumentXML : function(xml){
@@ -76,9 +75,9 @@ GeoBeans.KMLReader = GeoBeans.Class({
 			var tagName = this.tagName;
 			if(tagName == "name"){
 				var text = $(this).text();
-				if(text == "Roads"){
-					console.log(this);
-				}
+				// if(text == "Roads"){
+				// 	console.log(this);
+				// }
 			}
 			switch(tagName){
 				case "Folder":{
@@ -689,7 +688,7 @@ GeoBeans.KMLReader = GeoBeans.Class({
 				continue;
 			}
 			if(style.type == "StyleMap"){
-				console.log(style);
+				// console.log(style);
 				var name = style.normal;
 				return this.getRuleByStyle(name,geomType);
 			}

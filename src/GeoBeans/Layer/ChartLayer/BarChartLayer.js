@@ -251,7 +251,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 			var x = center.x;
 			var y = center.y;
-			var sp = this.map.transformation.toScreenPoint(x,y);
+			var sp = this.map.getMapViewer().toScreenPoint(x,y);
 			var spx = sp.x - width/2 + this.option.offsetX;
 			var spy = sp.y - h + padding.bottom - this.option.offsetY;
 

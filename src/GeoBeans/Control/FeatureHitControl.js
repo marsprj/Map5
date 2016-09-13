@@ -51,7 +51,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 						console.log(dis);
 						x_o = e.layerX;
 						y_o = e.layerY;					
-						var mp = that.map.transformation.toMapPoint(e.layerX, e.layerY);
+						var mp = that.map.getMapViewer().toMapPoint(e.layerX, e.layerY);
 						that.hit(mp.x, mp.y, that.callback);
 					}
 				}
@@ -75,7 +75,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 		}
 
 		var render = this.map.renderer;
-		var transformation = this.map.transformation;
+		
 		
 		this.selection = [];
 		console.log(x + "," + y);
@@ -109,17 +109,17 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 				case GeoBeans.Geometry.Type.POINT:
 				case GeoBeans.Geometry.Type.MULTIPOINT:
 					renderer.setSymbolizer(this.ptsymbol);
-					renderer.drawGeometry(g,this.ptsymbol,this.map.transformation);
+					renderer.drawGeometry(g,this.ptsymbol,this.map.getMapViewer());
 					break;
 				case GeoBeans.Geometry.Type.LINESTRING:
 				case GeoBeans.Geometry.Type.MULTILINESTRING:
 					renderer.setSymbolizer(this.lnsymbol);
-					renderer.drawGeometry(g,this.lnsymbol,this.map.transformation);
+					renderer.drawGeometry(g,this.lnsymbol,this.map.getMapViewer());
 					break;
 				case GeoBeans.Geometry.Type.POLYGON:
 				case GeoBeans.Geometry.Type.MULTIPOLYGON:
 					renderer.setSymbolizer(this.rnsymbol);
-					renderer.drawGeometry(g,this.rnsymbol,this.map.transformation);
+					renderer.drawGeometry(g,this.rnsymbol,this.map.getMapViewer());
 					break;
 			}
 		}

@@ -180,7 +180,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 			var x = center.x;
 			var y = center.y;
-			var sp = this.map.transformation.toScreenPoint(x,y);
+			var sp = this.map.getMapViewer().toScreenPoint(x,y);
 			var spx = sp.x - w/2 + offsetX;
 			var spy = sp.y - h/2 - offsetY;
 

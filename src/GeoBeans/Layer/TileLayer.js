@@ -52,7 +52,7 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 	 **/
 	getValidView : function(){
 		
-		var viewer = this.map.viewer;
+		var viewer = this.map.getViewer();
 		var xmin = Math.max(viewer.xmin, this.FULL_EXTENT.xmin);
 		var ymin = Math.max(viewer.ymin, this.FULL_EXTENT.ymin);
 		var xmax = Math.min(viewer.xmax, this.FULL_EXTENT.xmax);

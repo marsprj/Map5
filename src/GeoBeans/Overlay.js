@@ -41,9 +41,8 @@ GeoBeans.Overlay = GeoBeans.Class({
 	draw : function(){
 		if(this.visible){
 			this.loadFlag = GeoBeans.Overlay.Flag.LOADED;
-			var transformation = this.layer.map.transformation;
 			this.layer.renderer.setSymbolizer(this.symbolizer);
-			this.layer.renderer.drawOverlay(this, this.symbolizer,transformation);			
+			this.layer.renderer.drawOverlay(this, this.symbolizer,this.layer.map.getMapViewer());			
 		}
 	},
 

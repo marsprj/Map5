@@ -121,8 +121,8 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	buildRect : function(point_b,point_e){
-		point_b = this.map.transformation.toMapPoint(point_b.x,point_b.y);
-		point_e = this.map.transformation.toMapPoint(point_e.x,point_e.y);
+		point_b = this.map.mapViewer.toMapPoint(point_b.x,point_b.y);
+		point_e = this.map.mapViewer.toMapPoint(point_e.x,point_e.y);
 		var xmin = (point_b.x > point_e.x) ? point_e.x : point_b.x;
 		var xmax = (point_b.x > point_e.x) ? point_b.x : point_e.x;
 		var ymin = (point_b.y > point_e.y) ? point_e.y : point_b.y;
@@ -183,17 +183,17 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	zoomOutMap : function(rect){
-		var viewer = this.map.viewer;
+		var viewer = this.map.getViewer();
 		var scale_x = viewer.getWidth() / rect.getWidth();
 		var scale_y = viewer.getHeight() / rect.getHeight();
 		// 选比例大的
 		var s = scale_x > scale_y ? scale_x : scale_y;
 		viewer.scale(s); 
 		if(this.map.baseLayer != null){
-			var level = this.map.getLevel(viewer);
+			var level = this.map.mapViewer.getLevel(viewer);
 			this.map.drawBackground();
 			this.map.drawBaseLayerSnap(level);
-			this.map._setLevel(level);
+			this.map.mapViewer._setLevel(level);
 			console.log(level);
 		}else{
 			this.map.drawBackground();

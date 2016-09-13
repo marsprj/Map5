@@ -52,8 +52,8 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 				that.map.enableDrag(true);
 
 
-				var point_map_r = that.map.transformation.toMapPoint(point_r.x,point_r.y);
-				var point_map_e = that.map.transformation.toMapPoint(point_e.x,point_e.y);
+				var point_map_r = that.map.getMapViewer().toMapPoint(point_r.x,point_r.y);
+				var point_map_e = that.map.getMapViewer().toMapPoint(point_e.x,point_e.y);
 				var radius_map = Math.sqrt((point_map_e.x - point_map_r.x)*(point_map_e.x - point_map_r.x)
 							+ (point_map_e.y - point_map_r.y)*(point_map_e.y - point_map_r.y));
 				if( (callback!=null) && (callback!='undefined')){
@@ -93,7 +93,7 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 
 			}
 			if(db_flag == false){
-				var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+				var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 				points.push({x:evt.layerX,y:evt.layerY,mapX:pt.x,mapY:pt.y});
 				// points.push({x:evt.layerX,y:evt.layerY});
 			}	
@@ -103,13 +103,13 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 				that.map.restoreSnap();
 				// that.drawLine(points, evt.layerX,evt.layerY);
 				// that.drawPoints(points, evt.layerX,evt.layerY);
-				var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+				var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 				that.drawLine(points, pt.x,pt.y);
 				that.drawPoints(points, pt.x,pt.y);				
 				// that.drawLine(points, evt.layerX,evt.layerY);
 				// that.drawPoints(points, evt.layerX,evt.layerY);
 				that.drawingEvent = function(){
-					var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+					var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 					that.drawLine(points, pt.x,pt.y);
 					that.drawPoints(points, pt.x,pt.y);			
 				}
@@ -175,14 +175,14 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 
 			}
 			if(db_flag == false){
-				var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+				var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 				points.push({x:evt.layerX,y:evt.layerY,mapX:pt.x,mapY:pt.y});
 			}
 
 			that.drawing = true;
 			var onmousemove = function(evt){
 				that.map.restoreSnap();
-				var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+				var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 				if(points.length>1){
 					that.drawPolygon(points, pt.x,pt.y);
 					that.drawPoints(points, pt.x,pt.y);
@@ -193,7 +193,7 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 					that.drawPoints(points,pt.x,pt.y);
 				}
 				that.drawingEvent = function(){
-					var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+					var pt = that.map.getMapViewer().toMapPoint(evt.layerX,evt.layerY);
 					if(points.length>1){
 						that.drawPolygon(points, pt.x,pt.y);
 						that.drawPoints(points, pt.x,pt.y);
@@ -270,7 +270,7 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 		context.lineWidth = 0.5;
 		
 		context.beginPath();
-		var spt = this.map.transformation.toScreenPoint(x,y);
+		var spt = this.map.getMapViewer().toScreenPoint(x,y);
 		context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);  
 		context.closePath();				
 		context.fill();
@@ -279,7 +279,7 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 		var len = points.length;
 		for(var i=0;i<len;i++){
 			context.beginPath();
-			var spt = this.map.transformation.toScreenPoint(points[i].mapX,points[i].mapY);
+			var spt = this.map.getMapViewer().toScreenPoint(points[i].mapX,points[i].mapY);
 			context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);  
 			context.closePath();				
 			context.fill();
@@ -297,11 +297,11 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 		context.lineWidth = 3.0;
 		
 		context.beginPath();
-		var spt = this.map.transformation.toScreenPoint(x,y);
+		var spt = this.map.getMapViewer().toScreenPoint(x,y);
 		context.moveTo(spt.x, spt.y);
 		var len = points.length;
 		for(var i=len-1; i>=0; i--){
-			var spt = this.map.transformation.toScreenPoint(points[i].mapX,points[i].mapY);
+			var spt = this.map.getMapViewer().toScreenPoint(points[i].mapX,points[i].mapY);
 			context.lineTo(spt.x, spt.y);
 		}
 		context.stroke();
@@ -330,10 +330,10 @@ GeoBeans.Control.TrackBufferControl = GeoBeans.Class(GeoBeans.Control.TrackContr
 		
 		var len = points.length;
 		context.beginPath();
-		var spt = this.map.transformation.toScreenPoint(x,y);
+		var spt = this.map.getMapViewer().toScreenPoint(x,y);
 		context.moveTo(spt.x, spt.y);
 		for(i=0; i<len; i++){
-			var spt = this.map.transformation.toScreenPoint(points[i].mapX,points[i].mapY);
+			var spt = this.map.getMapViewer().toScreenPoint(points[i].mapX,points[i].mapY);
 			context.lineTo(spt.x, spt.y);
 		}
 		context.closePath();

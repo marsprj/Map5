@@ -23,7 +23,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 			that.drawPoint(evt.layerX,evt.layerY);
 			
 			if( (callback!=null) && (callback!=undefined)){
-				var pt = that.map.transformation.toMapPoint(evt.layerX,evt.layerY);
+				var pt = that.map.mapViewer.toMapPoint(evt.layerX,evt.layerY);
 				callback(pt,userCallback,layer);
 			}
 		};
@@ -205,8 +205,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				that.map.enableDrag(true);
 
 
-				var point_map_r = that.map.transformation.toMapPoint(point_r.x,point_r.y);
-				var point_map_e = that.map.transformation.toMapPoint(point_e.x,point_e.y);
+				var point_map_r = that.map.mapViewer.toMapPoint(point_r.x,point_r.y);
+				var point_map_e = that.map.mapViewer.toMapPoint(point_e.x,point_e.y);
 				var radius_map = Math.sqrt((point_map_e.x - point_map_r.x)*(point_map_e.x - point_map_r.x)
 							+ (point_map_e.y - point_map_r.y)*(point_map_e.y - point_map_r.y));
 				if( (callback!=null) && (callback!='undefined')){
@@ -473,7 +473,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		var points = [];
 		var num = dots.length;
 		for(var i=0; i<num; i++){
-			pt = this.map.transformation.toMapPoint(dots[i].x, dots[i].y);
+			pt = this.map.mapViewer.toMapPoint(dots[i].x, dots[i].y);
 			points.push(pt);
 		}
 		return (new GeoBeans.Geometry.LineString(points));
@@ -488,7 +488,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		var points = [];
 		var num = dots.length;
 		for(var i=0; i<num; i++){
-			pt = this.map.transformation.toMapPoint(dots[i].x, dots[i].y);
+			pt = this.map.mapViewer.toMapPoint(dots[i].x, dots[i].y);
 			points.push(pt);
 		}
 		points.push(points[0]);
@@ -497,8 +497,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	buildRect : function(point_b,point_e){
-		point_b = this.map.transformation.toMapPoint(point_b.x,point_b.y);
-		point_e = this.map.transformation.toMapPoint(point_e.x,point_e.y);
+		point_b = this.map.mapViewer.toMapPoint(point_b.x,point_b.y);
+		point_e = this.map.mapViewer.toMapPoint(point_e.x,point_e.y);
 		var xmin = (point_b.x > point_e.x) ? point_e.x : point_b.x;
 		var xmax = (point_b.x > point_e.x) ? point_b.x : point_e.x;
 		var ymin = (point_b.y > point_e.y) ? point_e.y : point_b.y;

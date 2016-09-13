@@ -55,7 +55,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		var that = this;
 		this.map.mapDiv.find(".map-nav-pan-N").click(function(){
 			var center = that.map.center;
-			var t_p = that.map.transformation.toMapPoint(that.map.width/2,0);
+			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
 			that.map.saveSnap();
 			that.map.putSnap(0,-that.map.height/2);
 			that.map.offset(0,center.y - t_p.y);
@@ -64,7 +64,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		this.map.mapDiv.find(".map-nav-pan-S").click(function(){
 			// that.map.drawBackground();
 			var center = that.map.center;
-			var t_p = that.map.transformation.toMapPoint(that.map.width/2,0);
+			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
 			that.map.saveSnap();
 			that.map.drawBackground();
 			that.map.putSnap(0,that.map.height/2);
@@ -73,7 +73,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		});
 		this.map.mapDiv.find(".map-nav-pan-W").click(function(){
 			var center = that.map.center;
-			var r_p = that.map.transformation.toMapPoint(that.map.width, that.map.height/2);
+			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
 			that.map.saveSnap();
 			that.map.drawBackground();
 			that.map.putSnap(-that.map.width/2, 0);
@@ -84,7 +84,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		this.map.mapDiv.find(".map-nav-pan-E").click(function(){
 			// that.map.drawBackground();
 			var center = that.map.center;
-			var r_p = that.map.transformation.toMapPoint(that.map.width, that.map.height/2);
+			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
 			that.map.saveSnap();
 			that.map.drawBackground();
 			that.map.putSnap(that.map.width/2,0);

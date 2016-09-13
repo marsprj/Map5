@@ -160,7 +160,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	/******************************************************************/
 
 	load : function(){
-		var mapViewer = this.map.viewer;
+		var mapViewer = this.map.getViewer();
 		if(mapViewer != null && this.viewer != null && mapViewer.equal(this.viewer)
 			&& this.flag == GeoBeans.Layer.Flag.LOADED){
 			this.flag = GeoBeans.Layer.Flag.LOADED;
@@ -203,7 +203,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			var selection = this.selectFeaturesByFilter(rule.filter,features);
 			if(rule.symbolizer != null){
 				if(rule.symbolizer.symbol != null){
-					this.renderer.drawIcons(selection, rule.symbolizer, this.map.transformation);
+					this.renderer.drawIcons(selection, rule.symbolizer, this.map.getMapViewer());
 				}else{
 					this.drawFeatures(selection, rule.symbolizer);
 				}	
@@ -234,7 +234,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			var features = this.selectFeaturesByFilter(rule.filter,this.features);
 			if(rule.symbolizer != null){
 				if(rule.symbolizer.symbol != null){
-					this.renderer.drawIcons(features, rule.symbolizer, this.map.transformation);
+					this.renderer.drawIcons(features, rule.symbolizer, this.map.getMapViewer());
 				}else{
 					this.drawFeatures(features, rule.symbolizer);
 				}	
@@ -322,59 +322,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
 			if((symbolizer!=null) && (symbolizer!='undefined')){
-				this.renderer.draw(feature, symbolizer, this.map.transformation);
+				this.renderer.draw(feature, symbolizer, this.map.getMapViewer());
 			}
 		}
 		this.renderer.restore();
 	},
-	
-	// labelFeatures : function(features, symbolizer){
-	// 	var len = features.length;
-	// 	if(len == 0){
-	// 		return;
-	// 	}
-		
-	// 	this.renderer.save();
-	// 	this.renderer.setSymbolizer(symbolizer);
-		
-	// 	var feature = features[0];
-	// 	var text = null;
-	// 	var labelText = symbolizer.labelText;
-	// 	if(labelText == null || labelText.length == 0){
-	// 		var labelProp = symbolizer.labelProp;
-	// 		if(labelProp != null){
-	// 			var findex = feature.featureType
-	// 				.getFieldIndex(labelProp);
-	// 		}
-	// 	}else{
-	// 		text = labelText;
-	// 	}
-		
-	// 	var value = null;
-	// 	var geometry = null;
-	// 	var label = null;
-	// 	for(var i=0,len=features.length; i<len; i++){
-	// 		feature = features[i];
-	// 		geometry = feature.geometry;
-	// 		if(geometry == null){
-	// 			continue;
-	// 		}
-	// 		label = new GeoBeans.PointLabel();
-	// 		label.geometry = geometry;
-	// 		label.textSymbolizer = symbolizer;
-	// 		if(text == null){
-	// 			value = feature.values[findex];
-	// 		}else{
-	// 			value = text;
-	// 		}
-	// 		label.text = value;
-	// 		label.computePosition(this.renderer,this.map.transformation);
-	// 		// label.adjustPosition(mapObj.width,mapObj.height);
-	// 		// this.renderer.label(label.geometry, value, symbolizer, this.map.transformation);
-	// 		this.renderer.drawLabel(label);
-	// 	}
-	// 	this.renderer.restore();
-	// },
 
 	// 单独绘制文本
 	drawLabelFeatures : function(features){
@@ -439,7 +391,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				value = text;
 			}
 			label.text = value;
-			label.computePosition(this.renderer,this.map.transformation);
+			label.computePosition(this.renderer,this.map.getMapViewer());
 			label.adjustPosition(this.canvas.width,this.canvas.height);
 			if(!this.map.maplex.isCollision(label)){
 				this.map.maplex.addLabel(this.name,label);
@@ -1176,7 +1128,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 		
 		var render = this.map.renderer;
-		var transformation = this.map.transformation;
 		
 		// this.unselection = this.selection;
 		this.selection = [];
@@ -1228,7 +1179,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					x_o = evt.layerX;
 					y_o = evt.layerY;
 				
-					var mp = map.transformation.toMapPoint(evt.layerX, evt.layerY);
+					var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
 					
 					layer.hit(mp.x, mp.y, callback);
 				}
@@ -1260,10 +1211,10 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			this.hitRenderer.setSymbolizer(symbolizer);
 			if(symbolizer instanceof GeoBeans.Symbolizer.TextSymbolizer){
 				var findex = feature.featureType.getFieldIndex(symbolizer.field);
-				this.hitRenderer.label(feature.geometry, feature.values[findex], symbolizer, this.map.transformation);
+				this.hitRenderer.label(feature.geometry, feature.values[findex], symbolizer, this.map.getMapViewer());
 			}
 			else{
-				this.hitRenderer.draw(feature, symbolizer, this.map.transformation);
+				this.hitRenderer.draw(feature, symbolizer, this.map.getMapViewer());
 			}
 			this.hitRenderer.restore();
 		}
@@ -1316,13 +1267,12 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			return;
 		}
 		var map = this.map;
-		var mp = map.transformation.toMapPoint(x, y);
+		var mp = map.getMapViewer().toMapPoint(x, y);
 
 		var layerX = mp.x;
 		var layerY = mp.y;
 
 		var render = this.map.renderer;
-		var transformation = this.map.transformation;
 
 		var i=0, j=0;
 		var f=null, g=null;
@@ -1461,7 +1411,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			layer.clickRenderer.clearRect();
 			layer.map.drawLayersAll();
 
-			var mp = map.transformation.toMapPoint(evt.layerX, evt.layerY);
+			var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);
 			
 		};
@@ -1583,7 +1533,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			if(rule.symbolizer != null){
 				// if(rule.symbolizer.icon_url!=null){
 				if(rule.symbolizer.symbol != null){
-					this.clickRenderer.drawIcons(features, rule.symbolizer, this.map.transformation);
+					this.clickRenderer.drawIcons(features, rule.symbolizer, this.map.getMapViewer());
 				}else{
 					this.drawClickFeatures(features, rule.symbolizer);
 				}	
@@ -1605,7 +1555,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
 			if((symbolizer!=null) && (symbolizer!='undefined')){
-				this.clickRenderer.draw(feature, symbolizer, this.map.transformation);
+				this.clickRenderer.draw(feature, symbolizer, this.map.getMapViewer());
 			}
 		}
 		this.clickRenderer.restore();
@@ -1651,7 +1601,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				value = text;
 			}
 			label.text = value;
-			label.computePosition(this.clickRenderer,this.map.transformation);
+			label.computePosition(this.clickRenderer,this.map.getMapViewer());
 			this.clickRenderer.drawLabel(label);
 		}
 		this.clickRenderer.restore();

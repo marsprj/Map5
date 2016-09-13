@@ -31,7 +31,7 @@ GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	},
 
 	load : function(){
-		var mapViewer = this.map.viewer;
+		var mapViewer = this.map.getViewer();
 		this.viewer = new GeoBeans.Envelope(mapViewer.xmin,mapViewer.ymin,
 			mapViewer.xmax,mapViewer.ymax);
 
@@ -92,7 +92,7 @@ GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				}
 				
 			}
-			point_s = this.map.transformation.toScreenPoint(geometry.x,geometry.y);
+			point_s = this.map.getMapViewer().toScreenPoint(geometry.x,geometry.y);
 
 			point = {
 				x : point_s.x,

@@ -102,11 +102,11 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 		}
 
 		this.renderer.setSymbolizer(pointSymbolizer);
-		this.renderer.drawGeometry(point,pointSymbolizer,this.map.transformation);
+		this.renderer.drawGeometry(point,pointSymbolizer,this.map.getMapViewer());
 
 		if(movePoint.option.showLine){
 			this.renderer.setSymbolizer(lineSymbolizer);
-			this.renderer.drawGeometry(line,lineSymbolizer,this.map.transformation);
+			this.renderer.drawGeometry(line,lineSymbolizer,this.map.getMapViewer());
 		}
 	},
 
@@ -211,7 +211,7 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 		// 	this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.transformation);	
 		// }
 		
-		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.transformation);	
+		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.getMapViewer());	
 
 	},
 
@@ -243,7 +243,7 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 
 		var pointSymbolizer = movePoint.option.pointSymbolizer;
 		this.renderer.setSymbolizer(pointSymbolizer);
-		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.transformation);
+		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.getMapViewer());
 
 		// if(pointSymbolizer.symbol != null){
 		// 	if(pointSymbolizer.icon==null){
@@ -272,7 +272,7 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 			}
 
 			this.renderer.setSymbolizer(lineSymbolizer);
-			this.renderer.drawGeometry(line,lineSymbolizer,this.map.transformation);
+			this.renderer.drawGeometry(line,lineSymbolizer,this.map.getMapViewer());
 		}
 	},
 

@@ -57,7 +57,7 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var w = this.map.canvas.width;
 		var h = this.map.canvas.height;
 		
-		var extent = this.map.viewer;
+		var extent = this.map.getViewer();
 		
 		var bbox = extent.xmin + "," + extent.ymin + "," + extent.xmax + "," + extent.ymax;
 		
@@ -145,40 +145,40 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	},
 	
-	draw : function(){
-		var w = this.map.canvas.width;
-		var h = this.map.canvas.height;
-		var extent = this.map.viewer;
+	// draw : function(){
+	// 	var w = this.map.canvas.width;
+	// 	var h = this.map.canvas.height;
+	// 	var extent = this.map.viewer;
 		
-		var bbox = extent.xmin + "," + extent.ymin + "," + extent.xmax + "," + extent.ymax;
+	// 	var bbox = extent.xmin + "," + extent.ymin + "," + extent.xmax + "," + extent.ymax;
 		
-		var url;
-		url = this.server +
-		 	  "&service=WMS" +
-			  "&version=" + this.version +
-			  "&request=GetMap" +
-			  "&layers=" + this.layers +
-			  "&styles=" + this.styles +
-			  "&bbox=" + bbox + 
-			  "&width=" + w + 
-			  "&height=" + h + 
-			  "&srs=" + this.srs + 
-			  "&format=" + this.format +
-			  "&transparent=" + this.transparent;
+	// 	var url;
+	// 	url = this.server +
+	// 	 	  "&service=WMS" +
+	// 		  "&version=" + this.version +
+	// 		  "&request=GetMap" +
+	// 		  "&layers=" + this.layers +
+	// 		  "&styles=" + this.styles +
+	// 		  "&bbox=" + bbox + 
+	// 		  "&width=" + w + 
+	// 		  "&height=" + h + 
+	// 		  "&srs=" + this.srs + 
+	// 		  "&format=" + this.format +
+	// 		  "&transparent=" + this.transparent;
 		
-		this.image.src = url;
+	// 	this.image.src = url;
 		
-		var renderer = this.map.renderer;
-		if(this.image.complete){
-			renderer.drawImage(this.image, 0, 0, w, h);	
-		}
-		else{
-			var tile = this;
-			this.image.onload = function(){
-				renderer.drawImage(tile.image, 0, 0, w, h);
-			};
-		}
-	},
+	// 	var renderer = this.map.renderer;
+	// 	if(this.image.complete){
+	// 		renderer.drawImage(this.image, 0, 0, w, h);	
+	// 	}
+	// 	else{
+	// 		var tile = this;
+	// 		this.image.onload = function(){
+	// 			renderer.drawImage(tile.image, 0, 0, w, h);
+	// 		};
+	// 	}
+	// },
 
 	getMapLayer : function(name){
 		var mapLayer,mapLayerName;

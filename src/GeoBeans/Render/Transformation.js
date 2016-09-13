@@ -1,6 +1,7 @@
 GeoBeans.Transformation = GeoBeans.Class({
 	
-	map : null,
+	// map : null,
+	mapViewer : null,
 	
 	win_w : null,
 	win_h : null,
@@ -13,10 +14,14 @@ GeoBeans.Transformation = GeoBeans.Class({
 	
 	scale : null,
 	
-	initialize : function(map){
-		this.map = map;
-	},
+	// initialize : function(map){
+	// 	this.map = map;
+	// },
 	
+	initialize : function(mapViewer){
+		// this.map = map;
+		this.mapViewer = mapViewer;
+	},	
 	// toMapPoint : function(sx, sy){
 		
 	// 	var mapX = ((sx - this.win_cx) / this.scale) + this.view_c.x;
@@ -43,8 +48,13 @@ GeoBeans.Transformation = GeoBeans.Class({
 	// },	
 
 	toMapPoint : function(sx,sy){
-		var mapX = ((sx - this.win_cx)* Math.cos(this.map.rotateAngle * Math.PI/180) - (this.win_cy-  sy) * Math.sin(this.map.rotateAngle * Math.PI/180) )/ this.scale + this.view_c.x;
-		var mapY = ((sx - this.win_cx)* Math.sin(this.map.rotateAngle * Math.PI/180) + (this.win_cy-  sy) * Math.cos(this.map.rotateAngle * Math.PI/180) )/ this.scale + this.view_c.y;
+		// var mapX = ((sx - this.win_cx)* Math.cos(this.map.rotateAngle * Math.PI/180) - (this.win_cy-  sy) * Math.sin(this.map.rotateAngle * Math.PI/180) )/ this.scale + this.view_c.x;
+		// var mapY = ((sx - this.win_cx)* Math.sin(this.map.rotateAngle * Math.PI/180) + (this.win_cy-  sy) * Math.cos(this.map.rotateAngle * Math.PI/180) )/ this.scale + this.view_c.y;
+		
+		// var map = this.mapViewer.getMap();
+		var rotation = this.mapViewer.getRotation();
+		var mapX = ((sx - this.win_cx)* Math.cos(rotation * Math.PI/180) - (this.win_cy-  sy) * Math.sin(rotation * Math.PI/180) )/ this.scale + this.view_c.x;
+		var mapY = ((sx - this.win_cx)* Math.sin(rotation * Math.PI/180) + (this.win_cy-  sy) * Math.cos(rotation * Math.PI/180) )/ this.scale + this.view_c.y;
 		return new GeoBeans.Geometry.Point(mapX, mapY); 
 	},
 
@@ -78,8 +88,13 @@ GeoBeans.Transformation = GeoBeans.Class({
 	// },
 
 	toScreenPoint : function(mx,my){
-		var screenX = this.scale *((mx - this.view_c.x)* Math.cos(this.map.rotateAngle * Math.PI/180) + (my - this.view_c.y) * Math.sin(this.map.rotateAngle * Math.PI/180)) + this.win_cx;
-		var screenY = this.scale *((mx - this.view_c.x)* Math.sin(this.map.rotateAngle * Math.PI/180) - (my - this.view_c.y) * Math.cos(this.map.rotateAngle * Math.PI/180)) + this.win_cy;
+		// var screenX = this.scale *((mx - this.view_c.x)* Math.cos(this.map.rotateAngle * Math.PI/180) + (my - this.view_c.y) * Math.sin(this.map.rotateAngle * Math.PI/180)) + this.win_cx;
+		// var screenY = this.scale *((mx - this.view_c.x)* Math.sin(this.map.rotateAngle * Math.PI/180) - (my - this.view_c.y) * Math.cos(this.map.rotateAngle * Math.PI/180)) + this.win_cy;
+		
+		// var map = this.mapViewer.getMap();
+		var rotation = this.mapViewer.getRotation();
+		var screenX = this.scale *((mx - this.view_c.x)* Math.cos(rotation * Math.PI/180) + (my - this.view_c.y) * Math.sin(rotation * Math.PI/180)) + this.win_cx;
+		var screenY = this.scale *((mx - this.view_c.x)* Math.sin(rotation * Math.PI/180) - (my - this.view_c.y) * Math.cos(rotation * Math.PI/180)) + this.win_cy;
 		return  new GeoBeans.Geometry.Point(screenX, screenY); 
 	},
 
@@ -90,11 +105,33 @@ GeoBeans.Transformation = GeoBeans.Class({
 	 * Parameters:
 	 *
 	 **/
+	// update : function(){
+		
+	// 	var viewer = this.map.viewer;
+	// 	var win_width = this.map.width;
+	// 	var win_height= this.map.height;
+		
+	// 	this.win_w = parseFloat(win_width);
+	// 	this.win_h = parseFloat(win_height);
+	// 	this.win_cx = win_width  / 2;
+	// 	this.win_cy = win_height / 2;
+		
+	// 	this.view_w = viewer.getWidth();
+	// 	this.view_h = viewer.getHeight();
+	// 	this.view_c = viewer.getCenter(); 
+		
+	// 	var sacle_x = this.win_w / this.view_w;
+	// 	var sacle_y = this.win_h / this.view_h;
+	// 	this.scale = sacle_x < sacle_y ? sacle_x : sacle_y;
+		
+	// 	this.map.tolerance = this.map.TOLERANCE / this.scale;
+	// }
+
 	update : function(){
 		
-		var viewer = this.map.viewer;
-		var win_width = this.map.width;
-		var win_height= this.map.height;
+		var viewer = this.mapViewer.getViewer();
+		var win_width = this.mapViewer.map.width;
+		var win_height= this.mapViewer.map.height;
 		
 		this.win_w = parseFloat(win_width);
 		this.win_h = parseFloat(win_height);
@@ -109,7 +146,7 @@ GeoBeans.Transformation = GeoBeans.Class({
 		var sacle_y = this.win_h / this.view_h;
 		this.scale = sacle_x < sacle_y ? sacle_x : sacle_y;
 		
-		this.map.tolerance = this.map.TOLERANCE / this.scale;
+		this.mapViewer.map.tolerance = this.mapViewer.map.TOLERANCE / this.scale;
 	}
 
 });

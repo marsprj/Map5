@@ -44,18 +44,47 @@ GeoBeans.Events = GeoBeans.Class({
 		this.events = null;
 	},
 	
-	addEvent : function(evt, evt_handler){
-		this.events.push({event : evt, handler : evt_handler});
-	},
+	// addEvent : function(evt, evt_handler){
+	// 	this.events.push({event : evt, handler : evt_handler});
+	// },
 	
-	getEvnet : function(event){
-		var len = this.events;
-		for(var i=0; i<len; i++){
-			var evt = this.events[i];
-			if(evt.event == event){
-				return evt;
+	// getEvnet : function(event){
+	// 	var len = this.events;
+	// 	for(var i=0; i<len; i++){
+	// 		var evt = this.events[i];
+	// 		if(evt.event == event){
+	// 			return evt;
+	// 		}
+	// 	}
+	// 	return null;
+	// }
+	// 
+	addEvent : function(event,handler,eventHandler){
+		this.events.push({
+			event : event,
+			handler : handler,
+			eventHandler : eventHandler
+		});
+	},
+
+
+	getEventHandler : function(event,handler){
+		for(var i = 0; i < this.events.length;++i){
+			var eventObj = this.events[i];
+			if(eventObj.event == event && eventObj.handler == handler){
+				return eventObj.eventHandler;
 			}
 		}
-		return null;
-	}
+	},
+
+	removeEventHandler : function(event,handler){
+		for(var i = 0; i < this.events.length;++i){
+			var eventObj = this.events[i];
+			if(eventObj.event == event && eventObj.handler == handler){
+				this.events.splice(i,1);
+			}
+		}
+	},
+
+
 });

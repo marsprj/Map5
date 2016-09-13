@@ -61,7 +61,7 @@ GeoBeans.Layer.GeoLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 		this.renderer.setSymbolizer(this.option.symbolizer);
 		for(var i = 0; i < this.data.length;++i){
 			var line = this.data[i];
-			this.renderer.drawBezierLine(line.from,line.to,line.control,this.map.transformation);
+			this.renderer.drawBezierLine(line.from,line.to,line.control,this.map.getMapViewer());
 		}
 	},
 	// 计算贝塞尔曲线
@@ -137,7 +137,7 @@ GeoBeans.Layer.GeoLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 			var x = (1-t) * (1-t)*p0.x + 2*t*(1-t)*p1.x + t*t*p2.x;
 			var y = (1-t) * (1-t)*p0.y + 2*t*(1-t)*p1.y + t*t*p2.y;
 			var point = new GeoBeans.Geometry.Point(x,y);
-			this.renderer.drawGeometry(point,this.option.pointSymbolizer,this.map.transformation);
+			this.renderer.drawGeometry(point,this.option.pointSymbolizer,this.map.getMapViewer());
 			line.points.push(point);
 			this.drawTrail(line,point);
 		}
@@ -164,15 +164,15 @@ GeoBeans.Layer.GeoLineLayer = GeoBeans.Class(GeoBeans.Layer,{
   //       gradient.addColorStop(1.00,"red");        
         var radius = this.option.pointSymbolizer.size;
         this.renderer.context.lineWidth=radius*2;
-        var spt = this.map.transformation.toScreenPoint(point.x,point.y);
+        var spt = this.map.getMapViewer().toScreenPoint(point.x,point.y);
         this.renderer.context.beginPath();
         this.renderer.context.moveTo(spt.x,spt.y);
 		for(var i = 0; i < drawPoints.length;++i){
-			var pt = this.map.transformation.toScreenPoint(drawPoints[i].x,drawPoints[i].y);
+			var pt = this.map.getMapViewer().toScreenPoint(drawPoints[i].x,drawPoints[i].y);
 			this.renderer.context.lineTo(pt.x,pt.y);
 		}
 		var endPoint = drawPoints[drawPoints.length - 1];
-		var sendPoint = this.map.transformation.toScreenPoint(endPoint.x,endPoint.y);
+		var sendPoint = this.map.getMapViewer().toScreenPoint(endPoint.x,endPoint.y);
 		var gradient = this.renderer.context.createLinearGradient(spt.x,spt.y,sendPoint.x,sendPoint.y);
 		gradient.addColorStop(0.00,this.option.pointSymbolizer.fill.color.getRgba());
         gradient.addColorStop(1.00,"rgba(255,255,255,0)");
@@ -199,14 +199,14 @@ GeoBeans.Layer.GeoLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 			var to = line.to;
 
 			context.strokeStyle = rgb;
-			var toPoint = this.map.transformation.toScreenPoint(to.x,to.y);
+			var toPoint = this.map.getMapViewer().toScreenPoint(to.x,to.y);
 			context.beginPath();
 			context.arc(toPoint.x,toPoint.y,this.innerRadius,0, 2 * Math.PI);
 			context.stroke();
 			context.closePath();	
 
 			context.strokeStyle = outerColor;
-			var toPoint = this.map.transformation.toScreenPoint(to.x,to.y);
+			var toPoint = this.map.getMapViewer().toScreenPoint(to.x,to.y);
 			context.beginPath();
 			context.arc(toPoint.x,toPoint.y,this.outerRadius,0, 2 * Math.PI);
 			context.stroke();	

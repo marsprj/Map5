@@ -210,14 +210,14 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 		// 计算位置
 
-		var llpt = this.map.transformation
+		var llpt = this.map.getMapViewer()
 			.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		// var img_size = this.IMG_WIDTH * this.scale;
 
 		var img_size = this.IMG_WIDTH * (this.imageScale);
-		var resolution = this.map.resolution;
+		var resolution = this.map.getMapViewer().getResolution();
 		var re = this.getResolutionByLevel(this.map.level);
 		if(resolution != re){
 			img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
@@ -226,14 +226,13 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 
 		var x, y;
-		var lspt = this.map.transformation.toMapPoint(llpt.x,llpt.y);
+		var lspt = this.map.getMapViewer().toMapPoint(llpt.x,llpt.y);
 		var row, col, tile;
 		this.tiles = [];
 		var level = this.map.level;
 		// y = llpt.y - (row_min+1) * img_size;
 		// y = llpt.y - row_min * img_size;
 		y = llpt.y + row_min * img_size;
-		console.log(y);
 		for(row=row_min; row<=row_max; row++){
 			x = llpt.x + col_min * img_size;
 			for(col=col_min; col<=col_max; col++){
@@ -260,7 +259,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	 **/
 	getValidView : function(){
 		
-		var viewer = this.map.viewer;
+		var viewer = this.map.getViewer();
 		var xmin = null, ymin = null, xmax = null, ymax = null;
 		if(this.validExtent != null){
 			xmin = Math.max(viewer.xmin, this.validExtent.xmin);
@@ -292,7 +291,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var row_min = Math.floor ((this.FULL_EXTENT.ymax - ve.ymax) / tile_map_size);
 		var row_max = Math.ceil((this.FULL_EXTENT.ymax - ve.ymin) / tile_map_size);
 
-		console.log(col_min + "," + col_max + "," + row_min + "," + row_max);
+		// console.log(col_min + "," + col_max + "," + row_min + "," + row_max);
 		
 		
 		return {

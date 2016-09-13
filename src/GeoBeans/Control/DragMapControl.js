@@ -36,15 +36,15 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			
 			d_x = e.layerX;
 			d_y = e.layerY;
-			var d_p = map.transformation.toMapPoint(d_x, d_y);
+			var d_p = map.mapViewer.toMapPoint(d_x, d_y);
 			var draging = true;	
 			if(that.beginDragHandler != null){
 				var x = d_x;
 				var y = d_y;
-				if(that.map.transformation == null){
+				if(that.map.mapViewer == null){
 					return;
 				}
-				var mp = that.map.transformation.toMapPoint(x, y);
+				var mp = that.map.mapViewer.toMapPoint(x, y);
 				var args = new GeoBeans.Event.MouseArgs();
 				args.buttn = null;
 				args.X = x;
@@ -65,10 +65,10 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.putSnap(mask_x, mask_y);
 
 					// 新增
-					var m_p = map.transformation.toMapPoint(e.layerX, e.layerY);
+					var m_p = map.mapViewer.toMapPoint(e.layerX, e.layerY);
 					o_x = (d_p.x - m_p.x);
 					o_y = (d_p.y - m_p.y);
-					map.offset(o_x, o_y);
+					map.mapViewer.offset(o_x, o_y);
 
 					var infoWindow = map.infoWindow;
 					if(infoWindow != null){
@@ -111,10 +111,10 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					if(that.dragingHandler != null){
 						var x = d_x;
 						var y = d_y;
-						if(that.map.transformation == null){
+						if(that.map.mapViewer == null){
 							return;
 						}
-						var mp = that.map.transformation.toMapPoint(x, y);
+						var mp = that.map.mapViewer.toMapPoint(x, y);
 						var args = new GeoBeans.Event.MouseArgs();
 						args.buttn = null;
 						args.X = x;
@@ -132,7 +132,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				draging = false;
 				that.draging = false;
 				
-				var m_p = map.transformation.toMapPoint(e.layerX, e.layerY);
+				var m_p = map.mapViewer.toMapPoint(e.layerX, e.layerY);
 				o_x = (d_p.x - m_p.x);
 				o_y = (d_p.y - m_p.y);
 	
@@ -148,10 +148,10 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				if(that.endDragHandler != null){
 					var x = e.layerX;
 					var y = e.layerY;
-					if(that.map.transformation == null){
+					if(that.map.mapViewer == null){
 						return;
 					}
-					var mp = that.map.transformation.toMapPoint(x, y);
+					var mp = that.map.mapViewer.toMapPoint(x, y);
 					var args = new GeoBeans.Event.MouseArgs();
 					args.buttn = null;
 					args.X = x;

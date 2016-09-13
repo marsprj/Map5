@@ -20,7 +20,7 @@ GeoBeans.Layer.AirLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 
 
 	load : function(){
-		var mapViewer = this.map.viewer;
+		var mapViewer = this.map.getViewer();
 		// if(this.features == null){
 		if(mapViewer != null && this.viewer != null && mapViewer.equal(this.viewer) 
 			&& this.features != null ){
@@ -96,7 +96,7 @@ GeoBeans.Layer.AirLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 			}
 			var geometry = f.geometry;
 
-			renderer.drawGeometry(geometry,pointSymbolizer,this.map.transformation);
+			renderer.drawGeometry(geometry,pointSymbolizer,this.map.getMapViewer());
 		}
 
 
@@ -140,7 +140,7 @@ GeoBeans.Layer.AirLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 					continue;
 				}
 				control = this.getBezierControlPoint(from_geometry,to_geometry,curveness);
-				renderer.drawBezierLine(from_geometry,to_geometry,control,this.map.transformation);
+				renderer.drawBezierLine(from_geometry,to_geometry,control,this.map.getMapViewer());
 			}
 		}
 

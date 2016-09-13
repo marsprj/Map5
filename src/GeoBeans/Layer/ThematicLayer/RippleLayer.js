@@ -522,7 +522,6 @@ GeoBeans.Layer.RippleLayer = GeoBeans.Class(GeoBeans.Layer,{
 		}
 		
 		var render = this.map.renderer;
-		var transformation = this.map.transformation;
 		
 		var selection = [];
 		
@@ -732,7 +731,7 @@ GeoBeans.Layer.RippleLayer = GeoBeans.Class(GeoBeans.Layer,{
 			radiusColor.setByHex(c,alpha);
 			context.fillStyle = radiusColor.getRgba();
 
-			spt = this.map.transformation.toScreenPoint(geometry.x,geometry.y);
+			spt = this.map.getMapViewer().toScreenPoint(geometry.x,geometry.y);
 			context.beginPath();
 			context.arc(spt.x,spt.y,r,0,Math.PI*2);
 			context.fill();

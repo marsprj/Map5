@@ -46,7 +46,6 @@ GeoBeans.GeoJsonReader = GeoBeans.Class({
 			return null;
 		}
 		var type = json.type;
-		console.log(type);
 
 		var featureType = new GeoBeans.FeatureType(null,this.layerName);
 		featureType.fields = [];
