@@ -34,12 +34,12 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						var zoom = 1/(1 + count *0.2);
 						map.getViewer().scale(zoom);
 						// level = map.getLevel(map.viewer);
-						level = map.getMapViewer().getLevel(map.getViewer());
+						level = map.getViewer().getLevel(map.getViewer());
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
 						// map._setLevel(level);
-						map.getMapViewer()._setLevel(level);
+						map.getViewer()._setLevel(level);
 						// map.level = level;
 						map.draw();
 					}else{
@@ -50,7 +50,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(level);
-						map.setLevel(level);
+						map.getViewer().setLevel(level);
 						map.draw();
 					}
 					// console.log(new Date() - time);
@@ -58,12 +58,12 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					if(map.baseLayer.imageScale != 1.0){
 						var zoom = 1 + 0.2*count;
 						map.getViewer().scale(zoom);
-						level = map.getMapViewer().getLevel(map.getViewer());
+						level = map.getViewer().getLevel(map.getViewer());
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
 						// map._setLevel(level);
-						map.getMapViewer()._setLevel(level);
+						map.getViewer()._setLevel(level);
 						// map.level = level;
 						map.draw();
 					}else{
@@ -74,7 +74,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(level);
-						map.setLevel(level);
+						map.getViewer().setLevel(level);
 						map.draw();						
 					}
 				}
@@ -86,7 +86,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.drawBackground();
 					map.drawLayersSnap(zoom);
 					map.getViewer().scale(zoom);
-					map.getMapViewer().transformation().update();
+					map.getViewer().transformation.update();
 					// map.viewer.scale(zoom);
 					// map.transformation.update();
 					map.draw();
@@ -99,7 +99,7 @@ GeoBeans.Control.SrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					// map.viewer.scale(zoom);
 					// map.transformation.update();
 					map.getViewer().scale(zoom);
-					map.getMapViewer().transformation().update();
+					map.getViewer().transformation.update();
 
 					map.draw();
 				}

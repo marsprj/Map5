@@ -129,7 +129,7 @@ GeoBeans.Transformation = GeoBeans.Class({
 
 	update : function(){
 		
-		var viewer = this.mapViewer.getViewer();
+		var viewer = this.mapViewer.getExtent();
 		var win_width = this.mapViewer.map.width;
 		var win_height= this.mapViewer.map.height;
 		

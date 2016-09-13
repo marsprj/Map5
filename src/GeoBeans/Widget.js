@@ -1,7 +1,3 @@
-GeoBeans.Widget.Type = {
-	COPYRIGHT	: "Copyright",
-	INFO_WINDOW	: "InfoWindow"
-};
 
 
 GeoBeans.Widget = GeoBeans.Class({
@@ -56,6 +52,12 @@ GeoBeans.Widget = GeoBeans.Class({
 		}
 	}
 });
+
+GeoBeans.Widget.Type = {
+	COPYRIGHT	: "Copyright",
+	INFO_WINDOW	: "InfoWindow"
+};
+
 
 /**
  * 获得widget的宽度

@@ -322,7 +322,7 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 
 
 	toScreenPoint : function(mx,my){
-		var transformation = this.map.mapViewer.transformation;
+		var transformation = this.map.viewer.transformation;
 		var screenX = transformation.scale * (mx - transformation.view_c.x) + transformation.win_cx;
 		var screenY = transformation.win_cy - transformation.scale * (my - transformation.view_c.y);
 		

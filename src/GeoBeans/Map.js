@@ -92,10 +92,10 @@ GeoBeans.Map = GeoBeans.Class({
 		mapDiv.innerHTML = '';
 
 		var option = {
-				extent : extent,
-				viewer : viewer,
+			extent : extent,
+			viewer : viewer,
 		};
-		this.mapViewer = new GeoBeans.Viewer(this,option);
+		this.viewer = new GeoBeans.Viewer(this,option);
 		
 		// if(extent != null){
 		// 	this.extent = extent;
@@ -530,36 +530,34 @@ GeoBeans.Map = GeoBeans.Class({
 	 },
 
 	
-	setViewer : function(extent){	
-		this.mapViewer.setViewer(extent);
-	},
+	// setViewer : function(extent){	
+	// 	this.mapViewer.setViewer(extent);
+	// },
 
-	getMapViewer : function(){
-		return this.mapViewer;
-	},
+	// getMapViewer : function(){
+	// 	return this.mapViewer;
+	// },
 	
 	getViewer : function(){		
-		return this.mapViewer.getViewer();
+		return this.viewer;
 	},
 	
 	/**
 	 * 更新center点后，需要更新map的视口
 	 * 触发draw事件
 	 **/
-	setCenter : function(center){
-		this.mapViewer.setCenter(center);
-	},
+	// setCenter : function(center){
+	// 	this.mapViewer.setCenter(center);
+	// },
 
-	getCenter : function(){
-		return this.mapViewer.getCenter();
-	},
+	// getCenter : function(){
+	// 	return this.mapViewer.getCenter();
+	// },
 
-	setLevel : function(level){
-		this.mapViewer.setLevel(level);
-	},
+	// setLevel : function(level){
+	// 	this.mapViewer.setLevel(level);
+	// },
 
-	
-	
 	
 	/**
 	 * 根据map的width和height的比例，重新计算extent的范围
@@ -645,9 +643,10 @@ GeoBeans.Map = GeoBeans.Class({
 			layer = this.layers[i];
 			if(layer instanceof GeoBeans.Layer.TileLayer){
 				if(this.level == null){
-					// var level = this.getLevel(this.viewer);
-					var level = this.mapViewer.getLevel(this.mapViewer.getViewer());
+					var viewer = this.viewer;
+					var level = viewer.getLevelByExtent(viewer.getExtent());
 					this.level = level;
+
 				}
 				if(layer.visible){
 					tileLayerCount++;
@@ -802,7 +801,7 @@ GeoBeans.Map = GeoBeans.Class({
 					that.queryLayer.clearFeatures();
 					return;
 				}
-				var point_s = this.getMapViewer().toScreenPoint(map_x,map_y);
+				var point_s = this.viewer.toScreenPoint(map_x,map_y);
 				this.infoWindow.css("left",point_s.x + "px");
 				this.infoWindow.css("top",(point_s.y) + "px");
 				this.infoWindow.popover('hide').popover("show");
@@ -1025,7 +1024,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 	drawBaseLayerSnap:function(level){
 
-		var center = this.mapViewer.getCenter();
+		var center = this.viewer.getCenter();
 		if(center == null){
 			return;
 		}
@@ -1080,7 +1079,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	drawLayersSnap : function(zoom){
-		var center = this.mapViewer.getCenter();
+		var center = this.viewer.getCenter();
 		var centerx = center.x;
 		var centery = center.y;
 		var x = null;
@@ -1132,9 +1131,13 @@ GeoBeans.Map = GeoBeans.Class({
 		this.baseLayerRenderer.save();
 		var width = this.width;
 		var height = this.height;
-		if(this.getRotation() != 0){
+
+		var viewer = this.getViewer();
+		var rotation = viewer.getRotation();
+
+		if(rotation != 0){
 			this.baseLayerRenderer.context.translate(width/2,height/2);
-			this.baseLayerRenderer.context.rotate(this.getRotation()* Math.PI/180);
+			this.baseLayerRenderer.context.rotate(rotation* Math.PI/180);
 			this.baseLayerRenderer.context.translate(-width/2,-height/2);
 			this.baseLayerRenderer.context.clearRect(x,y,img_size,img_size);
 		}else{
@@ -1146,7 +1149,7 @@ GeoBeans.Map = GeoBeans.Class({
 		for(var i = 0; i < this.layers.length;++i){
 			var l = this.layers[i];
 			if(l instanceof GeoBeans.Layer.TileLayer && l.visible){
-				if(this.getRotation() != 0){
+				if(rotation != 0){
 					var rotateCanvas = l.getRotateCanvas();
 					if(rotateCanvas != null){
 						var x_2 = rotateCanvas.width/4 + x;
@@ -1216,11 +1219,12 @@ GeoBeans.Map = GeoBeans.Class({
 			return;
 		}
 		var extent = overlay.getExtent();
-		var viewer = this.getMapViewer().scaleView(extent);
-		this.mapViewer.viewer = viewer;
-		this.mapViewer.transformation.update();
-		var level = this.mapViewer.getLevel(this.mapViewer.viewer);
-		this.setLevel(level);
+		var viewer = this.viewer.scaleView(extent);
+		this.viewer.extent = viewer;
+		this.viewer.transformation.update();
+		// var level = this.viewer.getLevel(this.mapViewer.viewer);
+		var level = this.viewer.getLevelByExtent(this.viewer.getExtent());
+		viewer.setLevel(level);
 		this.draw();
 		
 	},
@@ -1691,9 +1695,9 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 
-	// refresh : function(){
-		
-	// },
+	refresh : function(){
+		this.draw();
+	},
 
 	// 增加全景图
 	addPanorama : function(point,name,htmlPath,icon){
@@ -2133,13 +2137,13 @@ GeoBeans.Map = GeoBeans.Class({
 		return this.animationLayer;
 	},
 
-	setRotation : function(rotation){
-		this.mapViewer.setRotation(rotation);
-	},
+	// setRotation : function(rotation){
+	// 	this.mapViewer.setRotation(rotation);
+	// },
 
-	getRotation : function(){
-		return this.mapViewer.getRotation();
-	}
+	// getRotation : function(){
+	// 	return this.mapViewer.getRotation();
+	// }
 });
 
 /**

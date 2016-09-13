@@ -53,10 +53,11 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 	getValidView : function(){
 		
 		var viewer = this.map.getViewer();
-		var xmin = Math.max(viewer.xmin, this.FULL_EXTENT.xmin);
-		var ymin = Math.max(viewer.ymin, this.FULL_EXTENT.ymin);
-		var xmax = Math.min(viewer.xmax, this.FULL_EXTENT.xmax);
-		var ymax = Math.min(viewer.ymax, this.FULL_EXTENT.ymax);
+		var extent = viewer.getExtent();
+		var xmin = Math.max(extent.xmin, this.FULL_EXTENT.xmin);
+		var ymin = Math.max(extent.ymin, this.FULL_EXTENT.ymin);
+		var xmax = Math.min(extent.xmax, this.FULL_EXTENT.xmax);
+		var ymax = Math.min(extent.ymax, this.FULL_EXTENT.ymax);
 		
 		return (new GeoBeans.Envelope(xmin, ymin, xmax, ymax));
 	},

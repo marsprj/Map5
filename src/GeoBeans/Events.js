@@ -16,7 +16,7 @@ GeoBeans.Event = {
 	MOUSE_OVER 	: "mouseover",
 	MOUSE_OUT 	: "mouseout",
 	RESIZE		: "resize",
-	MOUSE_WHEEL : "mousewheel"
+	MOUSE_WHEEL : "mousewheel",
 	/* touch Event */
 	TOUCH_START	: 'touchstart',
 	TOUCH_MOVE 	: 'touchmove',
