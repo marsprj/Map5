@@ -2144,6 +2144,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 /**
  * 初始化地图容器
+ * @private
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.createMapContainer = function(){
@@ -2171,6 +2172,7 @@ GeoBeans.Map.prototype.createMapContainer = function(){
 
 /**
  * 初始化地图控件
+ * @private
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initControls = function(){
@@ -2223,6 +2225,7 @@ GeoBeans.Map.prototype.initControls = function(){
 
 /**
  * 初始化地图事件
+ * @private
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initEvents = function(){
@@ -2231,6 +2234,7 @@ GeoBeans.Map.prototype.initEvents = function(){
 
 /**
  * 初始化地图交互工具
+ * @private
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initInteractions = function(){
@@ -2239,6 +2243,7 @@ GeoBeans.Map.prototype.initInteractions = function(){
 
 /**
  * 初始化地图图层要素
+ * @private
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initLayers = function(){
@@ -2259,6 +2264,7 @@ GeoBeans.Map.prototype.initLayers = function(){
 
 /**
  * 获取infoWindow对象
+ * @public
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.getInfoWindow = function(){
@@ -2267,6 +2273,7 @@ GeoBeans.Map.prototype.getInfoWindow = function(){
 
 /**
  * Map事件绑定
+ * @public
  * @param  {[type]} event   [description]
  * @param  {[type]} handler [description]
  * @return {[type]}         [description]
@@ -2301,6 +2308,7 @@ GeoBeans.Map.prototype.on = function(event, handler){
 
 /**
  * Map解除事件绑定
+ * @public
  * @param  {[type]} event   [description]
  * @param  {[type]} handler [description]
  * @return {[type]}         [description]
