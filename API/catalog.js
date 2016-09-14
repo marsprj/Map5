@@ -12,7 +12,7 @@ var g_catalog = [
 				"name" : "拖拽地图",
 				"link" : "map_drag.html"
 			},{
-				"name" : "缩放地图",
+				"name" : "滚轮缩放",
 				"link" : "map_scroll.html"
 			},{
 				"name" : "拉框缩放",
@@ -24,16 +24,16 @@ var g_catalog = [
 		"items":[
 			{
 				"name" : "地图级别",
-				"link" : "mapLevel.html"
+				"link" : "map_set_zoom.html"
 			},{
 				"name" : "地图中心点",
-				"link" : "mapCenter.html"
+				"link" : "map_set_center.html"
 			},{
 				"name" : "地图范围",
-				"link" : "viewer.html"
+				"link" : "map_set_extent.html"
 			},{
 				"name" : "导航条",
-				"link" : "mapNav.html"
+				"link" : "map_widget_nav.html"
 			// },{
 			// 	"name" : "地图旋转",
 			// 	"link" : "rotate.html"
@@ -44,28 +44,28 @@ var g_catalog = [
 		"items":[
 			{
 				"name" : "添加图层",
-				"link" : "addLayer.html"
+				"link" : "layer_add.html"
 			},{
 				"name" : "删除图层",
-				"link" : "removeLayer.html"
+				"link" : "layer_remove.html"
 			},{
 				"name" : "图层显示",
-				"link" : "layerVisible.html"
+				"link" : "layer_visible.html"
 			},{
 				"name" : "QuadServer图层",
-				"link" : "QSLayer.html"
+				"link" : "layer_add_quadserver.html"
 			},{
 				"name" : "多个QuadServer图层",
-				"link" : "QSLayers.html"
+				"link" : "layer_add_multi_quadserver.html"
 			},{
 				"name" : "PGIS图层",
-				"link" : "pgisLayer.html"
+				"link" : "layer_add_pgis.html"
 			},{
 				"name" : "WFS图层",
-				"link" : "WFSLayer.html"
+				"link" : "layer_add_wfs.html"
 			},{
 				"name" : "WMS图层",
-				"link" : "WMSLayer.html"
+				"link" : "layer_add_wms.html"
 			}
 		]
 	},{
