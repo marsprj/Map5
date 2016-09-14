@@ -70,8 +70,7 @@ GeoBeans.Map = GeoBeans.Class({
 	queryGeometry : null,
 
 
-	infoWindow : null,
-
+	_infoWindowWidget : null,
 
 	//图例列表
 	legendList : null,
@@ -178,7 +177,6 @@ GeoBeans.Map = GeoBeans.Class({
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.setNavControl(false);
 		this.controls.cleanup();
-		this.infoWindow.popover("destroy");
 		this.unRegisterMapRippleHitEvent();
 		this.controls.cleanup();
 		this.viewer.cleanup();
@@ -190,7 +188,7 @@ GeoBeans.Map = GeoBeans.Class({
 		this.renderer = null;
 		this.layers = null;
 		this.controls = null;
-		this.infoWindow = null;
+		this._infoWindowWidget = null;
 		this.stopAnimate();
 		this._container = null;
 		
@@ -521,29 +519,9 @@ GeoBeans.Map = GeoBeans.Class({
 		if(imageLayerCanvas != null){
 			this.renderer.drawImage(imageLayerCanvas,0,0,imageLayerCanvas.width,imageLayerCanvas.height);	
 		}
-		// infoWindow 
-		var that = this;
-		if(this.infoWindow != null){
-			var popover = $(this._container).find(".popover");
-			if(popover.length == 1 ){
-				var map_x = this.infoWindow.attr("x");
-				var map_y = this.infoWindow.attr("y");
-				if(!this.getViewer().contain(map_x,map_y)){
-					this.infoWindow.popover('hide');
-					that.queryLayer.clearFeatures();
-					return;
-				}
-				var point_s = this.viewer.toScreenPoint(map_x,map_y);
-				this.infoWindow.css("left",point_s.x + "px");
-				this.infoWindow.css("top",(point_s.y) + "px");
-				this.infoWindow.popover('hide').popover("show");
-				$(this._container).find(".popover-title")
-					.append('<button type="button" class="close">&times;</button>');
-				$(this._container).find(".popover-title .close").click(function(){
-					$(this).parents(".popover").popover('hide');
-				});				
-			}
-		}
+
+		var infoWindow = this.getInfoWindow();
+		infoWindow.refresh();
 
 
 		this.maplex.draw();
@@ -1310,48 +1288,25 @@ GeoBeans.Map = GeoBeans.Class({
 	endQuery : function(){
 		this.tracker.end();
 		this.queryLayer.clearFeatures();
-		this.infoWindow.popover("hide");
+		// this.infoWindow.popover("hide");
+		var infoWindow = this.getInfoWindow();
+		infoWindow.show(false);
 	},
 
-	//info window
-	openInfoWindow : function(infoWindow,point){
-		if(infoWindow == null || point == null){
-			return;
-		}
 
-		var x = point.x;
-		var y = point.y;
+	openInfoWindow : function(option,point){
+		var infoWindowWidget = this.getInfoWindow();
 
-		var point_s = this.getMapViewer().toScreenPoint(x,y);
-		var x_s = point_s.x;
-		var y_s = point_s.y;
+		infoWindowWidget.setPosition(point);
 
-		this.infoWindow.attr("x",x);
-		this.infoWindow.attr("y",y);
+		infoWindowWidget.setOption(option);
 
-		this.infoWindow.css("left",x_s + "px");
-		this.infoWindow.css("top", (y_s) + "px");
-
-
-
-		var title = infoWindow.getTitle();
-		var content = infoWindow.getContent();
-		this.infoWindow.popover("hide")
-			.attr("data-content",content)
-			.attr("data-original-title",title)
-			.popover("show");
-		this._container.find(".popover-title")
-			.append('<button type="button" class="close">&times;</button>');
-		this._container.find(".popover-title .close").click(function(){
-			$(this).parents(".popover").popover('hide');
-		});
+		infoWindowWidget.show(true);
 	},
 
 	closeInfoWindow : function(){
-		if(this.infoWindow == null){
-			return;
-		}
-		this.infoWindow.popover("hide");
+		var infoWindowWidget = this.getInfoWindow();
+		infoWindowWidget.show(false);
 	},
 
 
@@ -1955,24 +1910,13 @@ GeoBeans.Map.prototype.initWidgets = function(){
 	this._copyRightWidget = copyRightWidget;
 
 
-	// tooltip
-	var tooltipHtml = "<div class='map5-tooltip'></div>";
-	$(this._container).append(tooltipHtml);
+	// tooltip 暂时没有用到
+	// var tooltipHtml = "<div class='map5-tooltip'></div>";
+	// $(this._container).append(tooltipHtml);
 
-	var infoWindowHtml = "<div class='infoWindow' data-toggle='popover' "
-		+ 	"title='Info' data-content=''></div>";
-	$(this._container).append(infoWindowHtml);
-	this.infoWindow = $(this._container).find(".infoWindow");
-	if(this.infoWindow!=undefined){
-		if(this.infoWindow.popover!=undefined){
-			this.infoWindow.popover({
-				animation: false,
-				trigger: 'manual',
-				placement : 'top',
-				html : true
-			});			
-		}
-	}	
+
+	var infoWindowWidget = new GeoBeans.Widget.InfoWindowWidget(this);
+	this._infoWindowWidget = infoWindowWidget;
 };
 
 /**
@@ -2142,7 +2086,7 @@ GeoBeans.Map.prototype.initResize = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.getInfoWindow = function(){
-	return null;
+	return this._infoWindowWidget;
 }
 
 /**

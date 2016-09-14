@@ -158,7 +158,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			return;
 		}
 		this.clickRenderer.setSymbolizer(symbolizer);
-		this.clickRenderer.drawOverlay(this.clickOverlay,symbolizer,this.map.getMapViewer());		
+		this.clickRenderer.drawOverlay(this.clickOverlay,symbolizer,this.map.getViewer());		
 	},
 
 
@@ -238,7 +238,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 	drawHitOverlay : function(overlay,symbolizer){
 		this.hitRenderer.clearRect();
 		this.hitRenderer.setSymbolizer(symbolizer);
-		var ret = this.hitRenderer.drawOverlay(overlay, symbolizer, this.map.getMapViewer());
+		var ret = this.hitRenderer.drawOverlay(overlay, symbolizer, this.map.getViewer());
 		if(ret){
 			this.map.renderer.drawImage(this.hitCanvas,0,0,this.hitCanvas.width,this.hitCanvas.height);
 		}
@@ -270,7 +270,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 					x_o = evt.layerX;
 					y_o = evt.layerY;
 				
-					var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
+					var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 					
 					that.hit(mp.x, mp.y);
 				}
@@ -346,7 +346,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				that.editOverlay.isEdit = false;
 			}
 
-			var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
+			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 			var geometry = overlay.geometry;
 			if(geometry.hit(mp.x, mp.y, map.tolerance)){
 				//绘制当前编辑的overlay
@@ -399,7 +399,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 	drawEditOverlay : function(overlay,symbolizer){
 		this.editRenderer.clearRect();
 		this.editRenderer.setSymbolizer(symbolizer);
-		var ret = this.editRenderer.drawOverlay(overlay, symbolizer, this.map.getMapViewer());
+		var ret = this.editRenderer.drawOverlay(overlay, symbolizer, this.map.getViewer());
 		// this.map.drawLayersAll();
 		if(ret){
 			this.map.renderer.drawImage(this.editCanvas,0,0,this.editCanvas.width,this.editCanvas.height);
@@ -441,7 +441,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 					x_o = evt.layerX;
 					y_o = evt.layerY;
 				
-					var mp = that.map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
+					var mp = that.map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 					
 					that.hitInfoWindow(mp.x, mp.y);
 				}
@@ -478,9 +478,9 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		if(selection.length >=1){
 			var f = selection[selection.length - 1];
 			var geometry = f.geometry;
-			var infoWindow = f.infoWindow;
-			if(geometry != null && infoWindow != null){
-				this.map.openInfoWindow(infoWindow,geometry);
+			var options = f.options;
+			if(geometry != null && options != null){
+				this.map.openInfoWindow(options,geometry);
 			}
 		}else{
 			this.map.closeInfoWindow();
@@ -529,7 +529,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			}
 			layer.clickRenderer.clearRect();
 			layer.map.drawLayersAll();
-			var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
+			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);
 		};
 		map.canvas.addEventListener('mouseup', this.clickEvent);
@@ -553,7 +553,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				var label = o.label;
 				if(label != null){
 					var extent = label.extent;
-					var pt = this.map.getMapViewer().toScreenPoint(x,y);
+					var pt = this.map.getViewer().toScreenPoint(x,y);
 					if(extent != null && pt != null && extent.contain(pt.x,pt.y)){
 						selection.push(o);
 					}

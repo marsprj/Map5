@@ -4,10 +4,10 @@ GeoBeans.Overlay.Marker = GeoBeans.Class(GeoBeans.Overlay,{
 
 	type : GeoBeans.Overlay.Type.MARKER,
 
-	infoWindow : null,
+	options : null,
 	
-	initialize : function(id,geometry,symbolizer,infoWindow){
+	initialize : function(id,geometry,symbolizer,options){
 		GeoBeans.Overlay.prototype.initialize.apply(this, arguments);
-		this.infoWindow = infoWindow;
+		this.options = options;
 	}
 });
