@@ -32,15 +32,11 @@
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 4、设置中心点
-		var center = new GeoBeans.Geometry.Point(116,39);	
-		mapObj.setCenter(center);
-
-		// 5、设置级别
-		mapObj.setLevel(10);	
-
-		// 6、绘图
-		mapObj.draw();
+		// 4、设置中心点和显示级别
+		var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);
+		var viewer = mapObj.getViewer();	
+		viewer.setZoomCenter(zoom,center);
 	}
 
 	function setCenter(){
@@ -48,10 +44,7 @@
 		var center = new GeoBeans.Geometry.Point(100,29);	
 
 		// 2、设置中心点
-		mapObj.setCenter(center);
-
-		// 3、绘图
-		mapObj.draw();
+		mapObj.getViewer().setCenter(center);
 	}
 
 	function getCenter(){
