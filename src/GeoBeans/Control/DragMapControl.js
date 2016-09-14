@@ -72,7 +72,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 
 					var infoWindow = map.infoWindow;
 					if(infoWindow != null){
-						var popover = map.mapDiv.find(".popover");
+						var popover = $(map.mapDiv).find(".popover");
 						if(popover.length == 1){
 							var map_x = infoWindow.attr("x");
 							var map_y = infoWindow.attr("y");
@@ -142,8 +142,8 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				
 
 				document.body.style.cursor = 'default';
-				map.mapDiv[0].removeEventListener("mousemove", onmousemove);
-				map.mapDiv[0].removeEventListener("mouseup", onmouseup);
+				map.mapContainer.removeEventListener("mousemove", onmousemove);
+				map.mapContainer.removeEventListener("mouseup", onmouseup);
 
 				if(that.endDragHandler != null){
 					var x = e.layerX;
@@ -161,15 +161,15 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					that.endDragHandler(args);
 				}				
 			};
-			map.mapDiv[0].addEventListener("mousemove", onmousemove);
-			map.mapDiv[0].addEventListener("mouseup", onmouseup);
+			map.mapContainer.addEventListener("mousemove", onmousemove);
+			map.mapContainer.addEventListener("mouseup", onmouseup);
 		}
 		this.onmousedown = onmousedown;
-		this.map.mapDiv[0].addEventListener("mousedown", this.onmousedown);
+		this.map.mapContainer.addEventListener("mousedown", this.onmousedown);
 	},
 
 	destory : function(){
-		this.map.mapDiv[0].removeEventListener("mousedown", this.onmousedown);
+		this.map.mapContainer.removeEventListener("mousedown", this.onmousedown);
 		
 		GeoBeans.Control.prototype.destory.apply(this, arguments);
 	},

@@ -72,11 +72,11 @@ GeoBeans.Events = GeoBeans.Class({
 	// 	return null;
 	// }
 	// 
-	addEvent : function(event,handler,eventHandler){
+	addEvent : function(event,handler,listener){
 		this.events.push({
 			event : event,
 			handler : handler,
-			eventHandler : eventHandler
+			listener : listener
 		});
 	},
 
@@ -85,7 +85,7 @@ GeoBeans.Events = GeoBeans.Class({
 		for(var i = 0; i < this.events.length;++i){
 			var eventObj = this.events[i];
 			if(eventObj.event == event && eventObj.handler == handler){
-				return eventObj.eventHandler;
+				return eventObj.listener;
 			}
 		}
 	},
