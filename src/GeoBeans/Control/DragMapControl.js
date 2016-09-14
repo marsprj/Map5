@@ -142,8 +142,8 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				
 
 				document.body.style.cursor = 'default';
-				map.mapContainer.removeEventListener("mousemove", onmousemove);
-				map.mapContainer.removeEventListener("mouseup", onmouseup);
+				map._container.removeEventListener("mousemove", onmousemove);
+				map._container.removeEventListener("mouseup", onmouseup);
 
 				if(that.endDragHandler != null){
 					var x = e.layerX;
@@ -161,15 +161,15 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					that.endDragHandler(args);
 				}				
 			};
-			map.mapContainer.addEventListener("mousemove", onmousemove);
-			map.mapContainer.addEventListener("mouseup", onmouseup);
+			map._container.addEventListener("mousemove", onmousemove);
+			map._container.addEventListener("mouseup", onmouseup);
 		}
 		this.onmousedown = onmousedown;
-		this.map.mapContainer.addEventListener("mousedown", this.onmousedown);
+		this.map._container.addEventListener("mousedown", this.onmousedown);
 	},
 
 	destory : function(){
-		this.map.mapContainer.removeEventListener("mousedown", this.onmousedown);
+		this.map._container.removeEventListener("mousedown", this.onmousedown);
 		
 		GeoBeans.Control.prototype.destory.apply(this, arguments);
 	},

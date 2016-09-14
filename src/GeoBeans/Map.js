@@ -83,6 +83,8 @@ GeoBeans.Map = GeoBeans.Class({
 	// 授权时间
 	authTime : null,
 
+	// resize的标识符
+	_resizeId : null,
 
 	initialize: function (id,name,extent,srid,viewer) {	
 		var mapContainer = document.getElementById(id);
@@ -158,8 +160,7 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* Events Begin
 		/**************************************************************************************/
-		// this.events = [];
-		this.events = new GeoBeans.Events();
+		this.initEvents();
 		/**************************************************************************************/
 		/* Events End
 		/**************************************************************************************/	
@@ -173,148 +174,15 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* window.onresize单独写一个函数
 		/**************************************************************************************/	
-		window.onresize = function(flag){
-			clearTimeout(resizeId);
-			resizeId = setTimeout(function(){
-				var height = $(that.mapContainer).height();
-				var width = $(that.mapContainer).width();
-				if(height == 0 ||  width == 0){
-					return;
-				}
-				if(height == that.canvas.height && width == that.canvas.width){
-					return;
-				}
-				//console.log('before:height[' + that.canvas.height + "]");
-				//console.log('before:width[' + that.canvas.width + "]");
-
-				that.canvas.height = height;
-				that.canvas.width = width;
-
-				that.baseLayerCanvas.height = height;
-				that.baseLayerCanvas.width = width;
-				//console.log('after:height[' + that.canvas.height + "]");
-				//console.log('after:width[' + that.canvas.width + "]");
-				that.height = height;
-				that.width = width;
-				// flag = "width";
-
-				var viewer = that.getViewer();
-				if(viewer != null){
-					var xmin = viewer.xmin;
-					var xmax = viewer.xmax;
-					var ymin = viewer.ymin;
-					var ymax = viewer.ymax;
-					if(!$.isNumeric(xmin) || !$.isNumeric(xmax) || !$.isNumeric(ymin) || !$.isNumeric(ymax)){
-						return;
-					}
-				}
-
-				if(viewer != null){
-					if(that.baseLayer != null){
-						var baseLayerCanvas = that.baseLayer.canvas;
-						if(baseLayerCanvas != null){
-							baseLayerCanvas.height = height;
-							baseLayerCanvas.width = width;
-						}
-						that.baseLayer.scale = 1.0;
-						var level = that.level;
-						var resolution = that.baseLayer.getResolution(level);
-						that.mapViewer.setResolution(resolution);
-						that.mapViewer.updateMapExtent(resolution);
-						var center = that.getCenter();
-						that.setCenter(center);
-					}else{
-						// var extent = that.scaleView(that.viewer);
-						// that.viewer = extent;
-						// that.transformation.update();
-					}
-					var extent = null;
-					var viewer = that.getViewer();
-					if(flag == "width"){
-						extent = that.mapViewer.scaleViewWidth(viewer);
-					}else if(flag == "height"){
-						extent = that.mapViewer.scaleViewHeight(viewer);
-					}else{
-						extent = that.mapViewer.scaleView(viewer);
-					}
-					// that.viewer = extent;
-					that.mapViewer.viewer = extent;
-					//console.log(that.getViewer().toString());
-
-
-					// that.transformation.update();
-					that.mapViewer.transformation.update();
-
-					var layers = that.layers;
-					for(var i = 0; i < layers.length;++i){
-						var layer = layers[i];
-						if(layer != null){
-							var canvas = layer.canvas;
-							if(canvas != null){
-								canvas.height = height;
-								canvas.width = width;
-							}
-							
-							var clickCanvas = layer.clickCanvas;
-							if(clickCanvas != null){
-								clickCanvas.height = height;
-								clickCanvas.width = width;
-							}
-
-							var hitCanvas = layer.hitCanvas;
-							if(hitCanvas != null){
-								hitCanvas.height = height;
-								hitCanvas.width = width;
-							}
-
-							var rotateCanvas = layer.rotateCanvas;
-							if(rotateCanvas != null){
-								rotateCanvas.height = height*2;
-								rotateCanvas.width = width*2;
-							}
-						}
-					}
-
-					var overlayLayerCanvas = that.overlayLayer.canvas;
-					if(overlayLayerCanvas != null){
-						overlayLayerCanvas.height = height;
-						overlayLayerCanvas.width = width;
-					}
-
-					var queryLayerCanvas = that.queryLayer.canvas;
-					if(queryLayerCanvas != null){
-						queryLayerCanvas.height = height;
-						queryLayerCanvas.width = width;
-					}
-
-					var panoramaLayerCanvas = that.panoramaLayer.canvas;
-					if(panoramaLayerCanvas != null){
-						panoramaLayerCanvas.height = height;
-						panoramaLayerCanvas.width = width;
-					}
-					
-					var imageLayerCanvas = that.imageLayer.canvas;
-					if(imageLayerCanvas != null){
-						imageLayerCanvas.height = height;
-						imageLayerCanvas.width = width;
-					}
-
-					that.draw();
-				}
-			},250);
-
-		};
-		var handler = window.onresize;
-		handler.apply(window,[]);
-
 		
+		this.initResize();
 	},
 	
 	destroy : function(){
 
 
-		$(this.mapContainer).find(".chart-legend ").remove();
-		$(this.mapContainer).find("canvas").remove();
+		$(this._container).find(".chart-legend ").remove();
+		$(this._container).find("canvas").remove();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.setNavControl(false);
 		this.controls.cleanup();
@@ -332,7 +200,7 @@ GeoBeans.Map = GeoBeans.Class({
 		this.controls = null;
 		this.infoWindow = null;
 		this.stopAnimate();
-		this.mapContainer = null;
+		this._container = null;
 		
 	},
 
@@ -704,7 +572,7 @@ GeoBeans.Map = GeoBeans.Class({
 		// infoWindow 
 		var that = this;
 		if(this.infoWindow != null){
-			var popover = $(this.mapContainer).find(".popover");
+			var popover = $(this._container).find(".popover");
 			if(popover.length == 1 ){
 				var map_x = this.infoWindow.attr("x");
 				var map_y = this.infoWindow.attr("y");
@@ -717,9 +585,9 @@ GeoBeans.Map = GeoBeans.Class({
 				this.infoWindow.css("left",point_s.x + "px");
 				this.infoWindow.css("top",(point_s.y) + "px");
 				this.infoWindow.popover('hide').popover("show");
-				$(this.mapContainer).find(".popover-title")
+				$(this._container).find(".popover-title")
 					.append('<button type="button" class="close">&times;</button>');
-				$(this.mapContainer).find(".popover-title .close").click(function(){
+				$(this._container).find(".popover-title .close").click(function(){
 					$(this).parents(".popover").popover('hide');
 				});				
 			}
@@ -1808,13 +1676,13 @@ GeoBeans.Map = GeoBeans.Class({
 			top = spt.y - itemHeight;
 		}
 
-		$(this.mapContainer).find(".map5-tooltip").css("left",left + "px");
-		$(this.mapContainer).find(".map5-tooltip").css("top",top + "px");
-		$(this.mapContainer).find(".map5-tooltip").css("display","block");
+		$(this._container).find(".map5-tooltip").css("left",left + "px");
+		$(this._container).find(".map5-tooltip").css("top",top + "px");
+		$(this._container).find(".map5-tooltip").css("display","block");
 	},
 
 	closeTooltip : function(){
-		$(this.mapContainer).find(".map5-tooltip").css("display","none");
+		$(this._container).find(".map5-tooltip").css("display","none");
 	},
 
 
@@ -2065,7 +1933,7 @@ GeoBeans.Map = GeoBeans.Class({
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.createMapContainer = function(){
-	this.mapContainer = $("#" + this.id)[0];
+	this._container = $("#" + this.id)[0];
 
 	this.width = $("#" + this.id).width();
 	this.height = $("#" + this.id).height();
@@ -2076,7 +1944,7 @@ GeoBeans.Map.prototype.createMapContainer = function(){
 	var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
 						+ this.height + "' width='" 
 						+ this.width + "'></canvas>";
-	this.mapContainer.innerHTML = mapCanvasHtml;
+	this._container.innerHTML = mapCanvasHtml;
 
 
 	// baseCanvas
@@ -2084,7 +1952,7 @@ GeoBeans.Map.prototype.createMapContainer = function(){
 	var canvasHtml = "<canvas  id='" + baseCanvasID  +"' class='map5-base-canvas' height='" 
 				+ this.height + "' width='" 
 				+ this.width + "'></canvas>";
-	this.mapContainer.innerHTML += canvasHtml;
+	this._container.innerHTML += canvasHtml;
 
 	this.baseLayerCanvas = document.getElementById(baseCanvasID);
 	this.baseLayerRenderer = new GeoBeans.Renderer(this.baseLayerCanvas);
@@ -2132,16 +2000,16 @@ GeoBeans.Map.prototype.initControls = function(){
  */
 GeoBeans.Map.prototype.initWidgets = function(){
 	var copyRightHtml = "<div class='map5-copyright'>GeoBeans © </div>";
-	$(this.mapContainer).append(copyRightHtml);
+	$(this._container).append(copyRightHtml);
 
 	// tooltip
 	var tooltipHtml = "<div class='map5-tooltip'></div>";
-	$(this.mapContainer).append(tooltipHtml);
+	$(this._container).append(tooltipHtml);
 
 	var infoWindowHtml = "<div class='infoWindow' data-toggle='popover' "
 		+ 	"title='Info' data-content=''></div>";
-	$(this.mapContainer).append(infoWindowHtml);
-	this.infoWindow = $(this.mapContainer).find(".infoWindow");
+	$(this._container).append(infoWindowHtml);
+	this.infoWindow = $(this._container).find(".infoWindow");
 	if(this.infoWindow!=undefined){
 		if(this.infoWindow.popover!=undefined){
 			this.infoWindow.popover({
@@ -2192,6 +2060,126 @@ GeoBeans.Map.prototype.initLayers = function(){
 	this.queryLayer = new GeoBeans.Layer.FeatureLayer.QueryLayer("query");
 	this.queryLayer.setMap(this);
 }
+
+		
+/**
+ * 初始化地图大小改变
+ * @return {[type]} [description]
+ */
+GeoBeans.Map.prototype.initResize = function(){
+	var that = this;
+	window.onresize = function(){
+		clearTimeout(that._resizeId);
+		that._resizeId = setTimeout(function(){
+			var height = $(that._container).height();
+			var width = $(that._container).width();
+			if(height == 0 || width == 0){
+				return;
+			}
+			if(height == that.height &&　width == that.width){
+				return;
+			}
+
+			that.canvas.height = height;
+			that.canvas.width = width;
+
+			that.baseLayerCanvas.height = height;
+			that.baseLayerCanvas.width = width;
+
+			that.height = height;
+			that.width = width;
+
+			var viewer = that.getViewer();
+			var extent = viewer.getExtent();
+
+			if(extent == null){
+				return;
+			}
+
+			if(extent != null){
+				var xmin = extent.xmin;
+				var xmax = extent.xmax;
+				var ymin = extent.ymin;
+				var ymax = extent.ymax;
+				if(!$.isNumeric(xmin) || !$.isNumeric(xmax) || !$.isNumeric(ymin) || !$.isNumeric(ymax)){
+					return;
+				}
+			}
+
+			console.log(extent);
+			if(that.baseLayer != null){
+				var baseLayerCanvas = that.baseLayer.canvas;
+				baseLayerCanvas.width = width;
+				baseLayerCanvas.height = height;
+
+				viewer.setZoom(that.level);
+
+			}else{
+				viewer.setExtent(extent);
+			}	
+
+			console.log(viewer.getExtent());
+			var layers = that.layers;
+			for(var i = 0; i < layers.length;++i){
+				var layer = layers[i];
+				if(layer == null){
+					continue;
+				}
+				var canvas = layer.canvas;
+				if(canvas != null){
+					canvas.height = height;
+					canvas.width = width;
+				}
+
+				var clickCanvas = layer.clickCanvas;
+				if(clickCanvas != null){
+					clickCanvas.width = width;
+					clickCanvas.height = height;
+				}
+
+				var hitCanvas = layer.hitCanvas;
+				if(hitCanvas != null){
+					hitCanvas.width = width;
+					hitCanvas.height = height;
+				}
+
+				var rotateCanvas = layer.rotateCanvas;
+				if(rotateCanvas != null){
+					rotateCanvas.height = height*2;
+					rotateCanvas.width = width*2;
+				}
+			}
+			var overlayLayerCanvas = that.overlayLayer.canvas;
+			if(overlayLayerCanvas != null){
+				overlayLayerCanvas.height = height;
+				overlayLayerCanvas.width = width;
+			}
+
+			var queryLayerCanvas = that.queryLayer.canvas;
+			if(queryLayerCanvas != null){
+				queryLayerCanvas.height = height;
+				queryLayerCanvas.width = width;
+			}
+
+			var panoramaLayerCanvas = that.panoramaLayer.canvas;
+			if(panoramaLayerCanvas != null){
+				panoramaLayerCanvas.height = height;
+				panoramaLayerCanvas.width = width;
+			}
+			
+			var imageLayerCanvas = that.imageLayer.canvas;
+			if(imageLayerCanvas != null){
+				imageLayerCanvas.height = height;
+				imageLayerCanvas.width = width;
+			}
+
+			that.draw();
+		},250);
+	};
+	var handler = window.onresize;
+	handler.apply(window,[]);
+
+};
 
 /**
  * 获取infoWindow对象
