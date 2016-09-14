@@ -21,9 +21,10 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	cleanup : function(){
-		this.map.mapDiv[0].removeEventListener("mousedown", this.onMouseDown);
-		this.map.mapDiv[0].removeEventListener("mousemove", this.onMouseMove);
-		this.map.mapDiv[0].removeEventListener("mouseup",  this.onMouseUp);
+		var mapContainer = this.map.getContainer();
+		mapContainer.removeEventListener("mousedown", this.onMouseDown);
+		mapContainer.removeEventListener("mousemove", this.onMouseMove);
+		mapContainer.removeEventListener("mouseup",  this.onMouseUp);
 
 		this.onMouseDown = null;
 		this.onMouseMove = null;
@@ -33,11 +34,11 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 
 	trackRect : function(){
 		var that = this;
+		var mapContainer = this.map.getContainer();
 
 		if(this.onMouseDown != null){
 			return;
 		}
-
 		
 		this.map.enableDrag(false);
 		// this.cleanup();
@@ -75,8 +76,8 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 				var dis_y = point_b.y - point_e.y;
 
 				
-				that.map.mapDiv[0].removeEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].removeEventListener("mouseup", onmouseup);
+				mapContainer.removeEventListener("mousemove", onmousemove);
+				mapContainer.removeEventListener("mouseup", onmouseup);
 				that.map.restoreSnap();
 				// that.map.enableDrag(true);
 				if(Math.abs(dis_x) < 0.0001 && Math.abs(dis_y) < 0.0001){
@@ -89,14 +90,14 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 				point_e = null;
 			};
 
-			that.map.mapDiv[0].addEventListener("mousemove", onmousemove);
-			that.map.mapDiv[0].addEventListener("mouseup", onmouseup);
+			mapContainer.addEventListener("mousemove", onmousemove);
+			mapContainer.addEventListener("mouseup", onmouseup);
 
 			that.onMouseMove = onmousemove;
 			that.onMouseUp = onmouseup;
 		};
 
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousedown", onmousedown);
 		this.onMouseDown = onmousedown;
 	},
 
@@ -121,8 +122,9 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	buildRect : function(point_b,point_e){
-		point_b = this.map.mapViewer.toMapPoint(point_b.x,point_b.y);
-		point_e = this.map.mapViewer.toMapPoint(point_e.x,point_e.y);
+		var viewer = this.map.getViewer();
+		point_b = viewer.toMapPoint(point_b.x,point_b.y);
+		point_e = viewer.toMapPoint(point_e.x,point_e.y);
 		var xmin = (point_b.x > point_e.x) ? point_e.x : point_b.x;
 		var xmax = (point_b.x > point_e.x) ? point_b.x : point_e.x;
 		var ymin = (point_b.y > point_e.y) ? point_e.y : point_b.y;
@@ -178,31 +180,29 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 		// }else{
 		// 	this.map.setViewer(rect);
 		// }
-		this.map.setViewer(rect);
-		this.map.draw();		
+		this.map.getViewer().setExtent(rect);
+		//this.map.draw();		
 	},
 
 	zoomOutMap : function(rect){
 		var viewer = this.map.getViewer();
-		var scale_x = viewer.getWidth() / rect.getWidth();
-		var scale_y = viewer.getHeight() / rect.getHeight();
+		var extent = viewer.getExtent();
+
+		//根据当前地图的视图范围(extent)和当前拉框的大小(rect)计算缩放比例
+		var scale_x = extent.getWidth() / rect.getWidth();
+		var scale_y = extent.getHeight()/ rect.getHeight();
 		// 选比例大的
 		var s = scale_x > scale_y ? scale_x : scale_y;
-		viewer.scale(s); 
-		if(this.map.baseLayer != null){
-			var level = this.map.mapViewer.getLevel(viewer);
-			this.map.drawBackground();
-			this.map.drawBaseLayerSnap(level);
-			this.map.mapViewer._setLevel(level);
-			console.log(level);
-		}else{
-			this.map.drawBackground();
-			this.map.drawLayersSnap(s);
-			this.map.setViewer(viewer);
-		}
-		
-		this.map.draw();
 
+		var tr_c = rect.getCenter();
+
+		//1. 将viewer的中心点移动到rect的中心点位置
+		//2. 根据缩放比例修正viewer的可是范围
+		var nextent = extent.clone();
+		nextent.moveTo(tr_c.x, tr_c.y);
+		nextent.scale(s);
+
+		viewer.setExtent(nextent);
 	},
 });
 	

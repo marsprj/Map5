@@ -2254,3 +2254,33 @@ GeoBeans.Map.prototype.setBaseLayer = function(l){
 	}
 	return false;
 }
+
+
+/**
+ * 获得map的容器对象
+ * @public
+ * @return {[type]} [description]
+ */
+GeoBeans.Map.prototype.getContainer = function(){
+	return this._container;
+}
+
+/**
+ * 获取地图的屏幕宽度
+ * @public
+ * @return {[type]} [description]
+ * @description 单位为像素(pixel)
+ */
+GeoBeans.Map.prototype.getWidth = function(){
+	return $(this._container).width();
+}
+
+/**
+ * 获取地图的屏幕高度
+ * @public
+ * @return {[type]} [description]
+ * @description 单位为像素(pixel)
+ */
+GeoBeans.Map.prototype.getHeight = function(){
+	return $(this._container).height();
+}

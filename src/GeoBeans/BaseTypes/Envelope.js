@@ -25,13 +25,14 @@ GeoBeans.Envelope = GeoBeans.Class({
 		var c = new GeoBeans.Geometry.Point(x, y);
 		return c;
 	},
+
 	offset : function(ox, oy){
 		this.xmin += ox;
 		this.xmax += ox;
 		this.ymin += oy;
 		this.ymax += oy;
 	}, 
-	
+
 	union : function(other){
 		this.xmin = this.xmin < other.xmin ? this.xmin : other.xmin;
 		this.xmax = this.xmax > other.xmax ? this.xmax : other.xmax;
@@ -135,3 +136,23 @@ GeoBeans.Envelope = GeoBeans.Class({
 	// 	}
 	// }
 });
+
+GeoBeans.Envelope.prototype.clone = function(){
+	return (new GeoBeans.Envelope(this.xmin, 
+								  this.ymin, 
+								  this.xmax, 
+								  this.ymax));
+}
+
+/**
+ * 将Envelope的中心点移动到指定点
+ * @param  {[type]} ncx [description]
+ * @param  {[type]} ncy [description]
+ * @return {[type]}     [description]
+ */
+GeoBeans.Envelope.prototype.moveTo = function(ncx, ncy){
+	var c = this.getCenter()
+	var ox = ncx - c.x;
+	var oy = ncy - c.y;
+	this.offset(ox,oy);
+}

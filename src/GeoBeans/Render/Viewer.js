@@ -192,6 +192,7 @@ GeoBeans.Viewer.prototype.getZoom = function(){
 
 /**
  * 设置地图显示级别
+ * @public
  * @param {int} zoom 地图的级别
  */
 GeoBeans.Viewer.prototype.setZoom = function(zoom){
@@ -208,6 +209,12 @@ GeoBeans.Viewer.prototype.setZoom = function(zoom){
 	this._map.refresh();
 };
 
+/**
+ * 设置视口的中心点和缩放级
+ * @public
+ * @param {[type]} zoom   [description]
+ * @param {[type]} center [description]
+ */
 GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 	var map = this._map;
 	map.level = zoom;
@@ -235,10 +242,29 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 	this._map.refresh();
 };
 
+/**
+ * 获取地图的屏幕宽度
+ * @public
+ * @return {[type]} [description]
+ * @description 单位为像素(pixel)
+ */
+GeoBeans.Viewer.prototype.getWindowWidth = function(){
+	return this._map.getWidth()
+}
+
+/**
+ * 获取地图的屏幕宽度
+ * @public
+ * @return {[type]} [description]
+ * @description 单位为像素(pixel)
+ */
+GeoBeans.Viewer.prototype.getWindowHeight = function(){
+	return this._map.getHeight()
+}
 
 /**
  * 根据resuoltion计算Zoom
- * @public
+ * @private
  * @param  {GeoBeans.Envelope} viewer 返回
  * @return {int}        			  地图级别
  */
@@ -270,7 +296,6 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
 	}
 	return zoom;	
 };
-
 
 
 /**
@@ -486,17 +511,6 @@ GeoBeans.Viewer.prototype.rotateViewer = function(){
 	this._extent = extent;
 };
 
-
-// /**
-//  * 设置地图
-//  * @public
-//  * @param {[GeoBeans.Map]} map 地图 
-//  */
-// GeoBeans.Viewer.prototype.setMap = function(map){
-// 	this._map = map;
-// };
-
-
 /**
  * 返回地图
  * @public
@@ -509,6 +523,7 @@ GeoBeans.Viewer.prototype.getMap = function(){
 
 /**
  * 更新
+ * @private
  * @return 
  */
 GeoBeans.Viewer.prototype.update = function(){
@@ -532,3 +547,4 @@ GeoBeans.Viewer.prototype.update = function(){
 
 	this._map.tolerance = this._map.TOLERANCE / this.scale;
 };
+
