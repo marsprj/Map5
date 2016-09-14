@@ -10,17 +10,17 @@ GeoBeans.Tile = GeoBeans.Class({
 	url : null,
 	row : null,
 	col : null,
-	level : null,
+	zoom : null,
 	layer : null,
 
 	state : null,
 	
-	initialize : function(map,url, layer, row, col, level){
+	initialize : function(map,url, layer, row, col, zoom){
 		this.map = map;
 		this.url = url;
 		this.row = row;
 		this.col = col;
-		this.level = level;
+		this.zoom = zoom;
 		this.layer = layer;
 	},
 
@@ -74,8 +74,9 @@ GeoBeans.Tile = GeoBeans.Class({
 
 		var viewer = this.map.getViewer();
 		var rotation = viewer.getRotation();
+		var zoom = viewer.getZoom();
 		
-		if(this.map.level == this.level){
+		if(zoom == this.zoom){
 			
 			if(this.layer.visible){
 				this.layer.renderer.save();

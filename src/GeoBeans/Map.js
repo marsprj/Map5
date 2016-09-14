@@ -99,24 +99,15 @@ GeoBeans.Map = GeoBeans.Class({
 		};
 		this.viewer = new GeoBeans.Viewer(this,option);
 		
-		// if(extent != null){
-		// 	this.extent = extent;
-		// }else{
-		// 	this.extent = new GeoBeans.Envelope(-180,-90,180,90);
-		// }
+
 		if(srid != null){
 			this.srid = srid;
 		}
-		// if(viewer != null){
-		// 	this.viewer = viewer;
-		// }else{
-		// 	this.viewer = this.extent;
-		// }
+
 		this.id = id;
 		this.name = name;
 		
 		
-		this.layers = [];
 		this.legendList = [];
 		
 
@@ -169,8 +160,6 @@ GeoBeans.Map = GeoBeans.Class({
 		// 授权时间
 		this.authTime = new Date("2016-07-26 00:00:00");
 
-		var that = this;
-		var resizeId;
 		/**************************************************************************************/
 		/* window.onresize单独写一个函数
 		/**************************************************************************************/	
@@ -358,49 +347,6 @@ GeoBeans.Map = GeoBeans.Class({
 		return this.baseLayer;
 	},
 	
-    getLevel : function(){
-    	return this.level;
-    },
-
-    // 获取最大图层
-    getMaxLevel : function(){
-    	var layer = null;
-    	var maxLevel = null;
-    	for(var i = 0; i < this.layers.length;++i){
-    		layer = this.layers[i];
-    		if(layer instanceof GeoBeans.Layer.TileLayer){
-    			var level = layer.getMaxLevel();
-    			if(maxLevel == null){
-    				maxLevel = level;
-    			}else{
-    				if(level > maxLevel){
-    					maxLevel = level;
-    				}
-    			}
-    		}
-    	}
-    	return maxLevel;
-    },
-
-    // 获取最小图层
-    getMinLevel : function(){
-    	var layer = null;
-    	var minLevel = null;
-    	for(var i = 0; i < this.layers.length;++i){
-    		layer = this.layers[i];
-    		if(layer instanceof GeoBeans.Layer.TileLayer){
-    			var level = layer.getMinLevel();
-    			if(minLevel == null){
-    				minLevel = level;
-    			}else{
-    				if(level < minLevel){
-    					minLevel = level;
-    				}
-    			}
-    		}
-    	}
-    	return minLevel;
-    },
 
 
 	draw : function(){
@@ -419,12 +365,13 @@ GeoBeans.Map = GeoBeans.Class({
 		for(var i = 0; i < this.layers.length;++i){
 			layer = this.layers[i];
 			if(layer instanceof GeoBeans.Layer.TileLayer){
-				if(this.level == null){
-					var viewer = this.viewer;
-					var level = viewer.getZoomByExtent(viewer.getExtent());
-					this.level = level;
-
+				var viewer = this.getViewer();
+				var zoom = viewer.getZoom();
+				if(zoom == null){
+					var zoom = viewer.getZoomByExtent(viewer.getExtent());
+					viewer.setZoom(zoom);
 				}
+
 				if(layer.visible){
 					tileLayerCount++;
 					layer.preDraw();
@@ -443,7 +390,9 @@ GeoBeans.Map = GeoBeans.Class({
 		// this.mapNavControl.setZoomSlider(this.level);
 		var index = this.controls.find(GeoBeans.Control.Type.NAV);
 		var mapNavControl = this.controls.get(index);
-		mapNavControl.setZoomSlider(this.level);
+		var zoom = this.getViewer().getZoom();
+		mapNavControl.setZoomSlider(zoom);
+
 	},
 
 	drawBaseLayerCallback:function(map){
@@ -784,7 +733,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 		for(var i = 0; i < this.layers.length;++i){
 			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer && this.level < layer.getMaxLevel()){
+			if(layer instanceof GeoBeans.Layer.TileLayer && this.level < layer.getMaxZoom()){
 				layer.renderer.clearRect();
 				layer.renderer.context.putImageData(layer.snap, x, y);
 			}
@@ -844,8 +793,8 @@ GeoBeans.Map = GeoBeans.Class({
 
 		for(var i = 0; i < this.layers.length;++i){
 			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer && level < layer.getMaxLevel()
-				&& level > layer.getMinLevel()){
+			if(layer instanceof GeoBeans.Layer.TileLayer && level < layer.getMaxZoom()
+				&& level > layer.getMinZoom()){
 				var canvas = $("<canvas>")
 				    .attr("width", layer.snap.width)
 				    .attr("height", layer.snap.height)[0];
@@ -1003,7 +952,6 @@ GeoBeans.Map = GeoBeans.Class({
 		var viewer = this.viewer.scaleView(extent);
 		this.viewer.extent = viewer;
 		this.viewer.transformation.update();
-		// var level = this.viewer.getLevel(this.mapViewer.viewer);
 		var level = this.viewer.getLevelByExtent(this.viewer.getExtent());
 		viewer.setLevel(level);
 		this.draw();
@@ -2046,6 +1994,8 @@ GeoBeans.Map.prototype.initInteractions = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initLayers = function(){
+	this.layers = [];
+
 	this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
 	this.overlayLayer.setMap(this);
 

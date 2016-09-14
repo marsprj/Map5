@@ -218,7 +218,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 		var img_size = this.IMG_WIDTH * (this.imageScale);
 		var resolution = this.map.getMapViewer().getResolution();
-		var re = this.getResolutionByLevel(this.map.level);
+		var re = this.getResolutionByZoom(this.map.level);
 		if(resolution != re){
 			img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
 		}
@@ -280,7 +280,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var map = this.map;
 		var level = map.level;
 		// var resolution = map.resolution;
-		var resolution = this.getResolutionByLevel(level)
+		var resolution = this.getResolutionByZoom(level)
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		console.log(tile_map_size);
 		var ve = this.getValidView();

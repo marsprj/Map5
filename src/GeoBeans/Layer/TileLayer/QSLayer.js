@@ -107,14 +107,15 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var tile = null;
 		var tid, turl;
 		var row, col, r, c;
-		var level = this.map.level;
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
 		for(row=row_min; row<row_max; row++){
 			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row,col,level);
+				tid = this.getTileID(row,col,zoom);
 				turl = this.url + "&" + tid;
 				// console.log(turl);
 				if(this.cache.getTile(turl)==null){
-					tile = new GeoBeans.Tile(this.map,turl, this, row, col, level, 0, 0);
+					tile = new GeoBeans.Tile(this.map,turl, this, row, col, zoom, 0, 0);
 					this.cache.putTile(tile);
 				}
 			}
@@ -123,10 +124,11 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	
 
 	preDraw: function(){
-		var level = this.map.level;
-		var maxLevel = this.getMaxLevel();
-		var minLevel = this.getMinLevel();
-		if(level > maxLevel || level < minLevel){
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
+		var maxZoom = this.getMaxZoom();
+		var minZoom = this.getMinZoom();
+		if(zoom > maxZoom || zoom < minZoom){
 			this.tiles = [];
 			this.renderer.clearRect();
 			this.snap = null;
@@ -148,7 +150,7 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var img_size = this.IMG_WIDTH * (this.imageScale);
 		if(this != this.map.baseLayer){
 			var resolution = this.map.getMapViewer().getResolution();
-			var re = this.getResolutionByLevel(this.map.level);
+			var re = this.getResolutionByZoom(zoom);
 			if(resolution != re){
 				img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
 			}
@@ -158,14 +160,13 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		
 		var row, col, tile;
 		this.tiles = [];
-		var level = this.map.level;
 		y = llpt.y - (row_min+1) * img_size;
 		////y = llpt.y - img_size;
 		for(row=row_min; row<row_max; row++){
 			//x = llpt.x;
 			x = llpt.x + col_min * img_size;
 			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row, col, level);
+				tid = this.getTileID(row, col, zoom);
 				turl = this.url + "&" + tid;
 				
 				tile = this.cache.getTile(turl);
@@ -228,40 +229,6 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		
 	},
 	
-	// drawCache : function(){
-	// 	var tbound = this.computeTileBound();
-		
-	// 	var row_min = tbound.rmin;
-	// 	var row_max = tbound.rmax;
-	// 	//var row_max = tbound.rmax;
-	// 	var col_min = tbound.cmin;
-	// 	var col_max = tbound.cmax;
-		
-	// 	var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymin);
-	// 	llpt.x = Math.floor(llpt.x+0.5);
-	// 	llpt.y = Math.floor(llpt.y+0.5);
-	// 	var img_size = this.IMG_WIDTH * this.scale;
-	// 	var x, y;
-		
-	// 	var row, col, tile;
-	// 	var level = this.map.level;
-	// 	y = llpt.y - (row_min+1) * img_size;
-	// 	//y = llpt.y - img_size;
-	// 	for(row=row_min; row<row_max; row++){
-	// 		x = llpt.x + col_min * img_size;
-	// 		for(col=col_min; col<col_max; col++){
-	// 			tid = this.getTileID(row, col, level);
-	// 			turl = this.url + "&" + tid;
-				
-	// 			tile = this.cache.getTile(turl);
-	// 			if(tile!=null){
-	// 				tile.draw(x, y, img_size, img_size);
-	// 			}
-	// 			x += img_size;
-	// 		}
-	// 		y -= img_size;
-	// 	}
-	// },
 	
 	getRows : function(){
 		
@@ -286,15 +253,16 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		offset_y = yo;
 	},
 	
-	getTileID : function(row, col, level){
-		return ("col=" + col + "&row=" + row + "&level=" + level);
+	getTileID : function(row, col, zoom){
+		return ("col=" + col + "&row=" + row + "&level=" + zoom);
 	},
 	
 	computeTileBound : function(){
 		var map = this.map;
-		var level = map.level;
+		var viewer = map.getViewer();
+		var zoom = viewer.getZoom();
 		// var resolution = map.resolution;
-		var resolution = this.getResolutionByLevel(level);
+		var resolution = this.getResolutionByZoom(zoom);
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		// 
 		var ve = this.getValidView();

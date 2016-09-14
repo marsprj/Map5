@@ -16,8 +16,9 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 				return;
 			}
 			e.preventDefault();
-			var maxLevel = map.getMaxLevel();
-			var minLevel = map.getMinLevel();
+			var viewer = map.getViewer();
+			var maxZoom = viewer.getMaxZoom();
+			var minZoom = viewer.getMinZoom();
 			var trackOverlayControl = map._getTrackOverlayControl();
 			if(trackOverlayControl.drawing){
 				map.restoreSnap();
@@ -30,7 +31,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			var viewer = map.getViewer();
 			var extent = viewer.getExtent();
 			if(map.baseLayer!=null){
-				var level = map.level;
+				var zoom = viewer.getZoom();
 				if(e.wheelDelta>0){
 					// 底图缩放比例不为1
 					if(map.baseLayer.imageScale != 1.0){
@@ -42,14 +43,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						viewer.setExtent(extent);
 						map.draw();
 					}else{
-						level = level + count;
-						if(level > maxLevel){
-							level = maxLevel;
+						zoom = zoom + count;
+						if(zoom > maxZoom){
+							zoom = maxZoom;
 						}
 						map.saveSnap();
 						map.drawBackground();
-						map.drawBaseLayerSnap(level);
-						viewer.setZoom(level);
+						map.drawBaseLayerSnap(zoom);
+						viewer.setZoom(zoom);
 						map.draw();
 					}
 				}else{
@@ -62,14 +63,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						viewer.setExtent(extent);
 						map.draw();
 					}else{
-						level = level - count;
-						if(level < minLevel){
-							level = minLevel;
+						zoom = zoom - count;
+						if(zoom < minZoom){
+							zoom = minZoom;
 						}
 						map.saveSnap();
 						map.drawBackground();
-						map.drawBaseLayerSnap(level);
-						viewer.setZoom(level);
+						map.drawBaseLayerSnap(zoom);
+						viewer.setZoom(zoom);
 						map.draw();						
 					}
 				}
@@ -115,7 +116,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					that.count = 0;
 					if(that.userHandler != null){
 						that.userHandler({
-							level : map.level
+							zoom : map.zoom
 						});
 					}
 				}

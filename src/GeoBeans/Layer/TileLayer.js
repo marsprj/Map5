@@ -94,14 +94,14 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 		return this.RESOLUTIONS[level-1];
 	},
 
-	getResolutionByLevel : function(level){
+	getResolutionByZoom : function(level){
 		if( level<=0 || level>=this.RESOLUTIONS.length){
 			return -1;
 		}
 		return this.RESOLUTIONS[level-1];
 	},
 	
-	getLevel : function(resolution){
+	getZoom : function(resolution){
 		var maxLevel = this.MAX_ZOOM_LEVEL;
 		var minLevel = this.MIN_ZOOM_LEVEL;
 		for(var i = 0;i < this.RESOLUTIONS.length;++i){
@@ -155,22 +155,22 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 
 	// 设置该图层的最大级别
-	setMaxLevel : function(level){
+	setMaxZoom : function(level){
 		this.MAX_ZOOM_LEVEL = level;
 	},
 
 	// 获取该图层的最大级别
-	getMaxLevel : function(){
+	getMaxZoom : function(){
 		return this.MAX_ZOOM_LEVEL;
 	},
 
 	// 设置该图层的最小级别
-	setMinLevel : function(level){
+	setMinZoom : function(level){
 		this.MIN_ZOOM_LEVEL = level;
 	},
 
 	// 获取该图层的最小级别
-	getMinLevel : function(){
+	getMinZoom : function(){
 		return this.MIN_ZOOM_LEVEL;
 	},
 

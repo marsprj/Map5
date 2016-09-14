@@ -6,6 +6,8 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		this.type = GeoBeans.Control.Type.NAV;
 		this.map = map;
 
+		var mapContainer = this.map.getContainer();
+
 		var navControlHtml = "<div class=\"map-nav-wrapper\">"
 							+"	<div class=\"map-nav-pan\">"
 							+"	<div class=\"map-nav-pan\">"
@@ -31,29 +33,29 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 							+"		</div>"
 							+"	</div>"
 							+"</div>";
-		$(this.map._container).append(navControlHtml);
+		$(mapContainer).append(navControlHtml);
 		this.controlDiv = $(".map-nav-wrapper");
 
 
-		$(this.map._container).find(".map-nav-pan-N").mouseover(function(){
+		$(mapContainer).find(".map-nav-pan-N").mouseover(function(){
 			$(this).parent().css("background-position","0 -44px");
 		});
-		$(this.map._container).find(".map-nav-pan-W").mouseover(function(){
+		$(mapContainer).find(".map-nav-pan-W").mouseover(function(){
 			$(this).parent().css("background-position","0 -176px");
 		});
-		$(this.map._container).find(".map-nav-pan-E").mouseover(function(){
+		$(mapContainer).find(".map-nav-pan-E").mouseover(function(){
 			$(this).parent().css("background-position","0 -88px");
 		});
-		$(this.map._container).find(".map-nav-pan-S").mouseover(function(){
+		$(mapContainer).find(".map-nav-pan-S").mouseover(function(){
 			$(this).parent().css("background-position","0 -132px");
 		});	
 
-		$(this.map._container).find(".map-nav-pan div").mouseout(function() {
+		$(mapContainer).find(".map-nav-pan div").mouseout(function() {
 			$(this).parent().css("background-position","0 0");
 		});	
 
 		var that = this;
-		$(this.map._container).find(".map-nav-pan-N").click(function(){
+		$(mapContainer).find(".map-nav-pan-N").click(function(){
 			var center = that.map.center;
 			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
 			that.map.saveSnap();
@@ -61,7 +63,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			that.map.offset(0,center.y - t_p.y);
 			that.map.draw();
 		});
-		$(this.map._container).find(".map-nav-pan-S").click(function(){
+		$(mapContainer).find(".map-nav-pan-S").click(function(){
 			// that.map.drawBackground();
 			var center = that.map.center;
 			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
@@ -71,7 +73,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			that.map.offset(0,t_p.y - center.y);
 			that.map.draw();
 		});
-		$(this.map._container).find(".map-nav-pan-W").click(function(){
+		$(mapContainer).find(".map-nav-pan-W").click(function(){
 			var center = that.map.center;
 			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
 			that.map.saveSnap();
@@ -81,7 +83,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			that.map.draw();
 		});
 
-		$(this.map._container).find(".map-nav-pan-E").click(function(){
+		$(mapContainer).find(".map-nav-pan-E").click(function(){
 			// that.map.drawBackground();
 			var center = that.map.center;
 			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
@@ -93,36 +95,41 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			that.map.draw();
 		});	
 
-		$(this.map._container).find(".map-nav-zoom-in").click(function(){
-			var level = that.map.level + 1;
-			var maxLevel = that.map.getMaxLevel();
-			var minLevel = that.map.getMinLevel();
-			if(level == null || level < 1 
+		$(mapContainer).find(".map-nav-zoom-in").click(function(){
+			var viewer = that.map.getViewer();
+			var zoom = viewer.getZoom();
+			zoom += 1;
+			var maxZoom = viewer.getMaxZoom();
+			var minZoom = viewer.getMinZoom();
+			
+			if(zoom == null || zoom < 1 
 				|| that.map.baseLayer == null
-				|| level > maxLevel
-				|| level < minLevel){
+				|| zoom > maxZoom
+				|| zoom < minZoom){
 				return;
 			}
 			that.map.saveSnap();
 			that.map.drawBackground();
-			that.map.drawBaseLayerSnap(level);			
-			that.map.setLevel(level);	
+			that.map.drawBaseLayerSnap(zoom);			
+			viewer.setZoom(zoom);	
 			that.map.draw();
 		});	
-		$(this.map._container).find(".map-nav-zoom-out").click(function(){
-			var level = that.map.level - 1;
-			var maxLevel = that.map.getMaxLevel();
-			var minLevel = that.map.getMinLevel();
-			if(level == null || level < 1 
+		$(mapContainer).find(".map-nav-zoom-out").click(function(){
+			var viewer = that.map.getViewer();
+			var zoom = viewer.getZoom();
+			zoom -= 1;
+			var maxZoom = viewer.getMaxZoom();
+			var minZoom = viewer.getMinZoom();
+			if(zoom == null || zoom < 1 
 				|| that.map.baseLayer == null
-				|| level > maxLevel
-				|| level < minLevel){
+				|| zoom > maxZoom
+				|| zoom < minZoom){
 				return;
 			}
 			that.map.saveSnap();
 			that.map.drawBackground();
-			that.map.drawBaseLayerSnap(level);			
-			that.map.setLevel(level);	
+			that.map.drawBaseLayerSnap(zoom);			
+			viewer.setZoom(zoom);		
 			that.map.draw();
 		});
 		var onMouseDown = function(evt){
@@ -153,17 +160,17 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 					var sliderHeight = $(".map-nav-zoom-slider").height();
 					var bottomHeight = sliderHeight - topMove  + 10;
 
-					var maxLevel = 17;
-					var minLevel = 2;
+					var maxZoom = 17;
+					var minZoom = 2;
 
 					var section = $(".map-nav-zoom-slider").height()/18;
-					var maxZoomPosition = sliderHeight - section * (maxLevel - 1);
-					var minZoomPosition = sliderHeight - section * (minLevel - 1);
+					var maxZoomPosition = sliderHeight - section * (maxZoom - 1);
+					var minZoomPosition = sliderHeight - section * (minZoom - 1);
 
-					var level = 20 - Math.floor(topMove/section);
+					var zoom = 20 - Math.floor(topMove/section);
 
 					if(topMove < maxZoomPosition){
-						var maxZoomBottomHeight = section * (maxLevel - 1) + 10;
+						var maxZoomBottomHeight = section * (maxZoom - 1) + 10;
 						$(".map-nav-zoom-slider-bar").css("top",maxZoomPosition + "px");	
 						$(".map-nav-zoom-slider-bottom").css("top",maxZoomPosition + "px");
 						$(".map-nav-zoom-slider-bottom").css("height",maxZoomBottomHeight + "px");
@@ -190,12 +197,13 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 				var topMove = $(".map-nav-zoom-slider-bar").css("top");
 				var topMoveN = parseFloat(topMove.slice(0,topMove.lastIndexOf("px")));	
 				var section = $(".map-nav-zoom-slider").height()/18;
-				// var level = 20 - Math.floor(topMoveN/section);
-				var level = 19 - Math.ceil(topMoveN/section);
+				var zoom = 19 - Math.ceil(topMoveN/section);
 
-				if(mapObj.level != level){
-					that.map.drawBackground();		
-					that.map.setLevel(level);	
+				var viewer = that.map.getViewer();
+				var mapZoom = viewer.getZoom();
+				if(mapZoom != zoom){
+					that.map.drawBackground();	
+					viewer.setZoom(zoom);	
 					that.map.draw();
 				}
 			};
@@ -217,7 +225,6 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 
 		$(".map-nav-zoom").mouseover(function(){
 			$(".map-nav-zoom-labels").css("display","block");
-			// that.setLevelPosition();
 			$(".map-nav-zoom-label").css("display","block");
 
 		});
@@ -227,23 +234,26 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		});
 
 		$(".map-nav-zoom-label-street").click(function(){
-			if(17 > that.map.getMinLevel() && 17 <= that.map.getMaxLevel()){
+			var viewer = that.map.getViewer();
+			if(17 > viewer.getMinZoom() && 17 <= viewer.getMaxZoom()){
 				that.map.drawBackground();	
-				that.map.setLevel(17);
+				viewer.setZoom(17);
 				that.map.draw();				
 			}
 		});
 		$(".map-nav-zoom-label-city").click(function(){
-			if(12 > that.map.getMinLevel() && 12 < that.map.getMaxLevel()){
+			var viewer = that.map.getViewer();
+			if(12 > viewer.getMinZoom() && 12 < viewer.getMaxZoom()){
 				that.map.drawBackground();	
-				that.map.setLevel(12);
+				viewer.setZoom(12);
 				that.map.draw();
 			}
 		});
 		$(".map-nav-zoom-label-province").click(function(){
-			if(8 > that.map.getMinLevel() && 8 < that.map.getMaxLevel()){
+			var viewer = that.map.getViewer();
+			if(8 > viewer.getMinZoom() && 8 < viewer.getMaxZoom()){
 				that.map.drawBackground();	
-				that.map.setLevel(8);
+				viewer.setZoom(8);
 				that.map.draw();
 			}
 		});	
@@ -258,20 +268,21 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 
-	setZoomSlider : function(level){
-		if(level == null || level < 1 
+	setZoomSlider : function(zoom){
+		var viewer = this.map.getViewer();
+		if(zoom == null || zoom < 1 
 			|| this.map.baseLayer == null
-			|| level > this.map.getMaxLevel()
-			|| level < this.map.getMinLevel()){
+			|| zoom > viewer.getMaxZoom()
+			|| zoom < viewer.getMinZoom()){
 			return;
 		}
 		var sliderheight = $(".map-nav-zoom-slider").height();
 		var section = sliderheight/18;
-		var sliderPosition = section * (level - 1);
+		var sliderPosition = section * (zoom - 1);
 		$(".map-nav-zoom-slider-bar").css("top",sliderheight - sliderPosition);
 		$(".map-nav-zoom-slider-bottom").css("height",sliderPosition + 10);
 		$(".map-nav-zoom-slider-bottom").css("top",sliderheight - sliderPosition);
-		this.setLevelPosition();
+		this.setZoomPosition();
 	},
 
 	enable:function(flag){
@@ -286,7 +297,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		}
 	},
 
-	setLevelPosition : function(){
+	setZoomPosition : function(){
 		var levelDiv = this.controlDiv.find(".map-nav-zoom-level");
 		var slideBar = this.controlDiv.find(".map-nav-zoom-slider-bar");
 		var top = slideBar.css("top");
@@ -294,8 +305,9 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		top = parseFloat(top);
 		var levelDivTop = top + 21 - levelDiv.height()/2;
 		levelDiv.css("top",levelDivTop + "px");
-		var level = this.map.level;
-		levelDiv.html(level);
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
+		levelDiv.html(zoom);
 	},
 
 

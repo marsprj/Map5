@@ -2,6 +2,7 @@ GeoBeans.Viewer = GeoBeans.Class({
 	
 	_map : null,
 
+	_zoom : null,
 	_extent : null,
 	_viewer : null,
 	_center : null,
@@ -197,10 +198,10 @@ GeoBeans.Viewer.prototype.getZoom = function(){
  */
 GeoBeans.Viewer.prototype.setZoom = function(zoom){
 	var map = this._map;
-	map.level = zoom;
+	this._zoom = zoom;
 	if(map.baseLayer != null){
 		map.baseLayer.imageScale = 1.0;
-		var resolution = map.baseLayer.getResolutionByLevel(zoom);
+		var resolution = map.baseLayer.getResolutionByZoom(zoom);
 		this.setResolution(resolution);
 		this.updateMapExtent(this._resolution);
 		this.update();
@@ -217,12 +218,12 @@ GeoBeans.Viewer.prototype.setZoom = function(zoom){
  */
 GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 	var map = this._map;
-	map.level = zoom;
+	this._zoom = zoom;
 
 	//set zoom
 	if(map.baseLayer != null){
 		map.baseLayer.imageScale = 1.0;
-		var resolution = map.baseLayer.getResolutionByLevel(zoom);
+		var resolution = map.baseLayer.getResolutionByZoom(zoom);
 		this.setResolution(resolution);
 		this.updateMapExtent(this._resolution);
 		this.update();
@@ -290,7 +291,7 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
 		return null;
 	}
 
-	var zoom = map.baseLayer.getLevel(resolution);
+	var zoom = map.baseLayer.getZoom(resolution);
 	if(zoom == null){
 		return 1;
 	}
@@ -304,7 +305,7 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
  */
 GeoBeans.Viewer.prototype._setZoom = function(zoom){
 	var map = this._map;
-	map.level = zoom;
+	this._zoom = zoom;
 	if(map.baseLayer != null){
 		var resolution = map.baseLayer.getResolution(zoom);
 		this.setResolution(resolution);
@@ -548,3 +549,56 @@ GeoBeans.Viewer.prototype.update = function(){
 	this._map.tolerance = this._map.TOLERANCE / this.scale;
 };
 
+
+
+/**
+ * 获取地图的最大级别
+ * @return {[type]} [description]
+ */
+GeoBeans.Viewer.prototype.getMaxZoom = function(){
+	var map = this._map;
+
+	var layers = map.layers;
+	var layer = null;
+	var maxZoom = null;
+	for(var i = 0; i < layers.length;++i){
+		layer = layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer){
+			var lmz = layer.getMaxZoom();
+			if(maxZoom == null){
+				maxZoom = lmz;
+			}else{
+				if(maxZoom<lmz){
+					maxZoom = lmz;
+				}
+			}
+		}
+	}
+	return maxZoom;
+};
+
+/**
+ * 获取地图的最小级别
+ * @return {[type]} [description]
+ */
+GeoBeans.Viewer.prototype.getMinZoom = function(){
+	var map = this._map;
+
+	var layers = map.layers;
+	var layer = null;
+	var minZoom = null;
+	for(var i = 0; i < layers.length; ++i){
+		layer = layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer){
+			var lmz = layer.getMinZoom();
+			if(minZoom == null){
+				minZoom = lmz;
+			}else{
+				if(minZoom > lmz){
+					minZoom = lmz;
+				}
+			}
+		}
+	}
+	return minZoom;
+};
