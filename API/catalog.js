@@ -4,19 +4,19 @@ var g_catalog = [
 		"items":[
 			{
 				"name" : "初始化地图",
-				"link" : "initMap.html"
+				"link" : "map_init.html"
 			},{
 				"name" : "关闭地图",
-				"link" : "closeMap.html"
+				"link" : "map_close.html"
 			},{
 				"name" : "拖拽地图",
-				"link" : "dragMap.html"
+				"link" : "map_drag.html"
 			},{
 				"name" : "缩放地图",
-				"link" : "scrollMap.html"
+				"link" : "map_scroll.html"
 			},{
 				"name" : "拉框缩放",
-				"link" : "zoomMap.html"
+				"link" : "map_zoom.html"
 			}
 		]
 	},{
