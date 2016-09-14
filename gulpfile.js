@@ -97,7 +97,7 @@ if(platform == "win32"){
 			'src/GeoBeans/Source/*/*/*.js',
 			'src/GeoBeans/Style/*.js',	
 			'src/GeoBeans/Utility/*.js',
-
+			'src/GeoBeans/Widget/*.js',
 	];			
 	var map5Dest = 'lib/';	
 	if(platform == "linux"){

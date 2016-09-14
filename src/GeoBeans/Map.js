@@ -86,6 +86,9 @@ GeoBeans.Map = GeoBeans.Class({
 	// resize的标识符
 	_resizeId : null,
 
+	// copyright
+	_copyRightWidget : null,
+
 	initialize: function (id,name,extent,srid,viewer) {	
 		var mapContainer = document.getElementById(id);
 		if(mapContainer == null){
@@ -764,7 +767,7 @@ GeoBeans.Map = GeoBeans.Class({
 		var y = null;
 		var width = null;
 		var height = null;
-		var zoom = level - this.level;
+		var zoom = level - this.getViewer().getZoom();
 		var zoomSize = Math.pow(2,zoom);
 		width = this.width * zoomSize;
 		height = this.height * zoomSize;
@@ -1947,8 +1950,10 @@ GeoBeans.Map.prototype.initControls = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initWidgets = function(){
-	var copyRightHtml = "<div class='map5-copyright'>GeoBeans © </div>";
-	$(this._container).append(copyRightHtml);
+
+	var copyRightWidget = new GeoBeans.Widget.CopyRightWidget(this);
+	this._copyRightWidget = copyRightWidget;
+
 
 	// tooltip
 	var tooltipHtml = "<div class='map5-tooltip'></div>";
