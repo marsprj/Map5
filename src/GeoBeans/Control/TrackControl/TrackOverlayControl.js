@@ -1,3 +1,6 @@
+/*
+ * 删除
+ */
 GeoBeans.Control.TrackOverlayControl = GeoBeans.Class(GeoBeans.Control.TrackControl,{
 	
 

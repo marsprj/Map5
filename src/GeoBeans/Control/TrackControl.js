@@ -19,11 +19,13 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		this.map.enableDrag(false);
 		this.cleanup();
 
+		var mapContainer = this.map.getContainer();
 		var onmousedown = function(evt){
 			that.drawPoint(evt.layerX,evt.layerY);
 			
 			if( (callback!=null) && (callback!=undefined)){
-				var pt = that.map.mapViewer.toMapPoint(evt.layerX,evt.layerY);
+				var viewer = that.map.getViewer();
+				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 				callback(pt,userCallback,layer);
 			}
 		};
@@ -36,8 +38,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		this.onMouseDown = onmousedown;
 		this.onMouseMove = onmousemove;
 		
-		this.map.mapDiv[0].addEventListener("mousemove", onmousemove);
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousemove", onmousemove);
+		mapContainer.addEventListener("mousedown", onmousedown);
 	},
 	
 	trackLine : function(callback,map,layer,callback_u){
@@ -48,6 +50,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		this.map.saveSnap();
 		this.map.enableDrag(false);
 		this.cleanup();
+
+		var mapContainer = this.map.getContainer();
 
 		var onmousedown = function(evt){
 			evt.preventDefault();
@@ -69,9 +73,9 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 			};
 
 			var onmousedbclick = function(evt){
-				that.map.mapDiv[0].removeEventListener("dblclick",  that.onMouseDClick);
-				that.map.mapDiv[0].removeEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].removeEventListener("dblclick",  onmousedbclick);
+				mapContainer.removeEventListener("dblclick",  that.onMouseDClick);
+				mapContainer.removeEventListener("mousemove", onmousemove);
+				mapContainer.removeEventListener("dblclick",  onmousedbclick);
 
 				if(db_points.length == points.length){
 					return;
@@ -103,8 +107,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 
 			if(!addEvent_flag){ //只有第一次mousedown的时候才会触发注册事件
 				console.log('add-mousemove');
-				that.map.mapDiv[0].addEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].addEventListener("dblclick", onmousedbclick);
+				mapContainer.addEventListener("mousemove", onmousemove);
+				mapContainer.addEventListener("dblclick", onmousedbclick);
 				addEvent_flag = true;
 			}
 			that.onMouseDClick = onmousedbclick;
@@ -112,7 +116,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 			
 		};
 		
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousedown", onmousedown);
 		this.onMouseDown = onmousedown;
 	},
 
@@ -123,6 +127,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		this.map.saveSnap();
 		this.map.enableDrag(false);
 		this.cleanup();
+
+		var mapContainer = this.map.getContainer();
 
 		var onmousedown = function(evt){
 			points.push({x:evt.layerX,y:evt.layerY});
@@ -140,8 +146,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 			};
 
 			var onmousedbclick = function(evt){
-				that.map.mapDiv[0].removeEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].removeEventListener("dblclick",  onmousedbclick);
+				mapContainer.removeEventListener("mousemove", onmousemove);
+				mapContainer.removeEventListener("dblclick",  onmousedbclick);
 
 				points.push({x:evt.layerX,y:evt.layerY});
 				that.map.restoreSnap();
@@ -156,8 +162,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			if(!addEvent_flag){ //只有第一次mousedown的时候才会触发注册事件
 				console.log('add-mousemove');
-				that.map.mapDiv[0].addEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].addEventListener("dblclick", onmousedbclick);
+				mapContainer.addEventListener("mousemove", onmousemove);
+				mapContainer.addEventListener("dblclick", onmousedbclick);
 				addEvent_flag = true;
 			}
 
@@ -166,7 +172,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		};
 			
 		
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousedown", onmousedown);
 		this.onMouseDown = onmousedown;
 	},
 
@@ -179,8 +185,13 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		this.map.saveSnap();
 		this.map.enableDrag(false);
 		this.cleanup();
+
+		var viewer = this.map.getViewer();
+		var mapContainer = this.map.getContainer();
+
 		var onmousedown = function(evt){
 			evt.preventDefault();
+			that.map.enableDrag(false);
 			point_r = {x:evt.layerX,y:evt.layerY};
 			that.drawPoints([],evt.layerX,evt.layerY);
 
@@ -199,14 +210,13 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				if(point_e == null){
 					return;
 				}
-				that.map.mapDiv[0].removeEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].removeEventListener("mouseup", onmouseup);
+				mapContainer.removeEventListener("mousemove", onmousemove);
+				mapContainer.removeEventListener("mouseup", onmouseup);
 				that.map.restoreSnap();
 				that.map.enableDrag(true);
 
-
-				var point_map_r = that.map.mapViewer.toMapPoint(point_r.x,point_r.y);
-				var point_map_e = that.map.mapViewer.toMapPoint(point_e.x,point_e.y);
+				var point_map_r = viewer.toMapPoint(point_r.x,point_r.y);
+				var point_map_e = viewer.toMapPoint(point_e.x,point_e.y);
 				var radius_map = Math.sqrt((point_map_e.x - point_map_r.x)*(point_map_e.x - point_map_r.x)
 							+ (point_map_e.y - point_map_r.y)*(point_map_e.y - point_map_r.y));
 				if( (callback!=null) && (callback!='undefined')){
@@ -217,14 +227,14 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				}
 			};
 
-			that.map.mapDiv[0].addEventListener("mousemove", onmousemove);
-			that.map.mapDiv[0].addEventListener("mouseup", onmouseup);
+			mapContainer.addEventListener("mousemove", onmousemove);
+			mapContainer.addEventListener("mouseup", onmouseup);
 
 			that.onMouseMove = onmousemove;
 			that.onMouseUp = onmouseup;
 		};	
 
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousedown", onmousedown);
 		this.onMouseDown = onmousedown;
 
 	},
@@ -239,6 +249,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		var point_b = null;
 		var point_e = null;
 		var rect = null;
+		var mapContainer = this.map.getContainer();
 		var onmousedown = function(evt){
 			evt.preventDefault();
 			point_b = {x:evt.layerX,y:evt.layerY};
@@ -268,8 +279,8 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				var dis_y = point_b.y - point_e.y;
 
 				
-				that.map.mapDiv[0].removeEventListener("mousemove", onmousemove);
-				that.map.mapDiv[0].removeEventListener("mouseup", onmouseup);
+				mapContainer.removeEventListener("mousemove", onmousemove);
+				mapContainer.removeEventListener("mouseup", onmouseup);
 				that.map.restoreSnap();
 				// that.map.enableDrag(true);
 				if(Math.abs(dis_x) < 0.0001 && Math.abs(dis_y) < 0.0001){
@@ -284,14 +295,14 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				point_e = null;
 			};
 
-			that.map.mapDiv[0].addEventListener("mousemove", onmousemove);
-			that.map.mapDiv[0].addEventListener("mouseup", onmouseup);
+			mapContainer.addEventListener("mousemove", onmousemove);
+			mapContainer.addEventListener("mouseup", onmouseup);
 
 			that.onMouseMove = onmousemove;
 			that.onMouseUp = onmouseup;
 		};
 
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousedown", onmousedown);
 		this.onMouseDown = onmousedown;
 	},
 	
@@ -300,6 +311,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		// this.map.enableDrag(false);
 		var point_b = null;
 		var point_e = null;
+		var mapContainer = this.map.getContainer();
 		var onmousedown = function(evt){
 			if(!(evt.target.tagName.toUpperCase() == "CANVAS")){
 				return;
@@ -312,7 +324,7 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				var dis_x = point_b.x - point_e.x;
 				var dis_y = point_b.y - point_e.y;
 				if(Math.abs(dis_x) > 0.0001 || Math.abs(dis_y) > 0.0001){
-					that.map.mapDiv[0].removeEventListener("mouseup", onmouseup);
+					mapContainer.removeEventListener("mouseup", onmouseup);
 					return;
 				}
 				var point = new GeoBeans.Geometry.Point(point_b.x,point_b.y);
@@ -320,22 +332,23 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 					console.log(point_b.x,point_b.y);
 					callback(point,layer,map,callback_u);
 				}
-				that.map.mapDiv[0].removeEventListener("mouseup", onmouseup);
+				mapContainer.removeEventListener("mouseup", onmouseup);
 			}
-			that.map.mapDiv[0].addEventListener("mouseup", onmouseup);
+			mapContainer.addEventListener("mouseup", onmouseup);
 			
 			that.onMouseUp = onmouseup;
 		};
-		this.map.mapDiv[0].addEventListener("mousedown", onmousedown);
+		mapContainer.addEventListener("mousedown", onmousedown);
 		this.onMouseDown = onmousedown;
 		
 	},
 
 	cleanup : function(){
-		this.map.mapDiv[0].removeEventListener("mousedown", this.onMouseDown);
-		this.map.mapDiv[0].removeEventListener("mousemove", this.onMouseMove);
-		this.map.mapDiv[0].removeEventListener("dblclick",  this.onMouseDClick);
-		this.map.mapDiv[0].removeEventListener("mouseup",  this.onMouseUp);
+		var mapContainer = this.map.getContainer();
+		mapContainer.removeEventListener("mousedown", this.onMouseDown);
+		mapContainer.removeEventListener("mousemove", this.onMouseMove);
+		mapContainer.removeEventListener("dblclick",  this.onMouseDClick);
+		mapContainer.removeEventListener("mouseup",  this.onMouseUp);
 
 		this.onMouseDown = null;
 		this.onMouseMove = null;
@@ -357,8 +370,9 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		var x = evt.layerX;
 		var y = evt.layerY;
 		this.drawPoint(x, y);
-		
-		this.map.mapDiv[0].saveSnap();
+
+		var mapContainer = this.map.getContainer();
+		mapContainer.saveSnap();
 	},
 	
 	onMouseMovePoint : function(evt){
@@ -472,8 +486,9 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		var pt = null;
 		var points = [];
 		var num = dots.length;
+		var viewer = this.map.getViewer();
 		for(var i=0; i<num; i++){
-			pt = this.map.mapViewer.toMapPoint(dots[i].x, dots[i].y);
+			pt = viewer.toMapPoint(dots[i].x, dots[i].y);
 			points.push(pt);
 		}
 		return (new GeoBeans.Geometry.LineString(points));
@@ -487,8 +502,9 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 		var pt = null;
 		var points = [];
 		var num = dots.length;
+		var viewer = this.map.getViewer();
 		for(var i=0; i<num; i++){
-			pt = this.map.mapViewer.toMapPoint(dots[i].x, dots[i].y);
+			pt = viewer.toMapPoint(dots[i].x, dots[i].y);
 			points.push(pt);
 		}
 		points.push(points[0]);
@@ -497,8 +513,9 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	buildRect : function(point_b,point_e){
-		point_b = this.map.mapViewer.toMapPoint(point_b.x,point_b.y);
-		point_e = this.map.mapViewer.toMapPoint(point_e.x,point_e.y);
+		var viewer = this.map.getViewer();
+		point_b = viewer.toMapPoint(point_b.x,point_b.y);
+		point_e = viewer.toMapPoint(point_e.x,point_e.y);
 		var xmin = (point_b.x > point_e.x) ? point_e.x : point_b.x;
 		var xmax = (point_b.x > point_e.x) ? point_b.x : point_e.x;
 		var ymin = (point_b.y > point_e.y) ? point_e.y : point_b.y;
