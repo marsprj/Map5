@@ -372,3 +372,7 @@ String.prototype.like = function(search) {
     // Check matches
     return RegExp('^' + search + '$', 'gi').test(this);
 };
+
+function isValid(o){
+	return ((o!=null) && (o!=undefined));
+}

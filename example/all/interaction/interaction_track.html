@@ -63,6 +63,11 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
 <!--Render-->
 <script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
+<!--Widget-->
+<script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
@@ -99,7 +104,7 @@
 		var viewer = mapObj.getViewer();	
 		viewer.setZoomCenter(zoom,center);
 
-		trackPoint_2();
+		trackPoint();
 	}
 
 	function trackPoint(){
@@ -109,12 +114,6 @@
 		//tracker.trackPolygon(callback_polygon);
 		tracker.trackCircle(callback_circle);
 		//tracker.trackRect(callback_rect);
-	}
-
-	function trackPoint_2(){
-		var tracker = mapObj.tracker;
-		var pt = tracker.trackPoint_2();
-		alert(pt.x + "," + pt.y);
 	}
 
 	function callback_point(pt){

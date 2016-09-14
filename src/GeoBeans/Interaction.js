@@ -9,11 +9,11 @@ GeoBeans.Interaction = GeoBeans.Class({
 	_enabled : true,
 	
 	initialize : function(options){
-		GeoBeans.Class.prototype.initialize.apply(this, arguments);
+		//GeoBeans.Class.prototype.initialize.apply(this, arguments);
 	},
 	
 	destory : function(){
-		GeoBeans.Class.prototype.destory.apply(this, arguments);
+		//GeoBeans.Class.prototype.destory.apply(this, arguments);
 	},
 	
 	attach : function(_map){
