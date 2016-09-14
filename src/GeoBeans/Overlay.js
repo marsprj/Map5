@@ -42,7 +42,7 @@ GeoBeans.Overlay = GeoBeans.Class({
 		if(this.visible){
 			this.loadFlag = GeoBeans.Overlay.Flag.LOADED;
 			this.layer.renderer.setSymbolizer(this.symbolizer);
-			this.layer.renderer.drawOverlay(this, this.symbolizer,this.layer.map.getMapViewer());			
+			this.layer.renderer.drawOverlay(this, this.symbolizer,this.layer.map.getViewer());			
 		}
 	},
 

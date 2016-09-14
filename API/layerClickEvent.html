@@ -112,17 +112,24 @@
 		var html = "<div><div>" + name +  "</div></div>";
 
 		// 3、定义弹窗的标题
-		var option = {
-			title : "城市"
-		};
-		// 4、定义infoWindow
-		var infoWindow = new GeoBeans.InfoWindow(html,option);
+		// var option = {
+		// 	title : "城市"
+		// };
+		// // 4、定义infoWindow
+		// var infoWindow = new GeoBeans.InfoWindow(html,option);
 
 		// 5、定义点
 		var point = new GeoBeans.Geometry.Point(x,y);
 
 		// 弹窗
-		mapObj.openInfoWindow(infoWindow,point);
+		// mapObj.openInfoWindow(infoWindow,point);
+
+		var title = "城市";
+		var option = {
+			title : title,
+			content : html
+		};
+		mapObj.openInfoWindow(option,point);
 	}
 
 	function createCitiesStyle(){

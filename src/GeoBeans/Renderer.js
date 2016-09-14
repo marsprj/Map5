@@ -8,11 +8,11 @@ GeoBeans.Renderer = GeoBeans.Class({
 		this.context = canvas.getContext('2d');
 	},
 	
-	draw : function(feature, symbolizer, mapViewer){
+	draw : function(feature, symbolizer, viewer){
 		
 		var geometry = feature.geometry;
 		if(geometry != null)		{
-			this.drawGeometry(geometry,symbolizer, mapViewer);
+			this.drawGeometry(geometry,symbolizer, viewer);
 		}
 	},
 
@@ -35,43 +35,43 @@ GeoBeans.Renderer = GeoBeans.Class({
 	/************************************************************/
 	/*	Draw Geometry											*/
 	/************************************************************/
-	drawGeometry : function(geometry, symbolizer, mapViewer){
+	drawGeometry : function(geometry, symbolizer, viewer){
 		
 		switch(geometry.type){
 		case GeoBeans.Geometry.Type.POINT:
-			this.drawPoint(geometry,symbolizer, mapViewer);
+			this.drawPoint(geometry,symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTIPOINT:
-			this.drawMultiPoint(geometry,symbolizer, mapViewer);
+			this.drawMultiPoint(geometry,symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.LINESTRING:
-			this.drawLineString(geometry,symbolizer, mapViewer);
+			this.drawLineString(geometry,symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTILINESTRING:
-			this.drawMultiLineString(geometry,symbolizer, mapViewer);
+			this.drawMultiLineString(geometry,symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.POLYGON:
-			this.drawPolygon(geometry, symbolizer, mapViewer);
+			this.drawPolygon(geometry, symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTIPOLYGON:
-			this.drawMultiPolygon(geometry, symbolizer, mapViewer);
+			this.drawMultiPolygon(geometry, symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.CIRCLE:
-			this.drawCircle(geometry,symbolizer,mapViewer);
+			this.drawCircle(geometry,symbolizer,viewer);
 			break;
 		case GeoBeans.Geometry.Type.COLLECTION:
-			this.drawMultiGeometry(geometry,symbolizer,mapViewer);
+			this.drawMultiGeometry(geometry,symbolizer,viewer);
 			break;
 		default: 
 			break;			
 		};
 	},
 	
-	drawPoint : function(point, symbolizer, mapViewer){
+	drawPoint : function(point, symbolizer, viewer){
 		var spt;
 		var r = symbolizer.size;
 		
-		spt = mapViewer.toScreenPoint(point.x, point.y);			
+		spt = viewer.toScreenPoint(point.x, point.y);			
 		this.context.beginPath();
 		this.context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);  
 		this.context.closePath();
@@ -85,7 +85,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}	
 	},
 	
-	drawLineString : function(line, symbolizer, mapViewer){
+	drawLineString : function(line, symbolizer, viewer){
 		if(line.points.length<1){
 			return;
 		}
@@ -96,24 +96,24 @@ GeoBeans.Renderer = GeoBeans.Class({
 		
 		context.beginPath();
 		pt = line.points[0];
-		spt = mapViewer.toScreenPoint(pt.x, pt.y);
+		spt = viewer.toScreenPoint(pt.x, pt.y);
 		context.moveTo(spt.x, spt.y);
 		
 		for(var i=1, len=line.points.length; i<len; i++){
 			pt = line.points[i];
-			spt = mapViewer.toScreenPoint(pt.x, pt.y);
+			spt = viewer.toScreenPoint(pt.x, pt.y);
 			context.lineTo(spt.x, spt.y);
 		}		 
 		context.stroke();
 	},
 	
-	drawPolygon : function(polygon, symbolizer, mapViewer){
+	drawPolygon : function(polygon, symbolizer, viewer){
 
 		// // 先设定一下样式
 		// if(symbolizer.icon != null){
 		// 	if(!symbolizer.icon.complete){
 		// 		symbolizer.icon.onload = function(){
-		// 			mapViewer.map.drawLayersAll();
+		// 			viewer.map.drawLayersAll();
 		// 		};
 		// 		return;
 		// 	}
@@ -136,12 +136,12 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}
 		numPoints = outRing.points.length;
 		pt = outRing.points[0];
-		spt = mapViewer.toScreenPoint(pt.x, pt.y);
+		spt = viewer.toScreenPoint(pt.x, pt.y);
 		context.moveTo(spt.x, spt.y);
 
 		for(j=1; j<numPoints; j++){
 			pt = outRing.points[j];
-			spt = mapViewer.toScreenPoint(pt.x, pt.y);				
+			spt = viewer.toScreenPoint(pt.x, pt.y);				
 			context.lineTo(spt.x, spt.y);
 		}
 		var clockwise = GeoBeans.Utility._getClockDirection(outRing.points);
@@ -155,21 +155,21 @@ GeoBeans.Renderer = GeoBeans.Class({
 			var clockwise_inner = GeoBeans.Utility._getClockDirection(ring.points);
 			if(clockwise_inner == clockwise){
 				pt = ring.points[numPoints-1];
-				spt = mapViewer.toScreenPoint(pt.x, pt.y);
+				spt = viewer.toScreenPoint(pt.x, pt.y);
 				context.moveTo(spt.x, spt.y);
 				for(j=numPoints-2; j>=0; j--){
 					pt = ring.points[j];
-					spt = mapViewer.toScreenPoint(pt.x, pt.y);				
+					spt = viewer.toScreenPoint(pt.x, pt.y);				
 					context.lineTo(spt.x, spt.y);
 				}
 			}else{
 				pt = ring.points[0];
-				spt = mapViewer.toScreenPoint(pt.x, pt.y);
+				spt = viewer.toScreenPoint(pt.x, pt.y);
 				context.moveTo(spt.x, spt.y);
 
 				for(j=1; j<numPoints; j++){
 					pt = ring.points[j];
-					spt = mapViewer.toScreenPoint(pt.x, pt.y);				
+					spt = viewer.toScreenPoint(pt.x, pt.y);				
 					context.lineTo(spt.x, spt.y);
 				}
 			}
@@ -185,35 +185,35 @@ GeoBeans.Renderer = GeoBeans.Class({
 		context.closePath();		
 	},
 	
-	drawMultiPoint : function(geometry,symbolizer, mapViewer){
+	drawMultiPoint : function(geometry,symbolizer, viewer){
 		points = geometry.points;
 		
 		var pt = null;
 		for(var i=0, len=points.length; i<len; i++){
 			pt = points[i];
-			this.drawPoint(pt, symbolizer,mapViewer);
+			this.drawPoint(pt, symbolizer,viewer);
 		}
 	},
 	
-	drawMultiLineString : function(geometry,symbolizer, mapViewer){
+	drawMultiLineString : function(geometry,symbolizer, viewer){
 		lines = geometry.lines;		
 		var line = null;
 		for(var i=0, len=lines.length; i<len; i++){
 			line = lines[i];
-			this.drawLineString(line, symbolizer,mapViewer);
+			this.drawLineString(line, symbolizer,viewer);
 		}
 	},
 	
-	drawMultiPolygon : function(geometry, symbolizer, mapViewer){
+	drawMultiPolygon : function(geometry, symbolizer, viewer){
 		polygons = geometry.polygons;		
 		var polygon = null;
 		for(var i=0, len=polygons.length; i<len; i++){
 			polygon = polygons[i];
-			this.drawPolygon(polygon, symbolizer,mapViewer);
+			this.drawPolygon(polygon, symbolizer,viewer);
 		}
 	},
 	
-	drawCircle : function(geometry, symbolizer, mapViewer){
+	drawCircle : function(geometry, symbolizer, viewer){
 		var center = geometry.center;
 		var radius = geometry.radius;
 		if(radius <= 0){
@@ -221,8 +221,8 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}
 		var context = this.context;
 		context.beginPath();
-		var spt = mapViewer.toScreenPoint(center.x, center.y);	
-		var spt_2 = mapViewer.toScreenPoint(center.x + radius, center.y);	
+		var spt = viewer.toScreenPoint(center.x, center.y);	
+		var spt_2 = viewer.toScreenPoint(center.x + radius, center.y);	
 		var sradius = Math.sqrt((spt.x - spt_2.x)*(spt.x - spt_2.x)
 							+ (spt.y - spt_2.y)*(spt.y - spt_2.y));
 		context.arc(spt.x,spt.y,sradius,0,Math.PI*2,true);
@@ -235,8 +235,8 @@ GeoBeans.Renderer = GeoBeans.Class({
 		context.closePath();			
 	},
 
-	drawMultiGeometry : function(geometry,symbolizer,mapViewer){
-		if(geometry == null || mapViewer == null || symbolizer == null){
+	drawMultiGeometry : function(geometry,symbolizer,viewer){
+		if(geometry == null || viewer == null || symbolizer == null){
 			return;
 		}
 
@@ -255,21 +255,21 @@ GeoBeans.Renderer = GeoBeans.Class({
 				case GeoBeans.Symbolizer.Type.Point:{
 					if(g.type == GeoBeans.Geometry.Type.POINT 
 						|| g.type == GeoBeans.Geometry.Type.MULTIPOINT){
-						this.drawGeometry(g,symbolizer,mapViewer);
+						this.drawGeometry(g,symbolizer,viewer);
 					}
 					break;
 				}
 				case GeoBeans.Symbolizer.Type.Line:{
 					if(g.type == GeoBeans.Geometry.Type.LINESTRING
 						|| g.type == GeoBeans.Geometry.Type.MULTILINESTRING){
-						this.drawGeometry(g,symbolizer,mapViewer);
+						this.drawGeometry(g,symbolizer,viewer);
 					}
 					break;
 				}
 				case GeoBeans.Symbolizer.Type.Polygon:{
 					if(g.type == GeoBeans.Geometry.Type.POLYGON
 						|| g.type == GeoBeans.Geometry.Type.MULTIPOLYGON){
-						this.drawGeometry(g,symbolizer,mapViewer);
+						this.drawGeometry(g,symbolizer,viewer);
 					}
 					break;
 				}
@@ -280,7 +280,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 
 	},
 	
-	drawIcons : function(features, symbolizer, mapViewer){		
+	drawIcons : function(features, symbolizer, viewer){		
 		if(features.length==0){
 			return;
 		}
@@ -305,13 +305,13 @@ GeoBeans.Renderer = GeoBeans.Class({
 				var pt = features[i].geometry;
 				var type = pt.type;
 				if(type == GeoBeans.Geometry.Type.POINT){
-					var sp = mapViewer.toScreenPoint(pt.x, pt.y);
+					var sp = viewer.toScreenPoint(pt.x, pt.y);
 					this.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
 				}else if(type == GeoBeans.Geometry.Type.MULTIPOINT){
 					var points = pt.points;
 					for(var j = 0; j < points.length;++j){
 						var point = points[j];
-						var sp = mapViewer.toScreenPoint(point.x, point.y);
+						var sp = viewer.toScreenPoint(point.x, point.y);
 						this.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
 					}
 				}
@@ -326,18 +326,18 @@ GeoBeans.Renderer = GeoBeans.Class({
 					var pt = features[i].geometry;
 					var type = pt.type;
 					if(type == GeoBeans.Geometry.Type.POINT){
-						var sp = mapViewer.toScreenPoint(pt.x, pt.y);
+						var sp = viewer.toScreenPoint(pt.x, pt.y);
 						that.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
 					}else if(type == GeoBeans.Geometry.Type.MULTIPOINT){
 						var points = pt.points;
 						for(var j = 0; j < points.length;++j){
 							var point = points[j];
-							var sp = mapViewer.toScreenPoint(point.x, point.y);
+							var sp = viewer.toScreenPoint(point.x, point.y);
 							that.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
 						}
 					}
 				}
-				mapViewer.map.drawLayersAll();
+				viewer.getMap().drawLayersAll();
 			};
 		}
 	},
@@ -383,9 +383,9 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 	
 
-	drawRing : function(point,radiusInnter,radiusOuter,color,opacityInner,opacityOuter,mapViewer){
+	drawRing : function(point,radiusInnter,radiusOuter,color,opacityInner,opacityOuter,viewer){
 		var spt = null;
-		spt = mapViewer.toScreenPoint(point.x, point.y);
+		spt = viewer.toScreenPoint(point.x, point.y);
 
 		var colorOuter = new GeoBeans.Color();
 		colorOuter.setByHex(color,opacityOuter);
@@ -408,10 +408,10 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 	
 	// 绘制贝塞尔曲线
-	drawBezierLine : function(fromPoint,endPoint,controlPoint,mapViewer){
-		var sFromPoint = mapViewer.toScreenPoint(fromPoint.x,fromPoint.y);
-		var sEndPoint = mapViewer.toScreenPoint(endPoint.x,endPoint.y);
-		var sControlPoint = mapViewer.toScreenPoint(controlPoint.x,controlPoint.y);
+	drawBezierLine : function(fromPoint,endPoint,controlPoint,viewer){
+		var sFromPoint = viewer.toScreenPoint(fromPoint.x,fromPoint.y);
+		var sEndPoint = viewer.toScreenPoint(endPoint.x,endPoint.y);
+		var sControlPoint = viewer.toScreenPoint(controlPoint.x,controlPoint.y);
 		this.context.beginPath();
 
 		this.context.moveTo(sFromPoint.x,sFromPoint.y);
@@ -421,35 +421,35 @@ GeoBeans.Renderer = GeoBeans.Class({
 	/************************************************************/
 	/*	Label Geometry											*/
 	/************************************************************/
-	label : function(geometry, text, symbolizer, mapViewer){
+	label : function(geometry, text, symbolizer, viewer){
 		
 		switch(geometry.type){
 		case GeoBeans.Geometry.Type.POINT:
-			this.labelPoint(geometry,text, symbolizer, mapViewer);
+			this.labelPoint(geometry,text, symbolizer, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTIPOINT:
-			this.labelMultiPoint(geometry,text, mapViewer);
+			this.labelMultiPoint(geometry,text, viewer);
 			break;
 		case GeoBeans.Geometry.Type.LINESTRING:
-			this.labelLineString(geometry, text, mapViewer);
+			this.labelLineString(geometry, text, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTILINESTRING:
-			this.labelMultiLineString(geometry, text, mapViewer);
+			this.labelMultiLineString(geometry, text, viewer);
 			break;
 		case GeoBeans.Geometry.Type.POLYGON:
-			this.labelPolygon(geometry, text, mapViewer);
+			this.labelPolygon(geometry, text, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTIPOLYGON:
-			this.labelMultiPolygon(geometry, text, mapViewer);
+			this.labelMultiPolygon(geometry, text, viewer);
 			break;
 		};
 	},
 	
-	labelPoint : function(point, text, symbolizer, mapViewer){
+	labelPoint : function(point, text, symbolizer, viewer){
 		var spt;
 		var r = 20;
 
-		spt = mapViewer.toScreenPoint(point.x, point.y);
+		spt = viewer.toScreenPoint(point.x, point.y);
 		
 		if(symbolizer.fill != null){
 			this.context.fillText(text, spt.x, spt.y);
@@ -473,25 +473,25 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}
 	},
 	
-	labelLineString : function(line, text, symbolizer, mapViewer){
+	labelLineString : function(line, text, symbolizer, viewer){
 		
 		
 	},
 	
-	labelPolygon : function(polygon, text, symbolizer, mapViewer){
+	labelPolygon : function(polygon, text, symbolizer, viewer){
 
 		
 	},
 	
-	labelMultiPoint : function(geometry, text, symbolizer, mapViewer){
+	labelMultiPoint : function(geometry, text, symbolizer, viewer){
 		
 	},
 	
-	labelMultiLineString : function(geometry, text, symbolizer, mapViewer){
+	labelMultiLineString : function(geometry, text, symbolizer, viewer){
 		
 	},
 	
-	labelMultiPolygon : function(geometry, text, symbolizer, mapViewer){
+	labelMultiPolygon : function(geometry, text, symbolizer, viewer){
 		
 	},
 
@@ -625,34 +625,34 @@ GeoBeans.Renderer = GeoBeans.Class({
 	/************************************************************/
 	/*	Draw Geometry											*/
 	/************************************************************/
-	clear : function(geometry, fill_color, r, mapViewer){
+	clear : function(geometry, fill_color, r, viewer){
 		
 		switch(geometry.type){
 		case GeoBeans.Geometry.Type.POINT:
-			this.clearPoint(geometry,fill_color, r, mapViewer);
+			this.clearPoint(geometry,fill_color, r, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTIPOINT:
-			this.clearMultiPoint(geometry,fill_color, r, mapViewer);
+			this.clearMultiPoint(geometry,fill_color, r, viewer);
 			break;
 		case GeoBeans.Geometry.Type.LINESTRING:
-			this.clearLineString(geometry,fill_color, mapViewer);
+			this.clearLineString(geometry,fill_color, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTILINESTRING:
-			this.clearMultiLineString(geometry,fill_color, mapViewer);
+			this.clearMultiLineString(geometry,fill_color, viewer);
 			break;
 		case GeoBeans.Geometry.Type.POLYGON:
-			this.clearPolygon(geometry, fill_color, mapViewer);
+			this.clearPolygon(geometry, fill_color, viewer);
 			break;
 		case GeoBeans.Geometry.Type.MULTIPOLYGON:
-			this.clearMultiPolygon(geometry, fill_color, mapViewer);
+			this.clearMultiPolygon(geometry, fill_color, viewer);
 			break;
 		};
 	},
 	
-	clearPoint : function(point, fill_color, r, mapViewer){
+	clearPoint : function(point, fill_color, r, viewer){
 		var spt;
 		
-		spt = mapViewer.toScreenPoint(point.x, point.y);	
+		spt = viewer.toScreenPoint(point.x, point.y);	
 		this.context.fillStyle = fill_color;
 		this.context.beginPath();
 		this.context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);  
@@ -660,7 +660,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 		this.context.fill();
 	},
 	
-	clearLineString : function(line, fill_color, mapViewer){
+	clearLineString : function(line, fill_color, viewer){
 		
 		if(line.points.length<1){
 			return;
@@ -673,18 +673,18 @@ GeoBeans.Renderer = GeoBeans.Class({
 		context.strokeStyle = fill_color;
 		context.beginPath();
 		pt = line.points[0];
-		spt = mapViewer.toScreenPoint(pt.x, pt.y);
+		spt = viewer.toScreenPoint(pt.x, pt.y);
 		context.moveTo(spt.x, spt.y);
 		
 		for(var i=1, len=line.points.length; i<len; i++){
 			pt = line.points[i];
-			spt = mapViewer.toScreenPoint(pt.x, pt.y);
+			spt = viewer.toScreenPoint(pt.x, pt.y);
 			context.lineTo(spt.x, spt.y);
 		}		 
 		context.stroke();
 	},
 	
-	clearPolygon : function(polygon, fill_color, mapViewer){
+	clearPolygon : function(polygon, fill_color, viewer){
 
 		var pt = null;
 		var ring = null;
@@ -701,11 +701,11 @@ GeoBeans.Renderer = GeoBeans.Class({
 			
 			numPoints = ring.points.length;
 			pt = ring.points[0];
-			spt = mapViewer.toScreenPoint(pt.x, pt.y);
+			spt = viewer.toScreenPoint(pt.x, pt.y);
 			context.moveTo(spt.x, spt.y);
 			for(j=1; j<numPoints; j++){
 				pt = ring.points[j];
-				spt = mapViewer.toScreenPoint(pt.x, pt.y);				
+				spt = viewer.toScreenPoint(pt.x, pt.y);				
 				context.lineTo(spt.x, spt.y);
 			}
 		}
@@ -713,31 +713,31 @@ GeoBeans.Renderer = GeoBeans.Class({
 		context.fill();	
 	},
 	
-	clearMultiPoint : function(geometry,fill_color, r, mapViewer){
+	clearMultiPoint : function(geometry,fill_color, r, viewer){
 		points = geometry.points;
 		
 		var pt = null;
 		for(var i=0, len=points.length; i<len; i++){
 			pt = points[i];
-			this.clearPoint(pt, symbolizer,r, mapViewer);
+			this.clearPoint(pt, symbolizer,r, viewer);
 		}
 	},
 	
-	clearMultiLineString : function(geometry,fill_color, mapViewer){
+	clearMultiLineString : function(geometry,fill_color, viewer){
 		lines = geometry.lines;		
 		var line = null;
 		for(var i=0, len=lines.length; i<len; i++){
 			line = lines[i];
-			this.clearLineString(line, fill_color,mapViewer);
+			this.clearLineString(line, fill_color,viewer);
 		}
 	},
 	
-	clearMultiPolygon : function(geometry, fill_color, mapViewer){
+	clearMultiPolygon : function(geometry, fill_color, viewer){
 		polygons = geometry.polygons;		
 		var polygon = null;
 		for(var i=0, len=polygons.length; i<len; i++){
 			polygon = polygons[i];
-			this.clearPolygon(polygon, fill_color,mapViewer);
+			this.clearPolygon(polygon, fill_color,viewer);
 		}
 	},
 	
@@ -755,32 +755,32 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 
 	//绘制overlay
-	drawOverlay : function(overlay,symbolizer,mapViewer){
+	drawOverlay : function(overlay,symbolizer,viewer){
 		var ret = false;
 		var type = overlay.type;
 		switch(type){
 			case GeoBeans.Overlay.Type.MARKER:
-				ret = this.drawMarker(overlay,symbolizer,mapViewer);
+				ret = this.drawMarker(overlay,symbolizer,viewer);
 				break;
 			case GeoBeans.Overlay.Type.LABEL:
-				this.drawLabelOverlay(overlay,symbolizer,mapViewer);
+				this.drawLabelOverlay(overlay,symbolizer,viewer);
 				break;
 			default:
 				this.drawGeometry(overlay.geometry,symbolizer,
-								mapViewer);
+								viewer);
 				ret = true;
 				break;
 		}
 		return ret;
 	},
 
-	drawMarker : function(marker,symbolizer,mapViewer){
+	drawMarker : function(marker,symbolizer,viewer){
 		var that = this;
 		var icon = symbolizer.symbol.icon;
 		var x = marker.geometry.x;
 		var y = marker.geometry.y;
 
-		var sp = mapViewer.toScreenPoint(x,y);
+		var sp = viewer.toScreenPoint(x,y);
 
 		if(symbolizer.image == null){
 			symbolizer.image = new Image();
@@ -799,17 +799,17 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}	
 	},
 
-	drawLabelOverlay : function(overlay,symbolizer,mapViewer){
-		if(overlay == null || symbolizer == null || mapViewer == null){
+	drawLabelOverlay : function(overlay,symbolizer,viewer){
+		if(overlay == null || symbolizer == null || viewer == null){
 			return;
 		}
 		var label = overlay.label;
-		label.computePosition(this,mapViewer);
+		label.computePosition(this,viewer);
 		this.drawLabel(label);
 	},
 
-	drawTip : function(point,mapViewer,rule,labelRule){
-		if(point == null || mapViewer == null 
+	drawTip : function(point,viewer,rule,labelRule){
+		if(point == null || viewer == null 
 			|| rule == null){
 			return null;
 		}
@@ -841,7 +841,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 
 		var x = point.x;
 		var y = point.y;
-		var point_s = mapViewer.toScreenPoint(x,y);
+		var point_s = viewer.toScreenPoint(x,y);
 		var space = 6;
 		var arc = 5;
 		var point_1 	= new GeoBeans.Geometry.Point(point_s.x - space,point_s.y - space);

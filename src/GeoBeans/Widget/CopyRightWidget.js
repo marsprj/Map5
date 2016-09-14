@@ -8,7 +8,7 @@ GeoBeans.Widget.CopyRightWidget = GeoBeans.Class(GeoBeans.Widget,{
 		this.createContainer();
 	},
 
-	setContext : null,
+	setContent : null,
 
 });
 
@@ -46,8 +46,8 @@ GeoBeans.Widget.CopyRightWidget.prototype.show = function(v){
 
 /**
  * 设置显示的内容
- * @param {string} context 显示内容
+ * @param {string} content 显示内容
  */
-GeoBeans.Widget.CopyRightWidget.prototype.setContext = function(context){
-	$(this._container).html(context);
+GeoBeans.Widget.CopyRightWidget.prototype.setContent = function(content){
+	$(this._container).html(content);
 };
