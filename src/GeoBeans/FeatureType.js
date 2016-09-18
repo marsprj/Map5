@@ -1037,6 +1037,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 // }
 
 
+
 /**
  * [query description]
  * @param  {[type]} filter [description]

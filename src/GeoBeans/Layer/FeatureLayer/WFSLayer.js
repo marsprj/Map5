@@ -201,13 +201,6 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 	CLASS_NAME : "GeoBeans.Layer.FeatureLayer.WFSLayer"
 });
 
-
-/**
- * 查询
- * @param  {GeoBeasn.Filter} filter 查询过滤器
- * @param {[type]} [varname] [description]
- * @return {GeoBeans.Feature}        目标要素集合
- */
 /**
  * 查询
  * @param  {GeoBeasn.Filter} filter  查询过滤器
@@ -215,6 +208,17 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
  * @return {GeoBeans.Feature}        目标要素集合
  */
 GeoBeans.Layer.WFSLayer.prototype.query = function(query, handler){
+	var featureType = this.getFeatureType();
+	featureType.query(query, handler);
+}
+
+/**
+ * 矩形查询过滤器
+ * @param  {[type]} query   [description]
+ * @param  {[type]} handler [description]
+ * @return {[type]}         [description]
+ */
+GeoBeans.Layer.WFSLayer.prototype.queryByRect = function(query, handler){
 	var featureType = this.getFeatureType();
 	featureType.query(query, handler);
 }

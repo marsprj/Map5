@@ -4,7 +4,7 @@ GeoBeans.DistanceBufferFilter = GeoBeans.Class(GeoBeans.Class,{
 
 
 	initialize : function(){
-		GeoBeans.SpatialFitler.prototype.initialize.apply(this,arguments);
+		//GeoBeans.SpatialFitler.prototype.initialize.apply(this,arguments);
 		this.operator = GeoBeans.SpatilalFilter.OperatorType.SpOprIntersects;
 	}
 });

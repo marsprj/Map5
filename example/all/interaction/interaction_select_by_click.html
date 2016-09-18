@@ -146,8 +146,8 @@
 	 */
 	function createSelectInteraction(){
 		var select = new GeoBeans.Interaction.Select({
-			"layer" : wfsLayer,
-			"map"   : mapObj
+			"map" : mapObj,
+			"layer" : wfsLayer
 		});
 		//select.attach(mapObj);
 		select.onchange(onSelectionChange);
