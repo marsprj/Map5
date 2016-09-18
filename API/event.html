@@ -32,15 +32,13 @@
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 4、设置中心点
-		var center = new GeoBeans.Geometry.Point(0,0);	
-		mapObj.setCenter(center);
 
-		// 5、设置级别
-		mapObj.setLevel(2);	
+		var viewer = mapObj.getViewer();
 
-		// 6、绘图
-		mapObj.draw();
+		// 4、设置中心点和显示级别
+		var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);		
+		viewer.setZoomCenter(zoom,center);
 	}
 
 	function addMoveEventListener(){
@@ -48,7 +46,8 @@
 		// 注册事件
 		// 参数一：事件类型
 		// 参数二：回调函数
-		mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE,moveHandler);
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE,moveHandler);
+
 	}
 
 
@@ -59,7 +58,7 @@
 		}
 
 		// 1、获取地图的级别
-		var level = args.level;
+		var zoom = args.zoom;
 
 		// 2、获取鼠标move经过点的屏幕坐标
 		var x = args.X;
@@ -70,7 +69,7 @@
 		var mapY = args.mapY;
 
 
-		$("#level_args span").html(level);
+		$("#level_args span").html(zoom);
 		$("#xy_args span").html(x + "," + y);
 		$("#map_args span").html(mapX + "," + mapY);
 	}
@@ -80,9 +79,17 @@
 		// 注销事件
 		// 参数一：事件类型
 		// 参数二：回调函数
-		mapObj.removeEventListener(GeoBeans.Event.MOUSE_MOVE,moveHandler);
+		mapObj.un(GeoBeans.Event.MOUSE_MOVE);
 	}
 
+
+	function onResize(){
+		mapObj.on(GeoBeans.Event.RESIZE,moveHandler);
+	}
+
+	function unResize(){
+		mapObj.un(GeoBeans.Event.RESIZE);
+	}
 </script>
 <title>Map5 -- 注册鼠标事件</title>
 <body onload="init()">
@@ -91,6 +98,9 @@
 	</div>
 	<button onclick="addMoveEventListener()">注册鼠标移动事件</button>
 	<button onclick="removeMoveEventListener()">注销鼠标移动事件</button>
+
+	<button onclick="onResize()">on_resize</button>
+	<button onclick="unResize()">un_resize</button>
 
 	<div id="level_args">级别：<span></span></div>
 	<div id="xy_args">屏幕坐标： <span></span></div>

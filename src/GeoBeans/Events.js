@@ -15,7 +15,7 @@ GeoBeans.Event = {
 	MOUSE_MOVE 	: "mousemove",
 	MOUSE_OVER 	: "mouseover",
 	MOUSE_OUT 	: "mouseout",
-	RESIZE		: "resize",
+	// RESIZE		: "resize",
 	MOUSE_WHEEL : "mousewheel",
 	/* touch Event */
 	TOUCH_START	: 'touchstart',
@@ -25,7 +25,7 @@ GeoBeans.Event = {
 };
 
 /*
- * ��갴��
+ * 
  */
 GeoBeans.Event.MouseButton = {
 	LEFT	: "left",
@@ -34,7 +34,7 @@ GeoBeans.Event.MouseButton = {
 };
 
 /*
- * ����¼�
+ * 
  */
 GeoBeans.Event.MouseArgs = function(){
 	buttn : null;
@@ -42,7 +42,7 @@ GeoBeans.Event.MouseArgs = function(){
 	Y : null;
 	mapX : null;
 	mapY : null;
-	level : null;
+	zoom : null;
 };
 
 GeoBeans.Events = GeoBeans.Class({
@@ -56,55 +56,53 @@ GeoBeans.Events = GeoBeans.Class({
 	destory : function(){
 		this.events = null;
 	},
+
+	addEvent : null,
+
+	getEvent : null,
+
+	removeEvent : null,
 	
-	// addEvent : function(evt, evt_handler){
-	// 	this.events.push({event : evt, handler : evt_handler});
-	// },
-	
-	// getEvnet : function(event){
-	// 	var len = this.events;
-	// 	for(var i=0; i<len; i++){
-	// 		var evt = this.events[i];
-	// 		if(evt.event == event){
-	// 			return evt;
-	// 		}
-	// 	}
-	// 	return null;
-	// }
-	// 
-	addEvent : function(event,handler,listener){
-		this.events.push({
-			event : event,
-			handler : handler,
-			listener : listener
-		});
-	},
-
-
-	getEventHandler : function(event,handler){
-		for(var i = 0; i < this.events.length;++i){
-			var eventObj = this.events[i];
-			if(eventObj.event == event && eventObj.handler == handler){
-				return eventObj.listener;
-			}
-		}
-	},
-
-	removeEventHandler : function(event,handler){
-		for(var i = 0; i < this.events.length;++i){
-			var eventObj = this.events[i];
-			if(eventObj.event == event && eventObj.handler == handler){
-				this.events.splice(i,1);
-			}
-		}
-	},
-
-	// *
-	//  * 
-	//  * @param  {[type]} evt [description]
-	//  * @return {[type]}     [description]
-	 
-	// GeoBeans.Events.prototype.get = function(evt){		
-	// 	return this._events[evt];
-	// }
 });
+
+/**
+ * 添加事件
+ * @param {GeoBeans.Event} event    事件类型
+ * @param {function} handler  用户回调函数
+ * @param {function} listener 注册监听事件
+ */
+GeoBeans.Events.prototype.addEvent = function(event,handler,listener){
+	this.events.push({
+		event : event,
+		handler : handler,
+		listener : listener
+	});
+};
+
+/**
+ * 注销事件
+ * @param  {GeoBeans.Event} event 事件类型
+ * @return {[type]}       [description]
+ */
+GeoBeans.Events.prototype.removeEvent = function(event){
+	for(var i = 0; i < this.events.length;++i){
+		var e = this.events[i];
+		if(e.event == event){
+			this.events.splice(i,1);
+		}
+	}
+};
+
+/**
+ * 按照事件类型返回事件
+ * @param  {GeoBeans.Event} event 事件类型
+ * @return {Object}       事件
+ */
+GeoBeans.Events.prototype.getEvent = function(event){
+	for(var i = 0; i < this.events.length;++i){
+		var e = this.events[i];
+		if(e.event == event){
+			return e;
+		}
+	}
+};

@@ -32,32 +32,30 @@
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 4、设置中心点
-		var center = new GeoBeans.Geometry.Point(0,0);	
-		mapObj.setCenter(center);
 
-		// 5、设置级别
-		mapObj.setLevel(2);	
+		var viewer = mapObj.getViewer();
 
-		// 6、绘图
-		mapObj.draw();
+		// 4、设置中心点和显示级别
+		var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);		
+		viewer.setZoomCenter(zoom,center);
 	}
 
 	function addEventListenter_wheel(){
 		
 		// 注册滚轮事件
 		// 参数：回调函数
-		mapObj.addWheelEventListener(wheelHanlder);
+		mapObj.on(GeoBeans.Event.MOUSE_WHEEL,wheelHanlder);
 	}
 
 	function removeEventListener_wheel(){
 		
 		// 注销滚轮事件
-		mapObj.removeWheelEventListener(wheelHanlder);
+		mapObj.un(GeoBeans.Event.MOUSE_WHEEL);
 	}
 
 	function wheelHanlder(args){
-		$("#level_args span").html(args.level);
+		$("#level_args span").html(args.zoom);
 	}	
 </script>
 <title>Map5 -- 注册鼠标滚轮事件</title>
