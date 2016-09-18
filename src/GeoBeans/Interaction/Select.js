@@ -83,6 +83,10 @@ GeoBeans.Interaction.Select.prototype.init = function(){
 	}
 }
 
+/**
+ * 点查询
+ * @private
+ */
 GeoBeans.Interaction.Select.prototype.SelectByPoint = function(){
 	var that = this;
 	this._map.saveSnap();
@@ -91,12 +95,11 @@ GeoBeans.Interaction.Select.prototype.SelectByPoint = function(){
 
 	var mapContainer = this._map.getContainer();
 	var onmousedown = function(evt){
-		if( (callback!=null) && (callback!=undefined)){
-			var viewer = that._map.getViewer();
-			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
+		var viewer = that._map.getViewer();
+		var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
-			console.log(pt.X + "," + pt.Y);
-		}
+		var query = that.createSpatialQuery(pt);
+		that._layer.query(query, this.resultHandler);
 	};
 	
 	this._onMouseDown = onmousedown;
@@ -130,4 +133,35 @@ GeoBeans.Interaction.Select.prototype.cleanup = function(){
 	mapContainer.removeEventListener("mousedown", this.onMouseDown);
 
 	this.onMouseDown = null;
+}
+
+/**
+ * 创建Spatial查询Filter
+ * @private
+ * @param  {[type]} point [description]
+ * @return {[type]}       [description]
+ */
+GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
+	// Filter
+	var filter = new GeoBeans.SpatialFilter();
+	filter.geometry = g;
+	filter.operator = GeoBeans.SpatialFilter.OperatorType.SpOprIntersects;
+	var featureType = this._layer.getFeatureType();
+	filter.propName = featureType.geomFieldName;
+
+	var query = new GeoBeans.Query({
+		"typeName"	: featureType.getName(),
+		"filter"	: filter
+	});
+
+	return query;
+}
+
+/**
+ * 查询结果回调函数，处理查询到的features
+ * @param  {[type]} features [description]
+ * @return {[type]}          [description]
+ */
+GeoBeans.Interaction.Select.prototype.resultHandler = function(features){
+
 }

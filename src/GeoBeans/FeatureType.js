@@ -34,6 +34,10 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	setName : function(name){
 		this.name = name;
 	},
+
+	getName : function(){
+		return this.name;
+	},
 	
 	setTitle : function(title){
 		this.title = title;
@@ -793,6 +797,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	},
 
 	// XML getFeature
+	// @deprecated
 	buildGetFeatureFilterXML : function(mapName,sourceName,
 			filter,maxFeatures,offset,fields,orderby){
 
@@ -847,6 +852,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		return xmlString;
 	},
 
+	// @deprecated
 	buildOrderbyXML : function(xml,orderby){
 		if(orderby == null){
 			return "";
@@ -990,3 +996,146 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	// },
 
 });
+
+// GeoBeans.FeatureType.prototype.query = function(filter){
+// 	var that = this;
+// 	var url = this.workspace.server;
+
+// 	var xml = this.buildGetFeatureFilterXML(mapName,sourceName,
+// 		filter,maxFeatures,offset,fields);
+	
+// 	this.fields = this.getFields(mapName,sourceName);
+
+// 	// 设置返回的参数
+// 	this.callback_obj = obj;
+
+// 	var xhr = $.ajax({
+// 		type : "post",
+// 		url	 : url,
+// 		data : xml,
+// 		// contentType: "application/xml",
+// 		contentType : "text/xml",
+// 		dataType: "xml",
+// 		async	: true,
+// 		beforeSend: function(XMLHttpRequest){
+// 		},
+// 		success	: function(xml, textStatus){
+// 			var features = that.parseFeatures(xml);
+// 			if(callback != undefined){
+// 				callback(that.callback_obj,features);
+// 			}
+// 		},
+// 		complete: function(XMLHttpRequest, textStatus){
+// 		},
+// 		error	: function(XMLHttpRequest,textStatus,error){
+// 			// console.log("textStatus:" + textStatus);
+// 			// console.log("error:" + error);
+// 		}
+// 	});		
+// 	return xhr;
+// }
+
+
+/**
+ * [query description]
+ * @param  {[type]} filter [description]
+ * @return {[type]}        [description]
+ */
+GeoBeans.FeatureType.prototype.query = function(query, handler){
+	var that = this;
+	var url = this.workspace.server;
+
+	var xml = this.buildGetFeatureFilterXML(mapName,sourceName,
+		filter,maxFeatures,offset,fields);
+	
+	this.fields = this.getFields(mapName,sourceName);
+
+	// 设置返回的参数
+	this.callback_obj = obj;
+
+	var xhr = $.ajax({
+		type : "post",
+		url	 : url,
+		data : xml,
+		// contentType: "application/xml",
+		contentType : "text/xml",
+		dataType: "xml",
+		async	: true,
+		beforeSend: function(XMLHttpRequest){
+		},
+		success	: function(xml, textStatus){
+			var features = that.parseFeatures(xml);
+			if(callback != undefined){
+				callback(that.callback_obj,features);
+			}
+		},
+		complete: function(XMLHttpRequest, textStatus){
+		},
+		error	: function(XMLHttpRequest,textStatus,error){
+			// console.log("textStatus:" + textStatus);
+			// console.log("error:" + error);
+		}
+	});		
+	return xhr;
+}
+
+GeoBeans.FeatureType.prototype.writeQuery = function(query){
+
+	var maxFeatures = query.getMaxFeatures();
+	var offset = query.getOffset();
+	var fields = query.getFields();
+	var orderby= query.getOrderField();
+
+	var str = '<?xml version="1.0" encoding="UTF-8"?>' 
+			 + "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\" " 
+			 + 	"outputFormat=\"GML2\" "
+			 // +  "xmlns:world=\"www.world.ac.cn\" "
+	         +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "
+	         +	"xmlns:ogc=\"http://www.opengis.net/ogc\" "
+	         +  "xmlns:gml=\"http://www.opengis.net/gml\" "
+	         +  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+	         +  "xsi:schemaLocation=\"http://www.opengis.net/wfs "
+	         +  "http://schemas.opengis.net/wfs/1.1.0/wfs.xsd\" ";
+	   	if(mapName != null){
+	   		str += "mapName=\"" + mapName + "\" ";
+	   	}     
+	   	if(sourceName != null){
+	   		str += "sourceName=\"" + sourceName + "\" ";
+	   	}
+	  
+	   	if(maxFeatures != null){
+	   		str += "maxFeatures=\"" + maxFeatures + "\" ";
+	   	}
+	   	if(offset != null){
+	   		str += "offset=\"" + offset + "\" ";
+	   	}
+	   
+	   	str += "/>";
+		var xml = $.parseXML(str);
+
+		var queryXML = xml.createElement("wfs:Query");
+		$(queryXML).attr('typeName',this.name);
+
+		if(fields != null){
+			for(var i = 0; i < fields.length; ++i){
+				var fieldXML = xml.createElement("wfs:PropertyName");
+				$(fieldXML).text(fields[i]);
+				$(queryXML).append(fieldXML);
+			}
+		}
+		
+		var filterWriter = new GeoBeans.FilterWriter();
+		var filterXML = filterWriter.write(xml,filter);
+		$(queryXML).append(filterXML);
+
+		if(orderby != null){
+	   		var orderbyXML = this.buildOrderbyXML(xml,orderby);
+	   		$(queryXML).append(orderbyXML);
+	   	}
+		$("GetFeature",xml).append(queryXML);
+		var xmlString = (new XMLSerializer()).serializeToString(xml);
+		return xmlString;
+}
+
+GeoBeans.FeatureType.prototype.writeFilter = function(query){
+}

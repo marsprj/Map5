@@ -1626,6 +1626,16 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	// 查询
+	/**
+	 * [getFeatureFilter description]
+	 * @deprecated [description]
+	 * @param  {[type]}   filter      [description]
+	 * @param  {[type]}   maxFeatures [description]
+	 * @param  {[type]}   offset      [description]
+	 * @param  {[type]}   fields      [description]
+	 * @param  {Function} callback    [description]
+	 * @return {[type]}               [description]
+	 */
 	getFeatureFilter : function(filter,maxFeatures,offset,fields,callback){
 		var time = new Date();
 		var features = this.selectFeaturesByFilter(filter,this.features,maxFeatures,offset);
@@ -1636,3 +1646,13 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		callback(features);
 	}
 });
+
+/**
+ * 查询
+ * @public
+ * @param  {GeoBeasn.Filter} filter 查询过滤器
+ * @return {GeoBeans.Feature}        目标要素集合
+ */
+GeoBeans.Layer.FeatureLayer.prototype.query = function(filter){
+
+}
