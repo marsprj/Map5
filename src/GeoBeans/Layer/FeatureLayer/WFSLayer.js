@@ -197,3 +197,21 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 		}
 	},
 });
+
+
+/**
+ * 查询
+ * @param  {GeoBeasn.Filter} filter 查询过滤器
+ * @param {[type]} [varname] [description]
+ * @return {GeoBeans.Feature}        目标要素集合
+ */
+/**
+ * 查询
+ * @param  {GeoBeasn.Filter} filter  查询过滤器
+ * @param  {function} 		 handler 查询结果处理的回调函数
+ * @return {GeoBeans.Feature}        目标要素集合
+ */
+GeoBeans.Layer.WFSLayer.prototype.query = function(query, handler){
+	var featureType = this.getFeatureType();
+	featureType.query(query, handler);
+}
