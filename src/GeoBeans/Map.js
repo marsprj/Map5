@@ -1762,29 +1762,6 @@ GeoBeans.Map.prototype.createMapContainer = function(){
  */
 GeoBeans.Map.prototype.initControls = function(){
 	this.controls = new GeoBeans.Control.Controls(this);
-		
-	// drag map control
-	var dragControl = new GeoBeans.Control.DragMapControl(this);
-	dragControl.enable(true);
-	this.controls.add(dragControl);
-
-	// scroll map control
-	var scrollControl = new GeoBeans.Control.ScrollMapControl(this);
-	scrollControl.enable(true);
-	this.controls.add(scrollControl);
-
-	//track control
-	var tracker = new GeoBeans.Control.TrackControl();
-	this.tracker = tracker;
-	this.controls.add(tracker);
-
-	var zoomControl = new GeoBeans.Control.ZoomControl();
-	this.controls.add(zoomControl);
-
-	var mapNavControl = new GeoBeans.Control.MapNavControl(this);
-	mapNavControl.enable(false);
-	this.controls.add(mapNavControl);
-
 }
 
 /**
