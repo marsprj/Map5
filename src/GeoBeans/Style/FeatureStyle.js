@@ -1,17 +1,12 @@
 GeoBeans.Style.FeatureStyle = GeoBeans.Class(GeoBeans.Style,{
-	name 		: null,
 	rules  		: null,
-	geomType 	: null,
 	// 自定义样式类型
 	styleClass 	: null,
 
 	// 点密度样式对应的字段
 	field 		: null,
 
-	initialize : function(name,geomType){
-		this.name = name;
-		// this.type = type;
-		this.geomType = geomType;
+	initialize : function(){
 		this.type = GeoBeans.Style.Type.FeatureType;
 		this.rules = [];
 	},
@@ -25,8 +20,7 @@ GeoBeans.Style.FeatureStyle = GeoBeans.Class(GeoBeans.Style,{
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.Style.FeatureStyle(this.name,
-					this.geomType);
+		var clone = new GeoBeans.Style.FeatureStyle();
 		for(var i = 0; i < this.rules.length;++i){
 			var rule = this.rules[i].clone();
 			clone.addRule(rule);
@@ -35,12 +29,6 @@ GeoBeans.Style.FeatureStyle = GeoBeans.Class(GeoBeans.Style,{
 		return clone;
 	}
 });
-
-GeoBeans.Style.FeatureStyle.GeomType = {
-	Point 					: "Point",
-	LineString 				: "LineString",
-	Polygon 				: "Polygon"
-};
 
 GeoBeans.Style.FeatureStyle.StyleClass ={
 	SINGLE 		: "single",
