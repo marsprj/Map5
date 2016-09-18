@@ -9,8 +9,7 @@ GeoBeans.Query = GeoBeans.Class({
 	_fields			: [],
 	_maxFeatures	: 20,
 	_offset			: 0,
-	_orderby		: null,
-	_order			: "ASC",
+	_orderby		: null,		//Orderby Object
 	_filter			: null,
 
 	/**
@@ -34,9 +33,6 @@ GeoBeans.Query = GeoBeans.Class({
 		if(isValid(options.orderby)){
 			this._orderby = options.orderby;
 		}
-		if(isValid(options.order)){
-			this._order = options.order;
-		}
 		if(isValid(options.filter)){
 			this._filter = options.filter;
 		}
@@ -58,12 +54,8 @@ GeoBeans.Query = GeoBeans.Class({
 		return this._offset;
 	},
 
-	getOrderField : function(){
+	getOrderby : function(){
 		return this._orderby;
-	},
-
-	getOrder : function(){
-		return this._order;
 	},
 
 	getFilter : function(){

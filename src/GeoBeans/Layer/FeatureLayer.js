@@ -1653,6 +1653,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
  * @param  {GeoBeasn.Filter} filter 查询过滤器
  * @return {GeoBeans.Feature}        目标要素集合
  */
-GeoBeans.Layer.FeatureLayer.prototype.query = function(filter){
+GeoBeans.Layer.FeatureLayer.prototype.query = function(query, handler){
 
 }

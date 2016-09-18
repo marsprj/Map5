@@ -196,6 +196,9 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 			layer.getFeatureFilter_callback_u = null;
 		}
 	},
+
+
+	CLASS_NAME : "GeoBeans.Layer.FeatureLayer.WFSLayer"
 });
 
 

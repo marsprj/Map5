@@ -24,6 +24,10 @@ GeoBeans.OrderBy = GeoBeans.Class({
 		return this.fields[index];
 	},
 
+	getFields : function(){
+		return fields;
+	},
+
 	getFieldCount : function(){
 		return this.fields.length;
 	},

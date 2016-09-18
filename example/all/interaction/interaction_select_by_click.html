@@ -53,7 +53,10 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
@@ -147,7 +150,12 @@
 			"map"   : mapObj
 		});
 		select.attach(mapObj);
+		select.onchange(onSelectionChange);
 		//var select = new GeoBeans.Interaction(null);
+	}
+
+	function onSelectionChange(features){
+		//alert(features.length);
 	}
 
 </script>
