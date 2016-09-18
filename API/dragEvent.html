@@ -12,7 +12,6 @@
 </style>
 <script type="text/javascript">
 	// 地图变量
-	var mapObj = null;
 	function  init(){
 		
 		// 1、设置地图的范围
@@ -32,15 +31,13 @@
 		// 添加图层
 		mapObj.addLayer(layer);
 
-		// 4、设置中心点
-		var center = new GeoBeans.Geometry.Point(0,0);	
-		mapObj.setCenter(center);
 
-		// 5、设置级别
-		mapObj.setLevel(2);	
+		var viewer = mapObj.getViewer();
 
-		// 6、绘图
-		mapObj.draw();
+		// 4、设置中心点和显示级别
+		var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);		
+		viewer.setZoomCenter(zoom,center);
 	}
 
 
@@ -48,7 +45,7 @@
 		
 		// 注册开始拖拽事件
 		// 参数：回调函数
-		mapObj.addBeginDragEventListener(beginDragHandler);
+		mapObj.on(GeoBeans.Event.DRAG_BEGIN,beginDragHandler);
 	}
 
 	function beginDragHandler(args){
@@ -58,14 +55,14 @@
 	function removeEventListener_beginDrag(){
 		
 		// 注销开始拖拽事件
-		mapObj.removeBeginDragEventListener();
+		mapObj.un(GeoBeans.Event.DRAG_BEGIN);
 	}
 
 	function addEventListenter_draging(){
 
 		// 注册拖拽中事件
 		// 参数：回调函数
-		mapObj.addDraggingEventListener(draggingHandler);
+		mapObj.on(GeoBeans.Event.DRAGING,draggingHandler);
 	}
 
 	function draggingHandler(args){
@@ -75,14 +72,14 @@
 	function removeEventListener_draging(){
 
 		// 注销拖拽中事件
-		mapObj.removeDraggingEventListener();
+		mapObj.un(GeoBeans.Event.DRAGING);
 	}
 
 	function addEventListenter_endDrag(){
 
 		// 注册拖拽结束事件
 		// 参数：回调函数
-		mapObj.addEndDragEventListener(endDragHandler);
+		mapObj.on(GeoBeans.Event.DRAG_END,endDragHandler);
 	}
 
 	function endDragHandler(args){
@@ -92,7 +89,7 @@
 	function removeEventListener_endDrag(){
 		
 		// 注销拖拽结束事件
-		mapObj.removeEndDragEventListener();
+		mapObj.un(GeoBeans.Event.DRAG_END);
 	}	
 </script>
 <title>Map5 -- 注册鼠标拖拽事件</title>

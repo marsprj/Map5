@@ -146,7 +146,6 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymin);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
-		console.log(llpt);
 		var img_size = this.IMG_WIDTH * (this.imageScale);
 		if(this != this.map.baseLayer){
 			var resolution = this.map.getMapViewer().getResolution();

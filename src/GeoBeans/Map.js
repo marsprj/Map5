@@ -123,6 +123,15 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 
 		/**************************************************************************************/
+		/* Events Begin
+		/**************************************************************************************/
+		this.initEvents();
+		/**************************************************************************************/
+		/* Events End
+		/**************************************************************************************/	
+
+
+		/**************************************************************************************/
 		/* Controls Begin
 		// /**************************************************************************************/
 		this.initControls();
@@ -149,14 +158,6 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 	
 		this.maplex = new GeoBeans.Maplex(this);
-
-		/**************************************************************************************/
-		/* Events Begin
-		/**************************************************************************************/
-		this.initEvents();
-		/**************************************************************************************/
-		/* Events End
-		/**************************************************************************************/	
 
 
 		// 授权时间
@@ -465,18 +466,14 @@ GeoBeans.Map = GeoBeans.Class({
 			if(canvas != null){
 				this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
 			}
-			var hitCanvas = layer.hitCanvas;
-			if(hitCanvas != null){
-				this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
-			}
+			// var hitCanvas = layer.hitCanvas;
+			// if(hitCanvas != null){
+			// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+			// }
 
-			var clickCanvas = layer.clickCanvas;
-			if(clickCanvas != null){
-				this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
-			}
-			// var bufferCanvas = layer.bufferCanvas;
-			// if(bufferCanvas != null){
-			// 	this.renderer.drawImage(bufferCanvas,0,0,bufferCanvas.width,bufferCanvas.height);
+			// var clickCanvas = layer.clickCanvas;
+			// if(clickCanvas != null){
+			// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
 			// }
 			if(layer instanceof GeoBeans.Layer.ChartLayer){
 				layer.showLegend();
@@ -485,21 +482,6 @@ GeoBeans.Map = GeoBeans.Class({
 
 		var canvas = this.overlayLayer.canvas;
 		this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-
-		var overlayHitCanvas = this.overlayLayer.hitCanvas;
-		if(overlayHitCanvas != null){
-			this.renderer.drawImage(overlayHitCanvas,0,0,overlayHitCanvas.width,overlayHitCanvas.height);
-		}
-
-		var overlayEditCanvas = this.overlayLayer.editCanvas;
-		if(overlayEditCanvas != null){
-			this.renderer.drawImage(overlayEditCanvas,0,0,overlayEditCanvas.width,overlayEditCanvas.height);
-		}
-
-		var overlayClickCanvas = this.overlayLayer.clickCanvas;
-		if(overlayClickCanvas != null){
-			this.renderer.drawImage(overlayClickCanvas,0,0,overlayClickCanvas.width,overlayClickCanvas.height);
-		}
 
 		//queryLayer
 		var queryLayerCanvas = this.queryLayer.canvas;
@@ -569,113 +551,6 @@ GeoBeans.Map = GeoBeans.Class({
 		}
 	},
 	
-
-	// 注册事件
-	addEventListener : function(event, handler){
-		var map = this;
-		var eventHandler = function(evt){
-			evt.preventDefault();
-			var x = evt.layerX;
-			var y = evt.layerY;
-			if(map.getMapViewer() == null){
-				return;
-			}
-			var mp = map.getMapViewer().toMapPoint(x, y);
-			var args = new GeoBeans.Event.MouseArgs();
-			args.buttn = null;
-			args.X = x;
-			args.Y = y;
-			args.mapX = mp.x;
-			args.mapY = mp.y;
-			args.level = map.level;
-			handler(args);
-		};
-		this._container[0].addEventListener(event,eventHandler);
-
-		this.events.addEvent(event,handler,eventHandler);
-	},
-
-	removeEventListener : function(event,handler){
-		var eventHandler = this.events.getEventHandler(event,handler);
-		this._container[0].removeEventListener(event, eventHandler);
-		this.events.removeEventHandler(event,handler);
-	},
-
-	// 注册滚轮事件
-	addWheelEventListener : function(handler){
-		if(handler != null){
-			var i = this.controls.find(GeoBeans.Control.Type.SCROLL_MAP);
-			var scrollControl = this.controls.get(i);
-			if(scrollControl != null){
-				scrollControl.userHandler = handler;
-			}
-		}
-	},
-
-	removeWheelEventListener : function(handler){
-		var i = this.controls.find(GeoBeans.Control.Type.SCROLL_MAP);
-		var scrollControl = this.controls.get(i);
-		if(scrollControl != null){
-			scrollControl.userHandler = null;
-		}
-	},
-
-	// 拖拽前
-	addBeginDragEventListener : function(handler){
-		if(handler != null){
-			var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-			var dragControl = this.controls.get(i);
-			if(dragControl != null){
-				dragControl.beginDragHandler = handler;
-			}
-		}
-	},
-
-	// 拖拽
-	addDraggingEventListener : function(handler){
-		if(handler != null){
-			var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-			var dragControl = this.controls.get(i);
-			if(dragControl != null){
-				dragControl.dragingHandler = handler;
-			}
-		}
-	},
-
-	// 结束拖拽
-	addEndDragEventListener : function(handler){
-		if(handler != null){
-			var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-			var dragControl = this.controls.get(i);
-			if(dragControl != null){
-				dragControl.endDragHandler = handler;
-			}
-		}
-	},
-
-	removeBeginDragEventListener : function(){
-		var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-		var dragControl = this.controls.get(i);
-		if(dragControl != null){
-			dragControl.beginDragHandler = null;
-		}
-	},
-
-	removeDraggingEventListener : function(handler){
-		var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-		var dragControl = this.controls.get(i);
-		if(dragControl != null){
-			dragControl.dragingHandler = null;
-		}
-	},
-
-	removeEndDragEventListener : function(handler){
-		var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-		var dragControl = this.controls.get(i);
-		if(dragControl != null){
-			dragControl.endDragHandler = null;
-		}
-	},
 
 	
 	// 保存缩略图
@@ -1824,13 +1699,6 @@ GeoBeans.Map = GeoBeans.Class({
 		return this.animationLayer;
 	},
 
-	// setRotation : function(rotation){
-	// 	this.mapViewer.setRotation(rotation);
-	// },
-
-	// getRotation : function(){
-	// 	return this.mapViewer.getRotation();
-	// }
 });
 
 /**
@@ -1875,29 +1743,6 @@ GeoBeans.Map.prototype.createMapContainer = function(){
  */
 GeoBeans.Map.prototype.initControls = function(){
 	this.controls = new GeoBeans.Control.Controls(this);
-		
-	// drag map control
-	var dragControl = new GeoBeans.Control.DragMapControl(this);
-	dragControl.enable(true);
-	this.controls.add(dragControl);
-
-	// scroll map control
-	var scrollControl = new GeoBeans.Control.ScrollMapControl(this);
-	scrollControl.enable(true);
-	this.controls.add(scrollControl);
-
-	//track control
-	var tracker = new GeoBeans.Control.TrackControl();
-	this.tracker = tracker;
-	this.controls.add(tracker);
-
-	var zoomControl = new GeoBeans.Control.ZoomControl();
-	this.controls.add(zoomControl);
-
-	var mapNavControl = new GeoBeans.Control.MapNavControl(this);
-	mapNavControl.enable(false);
-	this.controls.add(mapNavControl);
-
 }
 
 /**
@@ -1925,7 +1770,7 @@ GeoBeans.Map.prototype.initWidgets = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initEvents = function(){
-
+	this.events = new GeoBeans.Events();
 }
 
 /**
@@ -2010,8 +1855,8 @@ GeoBeans.Map.prototype.initResize = function(){
 				var baseLayerCanvas = that.baseLayer.canvas;
 				baseLayerCanvas.width = width;
 				baseLayerCanvas.height = height;
-
-				viewer.setZoom(that.level);
+				var zoom = viewer.getZoom();
+				viewer.setZoom(zoom);
 
 			}else{
 				viewer.setExtent(extent);
@@ -2074,6 +1919,23 @@ GeoBeans.Map.prototype.initResize = function(){
 
 			that.draw();
 		},250);
+
+
+		// 处理onresize注册事件
+		var event = that.events.getEvent(GeoBeans.Event.RESIZE);
+		if(event != null){
+			var viewer = that.getViewer();
+			var args = new GeoBeans.Event.MouseArgs();
+			args.buttn = null;
+			args.X = null;
+			args.Y = null;
+			args.mapX = null;
+			args.mapY = null;
+			args.zoom = viewer.getZoom();
+
+			var handler = event.handler;
+			handler(args);
+		}
 	};
 	var handler = window.onresize;
 	handler.apply(window,[]);
@@ -2092,49 +1954,56 @@ GeoBeans.Map.prototype.getInfoWindow = function(){
 /**
  * Map事件绑定
  * @public
- * @param  {[type]} event   [description]
- * @param  {[type]} handler [description]
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 回调函数
  * @return {[type]}         [description]
  */
 GeoBeans.Map.prototype.on = function(event, handler){
-	// var map = this;
-	// var eventHandler = function(evt){
-	// 	evt.preventDefault();
-	// 	var x = evt.layerX;
-	// 	var y = evt.layerY;
-	// 	if(map.transformation == null){
-	// 		return;
-	// 	}
-	// 	var mp = map.transformation.toMapPoint(x, y);
-	// 	var args = new GeoBeans.Event.MouseArgs();
-	// 	args.buttn = null;
-	// 	args.X = x;
-	// 	args.Y = y;
-	// 	args.mapX = mp.x;
-	// 	args.mapY = mp.y;
-	// 	args.level = map.level;
-	// 	handler(args);
-	// };
-	// this._container[0].addEventListener(event,eventHandler);
 
-	// this.events.push({
-	// 	event :event,
-	// 	handler : handler,
-	// 	eventHandler : eventHandler
-	// });
+	if(event == GeoBeans.Event.CLICK || event == GeoBeans.Event.DBCLICK
+		|| event == GeoBeans.Event.MOUSE_DOWN || event == GeoBeans.Event.MOUSE_UP 
+		|| event == GeoBeans.Event.MOUSE_MOVE || event == GeoBeans.Event.MOUSE_OVER
+		|| event == GeoBeans.Event.MOUSE_OUT){
+		var map = this;
+		var eventHandler = function(evt){
+			evt.preventDefault();
+			var x = evt.layerX;
+			var y = evt.layerY;
+			
+			var viewer = map.getViewer();
+			var mp = viewer.toMapPoint(x, y);
+			var args = new GeoBeans.Event.MouseArgs();
+			args.buttn = null;
+			args.X = x;
+			args.Y = y;
+			args.mapX = mp.x;
+			args.mapY = mp.y;
+			args.zoom = viewer.getZoom();
+			handler(args);
+		};	
+
+		var mapContainer = this.getContainer();
+		mapContainer.addEventListener(event,eventHandler);
+		this.events.addEvent(event,handler,eventHandler);
+	}else{
+		this.events.addEvent(event,handler,null);
+	}
 }
 
 /**
  * Map解除事件绑定
- * @public
- * @param  {[type]} event   [description]
- * @param  {[type]} handler [description]
- * @return {[type]}         [description]
+ * @param  {GeoBeans.Event} event 事件
+ * @return {[type]}       [description]
  */
 GeoBeans.Map.prototype.un = function(event){
-	// var eventHandler = this._getEventHandler(event,handler);
-	// this._container[0].removeEventListener(event, eventHandler);
-	// this._removeEventHandler();
+	var e = this.events.getEvent(event);
+	if(e == null){
+		return;
+	}
+	var eventHandler = e.listener;
+	var mapContainer = this.getContainer();
+	mapContainer.removeEventListener(event,eventHandler);
+	this.events.removeEvent(event);
 }
 
 /**

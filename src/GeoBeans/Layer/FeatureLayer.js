@@ -180,6 +180,12 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		console.log("count:" + features.length);
 		this.drawLayerFeatures(features);
 		this.drawClickLayer();
+
+		var hitCanvas = this.hitCanvas;
+		if(hitCanvas != null){
+			this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+		}
+
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 
 	},
@@ -276,8 +282,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		switch(geomType){
 			case GeoBeans.Geometry.Type.POINT:
 			case GeoBeans.Geometry.Type.MULTIPOINT:{
-				style = new GeoBeans.Style.FeatureStyle("default",
-					GeoBeans.Style.FeatureStyle.GeomType.Point);
+				style = new GeoBeans.Style.FeatureStyle();
 				var rule = new GeoBeans.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 				rule.symbolizer = symbolizer;
@@ -286,8 +291,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 			case GeoBeans.Geometry.Type.LINESTRING:
 			case GeoBeans.Geometry.Type.MULTILINESTRING:{
-				style = new GeoBeans.Style.FeatureStyle("default",
-					GeoBeans.Style.FeatureStyle.GeomType.LineString);
+				style = new GeoBeans.Style.FeatureStyle();
 				var rule = new GeoBeans.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 				rule.symbolizer = symbolizer;
@@ -296,8 +300,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 			case GeoBeans.Geometry.Type.POLYGON:
 			case GeoBeans.Geometry.Type.MULTIPOLYGON:{
-				style = new GeoBeans.Style.FeatureStyle("default",
-					GeoBeans.Style.FeatureStyle.GeomType.Polygon);
+				style = new GeoBeans.Style.FeatureStyle();
 				var rule = new GeoBeans.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer(); 
 				rule.symbolizer = symbolizer;
@@ -1543,6 +1546,8 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				this.labelClickFeatures(features,rule.textSymbolizer);
 			}
 		}
+
+		this.renderer.drawImage(this.clickCanvas,0,0,this.clickCanvas.width,this.clickCanvas.height);
 	},
 
 

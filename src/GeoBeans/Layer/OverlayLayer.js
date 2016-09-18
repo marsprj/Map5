@@ -126,6 +126,21 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 
 		this.drawClickLayer();
 
+		var hitCanvas = this.hitCanvas;
+		if(hitCanvas != null){
+			this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+		}
+
+		var editCanvas = this.editCanvas;
+		if(editCanvas != null){
+			this.renderer.drawImage(editCanvas,0,0,editCanvas.width,editCanvas.height);
+		}
+
+		var clickCanvas = this.clickCanvas;
+		if(clickCanvas != null){
+			this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
+		}
+
 	},
 
 	draw : function(){

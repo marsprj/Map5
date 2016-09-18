@@ -3,13 +3,12 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 	onmousewheel : null,
 	count : 0,
 
-	// 用户返回事件	
-	userHandler : null,
 	initialize : function(map){
 		GeoBeans.Control.prototype.initialize.apply(this, arguments);
 		
 		this.map = map;
 		var that = this;
+		var mapContainer = this.map.getContainer();
 		this.type = GeoBeans.Control.Type.SCROLL_MAP;
 		var mousewheelEvent = function(e,count){	
 			if(!that.enabled){
@@ -114,21 +113,35 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					// console.log("draw:" + that.count);
 					mousewheelEvent(e,that.count);
 					that.count = 0;
-					if(that.userHandler != null){
-						that.userHandler({
-							zoom : map.zoom
-						});
+
+					var wheelHandler = null;
+					var mouseWheelEvent = that.map.events.getEvent(GeoBeans.Event.MOUSE_WHEEL);
+					if(mouseWheelEvent != null){
+						wheelHandler = mouseWheelEvent.handler;
+					}
+
+					var viewer = that.map.getViewer();
+					if(wheelHandler != null){
+						var args = new GeoBeans.Event.MouseArgs();
+						args.buttn = null;
+						args.X = null;
+						args.Y = null;
+						args.mapX = null;
+						args.mapY = null;
+						args.zoom = viewer.getZoom();
+						wheelHandler(args);
 					}
 				}
 			}, 200);
 		};
 
-		// map.canvas.addEventListener('mousewheel', this.mousewheel);
-		map._container.addEventListener('mousewheel', this.mousewheel);
+		mapContainer.addEventListener('mousewheel', this.mousewheel);
 	},
 
 	destory : function(){
-		this.map._container.removeEventListener('mousewheel', this.mousewheel);
+
+		var mapContainer = this.map.getContainer();
+		mapContainer.removeEventListener('mousewheel', this.mousewheel);
 		GeoBeans.Control.prototype.destory.apply(this, arguments);
 	},
 	

@@ -2,12 +2,6 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 	
 	onmousedown : null,
 
-	beginDragHandler : null,
-
-	dragingHandler : null,
-
-	endDragHandler : null,
-	
 	initialize : function(map){
 		GeoBeans.Control.prototype.initialize.apply(this, arguments);		
 		this.map = map;
@@ -15,6 +9,10 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 		var that = this;
 
 		var mapContainer = this.map.getContainer();
+		var viewer = this.map.getViewer();
+
+		
+
 		var onmousedown = function(e){
 			if(!that.enabled){
 				return;
@@ -40,20 +38,27 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			d_y = e.layerY;
 			var d_p = map.getViewer().toMapPoint(d_x, d_y);
 			var draging = true;	
-			if(that.beginDragHandler != null){
+
+			var dragBeginHandler = null;
+			var dragBeginEvent = that.map.events.getEvent(GeoBeans.Event.DRAG_BEGIN);
+			if(dragBeginEvent != null){
+				dragBeginHandler = dragBeginEvent.handler;
+			}
+			if(dragBeginHandler != null){
 				var x = d_x;
 				var y = d_y;
-				if(that.map.getViewer() == null){
+				if(viewer == null){
 					return;
 				}
-				var mp = that.map.getViewer().toMapPoint(x, y);
+				var mp = viewer.toMapPoint(x, y);
 				var args = new GeoBeans.Event.MouseArgs();
 				args.buttn = null;
 				args.X = x;
 				args.Y = y;
 				args.mapX = mp.x;
 				args.mapY = mp.y;
-				that.beginDragHandler(args);
+				args.zoom = viewer.getZoom();
+				dragBeginHandler(args);
 			}		
 			var onmousemove = function(e){
 				e.preventDefault();
@@ -76,26 +81,33 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					infoWindow.refresh();
 
 					d_x = e.layerX;
-					d_y = e.layerY;		
-					if(that.dragingHandler != null){
+					d_y = e.layerY;	
+
+					var dragingHandler = null;
+					var dragingEvent = that.map.events.getEvent(GeoBeans.Event.DRAGING);
+					if(dragingEvent != null){
+						dragingHandler = dragingEvent.handler;
+					}
+					if(dragingHandler != null){
 						var x = d_x;
 						var y = d_y;
-						if(that.map.getViewer() == null){
+						if(viewer == null){
 							return;
 						}
-						var mp = that.map.getViewer().toMapPoint(x, y);
+						var mp = viewer.toMapPoint(x, y);
 						var args = new GeoBeans.Event.MouseArgs();
 						args.buttn = null;
 						args.X = x;
 						args.Y = y;
 						args.mapX = mp.x;
 						args.mapY = mp.y;
-						that.dragingHandler(args);
+						args.zoom = viewer.getZoom();
+						dragingHandler(args);
 					}					
 				}
 			};
 			var onmouseup = function(e){
-				console.log("drag up");
+				// console.log("drag up");
 				e.preventDefault();
 				maskImg = null;
 				draging = false;
@@ -114,20 +126,26 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				mapContainer.removeEventListener("mousemove", onmousemove);
 				mapContainer.removeEventListener("mouseup", onmouseup);
 
-				if(that.endDragHandler != null){
+				var dragEndHandler = null;
+				var dragEndEvent = that.map.events.getEvent(GeoBeans.Event.DRAG_END);
+				if(dragEndEvent != null){
+					dragEndHandler = dragEndEvent.handler;
+				}
+				if(dragEndHandler != null){
 					var x = e.layerX;
 					var y = e.layerY;
-					if(that.map.getViewer() == null){
+					if(viewer == null){
 						return;
 					}
-					var mp = that.map.getViewer().toMapPoint(x, y);
+					var mp = viewer.toMapPoint(x, y);
 					var args = new GeoBeans.Event.MouseArgs();
 					args.buttn = null;
 					args.X = x;
 					args.Y = y;
 					args.mapX = mp.x;
 					args.mapY = mp.y;
-					that.endDragHandler(args);
+					args.zoom = viewer.getZoom();
+					dragEndHandler(args);
 				}				
 			};
 			mapContainer.addEventListener("mousemove", onmousemove);

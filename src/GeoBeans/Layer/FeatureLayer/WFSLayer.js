@@ -45,47 +45,47 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 	},
 	
 
-	load : function(){
+	// load : function(){
 
-		var viewer = this.map.getViewer();
-		var extent = viewer.getExtent();
-		if(extent != null && this.viewer != null 
-			&& extent.equal(this.viewer) && this.features != null){
-			this.flag = GeoBeans.Layer.Flag.LOADED;
-			this.drawLayerSnap();
-			this.renderer.clearRect();
-			this.drawLayer();
-			this.drawBufferFeaturesCanvas();
-			// this.flag = GeoBeans.Layer.Flag.READY;	
-			return;		
-		}
+	// 	var viewer = this.map.getViewer();
+	// 	var extent = viewer.getExtent();
+	// 	if(extent != null && this.viewer != null 
+	// 		&& extent.equal(this.viewer) && this.features != null){
+	// 		this.flag = GeoBeans.Layer.Flag.LOADED;
+	// 		this.drawLayerSnap();
+	// 		this.renderer.clearRect();
+	// 		this.drawLayer();
+	// 		this.drawBufferFeaturesCanvas();
+	// 		// this.flag = GeoBeans.Layer.Flag.READY;	
+	// 		return;		
+	// 	}
 
-		this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
-			extent.xmax,extent.ymax);
+	// 	this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
+	// 		extent.xmax,extent.ymax);
 
 		
-		if(this.featureType==null){
-			this.featureType = this.workspace.getFeatureType(this.typeName);
-		}
+	// 	if(this.featureType==null){
+	// 		this.featureType = this.workspace.getFeatureType(this.typeName);
+	// 	}
 		
-		if(this.featureType==null){
-			return;
-		}
-		var that = this;
-		that.flag = GeoBeans.Layer.Flag.READY;
-		this.featureType.getFeaturesBBox(function(featureType, features){
-			that.setTransformation(that.map.getViewer().transformation);
-			that.features = features;
-			that.drawLayerSnap();
-			that.renderer.clearRect();
-			that.drawLayer();
-			that.drawBufferFeaturesCanvas();
-			// that.map.drawLayers();
-			that.map.drawLayersAll();
+	// 	if(this.featureType==null){
+	// 		return;
+	// 	}
+	// 	var that = this;
+	// 	that.flag = GeoBeans.Layer.Flag.READY;
+	// 	this.featureType.getFeaturesBBox(function(featureType, features){
+	// 		that.setTransformation(that.map.getViewer().transformation);
+	// 		that.features = features;
+	// 		that.drawLayerSnap();
+	// 		that.renderer.clearRect();
+	// 		that.drawLayer();
+	// 		that.drawBufferFeaturesCanvas();
+	// 		// that.map.drawLayers();
+	// 		that.map.drawLayersAll();
 
-			that.flag = GeoBeans.Layer.Flag.LOADED;
-		},this.viewer,this.filter);	
-	},
+	// 		that.flag = GeoBeans.Layer.Flag.LOADED;
+	// 	},this.viewer,this.filter);	
+	// },
 
 	load : function(){
 		if(this.features == null){

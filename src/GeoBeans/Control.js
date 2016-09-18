@@ -45,6 +45,25 @@ GeoBeans.Control.Controls = GeoBeans.Class({
 	initialize : function(map){
 		this.map = map;
 		this.controls = [];
+
+		var dragControl = new GeoBeans.Control.DragMapControl(this.map);
+		dragControl.enable(true);
+		this.add(dragControl);
+
+		var scrollControl = new GeoBeans.Control.ScrollMapControl(this.map);
+		scrollControl.enable(true);
+		this.add(scrollControl);
+
+		var tracker = new GeoBeans.Control.TrackControl();
+		this.map.tracker = tracker;
+		this.add(tracker);
+
+		var zoomControl = new GeoBeans.Control.ZoomControl();
+		this.add(zoomControl);
+
+		var mapNavControl = new GeoBeans.Control.MapNavControl(this.map);
+		mapNavControl.enable(false);
+		this.add(mapNavControl);
 	},
 
 	destory : function(){
