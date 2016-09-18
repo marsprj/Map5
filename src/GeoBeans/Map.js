@@ -17,6 +17,11 @@ GeoBeans.Map = GeoBeans.Class({
 	 * Map的控件集合
 	 */
 	controls : null,
+
+	/**
+	 * Map交互控件集合
+	 */
+	_interactions : null,
 	
 	/**
 	 * 地图当前视口
@@ -114,12 +119,12 @@ GeoBeans.Map = GeoBeans.Class({
 		
 
 		/**************************************************************************************/
-		/* 初始化mapContainer的代码可以单独写一个函数 Begin
+		/* mapContainer Begin
 		/**************************************************************************************/
 		this.createMapContainer();
 		
 		/**************************************************************************************/
-		/* 初始化mapContainer的代码可以单独写一个函数 End
+		/* mapContainer End
 		/**************************************************************************************/
 
 		/**************************************************************************************/
@@ -128,16 +133,22 @@ GeoBeans.Map = GeoBeans.Class({
 		this.initEvents();
 		/**************************************************************************************/
 		/* Events End
-		/**************************************************************************************/	
-
+		/**************************************************************************************/
 
 		/**************************************************************************************/
 		/* Controls Begin
-		// /**************************************************************************************/
-		this.initControls();
-		
+		/**************************************************************************************/
+		this.initControls();		
 		/**************************************************************************************/
 		/* Controls End
+		/**************************************************************************************/
+
+		/**************************************************************************************/
+		/* Interactions Begin
+		/**************************************************************************************/
+		this.initInteractions();		
+		/**************************************************************************************/
+		/* Interactions End
 		/**************************************************************************************/
 
 		/**************************************************************************************/
@@ -362,31 +373,37 @@ GeoBeans.Map = GeoBeans.Class({
 		// this.renderer.save();
 		this.time = new Date();
 
-		var layer = null;
-		var tileLayerCount = 0;
-		for(var i = 0; i < this.layers.length;++i){
-			layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer){
-				var viewer = this.getViewer();
-				var zoom = viewer.getZoom();
-				if(zoom == null){
-					var zoom = viewer.getZoomByExtent(viewer.getExtent());
-					viewer.setZoom(zoom);
-				}
+		// var layer = null;
+		// var tileLayerCount = 0;
+		// for(var i = 0; i < this.layers.length;++i){
+		// 	layer = this.layers[i];
+		// 	if(layer instanceof GeoBeans.Layer.TileLayer){
+		// 		var viewer = this.getViewer();
+		// 		var zoom = viewer.getZoom();
+		// 		if(zoom == null){
+		// 			var zoom = viewer.getZoomByExtent(viewer.getExtent());
+		// 			viewer.setZoom(zoom);
+		// 		}
 
-				if(layer.visible){
-					tileLayerCount++;
-					layer.preDraw();
-					layer.loadingTiles(this.drawBaseLayerCallback);
-				}
-			}
-		}
-		if(tileLayerCount == 0){
-			this.baseLayerRenderer.clearRect();
-			this.baseLayerSnap = null;
-		}
+		// 		if(layer.visible){
+		// 			tileLayerCount++;
+		// 			layer.preDraw();
+		// 			layer.loadingTiles(this.drawBaseLayerCallback);
+		// 		}
+		// 	}
+		// }
+		// if(tileLayerCount == 0){
+		// 	this.baseLayerRenderer.clearRect();
+		// 	this.baseLayerSnap = null;
+		// }
+
+		this.drawBaseLayer();
+
 		this.drawLayersAll();
 		// this.renderer.restore();
+
+		// Draw Interactions
+		this.drawInteractions();
 
 		//设置地图控件
 		// this.mapNavControl.setZoomSlider(this.level);
@@ -396,6 +413,8 @@ GeoBeans.Map = GeoBeans.Class({
 		mapNavControl.setZoomSlider(zoom);
 
 	},
+
+
 
 	drawBaseLayerCallback:function(map){
 		
@@ -1779,7 +1798,7 @@ GeoBeans.Map.prototype.initEvents = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initInteractions = function(){
-
+	this._interactions = new GeoBeans.Interaction.Interactions(this);
 }
 
 /**
@@ -2051,4 +2070,56 @@ GeoBeans.Map.prototype.getWidth = function(){
  */
 GeoBeans.Map.prototype.getHeight = function(){
 	return $(this._container).height();
+}
+
+/**
+ * 绘制由draw接口的Interactions
+ * @private
+ * @return {[type]} [description]
+ */
+GeoBeans.Map.prototype.drawInteractions = function(){
+
+	var interaction = null;
+	var count = this._interactions.count();
+
+	for(var i=count-1; i>=0; i--){
+		interaction = this._interactions.get(i);
+		if(isValid(interaction.draw)){
+			interaction.draw();
+		}
+	}
+}
+
+/**
+ * Map上添加Interactions
+ * @param {[type]} interaction [description]
+ */
+GeoBeans.Map.prototype.addInteraction = function(interaction){
+	this._interactions.add(interaction);
+}
+
+GeoBeans.Map.prototype.drawBaseLayer = function(){
+	var layer = null;
+	var tileLayerCount = 0;
+	for(var i = 0; i < this.layers.length;++i){
+		layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer){
+			var viewer = this.getViewer();
+			var zoom = viewer.getZoom();
+			if(zoom == null){
+				var zoom = viewer.getZoomByExtent(viewer.getExtent());
+				viewer.setZoom(zoom);
+			}
+
+			if(layer.visible){
+				tileLayerCount++;
+				layer.preDraw();
+				layer.loadingTiles(this.drawBaseLayerCallback);
+			}
+		}
+	}
+	if(tileLayerCount == 0){
+		this.baseLayerRenderer.clearRect();
+		this.baseLayerSnap = null;
+	}	
 }

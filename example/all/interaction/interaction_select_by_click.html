@@ -149,8 +149,9 @@
 			"layer" : wfsLayer,
 			"map"   : mapObj
 		});
-		select.attach(mapObj);
+		//select.attach(mapObj);
 		select.onchange(onSelectionChange);
+		mapObj.addInteraction(select);
 		//var select = new GeoBeans.Interaction(null);
 	}
 

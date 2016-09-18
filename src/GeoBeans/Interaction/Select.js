@@ -43,6 +43,7 @@ GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 	_symbolizer	 : null,
 	_symbolizers : null,
 	_renderer	 : null,
+	_canvas		 : null,
 
 	initialize : function(options){
 		//GeoBeans.Class.prototype.initialize.apply(this, arguments);
@@ -61,6 +62,7 @@ GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 		this._renderer = this._map.renderer;
 
 		this.init();
+		//this.initRenderer();
 		this.loadSymbols();
 	},
 	
@@ -115,6 +117,18 @@ GeoBeans.Interaction.Select.prototype.init = function(){
 		}
 		break;
 	}
+}
+
+/**
+ * 初始化renderer
+ * @private
+ * @return {[type]} [description]
+ */
+GeoBeans.Interaction.Select.prototype.initRenderer = function(){
+	this._canvas = $("<canvas>")
+				.attr("width", 800)
+			    .attr("height", 600)[0];
+	this._renderer = new GeoBeans.Renderer(this._canvas);
 }
 
 /**
@@ -236,6 +250,11 @@ GeoBeans.Interaction.Select.prototype.isShow = function(){
  * @return {[type]} [description]
  */
 GeoBeans.Interaction.Select.prototype.draw = function(){
+
+	if(!this._show){
+		return;
+	}
+
 	if(!isValid(this._selection)){
 		return;
 	}
@@ -323,9 +342,8 @@ GeoBeans.Interaction.Select.prototype.setSelection = function(features){
 	if(isValid(this._onchange)){
 		this._onchange(this._selection);
 	}
-	if(this._show){
-		this.draw();
-	}
+	//this.draw();
+	this._map.refresh();
 }
 
 

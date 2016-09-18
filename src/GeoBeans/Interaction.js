@@ -40,3 +40,49 @@ GeoBeans.Interaction.Type = {
 	SELECT	: "Select",
 	ROTATE	: "Rotate"
 };
+
+
+GeoBeans.Interaction.Interactions = GeoBeans.Class({
+	map : null,
+	_interactions : [],
+	
+	initialize : function(map){
+		this.map = map;
+	},
+
+	destory : function(){
+		this.cleanup();
+		this._interactions = null;
+	},
+	
+	add : function(c){
+		if(!isValid(c)){
+			return;
+		}
+		c.attach(this.map);
+		this._interactions.push(c);
+	},
+	
+	remove : function(i){
+		if(i>=0&&i<this._interactions.length){
+			this._interactions[i].splice(i,1);	
+		}
+	},
+
+	get : function(i){
+		return this._interactions[i];
+	},
+
+	count : function(){
+		return this._interactions.length;
+	},
+
+	cleanup : function(){
+		var len = this._interactions.length;
+		for(var i=0; i<len; i++){
+			this._interactions[i].destory();
+			this._interactions[i] = null;
+		}
+		this._interactions = [];
+	}
+});
