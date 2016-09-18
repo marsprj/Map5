@@ -180,6 +180,12 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		console.log("count:" + features.length);
 		this.drawLayerFeatures(features);
 		this.drawClickLayer();
+
+		var hitCanvas = this.hitCanvas;
+		if(hitCanvas != null){
+			this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+		}
+
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 
 	},
@@ -1543,6 +1549,8 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				this.labelClickFeatures(features,rule.textSymbolizer);
 			}
 		}
+
+		this.renderer.drawImage(this.clickCanvas,0,0,this.clickCanvas.width,this.clickCanvas.height);
 	},
 
 

@@ -466,18 +466,14 @@ GeoBeans.Map = GeoBeans.Class({
 			if(canvas != null){
 				this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
 			}
-			var hitCanvas = layer.hitCanvas;
-			if(hitCanvas != null){
-				this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
-			}
+			// var hitCanvas = layer.hitCanvas;
+			// if(hitCanvas != null){
+			// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+			// }
 
-			var clickCanvas = layer.clickCanvas;
-			if(clickCanvas != null){
-				this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
-			}
-			// var bufferCanvas = layer.bufferCanvas;
-			// if(bufferCanvas != null){
-			// 	this.renderer.drawImage(bufferCanvas,0,0,bufferCanvas.width,bufferCanvas.height);
+			// var clickCanvas = layer.clickCanvas;
+			// if(clickCanvas != null){
+			// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
 			// }
 			if(layer instanceof GeoBeans.Layer.ChartLayer){
 				layer.showLegend();
@@ -486,21 +482,6 @@ GeoBeans.Map = GeoBeans.Class({
 
 		var canvas = this.overlayLayer.canvas;
 		this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-
-		var overlayHitCanvas = this.overlayLayer.hitCanvas;
-		if(overlayHitCanvas != null){
-			this.renderer.drawImage(overlayHitCanvas,0,0,overlayHitCanvas.width,overlayHitCanvas.height);
-		}
-
-		var overlayEditCanvas = this.overlayLayer.editCanvas;
-		if(overlayEditCanvas != null){
-			this.renderer.drawImage(overlayEditCanvas,0,0,overlayEditCanvas.width,overlayEditCanvas.height);
-		}
-
-		var overlayClickCanvas = this.overlayLayer.clickCanvas;
-		if(overlayClickCanvas != null){
-			this.renderer.drawImage(overlayClickCanvas,0,0,overlayClickCanvas.width,overlayClickCanvas.height);
-		}
 
 		//queryLayer
 		var queryLayerCanvas = this.queryLayer.canvas;
