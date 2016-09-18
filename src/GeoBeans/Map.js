@@ -2086,6 +2086,7 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 		interaction = this._interactions.get(i);
 		if(isValid(interaction.draw)){
 			interaction.draw();
+			this.renderer.drawImage(interaction._canvas,0,0,interaction._canvas.width,interaction._canvas.height);
 		}
 	}
 }

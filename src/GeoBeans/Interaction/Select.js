@@ -8,26 +8,6 @@ GeoBeans.Interaction.SelectType = {
 };
 
 /**
- * [initialize description]
- * private
- * @param  {[type]} handler [description]
- * @param  {[type]} target) {			}}     [description]
- * @return {[type]}         [description]
- */
-// GeoBeans.Interaction.SelectHandler = GeoBeans.Class({
-// 	_target  : null,
-
-// 	initialize: function (target) {
-// 		this._target  = target;	
-// 	},
-
-// 	execute : function(features){
-// 		this._target.setSelection(features);
-// 	}
-// });
-
-
-/**
  * Map5的查询交互类
  * @class
  * @description 实现Map5与用户的交互功能
@@ -59,10 +39,10 @@ GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 		}
 
 		// ????? 暂时使用map的render，这种用法不对，需要修改。
-		this._renderer = this._map.renderer;
+		//this._renderer = this._map.renderer;
 
 		this.init();
-		//this.initRenderer();
+		this.initRenderer();
 		this.loadSymbols();
 	},
 	
@@ -265,23 +245,18 @@ GeoBeans.Interaction.Select.prototype.draw = function(){
 
 	//绘制选择集
 	var viewer = this._map.getViewer();
-	var w = viewer.getWindowWidth();
-	var h = viewer.getWindowHeight();
-	//this._renderer.clearRect(0,0,w,h);
+	this._canvas.width = viewer.getWindowWidth();;
+	this._canvas.height= viewer.getWindowHeight();
+	this._renderer.clearRect(0,0,w,h);
 	
-	this._renderer.save();
 	var symbolizer = this.getSymbolizer(this._selection[0].geometry.type);
 	this._renderer.setSymbolizer(symbolizer);
 	
 	var count = this._selection.length;
 	for(var i=0; i<count; i++){
 		var feature = this._selection[i];
-		this._renderer.draw(feature, symbolizer, this._map.getViewer());
+		this._renderer.draw(feature, symbolizer, viewer);
 	}
-	// for (feature in this._selection){
-	// 	this._renderer.draw(feature, symbolizer, this._map.getViewer());
-	// }
-	this._renderer.restore();
 }
 
 /**
