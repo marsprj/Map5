@@ -509,7 +509,7 @@ GeoBeans.Viewer.prototype.rotateViewer = function(){
 	max_y = (rightBottom.y > max_y) ? rightBottom.y : max_y;
 
 	var extent = new GeoBeans.Envelope(min_x,min_y,max_x,max_y);
-	this._extent = extent;
+	this.setExtent(extent);
 };
 
 /**

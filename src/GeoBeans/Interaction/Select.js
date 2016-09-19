@@ -403,6 +403,14 @@ GeoBeans.Interaction.Select.prototype.isShow = function(){
  */
 GeoBeans.Interaction.Select.prototype.draw = function(){
 
+	//绘制选择集
+	var viewer = this._map.getViewer();
+	var w = viewer.getWindowWidth();
+	var h= viewer.getWindowHeight();
+	this._canvas.width = w;
+	this._canvas.height= h;
+	this._renderer.clearRect(0,0,w,h);
+	
 	if(!this._show){
 		return;
 	}
@@ -415,13 +423,7 @@ GeoBeans.Interaction.Select.prototype.draw = function(){
 		return;
 	}
 
-	//绘制选择集
-	var viewer = this._map.getViewer();
-	var w = viewer.getWindowWidth();
-	var h= viewer.getWindowHeight();
-	this._canvas.width = w;
-	this._canvas.height= h;
-	this._renderer.clearRect(0,0,w,h);
+
 	
 	var symbolizer = this.getSymbolizer(this._selection[0].geometry.type);
 	this._renderer.setSymbolizer(symbolizer);
