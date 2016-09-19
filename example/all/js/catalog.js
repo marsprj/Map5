@@ -27,10 +27,10 @@ var g_catalog = [
 				"link" : "map/map_view_zoom.html"
 			},{
 				"name" : "地图中心点",
-				"link" : "map_set_center.html"
+				"link" : "map/map_view_center.html"
 			},{
 				"name" : "地图范围",
-				"link" : "map_set_extent.html"
+				"link" : "map/map_view_extent.html"
 			},{
 				"name" : "导航条",
 				"link" : "map_widget_nav.html"
@@ -88,7 +88,7 @@ var g_catalog = [
 				"link" : "interaction/interaction_select_by_polygon.html"
 			},{
 				"name" : "地图旋转",
-				"link" : "layer_remove.html"
+				"link" : "interaction/interaction_select_by_rotate.html"
 			}
 		]
 	},{
