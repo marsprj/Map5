@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
@@ -100,7 +99,7 @@
 	}
 </style>
 <script type="text/javascript">
-	// 地图变量
+	
 	var mapObj = null;
 	function  init(){
 		
@@ -114,30 +113,39 @@
 			return;
 		}
 		
-		// 3、添加一个底图
+		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
-		mapObj.addLayer(baselayer);
-		var server = "/geoserver/radi/ows?";
-		// 2、定义WFS图层
-		var wfsLayer = new GeoBeans.Layer.WFSLayer("country", 		//在地图中的名称
-													server, 		//服务器
-													"radi:country_2", //图层在geoserver的名称
-													"GML2"); 		// 格式
-		mapObj.addLayer(wfsLayer);
+		var layer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 
-		// 5、设置中心点和显示级别
-		var zoom = 3;
+		// 添加图层
+		mapObj.addLayer(layer);
+
+		// 4、设置中心点和显示级别
+		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);
 		var viewer = mapObj.getViewer();	
 		viewer.setZoomCenter(zoom,center);
 	}
 
+	function setZoom(){
+
+		// 设置级别
+		mapObj.getViewer().setZoom(10);
+	}
+
+	function getZoom(){
+
+		// 返回级别
+		var level = mapObj.getViewer().getZoom();
+		
+		alert("当前地图的级别是:" + level);
+	}
 </script>
-<title>Map5 -- WFS图层</title>
+<title>Map5 -- 初始化地图</title>
 <body onload="init()">
-	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	<button onclick="getZoom()">显示级别</button>
+	<button onclick="setZoom()">设置级别</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
 	</div>
 </body>
 	
