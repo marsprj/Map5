@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+	canvas{
+		position: absolute;
+		left: 100px;
+		top:100px;
+		border:1px solid #FF0000;
+	}
+</style>
+<script type="text/javascript">
+	var map = null;
+	var context = null;
+	function  init(){
+		map = document.getElementById("map");
+		context = map.getContext('2d');
+
+		//drawRect();
+	}
+
+	function drawRect(){
+		var cx = 400;
+		var cy = 200;
+		var span = 50;
+		var xmin = cx - span;
+		var xmax = cx + span;
+		var ymin = cy - span;
+		var ymax = cx + span;
+		context.fillStyle = "green";//填充样式演示
+		context.lineWidth = 1;
+		context.strokeStyle="red";//轮廓颜色
+
+		context.clearRect(0,0,800,400);
+		context.strokeRect(xmin, ymin, 2*span, 2*span);//绘制矩形轮廓
+		context.fillRect(xmin, ymin, 2*span, 2*span);//绘制矩形
+	}
+
+	function onRotate(){
+		var cx = 0;
+		var cy = 0;
+		var span = 50;
+		var xmin = cx - span;
+		var xmax = cx + span;
+		var ymin = cy - span;
+		var ymax = cx + span;
+		context.fillStyle = "green";//填充样式演示
+		context.lineWidth = 1;
+		context.strokeStyle="red";//轮廓颜色
+
+		var angle = 45;
+
+		context.clearRect(0,0,800,400);
+		context.save();
+
+		context.translate(-400,-200);
+		context.rotate(angle*Math.PI/180);
+
+		context.strokeRect(xmin, ymin, 2*span, 2*span);//绘制矩形轮廓
+		context.fillRect(xmin, ymin, 2*span, 2*span);//绘制矩形
+
+		context.restore();
+	}
+</script>
+<title>Interaction:绘制类</title>
+<body onload="init()">
+	<input type='button' value='Rotate' onclick="onRotate()">
+	<canvas id="map" width="800" height="400"></canvas>
+</body>
+	
