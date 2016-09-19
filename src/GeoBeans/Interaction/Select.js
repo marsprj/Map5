@@ -167,18 +167,17 @@ GeoBeans.Interaction.Select.prototype.selectByCircle = function(){
 
 	var onmousedown = function(evt){
 		evt.preventDefault();
+		that._map.saveSnap();
 		that._map.enableDrag(false);
-		point_r = {x:evt.layerX,y:evt.layerY};
-		that.drawPoints([],evt.layerX,evt.layerY);
+		point_r = viewer.toMapPoint(evt.layerX,evt.layerY);
+		that.drawPoints([],point_r.x,point_r.y);
 
 		var onmousemove = function(evt){
 			evt.preventDefault();
-			point_e = {x:evt.layerX,y:evt.layerY};
+			point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
 			that._map.restoreSnap();
-			that.drawPoints([],point_r.x,point_r.y);
-			radius = Math.sqrt((point_e.x - point_r.x)*(point_e.x - point_r.x)
-						+ (point_e.y - point_r.y)*(point_e.y - point_r.y));
-			that.drawCircle(point_r,radius);
+			that.drawPoints([],point_e.x,point_e.y);
+			that.drawCircle(point_r,point_e);
 		};
 
 		var onmouseup = function(evt){
@@ -189,15 +188,11 @@ GeoBeans.Interaction.Select.prototype.selectByCircle = function(){
 			mapContainer.removeEventListener("mousemove", onmousemove);
 			mapContainer.removeEventListener("mouseup", onmouseup);
 			that._map.restoreSnap();
-			that._map.enableDrag(true);
+			that._map.enableDrag(false);
 
-			var point_map_r = viewer.toMapPoint(point_r.x,point_r.y);
-			var point_map_e = viewer.toMapPoint(point_e.x,point_e.y);
-			var radius_map = Math.sqrt((point_map_e.x - point_map_r.x)*(point_map_e.x - point_map_r.x)
-						+ (point_map_e.y - point_map_r.y)*(point_map_e.y - point_map_r.y));
+			var radius_map = GeoBeans.Utility.getDistance(point_e.x,point_e.y,point_r.x,point_r.y);
 
-
-			var query = that.createDistanceBufferFilterQuery(point_map_r, radius_map);
+			var query = that.createDistanceBufferFilterQuery(point_e, radius_map);
 			//查询结果的回调函数类，接口实现GeoBeans.Handler。
 			var handler = {
 				target : that,
@@ -239,6 +234,7 @@ GeoBeans.Interaction.Select.prototype.selectByBBox = function(){
 	var mapContainer = this._map.getContainer();
 	var onmousedown = function(evt){
 		evt.preventDefault();
+		that._map.saveSnap();
 		point_b = {x:evt.layerX,y:evt.layerY};
 		that.drawPoints([],evt.layerX,evt.layerY);
 
@@ -410,7 +406,7 @@ GeoBeans.Interaction.Select.prototype.draw = function(){
 	this._canvas.width = w;
 	this._canvas.height= h;
 	this._renderer.clearRect(0,0,w,h);
-	
+
 	if(!this._show){
 		return;
 	}
@@ -500,6 +496,7 @@ GeoBeans.Interaction.Select.prototype.setSelection = function(features){
 
 GeoBeans.Interaction.Select.prototype.drawPoints = function(points, x, y){
 	var context = this._map.renderer.context;
+	var viewer = this._map.getViewer();
 	context.save();
 	
 	var r = 5;
@@ -508,7 +505,8 @@ GeoBeans.Interaction.Select.prototype.drawPoints = function(points, x, y){
 	context.lineWidth = 0.5;
 	
 	context.beginPath();
-	context.arc(x, y, r, 0, 2 * Math.PI, false);  
+	var spt = viewer.toScreenPoint(x,y);
+	context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);    
 	context.closePath();				
 	context.fill();
 	context.stroke();
@@ -516,7 +514,8 @@ GeoBeans.Interaction.Select.prototype.drawPoints = function(points, x, y){
 	var len = points.length;
 	for(var i=0;i<len;i++){
 		context.beginPath();
-		context.arc(points[i].x, points[i].y, r, 0, 2 * Math.PI, false);  
+		var spt = viewer.toScreenPoint(points[i].mapX,points[i].mapY);
+		context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);  
 		context.closePath();				
 		context.fill();
 		context.stroke();
@@ -545,15 +544,20 @@ GeoBeans.Interaction.Select.prototype.drawPolygon = function(points, x, y){
 	context.restore();
 }
 
-GeoBeans.Interaction.Select.prototype.drawCircle = function(point_r,radius){
+GeoBeans.Interaction.Select.prototype.drawCircle = function(point_r,point_e){
 	var context = this._map.renderer.context;
 	context.save();
 
-	context.strokeStyle = 'rgba(255,0,0,0.25)';
 	context.lineWidth = 1.0;
 	
+	var viewer = this._map.getViewer();
+	var point_r_s = viewer.toScreenPoint(point_r.x,point_r.y);
+	var point_e_s = viewer.toScreenPoint(point_e.x,point_e.y);
+	var radius = GeoBeans.Utility.getDistance(point_r_s.x,point_r_s.y,point_e_s.x,point_e_s.y);
+	
 	context.beginPath();
-	context.arc(point_r.x,point_r.y,radius,0,Math.PI*2,true);
+	// context.arc(point_r.x,point_r.y,radius,0,Math.PI*2,true);
+	context.arc(point_r_s.x,point_r_s.y,radius,0,Math.PI*2,true);
 	context.strokeStyle = "#08c";
 	context.stroke();
 	context.closePath();

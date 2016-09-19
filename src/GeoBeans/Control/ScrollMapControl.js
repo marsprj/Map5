@@ -26,6 +26,10 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			if(trackBufferControl != null && trackBufferControl.drawing){
 				map.restoreSnap();
 			}
+			var tracker = map.tracker;
+			if(tracker != null && tracker.drawing){
+				map.restoreSnap();
+			}
 
 			var viewer = map.getViewer();
 			var extent = viewer.getExtent();
@@ -101,6 +105,9 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			if(trackBufferControl != null && trackBufferControl.drawing){
 				trackBufferControl.drawingEvent();
+			}
+			if(tracker != null && tracker.drawing){
+				tracker.drawingEvent();
 			}
 		};
 
