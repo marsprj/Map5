@@ -81,6 +81,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Select.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Rotate.js"></script>
 <!--Events-->
 <script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
 <!--Render-->
@@ -131,6 +132,7 @@
 													"GML2"); 		// 格式
 		mapObj.addLayer(wfsLayer);
 
+		mapObj.enableDrag(false);
 
 		// 5、设置中心点和显示级别
 		var zoom = 3;
@@ -144,18 +146,10 @@
 	 * @return {[type]} [description]
 	 */
 	function createRotateInteraction(){
-		var select = new GeoBeans.Interaction.Select({
-			"map" : mapObj,
-			"layer" : wfsLayer
+		var rotate = new GeoBeans.Interaction.Rotate({
+			"map" : mapObj
 		});
-		//select.attach(mapObj);
-		select.onchange(onSelectionChange);
-		mapObj.addInteraction(select);
-		//var select = new GeoBeans.Interaction(null);
-	}
-
-	function onSelectionChange(features){
-		//alert(features.length);
+		mapObj.addInteraction(rotate);
 	}
 
 	function onRotate(){
