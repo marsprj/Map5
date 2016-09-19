@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>PolygonStyle.kml</name>
+  <open>1</open>
+  <Style id="default_line">
+    <IconStyle>
+      <scale>0.8</scale>
+      <Icon>
+        <href>images/marker.png</href>
+      </Icon>
+    </IconStyle>
+    <LabelStyle>
+      <color>ffffaaff</color>
+      <scale>1.5</scale>
+    </LabelStyle>
+    <LineStyle>
+      <color>ff0000ff</color>
+      <width>6</width>
+    </LineStyle>
+    <PolyStyle>
+      <color>7fff0000</color>
+	   <fill>1</fill>
+	  <outline>1</outline>     
+    </PolyStyle>
+  </Style>
+	<Placemark>
+      <name>Absolute</name>
+      <visibility>1</visibility>
+      <styleUrl>#default_line</styleUrl>
+      <Polygon>
+        <tessellate>1</tessellate>
+        <altitudeMode>absolute</altitudeMode>
+        <outerBoundaryIs>
+          <LinearRing>
+    		<coordinates>
+              130,10
+              140,40
+              120,40
+              110,20
+              130,10
+            </coordinates>
+    	 </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+	<Placemark>
+    <name>Document Feature 1</name>
+    <styleUrl>#default_line</styleUrl>
+    <Point>
+      <coordinates>-122.371,37.816,0</coordinates>
+    </Point>
+  </Placemark>
+
+  <Placemark>
+    <name>LineStyle Example</name>
+    <styleUrl>#default_line</styleUrl>
+    <LineString>
+      <extrude>1</extrude>
+      <tessellate>1</tessellate>
+      <coordinates>
+        -102.364383,37.824664,0 -12.364152,44.824322,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+<Placemark>
+    <name>LineStyle Example2</name>
+    <LineString>
+      <extrude>1</extrude>
+      <tessellate>1</tessellate>
+      <coordinates>
+        22.364383,37.824664,0 -2.364152,44.824322,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+<Placemark>
+    <name>LineStyle Example3</name>
+    <LineString>
+      <extrude>1</extrude>
+      <tessellate>1</tessellate>
+      <coordinates>
+        22,10,0 0.364152,4.824322,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+
+</Document>
+</kml>

@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"> -->
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/codemirror.js"></script>
+<script type="text/javascript" src="js/catalog.js"></script>
+<link type="text/css" rel="stylesheet" href="css/codemirror.css"/>
+<style type="text/css">
+	body{
+		margin: 0px;
+		font-size: 12px;
+		font-family: "Microsoft Yahei";
+		overflow: hidden;
+	}
+	ul{
+		margin: 0px;
+		padding: 0px;
+	}
+	li{
+		list-style: none;
+	}
+	a{
+		text-decoration: none;
+	}
+
+	#header_panel{
+		height: 60px;
+		box-shadow: 1px 2px 10px 0 #828e9a;
+		background-color: #0097c3;
+	}
+	#logo_panel{
+		background-image: url(images/Web_Browser_50.png);
+		width: 50px;
+		height: 100%;
+		line-height: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	#title_panel{
+		height: 60px;
+		line-height: 60px;
+		font-size: 24px;
+    	color: #fff;
+    	text-shadow: 2px 0 0 #000;
+	}	
+
+	#logo_panel,#title_panel{
+		float: left;
+		margin-left: 10px
+	}
+	.main{
+		position: absolute;
+		height: calc(100% - 60px);
+		width: 100%;
+		top: 60px;
+	}
+
+	.left{
+		float: left;
+		width: 260px;
+		height: 100%;
+		overflow: auto;
+		border-right: 1px solid #cfcfcf;
+	}
+	.right{
+		float: right;
+		width: calc(100% - 262px);
+		height: 100%;
+	}
+	#item_list{
+		padding-left: 20px;
+	}
+	.item-li{
+		border-left: 1px solid #dfdfdf;
+	}
+	.item-li a{
+		color: #666;
+    	border: none;
+    	margin-left: 0px;
+   		background: url(images/js_demo_nav_icon.png) no-repeat 0 center;
+   		padding-left: 32px;
+   		display: block;
+	 	height: 30px;
+	  	line-height: 30px;
+	  	font-size: 14px;
+	}
+	.item-li.open a{
+		background: url(images/js_demo_nav_icon_1.png) no-repeat 0 center;
+	}
+	.item-li.open .children{
+		display: block;
+	}
+
+	.item-li.close .children{
+		display: none;
+	}
+
+	ul.children li{
+		padding-left: 40px;
+		height: 24px;
+		line-height: 24px;
+		background: url(./images/list_icon.png) no-repeat 30px 10px;
+		cursor: pointer;
+	}
+
+	ul.children li.active{
+		color: 
+	}
+	.right_tab{
+		height: 100%;
+		width: 100%;
+		display: none;
+	}
+
+	.btn{
+	    height: 40px;
+	    width: 200px;
+	    display: block;
+	    text-align: center;
+	    background-color: #008eff;
+	    vertical-align: middle;
+	    font-size: 16px;
+	    line-height: 2.1;
+	    border: 1px solid transparent;
+	    border-radius: 4px;
+	    color: #fff;
+	    cursor: pointer;
+	}
+	.version_div{
+		padding: 20px;
+	}
+	.version-number{
+		float:  left;
+		width: 200px;
+
+	}
+	.version-text{
+		float: left;;
+	}
+	#version_tab{
+		display: none;
+	}
+
+	#code_div{
+		float: left;
+		width: 540px;
+		height: 100%;
+		border-right: 1px solid #cfcfcf;
+		
+	}
+
+	#api_tab{
+		display: block;
+
+	}
+	#apiID{
+		height: 100%;
+		width: calc(100% - 541px);
+		float: right;
+	}
+
+	#code_bar{
+		height: 30px;
+		width: 540px;
+		background-color: rgba(252,252,252,0.6);
+		position: fixed;
+		top: 60px;
+	}
+
+	#code_bar a{
+		width: 60px;
+		display: block;
+		background-color: #44deee;
+		height: 20px;
+		line-height: 20px;
+		float: right;
+		margin-right: 20px;
+		text-align: center;
+		margin-top: 5px;
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		border-radius: 3px;
+		color: #fff;
+		
+
+	}
+	#code_bar a:hover{
+		font-weight: bold;
+	}
+	#resourece_div{
+		width: 100%;
+		height: calc(100% - 30px);
+		position: relative;
+		top: 30px;
+		overflow: auto;
+	}
+
+	#myresource{
+		width: 100%;
+		height: 100%;
+		
+		
+	}
+</style>
+<script type="text/javascript">
+	var editor = null;//高亮代码编辑器
+
+	function init(){
+		var html = "";
+
+		for(var i = 0; i < g_catalog.length;++i){
+			var item = g_catalog[i];
+			var itemName = item.name;
+			var items = item.items;
+			html += '<li class="item-li close">'
+				+	'	<a href="javascript:void(0)">' + itemName + '</a>'
+				+	'	<ul class="children">';
+			for(var j = 0; j < items.length;++j){
+				var o = items[j];
+				var name = o.name;
+				var link = o.link;
+				html += '<li xlink="' +  link + '">' + name + '</li>';
+			}
+			html += "</ul></li>";
+		}
+
+		$("#item_list").html(html);
+
+		$("#item_list .item-li a").click(function(){
+			var parent = $(this).parent();
+			if(parent.hasClass("open")){
+				parent.removeClass("open").addClass("close");
+			}else{
+				parent.removeClass("close").addClass("open");
+			}
+		});
+
+
+		$("#item_list .children li").click(function(){
+			var link = $(this).attr("xlink");
+			if(link != null && link != ""){
+				$(".right_tab").hide();
+				$("#api_tab").show();
+				$("#apiID").attr("src",link);
+				setResource(link);
+
+			}
+		});
+
+		var link = "map/map_init.html";
+		setResource(link);
+
+	}
+
+	function setResource(link){
+		var url = "http://" + document.location.hostname + document.location.pathname + link;
+		var xmlHttp = createXmlHttpRequest();
+	    xmlHttp.open("get",url,false);
+	    xmlHttp.send();
+	    if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+	    	$("#myresource").val("");
+	        str = xmlHttp.responseText;//str即为返回的html内容
+	        $("#myresource").val(str) ;
+	        
+	        if(!editor){
+	            editor = CodeMirror.fromTextArea(document.getElementById("myresource"), {
+	                // lineNumbers: true,
+	                // styleActiveLine: true,
+	                // matchBrackets: true,
+	                // mode:"htmlmixed",
+	                // viewportMargin: Infinity
+	                lineWrapping:true, //是否显示scroll
+	                lineNumbers: true, //是否显示number
+	                styleActiveLine: true,
+	                matchBrackets: true,
+	                mode:"htmlmixed",
+	                viewportMargin: Infinity       
+	            });
+	        }else{
+	            editor.setValue($("#myresource").val());
+	        }
+	       }
+	}
+
+	function createXmlHttpRequest(){
+       try {
+           return new XMLHttpRequest();
+       }
+       catch(e){
+           return new ActiveXObject("Microsoft.XMLHTTP");
+       }
+   }
+
+   function run(){
+		var iframeContent = editor.getValue();  //新内容
+		var iFrame=$("#apiID")[0].contentWindow;
+		iFrame.document.write(iframeContent);
+		iFrame.document.close();
+   }
+
+   function refresh(){
+   		var link = $("#apiID").attr("src");
+   		setResource(link);
+   		run();
+   }
+</script>
+<title>Map5 -- API </title>
+<body onload="init()">
+	<div id="header_panel">
+		<div id="logo_panel"></div>
+		<div id="title_panel" class="title_font">Map5 示例</div>
+	</div>
+	<div class="main">
+		<div class="left">
+			<ul id="item_list">
+			</ul>
+		</div>
+		<div class="right">
+			<div class="right_tab" id="api_tab">
+				<div id="code_div">
+					<div id="code_bar">
+						<a href="javascript:void(0)" onclick="run()">运行</a>
+						<a href="javascript:void(0)" onclick="refresh()">刷新</a>
+					</div>
+					<div id="resourece_div">
+						<textarea id="myresource" class="clearfix" onchange="clip.setText(this.value)">
+	 					</textarea>
+	 				</div>
+				</div>
+				<iframe src="map/map_init.html" frameborder="no" id="apiID" ></iframe>
+			</div>
+			
+			<div class="right_tab" id="version_tab">
+				<div class="version_div">
+					<div class="version-number">
+						<div>Version : 1.0.0</div>
+						<div>Time : 2016.08.16</div>
+					</div>
+					<div class="version-text">
+					<div>
+						<p>版本说明:</p>
+						<p>主要实现的功能有:</p>
+						<p>①地图的基本操作</p>
+						<p>②地图状态控制</p>
+						<p>③样式设置</p>
+						<p>④专题图</p>
+						<p>⑤标注、标绘</p>
+						<p>⑥查询操作</p>
+						<p>⑦加载KML文件和GeoJson文件</p>
+					</div>
+					<a class="btn" href='../Map5_1.0.0.rar'>下载</a>
+					</div>
+					<div style="clear:both"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
