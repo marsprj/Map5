@@ -119,7 +119,7 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 
 	var mapContainer = this._map.getContainer();
 	var onmousedown = function(evt){
-		if(_enabled)
+		//if(that._enabled){
 		var viewer = that._map.getViewer();
 		var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
