@@ -112,17 +112,17 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 		// 计算位置
 
-		var llpt = this.map.transformation
-			.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var viewer = this.map.getViewer();
+		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
 
 		var x, y;
-		var lspt = this.map.transformation.toMapPoint(llpt.x,llpt.y);
+		var lspt = viewer.toMapPoint(llpt.x,llpt.y);
 		var row, col, tile;
 		this.tiles = [];
-		var level = this.map.level;
+		var level = viewer.getZoom();
 		// y = llpt.y - (row_min+1) * img_size;
 		y = llpt.y - row_min * img_size;
 		y = llpt.y + row_min * img_size;
@@ -149,8 +149,9 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 	computeTileBound : function(){
 		var map = this.map;
-		var level = map.level;
-		var resolution = map.resolution;
+		var viewer = map.getViewer();
+		var level = viewer.getZoom();
+		var resolution = viewer.getResolution();
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		// 
 		var ve = this.getValidView();
@@ -232,8 +233,10 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		//如果都在内存里面，判断是否都在可以绘制完
 		for(var i = 0; i < this.tiles.length;++i){
 			var tile_obj = this.tiles[i];
-			if(tile_obj.tile.state != GeoBeans.TileState.LOADED){
-				return;
+			if(isValid(tile_obj.tile)){
+				if(tile_obj.tile.state != GeoBeans.TileState.LOADED){
+					return;
+				}	
 			}
 		}
 		this.flag = GeoBeans.Layer.Flag.LOADED;

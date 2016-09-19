@@ -20,17 +20,40 @@ var g_catalog = [
 			}
 		]
 	},{
-		"name" : "地图状态控制",
+		"name": "地图控件",
 		"items":[
 			{
-				"name" : "地图级别",
+				"name" : "导航条",
+				"link" : "control/control_nav.html"
+			},{
+				"name" : "鹰眼（待实现）",
+				"link" : "control/control_hawk.html"
+			},{
+				"name" : "比例尺（待实现）",
+				"link" : "control/control_scalebar.html"
+			},{
+				"name" : "图例（待补充）",
+				"link" : "control/control_legend.html"
+			},{
+				"name" : "版权（待补充）",
+				"link" : "control/control_copyright.html"
+			}
+		]
+	},{
+		"name" : "地图视图",
+		"items":[
+			{
+				"name" : "缩放级别",
 				"link" : "map/map_view_zoom.html"
 			},{
-				"name" : "地图中心点",
+				"name" : "设置中心点",
 				"link" : "map/map_view_center.html"
 			},{
-				"name" : "地图范围",
+				"name" : "设置显示范围",
 				"link" : "map/map_view_extent.html"
+			},{
+				"name" : "地图旋转",
+				"link" : "map/map_view_rotate.html"
 			},{
 				"name" : "导航条",
 				"link" : "map_widget_nav.html"
@@ -40,52 +63,78 @@ var g_catalog = [
 			}
 		]
 	},{
-		"name" : "图层控制",
+		"name" : "图层加载",
 		"items":[
 			{
 				"name" : "添加图层",
-				"link" : "layer_add.html"
-			},{
-				"name" : "删除图层",
-				"link" : "layer_remove.html"
-			},{
-				"name" : "图层显示",
-				"link" : "layer_visible.html"
-			},{
-				"name" : "QuadServer图层",
-				"link" : "layer_add_quadserver.html"
-			},{
-				"name" : "多个QuadServer图层",
-				"link" : "layer_add_multi_quadserver.html"
-			},{
-				"name" : "PGIS图层",
-				"link" : "layer_add_pgis.html"
+				"link" : "layer/layer_add.html"
 			},{
 				"name" : "WFS图层",
-				"link" : "layer_add_wfs.html"
+				"link" : "layer/layer_add_wfs.html"
 			},{
 				"name" : "WMS图层",
-				"link" : "layer_add_wms.html"
+				"link" : "layer/layer_add_wms.html"
+			},{
+				"name" : "WMTS图层",
+				"link" : "layer/layer_add_wmts.html"
+			},{
+				"name" : "QuadServer图层",
+				"link" : "layer/layer_add_quadserver.html"
+			},{
+				"name" : "多个QuadServer图层",
+				"link" : "layer/layer_add_multi_quadserver.html"
+			},{
+				"name" : "PGIS图层",
+				"link" : "layer/layer_add_pgis.html"
+			},{
+				"name" : "高德图层",
+				"link" : "layer/layer_add_gaode.html"
+			},{
+				"name" : "百度图层",
+				"link" : "layer/layer_add_baidu.html"
+			},{
+				"name" : "天地图层",
+				"link" : "layer/layer_add_tianditu.html"
+			},{
+				"name" : "OSM图层(待实现)",
+				"link" : "layer/layer_add_osm.html"
+			},{
+				"name" : "Bing图层(待实现)",
+				"link" : "layer/layer_add_bing.html"
+			}
+		]
+	},{
+		"name" : "图层控制",
+		"items":[
+			{
+				"name" : "删除图层",
+				"link" : "layer/layer_remove.html"
+			},{
+				"name" : "图层显示",
+				"link" : "layer/layer_visible.html"
 			}
 		]
 	},{
 		"name" : "地图交互",
 		"items":[
 			{
-				"name" : "点击查询",
+				"name" : "查询(点击)",
 				"link" : "interaction/interaction_select_by_click.html"
 			},{
-				"name" : "矩形查询",
+				"name" : "查询(矩形)",
 				"link" : "interaction/interaction_select_by_rect.html"
 			},{
-				"name" : "圆查询",
+				"name" : "查询(圆)",
 				"link" : "interaction/interaction_select_by_circle.html"
 			},{
-				"name" : "线查询",
+				"name" : "查询(线)",
 				"link" : "interaction/interaction_select_by_line.html"
 			},{
-				"name" : "多边形查询",
+				"name" : "查询(多边形)",
 				"link" : "interaction/interaction_select_by_polygon.html"
+			},{
+				"name" : "绘制图元",
+				"link" : "interaction/interaction_draw.html"
 			},{
 				"name" : "地图旋转",
 				"link" : "interaction/interaction_select_by_rotate.html"

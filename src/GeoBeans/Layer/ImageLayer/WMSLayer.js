@@ -57,7 +57,8 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var w = this.map.canvas.width;
 		var h = this.map.canvas.height;
 		
-		var extent = this.map.getViewer();
+		var viewer = this.map.getViewer();
+		var extent = viewer.getExtent();
 		
 		var bbox = extent.xmin + "," + extent.ymin + "," + extent.xmax + "," + extent.ymax;
 		
