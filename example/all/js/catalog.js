@@ -54,21 +54,21 @@ var g_catalog = [
 			},{
 				"name" : "地图旋转",
 				"link" : "map/map_view_rotate.html"
-			},{
+			}/*,{
 				"name" : "导航条",
 				"link" : "map_widget_nav.html"
-			// },{
-			// 	"name" : "(*)地图旋转",
-			// 	"link" : "rotate.html"
-			}
+			 },{
+			 	"name" : "(*)地图旋转",
+			 	"link" : "rotate.html"
+			}*/
 		]
 	},{
 		"name" : "图层加载",
 		"items":[
-			{
+			/*{
 				"name" : "添加图层",
 				"link" : "layer/layer_add.html"
-			},{
+			},*/{
 				"name" : "WFS图层",
 				"link" : "layer/layer_add_wfs.html"
 			},{
@@ -78,7 +78,7 @@ var g_catalog = [
 				"name" : "(*)WMTS图层",
 				"link" : "layer/layer_add_wmts.html"
 			},{
-				"name" : "(*)QuadServer图层",
+				"name" : "QuadServer图层",
 				"link" : "layer/layer_add_quadserver.html"
 			},{
 				"name" : "(*)多个QuadServer图层",
@@ -112,6 +112,12 @@ var g_catalog = [
 			},{
 				"name" : "(*)图层显示",
 				"link" : "layer/layer_visible.html"
+			},{
+				"name" : "(*)透明度",
+				"link" : "layer/layer_tranparency.html"
+			},{
+				"name" : "(*)最大最小显示级别",
+				"link" : "layer/layer_minmaxzoom.html"
 			}
 		]
 	},{
