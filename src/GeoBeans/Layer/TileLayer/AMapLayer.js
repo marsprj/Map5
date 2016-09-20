@@ -2,7 +2,8 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	
 	//"http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8"
 	
-	AMP_URL : "/appmaptile?lang=zh_cn&size=1&scale=1&style=8",
+	AMP_URL : "/appmaptile?lang=zh_cn&size=1&scale=1&style=7",
+	//AMP_URL : "http://wprd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7",
 	
 /*	ORIGIN :{
         x: -20037508.3427892,
@@ -67,8 +68,10 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 
 	computeTileBound : function(){
 		var map = this.map;
-		var level = map.level;
-		var resolution = map.resolution;
+
+		var viewer = map.getViewer(); 
+		var level = viewer.getZoom();
+		var resolution = viewer.getResolution();
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		// 
 		var ve = this.getValidView();
@@ -95,7 +98,7 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var tile = null;
 		var tid, turl;
 		var row, col, r, c;
-		var level = this.map.level;
+		var level = this.map.getViewer().getZoom();;
 		for(row=row_min; row<row_max; row++){
 			for(col=col_min; col<col_max; col++){
 				tid = "x=" + col + "&y=" + row + "&z=" + level;
@@ -119,14 +122,15 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var viewer = this.map.getViewer();
+		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
 		var x, y;
 		
 		var row, col, tile;
-		var level = this.map.level;
+		var level = this.map.getViewer().getZoom();;
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<row_max; row++){
 			x = llpt.x + col_min * img_size;
@@ -152,14 +156,14 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
 		var x, y;
 		
 		var row, col, tile;
-		var level = this.map.level;
+		var level = this.map.getViewer().getZoom();;
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<row_max; row++){
 			x = llpt.x + col_min * img_size;
@@ -186,15 +190,16 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var viewer = this.map.getViewer();
+		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
 		var x, y;
-		
+
 		var row, col, tile;
 		this.tiles = [];
-		var level = this.map.level;
+		var level = viewer.getZoom();
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<row_max; row++){
 			x = llpt.x + col_min * img_size;
