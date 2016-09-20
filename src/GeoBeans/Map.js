@@ -2026,16 +2026,32 @@ GeoBeans.Map.prototype.un = function(event){
 }
 
 /**
+ * 添加多个图层
+ * @public
+ * @param {[type]} layers [description]
+ * @description layers为[]类型
+ */
+GeoBeans.Map.prototype.addLayers = function(layers){
+	if(isValid(layers)){
+		var that = this;
+		layers.forEach(function(l){
+			that.addLayer(l);
+		})
+	}
+}
+
+/**
  * 设置Map的底图
+ * @public
  * @param {[TileLayer]} l Baselayer必须是TileLayer
- * @description [description]
+ * @description Map会将添加进来的第一个TileLayer设置为baseLayer
  */
 GeoBeans.Map.prototype.setBaseLayer = function(l){
-	if(!isValid(layer)){
+	if(!isValid(l)){
 		this.baseLayer = null;
 		return true;
 	}
-	if(l instanceof TileLayer){
+	if(l instanceof GeoBeans.Layer.TileLayer){
 		this.baseLayer = l;
 		return true;
 	}
