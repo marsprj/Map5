@@ -54,13 +54,7 @@ var g_catalog = [
 			},{
 				"name" : "地图旋转",
 				"link" : "map/map_view_rotate.html"
-			}/*,{
-				"name" : "导航条",
-				"link" : "map_widget_nav.html"
-			 },{
-			 	"name" : "(*)地图旋转",
-			 	"link" : "rotate.html"
-			}*/
+			}
 		]
 	},{
 		"name" : "图层加载",
@@ -81,14 +75,14 @@ var g_catalog = [
 				"name" : "QuadServer图层",
 				"link" : "layer/layer_add_quadserver.html"
 			},{
-				"name" : "(*)多个QuadServer图层",
+				"name" : "多个QuadServer图层",
 				"link" : "layer/layer_add_multi_quadserver.html"
 			},{
 				"name" : "(*)PGIS图层",
 				"link" : "layer/layer_add_pgis.html"
 			},{
 				"name" : "(*)高德图层",
-				"link" : "layer/layer_add_gaode.html"
+				"link" : "layer/layer_add_amap.html"
 			},{
 				"name" : "(*)百度图层",
 				"link" : "layer/layer_add_baidu.html"
@@ -110,13 +104,13 @@ var g_catalog = [
 				"name" : "(*)删除图层",
 				"link" : "layer/layer_remove.html"
 			},{
-				"name" : "(*)图层显示",
+				"name" : "图层显示",
 				"link" : "layer/layer_visible.html"
 			},{
-				"name" : "(*)透明度",
+				"name" : "透明度",
 				"link" : "layer/layer_tranparency.html"
 			},{
-				"name" : "(*)最大最小显示级别",
+				"name" : "最大最小显示级别",
 				"link" : "layer/layer_minmaxzoom.html"
 			}
 		]

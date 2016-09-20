@@ -127,6 +127,15 @@ GeoBeans.Layer = GeoBeans.Class({
 	CLASS_NAME : "GeoBeans.Layer"
 });
 
+/**
+ * 单个图层重绘
+ * @public
+ * @return {[type]} [description]
+ */
+GeoBeans.Layer.prototype.refresh = function() {
+	this.draw();
+};
+
 
 GeoBeans.Layer.Flag = {
 	READY : "ready",

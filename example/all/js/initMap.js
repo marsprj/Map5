@@ -47,6 +47,8 @@ function loadTileMap(){
 	// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 	var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 	mapObj.addLayer(baselayer);
+
+	mapObj.setBaseLayer(baselayer);
 	
 	// 5、设置中心点和显示级别
 	var zoom = 3;
