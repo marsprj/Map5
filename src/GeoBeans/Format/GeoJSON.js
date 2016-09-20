@@ -406,3 +406,5 @@ GeoBeans.GeoJsonReader = GeoBeans.Class({
 		this.layer.featureType.fields.push(field);
 	},
 });
+
+GeoBeans.Format.GeoJSON

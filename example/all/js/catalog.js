@@ -137,7 +137,7 @@ var g_catalog = [
 				"link" : "interaction/interaction_draw.html"
 			},{
 				"name" : "地图旋转",
-				"link" : "interaction/interaction_select_by_rotate.html"
+				"link" : "interaction/interaction_rotate.html"
 			}
 		]
 	},{
@@ -159,66 +159,122 @@ var g_catalog = [
 				"name" : "(*)面要素图层",
 				"link" : "polygonFeatureLayer.html"
 			},{
-				"name" : "(*)多面要素图层",
-				"link" : "multiPolygonFeatureLayer.html"
+				"name" : "(*)加载GeoJSON数据",
+				"link" : "feature_geojson.html"
+			},{
+				"name" : "(*)加载KML数据",
+				"link" : "feature_kml.html"
 			}
 		]
 	},{
-		"name" : "样式设置",
+		"name" : "条件查询",
 		"items":[
 			{
-				"name" : "(*)点样式设置",
-				"link" : "pointStyle.html"
+				"name" : "(*)ID查询",
+				"link" : "query/filter_id.html"
 			},{
-				"name" : "(*)线样式设置",
-				"link" : "lineStyle.html"
+				"name" : "(*)比较查询",
+				"link" : "query/filter_binary_comparision.html"
 			},{
-				"name" : "(*)面样式设置",
-				"link" : "polygonStyle.html"
+				"name" : "(*)Between查询",
+				"link" : "query/filter_between.html"
 			},{
-				"name" : "(*)点图层文字样式",
-				"link" : "pointStyle_text.html"
+				"name" : "(*)Like查询",
+				"link" : "query/filter_like.html"
 			},{
-				"name" : "(*)线图层文字样式",
-				"link" : "lineStyle_text.html"
+				"name" : "(*)IsNull查询",
+				"link" : "query/filter_isnull.html"
 			},{
-				"name" : "(*)面图层文字样式",
-				"link" : "polygonStyle_text.html"
+				"name" : "(*)逻辑查询",
+				"link" : "query/filter_logic.html"
 			},{
-				"name" : "(*)唯一值样式设置",
-				"link" : "uniqueStyle.html"
+				"name" : "(*)矩形查询",
+				"link" : "query_spatial_bbox.html"
 			},{
-				"name" : "(*)分级样式设置",
-				"link" : "classStyle.html"
+				"name" : "(*)相交查询",
+				"link" : "query_spatial_intersects.html"
+			},{
+				"name" : "(*)相离查询",
+				"link" : "query_spatial_disjoint.html"
+			},{
+				"name" : "(*)包含查询",
+				"link" : "query_spatial_contain.html"
+			},{
+				"name" : "(*)包含于查询",
+				"link" : "query_spatial_within.html"
+			},{
+				"name" : "(*)周边查询",
+				"link" : "query_spatial_dwithin.html"
+			},{
+				"name" : "(*)设置返回的字段",
+				"link" : "query_set_fields.html"
+			},{
+				"name" : "(*)设置最大的返回的features个数",
+				"link" : "query_set_maxfeatures.html"
+			},{
+				"name" : "(*)设置返回结果的偏移量",
+				"link" : "query_set_offset.html"
+			},{
+				"name" : "(*)设置返回结果排序",
+				"link" : "query_set_orderbt.html"
+			}
+		]
+	},{
+		"name" : "图层样式",
+		"items":[
+			{
+				"name" : "(*)点样式",
+				"link" : "style_point.html"
+			},{
+				"name" : "(*)线样式",
+				"link" : "style_line.html"
+			},{
+				"name" : "(*)面样式",
+				"link" : "style_polygon.html"
+			},{
+				"name" : "(*)文字样式(点)",
+				"link" : "style_text_point.html"
+			},{
+				"name" : "(*)文字样式(线)",
+				"link" : "style_text_line.html"
+			},{
+				"name" : "(*)文字样式(面)",
+				"link" : "style_text_polygon.html"
 			}
 		]
 	},{
 		"name" : "专题图",
 		"items":[
 			{
-				"name" : "(*)柱状图",
-				"link" : "barChart.html"
+				"name" : "(*)唯一值图",
+				"link" : "theme_unique.html"
 			},{
-				"name" : "(*)饼状图",
-				"link" : "pieChart.html"
-			},{
-				"name" : "(*)等级符号图",
-				"link" : "symbolChart.html"
+				"name" : "(*)分级样图",
+				"link" : "theme_class.html"
 			},{
 				"name" : "(*)热力图",
-				"link" : "heatMap.html"
+				"link" : "theme_heatmap.html"
 			},{
 				"name" : "(*)点聚合图-示例1",
-				"link" : "clusterLayer.html"
+				"link" : "theme_cluster_1.html"
 			},{
 				"name" : "(*)点聚合图-示例2",
-				"link" : "clusterLayer1.html"
+				"link" : "theme_cluster_2.html"
 			},{
 				"name" : "(*)点聚合图-示例3",
-				"link" : "clusterLayer2.html"
+				"link" : "theme_cluster_2.html"
 			},{
 				"name" : "(*)分级图",
 				"link" : "rangeChart.html"
+			},{
+				"name" : "(*)柱状图",
+				"link" : "chart_bar.html"
+			},{
+				"name" : "(*)饼状图",
+				"link" : "chart_pie.html"
+			},{
+				"name" : "(*)等级符号图",
+				"link" : "chart_symbol.html"
 			}
 		]
 	},{

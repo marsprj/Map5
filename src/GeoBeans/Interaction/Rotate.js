@@ -16,7 +16,7 @@ GeoBeans.Interaction.Rotate = GeoBeans.Class(GeoBeans.Interaction, {
 	_map	: null,
 	_onMouseMove : null,
 
-	_rotateing : null,
+	_rotateing : false,
 
 
 	initialize : function(options){

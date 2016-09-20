@@ -1640,6 +1640,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	// 创建一个featureLayer
+	// @deprecated
 	createFeatureLayer : function(layerName,fields,geomType){
 		if(layerName == null || (!$.isArray(fields)) || geomType == null){
 			return null;
@@ -1667,6 +1668,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	// KML文件创建featureLayer
+	// @deprecated
 	createFeatureLayerByKML : function(name,url){
 		var kmlReader = new GeoBeans.KMLReader();
 		var layer = kmlReader.read(name,url);
@@ -1675,6 +1677,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 
 	// GeoJson文件创建featureLayer
+	// @deprecated
 	createFeatureLayerByGeoJson : function(name,url){
 		var geoJsonReader = new GeoBeans.GeoJsonReader();
 		var layer = geoJsonReader.read(name,url);
