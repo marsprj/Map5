@@ -162,6 +162,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	load : function(){
 		var viewer = this.map.getViewer();
 		var extent = viewer.getExtent();
+		var rotation = viewer.getRotation();
+		if(this.rotation != rotation){
+			this.flag = GeoBeans.Layer.Flag.READY;
+		}
+		this.rotation = rotation;
 		if(extent != null && this.viewer != null && extent.equal(this.viewer)
 			&& this.flag == GeoBeans.Layer.Flag.LOADED){
 			this.flag = GeoBeans.Layer.Flag.LOADED;

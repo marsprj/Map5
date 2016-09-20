@@ -84,5 +84,14 @@ GeoBeans.Interaction.Interactions = GeoBeans.Class({
 			this._interactions[i] = null;
 		}
 		this._interactions = [];
+	},
+	find : function(type){
+		var len = this._interactions.length;
+		for(var i=0; i<len; i++){
+			if(this._interactions[i]._type == type){
+				return this._interactions[i];
+			}
+		}
+		return null;
 	}
 });

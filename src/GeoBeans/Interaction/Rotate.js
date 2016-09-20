@@ -16,6 +16,8 @@ GeoBeans.Interaction.Rotate = GeoBeans.Class(GeoBeans.Interaction, {
 	_map	: null,
 	_onMouseMove : null,
 
+	_rotateing : null,
+
 
 	initialize : function(options){
 		//GeoBeans.Class.prototype.initialize.apply(this, arguments);
@@ -23,6 +25,8 @@ GeoBeans.Interaction.Rotate = GeoBeans.Class(GeoBeans.Interaction, {
 		if(isValid(options.map)){
 			this._map = options.map;	
 		}
+
+		this._type = GeoBeans.Interaction.Type.ROTATE;
 
 		this.start();
 	},
@@ -53,8 +57,8 @@ GeoBeans.Interaction.Rotate.prototype.enable = function(enabled){
 }
 
 /**
- * [start description]
- * @private
+ * 开始交互
+ * @public
  * @return {[type]} [description]
  */
 GeoBeans.Interaction.Rotate.prototype.start = function(){
@@ -63,38 +67,95 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 
 	var mapContainer = this._map.getContainer();
 	this._map.saveSnap();
-	var onmousemove = function(evt){
-		var viewer = that._map.getViewer();
-		var cx = viewer.getWindowWidth() / 2;
-		var cy = viewer.getWindowHeight()/ 2;
-		var mx = evt.layerX;
-		var my = evt.layerY;
-		var dx = mx - cx;
-		var dy = cy - my;
-		var dd = Math.sqrt(Math.pow(dx,2.0) + Math.pow(dy,2,0));
-		var sinx = dy / dd;
-		var theta = Math.asin(sinx);
-		var angle = 180.0 * theta / Math.PI;
+	var viewer = this._map.getViewer();
 
-		//console.log("[" + evt.layerX + "," + evt.layerY + "]:" + theta);
-		console.log("dx:" + dx + ", dy:" + dy + ",dd:" + dd + ", theta:" + theta + ",angle:" + angle);
+	var center = viewer.getCenter();
 
-		var renderer = that._map.renderer;
-		renderer.clearRect();
-		var context = renderer.context;
-		context.save();
-		context.translate(-cx, -cy);
-		that._map.putSnap(0,0);
-		context.rotate(theta);
-		context.restore();
 
+	// 各自注册
+	var keyCode = null;
+	var listenEvent = function(evt){
+		if(evt instanceof KeyboardEvent){
+			keyCode = evt.keyCode;
+			// shift键
+			if(keyCode != 16){
+				return;
+			}
+			var onkeyup = function(evt){
+				keyCode = null;
+				document.removeEventListener("keyup",onkeyup);
+			};
+			document.addEventListener("keyup",onkeyup,false);
+		}
+
+		// 鼠标点击事件
+		if(evt instanceof MouseEvent){
+			if(keyCode == 16){
+				that._rotateing = true;
+				console.log("begin move");
+				var rotation = viewer.getRotation();
+				var point_b = viewer.toMapPoint(evt.layerX,evt.layerY);
+				var angle_b = GeoBeans.Utility.getAngle(center.x,center.y,point_b.x,point_b.y);
+				var width = that._map.getWidth();
+				var height = that._map.getHeight();
+				var baseLayerCanvas_bk = document.createElement("canvas");
+				baseLayerCanvas_bk.width = width;
+				baseLayerCanvas_bk.height = height;
+				var baseLayercontext_bk = baseLayerCanvas_bk.getContext('2d');
+				baseLayercontext_bk.drawImage(that._map.baseLayerCanvas,0,0);
+
+
+				var canvas_bk = document.createElement("canvas");
+				canvas_bk.width = width;
+				canvas_bk.height = height;
+				var context_bk = canvas_bk.getContext("2d");
+				context_bk.drawImage(that._map.canvas,0,0);
+				var onmousemove = function(evt){
+					var point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
+					var angle_e = GeoBeans.Utility.getAngle(center.x,center.y,point_e.x,point_e.y);
+
+					var delta = angle_e - angle_b;
+					that._map.drawBackground();
+					that._map.baseLayerRenderer.save();
+					that._map.baseLayerRenderer.context.translate(width/2,height/2);
+					that._map.baseLayerRenderer.context.rotate(delta* Math.PI/180);
+					that._map.baseLayerRenderer.context.translate(-width/2,-height/2);
+					that._map.baseLayerRenderer.context.drawImage(baseLayerCanvas_bk,0,0);
+					that._map.baseLayerRenderer.restore();
+
+
+					that._map.renderer.save();
+					that._map.renderer.context.translate(width/2,height/2);
+					that._map.renderer.context.rotate(delta* Math.PI/180);
+					that._map.renderer.context.translate(-width/2,-height/2);
+					that._map.renderer.context.drawImage(canvas_bk,0,0);
+					that._map.renderer.restore();
+				};
+				var onmouseup = function(evt){
+					that._rotateing = false;
+					var point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
+					var angle_e = GeoBeans.Utility.getAngle(center.x,center.y,point_e.x,point_e.y);
+
+					var delta = angle_e - angle_b;
+					viewer.setRotation(delta + rotation);
+					that._map.refresh();
+					mapContainer.removeEventListener("mouseup",onmouseup);
+					mapContainer.removeEventListener("mousemove",onmousemove);
+					
+				};
+
+				mapContainer.addEventListener("mousemove",onmousemove);
+				mapContainer.addEventListener("mouseup",onmouseup);
+			}
+		}
 	};
-	
-	this._onMouseMove = onmousemove;
-	
-	mapContainer.addEventListener("mousemove", onmousemove);
-}
 
+	document.addEventListener("keydown",listenEvent,false);
+	mapContainer.addEventListener("mousedown", listenEvent);
+
+	this._listenEvent = listenEvent; 
+
+}
 /**
  * [cleanup description]
  * @private
@@ -102,11 +163,10 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
  */
 GeoBeans.Interaction.Rotate.prototype.stop = function(){
 	var mapContainer = this._map.getContainer();
-	if(isValid(this._onMouseMove)){
-		mapContainer.removeEventListener("mousemove", this._onMouseMove);	
+	if(isValid(this._listenEvent)){
+		document.removeEventListener("keydown",this._listenEvent,false);
+		mapContainer.removeEventListener("mousedown", this._listenEvent);	
 		this._map.cleanupSnap();
 	}
-	
-
-	this._onMouseMove = null;
+	this._listenEvent = null;
 }

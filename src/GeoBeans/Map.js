@@ -614,7 +614,7 @@ GeoBeans.Map = GeoBeans.Class({
 			}
 		}
 	},
-	
+
 	cleanupSnap : function(){
 		this.snap = null;
 		this.baseLayerSnap = null;
@@ -2114,6 +2114,18 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 GeoBeans.Map.prototype.addInteraction = function(interaction){
 	this._interactions.add(interaction);
 }
+
+/**
+ * 根据类型获取interaction
+ * @public
+ * @param  {GeoBeans.Interaction.Type} type 交互类型
+ * @return {GeoBeans.Interaction}      交互
+ */
+GeoBeans.Map.prototype.getInteraction = function(type){
+	return this._interactions.find(type);
+};
+
+
 
 GeoBeans.Map.prototype.drawBaseLayer = function(){
 	var layer = null;
