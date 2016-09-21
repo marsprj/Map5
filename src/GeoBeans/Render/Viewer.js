@@ -166,6 +166,7 @@ GeoBeans.Viewer.prototype.getResolution = function(){
  */
 GeoBeans.Viewer.prototype.setRotation = function(val){
 	this._rotation = val;
+	this._map.drawBackground();
 	this.setZoom(this._zoom);
 };
 
