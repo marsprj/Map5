@@ -56,8 +56,9 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	},
 	computeTileBound : function(){
 		var map = this.map;
-		var level = map.level;
-		var resolution = map.resolution;
+		var viewer = map.getViewer();
+		var zoom = viewer.getZoom();
+		var resolution = viewer.getResolution();
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		// 
 		var ve = this.getValidView();
@@ -89,14 +90,15 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var tile = null;
 		var tid, turl;
 		var row, col, r, c;
-		var level = this.map.level;
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
 		for(row=row_min; row<row_max; row++){
 			for(col=col_min; col<col_max; col++){
-				tid = "x=" + col + "&y=" + row + "&z=" + level;
+				tid = "x=" + col + "&y=" + row + "&z=" + zoom;
 				turl = this.BMP_URL + "&" + tid;
 				
 				if(this.cache.getTile(turl)==null){
-					tile = new GeoBeans.Tile(this.map,turl, this, col, row, level, 0, 0);
+					tile = new GeoBeans.Tile(this.map,turl, this, col, row, zoom, 0, 0);
 					this.cache.putTile(tile);
 				}
 			}
@@ -112,20 +114,23 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var row_max = tbound.rmax;
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
+
+		var viewer = this.map.getViewer();
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
 		var x, y;
 		
 		var row, col, tile;
-		var level = this.map.level;
+		
+		var zoom = viewer.getZoom();
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<row_max; row++){
 			x = llpt.x + col_min * img_size;
 			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row, col, level);
+				tid = this.getTileID(row, col, zoom);
 				turl = this.BMP_URL + "&" + tid;
 				
 				tile = this.cache.getTile(turl);
@@ -145,20 +150,23 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var row_max = tbound.rmax;
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
+
+		var viewer = this.map.getViewer();
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
 		var x, y;
 		
 		var row, col, tile;
-		var level = this.map.level;
+		
+		var zoom = viewer.getZoom();
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<row_max; row++){
 			x = llpt.x + col_min * img_size;
 			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row, col, level);
+				tid = this.getTileID(row, col, zoom);
 				turl = this.BMP_URL + "&" + tid;
 				
 				tile = this.cache.getTile(turl);
@@ -172,46 +180,65 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	},
 	
 	preDraw:function(){
+
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
+		var maxZoom = this.getMaxZoom();
+		var minZoom = this.getMinZoom();
+		if(zoom > maxZoom || zoom < minZoom){
+			this.tiles = [];
+			this.renderer.clearRect();
+			this.snap = null;
+			return;
+		}
+
 		var tbound = this.computeTileBound();
 		this.updateTileCache(tbound);
+
+		var viewer = this.map.getViewer();
 		
 		var row_min = tbound.rmin;
 		var row_max = tbound.rmax;
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
 
-		var resolution = this.map.resolution;
+		var resolution = viewer.getResolution();
 		var tile_map_size = resolution * this.IMG_WIDTH;
 
 		var row_extent_max = Math.floor(this.FULL_EXTENT.ymax / tile_map_size);
 		var col_extent_min = Math.floor(this.FULL_EXTENT.xmin / tile_map_size);
 
-
 		
-		var llpt = this.map.transformation.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
-		// var llpt = this.map.transformation.toScreenPoint(0, 0);
+		
+		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
-		var img_size = this.IMG_WIDTH * this.scale;
+		var img_size = this.IMG_WIDTH * (this.imageScale);
+		if(this != this.map.baseLayer){
+			var resolution = this.map.getViewer().getResolution();
+			var re = this.getResolutionByZoom(zoom);
+			if(resolution != re){
+				img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
+			}
+		}
+		
 		var x, y;
 		
 		var row, col, tile;
 		this.tiles = [];
-		var level = this.map.level;
-		// y = llpt.y + row_min * img_size;
+		
+		var zoom = viewer.getZoom();
+
 		y = llpt.y + (row_extent_max-row_max) * img_size;
 
 		for(row=row_max-1; row>=row_min; row--){
-			// x = llpt.x + col_min * img_size;
 			x = llpt.x + (col_min - col_extent_min) * img_size;
 			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row, col, level);
+				tid = this.getTileID(row, col, zoom);
 				turl = this.BMP_URL + "&" + tid;
 				
 				tile = this.cache.getTile(turl);
-				// if(tile!=null){
-				// 	tile.draw(x, y, img_size, img_size);
-				// }
+
 				var tileObj = new Object();
 				tileObj.tile = tile;
 				tileObj.img_size = img_size;
@@ -269,7 +296,7 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		// drawBaseLayerCallback(tile.map);
 	},		
 
-	getTileID : function(row, col, level){
-		return ("x=" + col + "&y=" + row + "&z=" + level);
+	getTileID : function(row, col, zoom){
+		return ("x=" + col + "&y=" + row + "&z=" + zoom);
 	},	
 });

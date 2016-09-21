@@ -123,7 +123,7 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var col_max = tbound.cmax;
 		
 		var viewer = this.map.getViewer();
-		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
@@ -156,7 +156,7 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
 		
-		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
 		var img_size = this.IMG_WIDTH * this.scale;
@@ -182,6 +182,17 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	},
 	
 	preDraw:function(){
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
+		var maxZoom = this.getMaxZoom();
+		var minZoom = this.getMinZoom();
+		if(zoom > maxZoom || zoom < minZoom){
+			this.tiles = [];
+			this.renderer.clearRect();
+			this.snap = null;
+			return;
+		}
+				
 		var tbound = this.computeTileBound();
 		this.updateTileCache(tbound);
 		
@@ -191,10 +202,17 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var col_max = tbound.cmax;
 		
 		var viewer = this.map.getViewer();
-		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
-		var img_size = this.IMG_WIDTH * this.scale;
+		var img_size = this.IMG_WIDTH * (this.imageScale);
+		if(this != this.map.baseLayer){
+			var resolution = this.map.getViewer().getResolution();
+			var re = this.getResolutionByZoom(zoom);
+			if(resolution != re){
+				img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
+			}
+		}
 		var x, y;
 
 		var row, col, tile;
