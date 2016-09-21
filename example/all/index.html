@@ -107,7 +107,8 @@
 	}
 
 	ul.children li.active{
-		color: 
+		color: #0097c3;
+		font-weight: bold;
 	}
 	.right_tab{
 		height: 100%;
@@ -227,6 +228,7 @@
 		}
 
 		$("#item_list").html(html);
+		$("#item_list .children:first li:first").addClass("active");
 
 		$("#item_list .item-li a").click(function(){
 			var parent = $(this).parent();
@@ -239,6 +241,8 @@
 
 
 		$("#item_list .children li").click(function(){
+			$("#item_list .children li").removeClass("active");
+			$(this).addClass("active");
 			var link = $(this).attr("xlink");
 			if(link != null && link != ""){
 				$(".right_tab").hide();
