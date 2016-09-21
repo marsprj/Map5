@@ -223,14 +223,20 @@ var g_catalog = [
 		"name" : "图层样式",
 		"items":[
 			{
-				"name" : "(*)点样式",
-				"link" : "style_point.html"
+				"name" : "(*)点样式(简单)",
+				"link" : "style_simple_point.html"
 			},{
-				"name" : "(*)线样式",
-				"link" : "style_line.html"
+				"name" : "(*)点样式(图片)",
+				"link" : "style_pic_point.html"
 			},{
-				"name" : "(*)面样式",
-				"link" : "style_polygon.html"
+				"name" : "(*)线样式(简单)",
+				"link" : "style_simple_line.html"
+			},{
+				"name" : "(*)面样式(简单)",
+				"link" : "style_simple_polygon.html"
+			},{
+				"name" : "(*)面样式(填充)",
+				"link" : "style_fill_polygon.html"
 			},{
 				"name" : "(*)文字样式(点)",
 				"link" : "style_text_point.html"
@@ -278,7 +284,7 @@ var g_catalog = [
 			}
 		]
 	},{
-		"name" : "WFS查询",
+		"name" : "要素查询",
 		"items":[
 			{
 				"name" : "(*)点击查询",
@@ -300,7 +306,7 @@ var g_catalog = [
 				"link" : "logicFilterQuery.html"
 			}
 		]
-	},{
+	},/*{
 		"name" : "要素图层查询",
 		"items":[
 			{
@@ -314,27 +320,42 @@ var g_catalog = [
 				"link" : "featureLayerComparisionFilterQuery.html"
 			}
 		]		
-	},{
+	},*/{
 		"name" : "标注",
 		"items":[
 			{
-				"name" : "(*)marker标注",
-				"link" : "marker.html"
+				"name" : "(*)点标注",
+				"link" : "label/label_marker.html"
 			},{
 				"name" : "(*)线标注",
-				"link" : "polyline.html"
+				"link" : "label/label_line.html"
 			},{
 				"name" : "(*)面标注",
-				"link" : "polygon.html"
+				"link" : "label/label_polygon.html"
 			},{
-				"name" : "(*)文字标注",
-				"link" : "label.html"
+				"name" : "(*)文字标注(点)",
+				"link" : "label/label_text_point.html"
 			},{
-				"name" : "(*)infoWindow标注",
-				"link" : "infoWindow.html"
+				"name" : "(*)文字标注(线)",
+				"link" : "label/label_text_line.html"
 			},{
-				"name" : "(*)标注操作",
+				"name" : "(*)文字标注(面)",
+				"link" : "label/label_text_polygon.html"
+			},{
+				"name" : "(*)碰撞检测",
+				"link" : "label/label_collision.html"
+			},{
+				"name" : "(*)标注信息窗",
+				"link" : "label/label_infoWindow.html"
+			},{
+				"name" : "(*??)标注操作",
 				"link" : "overlay.html"
+			},{
+				"name" : "(*)事件(点击)",
+				"link" : "label/event_click.html"
+			},{
+				"name" : "(*)事件(hover)",
+				"link" : "label/event_hover.html"
 			}
 		]
 	},{
@@ -349,20 +370,58 @@ var g_catalog = [
 			}
 		]
 	},{
-		"name" : "事件",
+		"name" : "地图事件",
 		"items":[
 			{
-				"name" : "(*)鼠标移动事件",
-				"link" : "event.html"
+				"name" : "(*)单击事件",
+				"link" : "event/map_click.html"
 			},{
-				"name" : "(*)拖拽事件",
-				"link" : "dragEvent.html"
+				"name" : "(*)双击事件",
+				"link" : "event/map_dbclick.html"
+			},{
+				"name" : "(*)鼠标按下事件",
+				"link" : "event/map_mouse_down.html"
+			},{
+				"name" : "(*)鼠标按下事件",
+				"link" : "event/map_mouse_down.html"
+			},{
+				"name" : "(*)鼠标移动事件",
+				"link" : "event/map_mouse_move.html"
+			},{
+				"name" : "(*)鼠标抬起事件",
+				"link" : "event/map_mouse_up.html"
 			},{
 				"name" : "(*)鼠标滚动事件",
-				"link" : "wheelEvent.html"
+				"link" : "event/map_mouse_wheel.html"
+			},{
+				"name" : "(*)地图拖拽事件",
+				"link" : "event/map_drag.html"
 			}
 		]
 	},{
+		"name" : "数据源事件",
+		"items":[
+			{
+				"name" : "(*)Image加载开始事件",
+				"link" : "event/image_load_start.html"
+			},{
+				"name" : "(*)Image加载成功事件",
+				 "link" : "event/image_load_end.html"
+			},{
+				"name" : "(*)Image加载错误事件",
+				"link" : "event/image_load_error.html"
+			}/*,{
+				"name" : "(*)Image加载开始事件",
+				"link" : "event/image_load_start.html"
+			},{
+				"name" : "(*)Image加载成功事件",
+				 "link" : "event/image_load_end.html"
+			},{
+				"name" : "(*)Image加载错误事件",
+				"link" : "event/image_load_error.html"
+			},*/
+		]
+	}/*,{
 		"name" : "加载KML文件",
 		"items":[
 			{
@@ -408,6 +467,23 @@ var g_catalog = [
 				"link" : "geojson_example_3.html"
 			}
 		]		
+	}*/,{
+		"name" : "格式转换",
+		"items":[
+			{
+				"name" : "(*)WKT<-->Geometry",
+				"link" : "format_wkt.html"
+			},{
+				"name" : "(*)GML<-->Geometry",
+				"link" : "format_gmal.html"
+			},{
+				"name" : "(*)KML<-->Geometry",
+				"link" : "format_gmal.html"
+			},{
+				"name" : "(*)GeoJSON<-->Geometry",
+				"link" : "format_gmal.html"
+			}
+		]
 	},{
 		"name" : "动画",
 		"items":[
