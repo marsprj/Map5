@@ -286,8 +286,8 @@ GeoBeans.Map = GeoBeans.Class({
  		for(var i = 0; i < layers.length;++i){
  			if(layer.name == layers[i].name){
  				if(layer== this.baseLayer){
- 					//this.removeBaseLayer();
- 					this.setBaseLayer(null);
+ 					this.removeBaseLayer();
+ 					// this.setBaseLayer(null);
  				}
  				this.layers.splice(i,1);
  				layer.destroy();
@@ -300,22 +300,26 @@ GeoBeans.Map = GeoBeans.Class({
  		}
 	 },
 
-	//  removeBaseLayer : function(){
-	//  	var baseLayerName = this.baseLayer.name;
+/**
+ * 删除底图，如果还有其他tileLayer则设置为底图
+ * @return {[type]} [description]
+ */
+	 removeBaseLayer : function(){
+	 	var baseLayerName = this.baseLayer.name;
 
-	//  	var layer = null;
-	//  	for(var i = 0; i < this.layers.length;++i){
-	//  		layer = this.layers[i];
-	//  		if(layer instanceof GeoBeans.Layer.TileLayer && layer != this.baseLayer){
-	//  			this.baseLayer = layer;
-	//  		}
-	//  	}
-	//  	if(this.baseLayer.name == baseLayerName){
-	//  		this.baseLayer = null;
-	//  		this.level = null;
-	//  	}
-	//  	this.baseLayerRenderer.clearRect();
-	// },
+	 	var layer = null;
+	 	for(var i = 0; i < this.layers.length;++i){
+	 		layer = this.layers[i];
+	 		if(layer instanceof GeoBeans.Layer.TileLayer && layer != this.baseLayer){
+	 			this.baseLayer = layer;
+	 		}
+	 	}
+	 	if(this.baseLayer.name == baseLayerName){
+	 		this.baseLayer = null;
+	 		this.level = null;
+	 	}
+	 	this.baseLayerRenderer.clearRect();
+	},
 	
 	getViewer : function(){		
 		return this.viewer;
@@ -2047,12 +2051,16 @@ GeoBeans.Map.prototype.addLayers = function(layers){
  * 设置Map的底图
  * @public
  * @param {[TileLayer]} l Baselayer必须是TileLayer
- * @description Map会将添加进来的第一个TileLayer设置为baseLayer
+ * @description 需要是地图里面的一个图层，才可以设置
  */
 GeoBeans.Map.prototype.setBaseLayer = function(l){
 	if(!isValid(l)){
 		this.baseLayer = null;
-		return true;
+		return false;
+	}
+	if(!isValid(this.getLayer(l.name))){
+		this.baseLayer = null;
+		return false;
 	}
 	if(l instanceof GeoBeans.Layer.TileLayer){
 		this.baseLayer = l;
