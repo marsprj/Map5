@@ -122,23 +122,31 @@
 		}
 
 		// 1、geoserver服务器地址
-		var server = "/geoserver/radi/ows?";
+		// var server = "/geoserver/radi/ows?";
+		var server = "/geoserver/gwc/service/wmts"
 
 		// 2、设置要添加的图层数组，可以添加多个
 		var lname = ["cities_2"];
 
 		// 3、定义WMTS图层
+		// 备注:EPSG:4326可以显示，但是级别不对，GoogleCRS84Quad无法显示，有待调试
+		// var extent = new GeoBeans.Envelope(-180,-90,180,90);
+		// var layer = new GeoBeans.Layer.WMTSLayer("cities", //图层名称
+		// 						server, 	// 服务器地址
+		// 						"radi:country_2",	// 图层名称	
+		// 						extent,		// 空间范围
+		// 						"GoogleCRS84Quad",	//切图格式
+		// 						"image/png",		//图片格式
+		// 						null); 
+
+
+		// 配合Auge服务端的可以显示，可参考
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		var layer = new GeoBeans.Layer.WMTSLayer("cities", //图层名称
-								server, 	// 服务器地址
-								"cities_2",	// 图层名称	
-								extent,		// 空间范围
-								"GoogleCRS84Quad",	//切图格式
-								"image/png",		//图片格式
-								null); 
+		var layer = new GeoBeans.Layer.WMTSLayer("m1","/ows/user1/mgr","m1",extent,"GoogleCRS84Quad","image/png","tfs");
 
 		// 4、添加图层
 		mapObj.addLayer(layer);
+
 		
 		// 5、设置中心点和显示级别
 		var zoom = 3;

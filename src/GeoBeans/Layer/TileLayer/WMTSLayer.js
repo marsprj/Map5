@@ -122,14 +122,14 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var lspt = viewer.toMapPoint(llpt.x,llpt.y);
 		var row, col, tile;
 		this.tiles = [];
-		var level = viewer.getZoom();
+		var zoom = viewer.getZoom();
 		// y = llpt.y - (row_min+1) * img_size;
 		y = llpt.y - row_min * img_size;
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<=row_max; row++){
 			x = llpt.x + col_min * img_size;
 			for(col=col_min; col<=col_max; col++){
-				tid = this.getTileID(row, col, level);
+				tid = this.getTileID(row, col, zoom);
 				turl = this.url + tid;
 				
 				tile = this.cache.getTile(turl);
@@ -150,7 +150,6 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	computeTileBound : function(){
 		var map = this.map;
 		var viewer = map.getViewer();
-		var level = viewer.getZoom();
 		var resolution = viewer.getResolution();
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		// 
@@ -181,29 +180,37 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var tile = null;
 		var tid, turl;
 		var row, col, r, c;
-		var level = this.map.level;
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
 		for(row=row_min; row<=row_max; row++){
 			for(col=col_min; col<=col_max; col++){
-				tid = this.getTileID(row,col,level);
+				tid = this.getTileID(row,col,zoom);
 				turl = this.url  + tid;
 				// console.log(turl);
 				if(this.cache.getTile(turl)==null){
-					tile = new GeoBeans.Tile(this.map,turl, this, row, col, level, 0, 0);
+					tile = new GeoBeans.Tile(this.map,turl, this, row, col, zoom, 0, 0);
 					this.cache.putTile(tile);
 				}
 			}
 		}	
 	},
 
-	getTileID : function(row, col, level){
+	getTileID : function(row, col, zoom){
 		var str = "?SERVICE=dbs&REQUEST=GetTile&VERSION=1.0.0&LAYER="
 				+ this.typeName + "&STYLE=Default&FORMAT=" + this.format
 				+ "&TILEMATRIXSET=" + this.tms + "&TILEMATRIX=" + this.tms 
-				+ ":" + level + "&TILEROW=" + row + "&TILECOL=" + col
+				+ ":" + zoom + "&TILEROW=" + row + "&TILECOL=" + col
 				+ "&sourceName=" + this.sourceName;				
 		return str;
 	},
 
+	// getTileID : function(row, col, zoom){
+	// 	var str = "?SERVICE=wmts&REQUEST=GetTile&VERSION=1.0.0&LAYER="
+	// 			+ this.typeName + "&STYLE=&FORMAT=" + this.format
+	// 			+ "&TILEMATRIXSET=" + this.tms + "&TILEMATRIX=" + this.tms 
+	// 			+ ":" + zoom + "&TILEROW=" + row + "&TILECOL=" + col;		
+	// 	return str;
+	// },
 
 	getUrl : function(){
 		return "typeName:" + this.typeName + ";format:" + this.format + ";tms:" + this.tms
