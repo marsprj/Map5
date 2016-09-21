@@ -144,26 +144,20 @@ var g_catalog = [
 		"name" : "要素图层",
 		"items":[
 			{
-				"name" : "(*)点要素图层",
-				"link" : "pointFeatureLayer.html"
+				"name" : "点要素",
+				"link" : "feature/feature_point.html"
 			},{
-				"name" : "(*)多点要素图层",
-				"link" : "multiPointFeatureLayer.html"
+				"name" : "(*)线要素",
+				"link" : "feature/feature_line.html"
 			},{
-				"name" : "(*)线要素图层",
-				"link" : "lineFeatureLayer.html"
-			},{
-				"name" : "(*)多线要素图层",
-				"link" : "multiLineStringFeatureLayer.html"
-			},{
-				"name" : "(*)面要素图层",
-				"link" : "polygonFeatureLayer.html"
+				"name" : "(*)面要素",
+				"link" : "feature/feature_polygon.html"
 			},{
 				"name" : "(*)加载GeoJSON数据",
-				"link" : "feature_geojson.html"
+				"link" : "feature/feature_geojson.html"
 			},{
 				"name" : "(*)加载KML数据",
-				"link" : "feature_kml.html"
+				"link" : "feature/feature_kml.html"
 			}
 		]
 	},{

@@ -1,7 +1,7 @@
 
 GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
-	features : null,
+	features : [],
 	
 	style : null,
 		
@@ -81,7 +81,13 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 	},
 	
-
+	/**
+	 * [addFeatureObj description]
+	 * @deprecated [description]
+	 * @param {[type]} fid      [description]
+	 * @param {[type]} geometry [description]
+	 * @param {[type]} values   [description]
+	 */
 	addFeatureObj : function(fid,geometry,values){
 		if(fid == null || values == null || geometry == null){
 			return;
