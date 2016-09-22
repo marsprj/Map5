@@ -472,7 +472,7 @@ var g_catalog = [
 		"items":[
 			{
 				"name" : "(*)WKT<-->Geometry",
-				"link" : "format_wkt.html"
+				"link" : "Format/wkt.html"
 			},{
 				"name" : "(*)GML<-->Geometry",
 				"link" : "format_gmal.html"
