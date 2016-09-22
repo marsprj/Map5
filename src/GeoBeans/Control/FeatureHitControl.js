@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 拾取要素控制
+ * @class
+ * @extends {GeoBeans.Control}
+ */
 GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 	
 	map : null,

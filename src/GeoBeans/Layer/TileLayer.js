@@ -4,6 +4,12 @@ GeoBeans.TileLayerState = {
 	ERROR : 2
 };
 
+/**
+ * @classdesc
+ * 瓦片图层
+ * @class
+ * @extends {GeoBeans.Layer}
+ */
 GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
 	//FULL_EXTENT :	null,

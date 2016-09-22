@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 绘制几何要素控制
+ * @class
+ * @extends {GeoBeans.Control}
+ */
 GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 	
 	map : null,

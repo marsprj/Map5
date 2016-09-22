@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * Cookie对象
+ * @class
+ */
 GeoBeans.Cookie = GeoBeans.Class({
 	
 	initialize : function(){

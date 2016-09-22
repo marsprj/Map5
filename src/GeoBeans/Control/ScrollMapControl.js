@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 滚动缩放地图控制
+ * @class
+ * @extends {GeoBeans.Control}
+ */
 GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 	
 	onmousewheel : null,

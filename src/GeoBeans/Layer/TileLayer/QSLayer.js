@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * GeoBeans瓦片地图图层
+ * @class
+ * @extends {GeoBeans.Layer.TileLayer}
+ */
 GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	
 	//"http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8"

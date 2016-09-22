@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 矩形对象
+ * @class
+ */
 GeoBeans.Envelope = GeoBeans.Class({
 	xmin : null,
 	xmax : null,

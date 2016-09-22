@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * PGIS图层
+ * @class
+ * @extends {GeoBeans.Layer.TileLayer}
+ */
 GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	name 			: null,
 	type 			: null,

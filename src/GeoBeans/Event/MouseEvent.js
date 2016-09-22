@@ -17,8 +17,11 @@ GeoBeans.Event.MouseButton = {
 	MID		: "mid"
 };
 
-/*
- * 鼠标事件
+/**
+ * @classdesc
+ * 鼠标事件类
+ * @class
+ * @extends {GeoBeans.Event}
  */
 GeoBeans.Event.MouseEvent = function(){
 	map  : null,

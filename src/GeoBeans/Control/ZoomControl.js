@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 缩放地图控制
+ * @class
+ * @extends {GeoBeans.Control}
+ */
 GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 
 	// 放大还是缩小

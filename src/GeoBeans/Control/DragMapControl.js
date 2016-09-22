@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 拖动地图控制
+ * @class
+ * @extends {GeoBeans.Control}
+ */
 GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 	
 	onmousedown : null,

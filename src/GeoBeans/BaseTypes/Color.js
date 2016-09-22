@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 颜色对象
+ * @class
+ */
 GeoBeans.Color = GeoBeans.Class({
 	r : null,
 	g : null,

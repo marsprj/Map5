@@ -1,4 +1,9 @@
-
+/**
+ * @classdesc
+ * 类对象
+ * @class
+ * @private
+ */
 GeoBeans.Class = function() {
     var len = arguments.length;
     var P = arguments[0];

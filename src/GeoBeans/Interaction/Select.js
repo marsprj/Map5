@@ -11,6 +11,7 @@ GeoBeans.Interaction.SelectType = {
  * Map5的查询交互类
  * @class
  * @description 实现Map5与用户的交互功能
+ * @extends {GeoBeans.Interaction}
  */
 GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 	_map	: null,

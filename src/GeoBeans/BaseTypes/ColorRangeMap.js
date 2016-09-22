@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 颜色谱对象
+ * @class
+ */
 GeoBeans.ColorRangeMap = GeoBeans.Class({
 	beginColor 	: null,
 	endColor 	: null,

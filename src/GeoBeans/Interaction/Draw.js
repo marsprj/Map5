@@ -1,7 +1,9 @@
 /**
+ * @classdesc
  * Map5的绘制交互类
  * @class
  * @description 实现Map5与用户的交互功能
+ * @extends {GeoBeans.Interaction}
  */
 GeoBeans.Interaction.Draw = GeoBeans.Class(GeoBeans.Interaction, {
 	_features : null,

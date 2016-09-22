@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 高德地图图层
+ * @class
+ * @extends {GeoBeans.Layer.TileLayer}
+ */
 GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	
 	//"http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8"

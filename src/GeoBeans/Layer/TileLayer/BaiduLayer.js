@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 百度地图图层
+ * @class
+ * @extends {GeoBeans.Layer.TileLayer}
+ */
 GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	
 	// FULL_EXTENT : new max.Extent({
