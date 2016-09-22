@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * 多多边形几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {Array} polygons 多边形集合
+ */
 GeoBeans.Geometry.MultiPolygon = GeoBeans.Class(GeoBeans.Geometry,{
 	
 	polygons : null,

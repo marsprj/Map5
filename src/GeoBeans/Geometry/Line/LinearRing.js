@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * 环几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {Array} points 点坐标集合
+ */
 GeoBeans.Geometry.LinearRing = GeoBeans.Class(GeoBeans.Geometry.LineString,{
 	
 	points : null,

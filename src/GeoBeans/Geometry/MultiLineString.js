@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * 多线几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {Array} lines {GeoBeans.Geometry.LineString}对象集合
+ */
 GeoBeans.Geometry.MultiLineString = GeoBeans.Class(GeoBeans.Geometry,{
 	
 	lines : null,

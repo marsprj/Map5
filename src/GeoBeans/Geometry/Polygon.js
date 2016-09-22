@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * 多边形几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {Array} rings 封闭的圆环集合
+ */
 GeoBeans.Geometry.Polygon = GeoBeans.Class(GeoBeans.Geometry,{
 
 	rings : null,

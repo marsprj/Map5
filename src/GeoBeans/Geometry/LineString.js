@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * 线几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {Array} points 点坐标集合
+ */
 GeoBeans.Geometry.LineString = GeoBeans.Class(GeoBeans.Geometry,{
 	
 	points : null,

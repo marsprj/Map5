@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * 多点几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {Array} points 点坐标集合
+ */
 GeoBeans.Geometry.MultiPoint = GeoBeans.Class(GeoBeans.Geometry,{
 	
 	points : null,

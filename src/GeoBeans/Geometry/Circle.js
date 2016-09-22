@@ -1,3 +1,11 @@
+/**
+ * @classdesc
+ * 圆几何对象
+ * @class
+ * @extends {GeoBeans.Geometry}
+ * @param {GeoBeans.Geometry.Point} center 中心点
+ * @param {double} 					radius 半径
+ */
 GeoBeans.Geometry.Circle = GeoBeans.Class(GeoBeans.Geometry,{
 	center : null,
 	radius : null,
