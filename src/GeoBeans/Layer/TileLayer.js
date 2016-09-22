@@ -184,7 +184,21 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.rotateCanvas.width = this.canvas.width*2;
 		this.rotateCanvas.height = this.canvas.height*2;
 		return this.rotateCanvas;
-	}
+	},
+
+	/**
+	 * 转换到屏幕坐标，不加旋转角度的
+	 * @param  {[type]} mx [description]
+	 * @param  {[type]} my [description]
+	 * @return {[type]}    [description]
+	 */
+	toScreenPoint : function(mx,my){
+		var viewer = this.map.viewer;
+		var screenX = viewer.scale * (mx - viewer.view_c.x) + viewer.win_cx;
+		var screenY = viewer.win_cy - viewer.scale * (my - viewer.view_c.y);
+		
+		return new GeoBeans.Geometry.Point(screenX, screenY);
+	},
 });
 
 /**

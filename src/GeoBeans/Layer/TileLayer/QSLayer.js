@@ -288,11 +288,5 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	// },
 
 
-	toScreenPoint : function(mx,my){
-		var viewer = this.map.viewer;
-		var screenX = viewer.scale * (mx - viewer.view_c.x) + viewer.win_cx;
-		var screenY = viewer.win_cy - viewer.scale * (my - viewer.view_c.y);
-		
-		return new GeoBeans.Geometry.Point(screenX, screenY);
-	},
+
 });
