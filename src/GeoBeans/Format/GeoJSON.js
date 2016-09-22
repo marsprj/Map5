@@ -1,410 +1,597 @@
-GeoBeans.GeoJsonReader = GeoBeans.Class({
-		
-	layerName : null,
-
-	fields : null,
-
-
-	layer : null,
-
-	// 自增id
-	incrementID : 0,
-
+GeoBeans.GeoJsonFormat = GeoBeans.Class({
+	
 	initialize : function(){
 
 	},
+});
 
-	read : function(name,json){
-		this.layer = null;
-		this.layerName = name;
-		this.fields = [];
-		this.load(json);
-		return this.layer;
-	},
+/**
+ * 读取features
+ * @public
+ * @param  {[string]} 			geoJson [geoJson字符串]
+ * @param  {[Array.<Field>]} 	fields  [字段数组]
+ * @return {[Array.<Feature>]}         	[feature数组]
+ */
+GeoBeans.GeoJsonFormat.prototype.read = function(geoJson,fields){
+	if(geoJson == null || fields == null){
+		return null;
+	}
 
-	load : function(json){
-		var that = this;
-		$.ajax({
-			url : json,
-			dataType: "json",
-			async	: false,
-			beforeSend: function(XMLHttpRequest){
-			},
-			success	: function(json, textStatus){
-				that.readJson(json);
-			},
-			complete: function(XMLHttpRequest, textStatus){
-			},
-			error	: function(a,b){
-				console.log(b);
-			}
-		});		
-	},
-
-	readJson : function(json){
-		if(json == null){
-			return null;
-		}
-		var type = json.type;
-
-		var featureType = new GeoBeans.FeatureType(null,this.layerName);
-		featureType.fields = [];
-
-
-
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(this.layerName);
-		featureLayer.featureType = featureType;
-		featureLayer.features = [];
-
-
-		this.layer = featureLayer;
-		if(type == "FeatureCollection"){
-			var features = this.parseFeatureCollection(json);
-			if(features != null){
-				this.layer.addFeatures(features);
-			}
-		}else if(type == "Feature"){
-			var feature = this.parseFeature(json);
-			if(feature != null){
-				this.layer.addFeature(feature);
-			}
-		}
-	},
-
-	parseFeatureCollection : function(json){
-		if(json == null){
-			return null;
-		}
-
+	var type = geoJson.type;
+	var that = this;
+	if(type == "FeatureCollection"){
 		var features = [];
-		var that = this;
-		$(json.features).each(function(){
-			var feature = that.parseFeature(this);
-			features.push(feature);
+		$(geoJson.features).each(function(){
+			var feature = that.readFeature(this,fields);
+			if(feature != null){
+				features.push(feature);	
+			}
 		});
-
 		return features;
-	},
+	}else if(type == "Feature"){
+		var feature = this.readFeature(geoJson);
+		if(feature != null){
+			return [feature];
+		}
+	}
+	return null;
+}
 
-	parseFeature : function(json){
-		if(json == null){
-			return null;
-		}
-		var type = json.type;
-		if(type != "Feature"){
-			return null;
-		}
 
-		var fid = this.parseId(json);
-		if(fid == null){
-			fid = this.getFid();
-		}
-		if(fid == null){
-			return null;
-		}
-		
-		var geometry = this.parseGeometry(json.geometry);
-		var values = this.parseProperties(json.properties);
-		var feature = new GeoBeans.Feature(this.layer.featureType,fid,geometry,values);
-		return feature;
-	},
+/**
+ * geoJson读取字段fields
+ * @public
+ * @param  {[string]} geoJson 	[geoJson字符串]
+ * @return {[Array.<Field>]}    [字段数组]
+ */
+GeoBeans.GeoJsonFormat.prototype.readFields = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
 
-	parseId : function(json){
-		if(json == null){
-			return null;
-		}
-		var id = json.id;
-		return id;
-	},
+	var type = geoJson.type;
 
-	getFid : function(){
-		if(this.layer == null){
-			return null;
-		}
-		var id = this.layerName + "_" + this.incrementID;
-		while(this.layer.getFeatureByID(id) != null){
-			this.incrementID++;
-			id = this.layerName + "_" + this.incrementID;
-		}
-		return id;
-	},
+	var featureType = new GeoBeans.FeatureType();
+	featureType.fields = [];
 
-	parseGeometry : function(json){
-		if(json == null){
-			return null;
-		}
-		var type = json.type;
-		var geometry = null;
-		switch(type){
-			case "Point":{
-				geometry = this.parsePoint(json);
-				break;
-			}
-			case "LineString":{
-				geometry = this.parseLineString(json);
-				break;
-			}
-			case "Polygon":{
-				geometry = this.parsePolygon(json);
-				break;
-			}
-			case "MultiPoint":{
-				geometry = this.parseMultiPoint(json);
-				break;
-			}
-			case "MultiPolygon":{
-				geometry = this.parseMultiPolygon(json);
-				break;
-			}
-			case "MultiLineString":{
-				geometry = this.parseMultiLineString(json);
-				break;
-			}
-			case "GeometryCollection":{
-				geometry = this.parseGeometryCollection(json);
-				break;
-			}
-			default:
-				break;
-		}
-		return geometry;
-	},
+	var fields = [];
+	var that = this;
+	if(type == "FeatureCollection"){
+		$(geoJson.features).each(function(){
+			var fields = that.readFieldsByFeature(this);
+			that.addFields(featureType,fields);
+		});
+	}else if(type == "Feature"){
+		var fields = this.readFieldsByFeature(this);
+		this.addFields(featureType,fields);
+	}
 
-	parsePoint : function(json){
-		if(json == null){
-			return null;
-		}
-		if(json.type != "Point"){
-			return null;
-		}
-		var coordinates = json.coordinates;
-		return this.parsePointCoords(coordinates);
-	},
 
-	parseLineString : function(json){
-		if(json == null){
-			return null;
-		}
-		if(json.type != "LineString"){
-			return null;
-		}
+	// 增加geometry字段
+	var field = new GeoBeans.Field("geometry",GeoBeans.FieldType.GEOMETRY,featureType,null);
 
-		var coordinates = json.coordinates;
-		return this.parseLineStringCoords(coordinates);
-	},
+	var geomType = this.readGeometryType(geoJson);
+	field.setGeomType(geomType);
+	featureType.fields.push(field);
+	return featureType.fields;
+};
 
-	parsePointCoords : function(coordinates){
-		if(coordinates == null && !($.isArray(coordinates))){
-			return null;
-		}
-		return new GeoBeans.Geometry.Point(coordinates[0],coordinates[1]);
-	},
 
-	parseLineStringCoords : function(coordinates){
-		if(coordinates == null && !($.isArray(coordinates))){
-			return null;
-		}
+/**
+ * 从geoJson中读取geometry的类型
+ * @private
+ * @param  {[string]} 					geoJson [geoJson字符串]
+ * @return {[GeoBeans.Geometry.Type]}         	[geometry类型]
+ */
+GeoBeans.GeoJsonFormat.prototype.readGeometryType = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
 
-		var points = [];
-		for(var i = 0; i < coordinates.length;++i){
-			var point = this.parsePointCoords(coordinates[i]);
-			if(point != null){
-				points.push(point);
+	var type = geoJson.type;
+
+	var geomType = null;
+	if(type == "FeatureCollection"){
+		var features = geoJson.features;
+		if(features != null){
+			var feature = features[0];
+			if(feature != null){
+				var geometryJson = feature.geometry;
+				geomType = this.readGeometryTypeByGeometry(geometryJson);
 			}
 		}
-		if(points.length != 0){
-			return new GeoBeans.Geometry.LineString(points);
-		}else{
-			return null;
-		}
+	}else if(type == "Feature"){
+		var geometryJson = geoJson.geometry;
+		geomType = this.readGeometryTypeByGeometry(geometryJson);
+	}
+	return geomType;
+};
+
+
+/**
+ * 从geometry部分的geojson读取geometry的类型
+ *  "geometry": {
+	    "type": "Point",
+	    "coordinates": [125.6, 10.1]
 	},
-
-	parsePolygonCoords : function(coordinates){
-		if(coordinates == null && !($.isArray(coordinates))){
-			return null;
+ * @private
+ * @param  {[string]}					geoJson [geoJson字符串]
+ * @return {[GeoBeans.Geometry.Type]}         	[geometry类型]
+ */
+GeoBeans.GeoJsonFormat.prototype.readGeometryTypeByGeometry = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	var type = geoJson.type;
+	var geomType = null;
+	switch(type){
+		case "Point":{
+			geomType = GeoBeans.Geometry.Type.POINT;
+			break;
 		}
-
-		var rings = [];
-
-		for(var i = 0; i < coordinates.length;++i){
-			var ring = this.parseLineStringCoords(coordinates[i]);
-			if(ring != null){
-				rings.push(ring);
-			}
+		case "LineString":{
+			geomType = GeoBeans.Geometry.Type.LINESTRING;
+			break;
 		}
-		if(rings.length != 0){
-			return new GeoBeans.Geometry.Polygon(rings);
-		}else{
-			return null;
+		case "Polygon":{
+			geomType = GeoBeans.Geometry.Type.POLYGON;
+			break;
 		}
-	},
-
-	parsePolygon : function(json){
-		if(json == null){
-			return null;
+		case "MultiPoint":{
+			geomType = GeoBeans.Geometry.Type.MULTIPOINT;
+			break;
 		}
-		if(json.type != "Polygon"){
-			return null;
+		case "MultiPolygon":{
+			geomType = GeoBeans.Geometry.Type.MULTIPOLYGON;
+			break;
 		}
-		var coordinates = json.coordinates;
-		return this.parsePolygonCoords(coordinates);
-
-	},
-
-	parseMultiPoint : function(json){
-		if(json == null){
-			return null;
+		case "MultiLineString":{
+			geomType = GeoBeans.Geometry.Type.MULTILINESTRING;
+			break;
 		}
-		if(json.type != "MultiPoint"){
-			return null;
+		case "GeometryCollection":{
+			geomType = GeoBeans.Geometry.Type.COLLECTION;
+			break;
 		}
-
-		var points = [];
-		var coordinates = json.coordinates;
-		for(var i = 0; i < coordinates.length;++i){
-			var point = this.parsePointCoords(coordinates[i]);
-			if(point != null){
-				points.push(point);
-			}
-		}
-		if(points.length != 0){
-			return new GeoBeans.Geometry.MultiPoint(points);
-		}else{
-			return null;
-		}
-	},
-
-	parseMultiPolygon : function(json){
-		if(json == null){
-			return null;
-		}
-		if(json.type != "MultiPolygon"){
-			return null;
-		}
-
-		var polygons = [];
-		var coordinates = json.coordinates;
-
-		for(var i = 0; i < coordinates.length;++i){
-			var polygon = this.parsePolygonCoords(coordinates[i]);
-			if(polygon != null){
-				polygons.push(polygon);
-			}
-		}
-		if(polygons.length != 0){
-			return new GeoBeans.Geometry.MultiPolygon(polygons);
-		}else{
-			return null;
-		}
-
-	},
-
-	parseMultiLineString : function(json){
-		if(json == null){
-			return null;
-		}
-		if(json.type != "MultiLineString"){
-			return null;
-		}
-		var lines = [];
-		var coordinates = json.coordinates;
-		for(var i = 0; i < coordinates.length;++i){
-			var line = this.parseLineStringCoords(coordinates[i]);
-			if(line != null){
-				lines.push(line);
-			}
-		}
-		if(lines.length != 0){
-			return new GeoBeans.Geometry.MultiLineString(lines);
-		}else{
-			return null;
-		}
-	},
-
-	parseGeometryCollection : function(json){
-		if(json == null){
-			return null;
-		}
-		if(json.type != "GeometryCollection"){
-			return null;
-		}
-
-		var components = [];
-		var geometryJson = json.geometries;
-		for(var i = 0; i < geometryJson.length;++i){
-			var geometry = this.parseGeometry(geometryJson[i]);
-			if(geometry != null){
-				components.push(geometry);
-			}			
-		}		
-		if(components.length != 0){
-			return new GeoBeans.Geometry.GeometryCollection(components);
-		}else{
-			return null;
-		}
-	},
-
-	parseProperties : function(json){
-		if(json == null){
-			return null;
-		}
-
-		var keys = Object.keys(json);
-		var key = null;
-		for(var i = 0; i < keys.length;++i){
-			key = keys[i];
-			if(key == null){
-				continue;
-			}
-			var value = json[key];
-			this.addField(key,value);
-		}
-
-		var values = [];
-		var fields = this.layer.featureType.fields;
-		var field = null,fieldName = null;
-		for(var i = 0; i < fields.length;++i){
-			field = fields[i];
-			fieldName = field.name;
-			if(json[fieldName] != null){
-				values.push(json[fieldName]);
-			}else{
-				values.push(null);
-			}
-		}
-
-		return values;
-	},
+		default:
+			break;
+	}
+	return geomType;
+};
 
 
+/**
+ * 从feature部分读取field
+ * { "type": "Feature", "properties": { "name": "Saguenay (Arrondissement Latterière)" }, "geometry": { "type": "Point", "coordinates": [ -75.849253579389796, 47.6434349837781 ] } },
+ * @private
+ * @param  {[string]} 			featureJson [geoJson字符串]
+ * @return {[Array.<Object>]}             	[字段的数组]
+ */
+GeoBeans.GeoJsonFormat.prototype.readFieldsByFeature = function(featureJson){
+	if(featureJson == null){
+		return;
+	}
+	var properties = featureJson.properties;
+	if(properties == null){
+		return null;
+	}
 
-	addField : function(fieldName,value){
-		if(this.layer == null || this.layer.featureType == null){
-			return;
-		}
-		var fields = this.layer.featureType.fields;
-		if(fields == null){
-			return;
-		}
-		var field = null;
-		for(var i = 0; i < fields.length;++i){
-			field = fields[i];
-			if(field.name == fieldName){
-				return;
-			}
-		}
+	var fields = [];
 
-		var type = null;
+	var keys = Object.keys(properties);
+	var key = null;
+	for(var i = 0; i < keys.length;++i){
+		key = keys[i];
+		if(key == null){
+			continue;
+		}
+		var value = properties[key];
 		var valueType = typeof(value);
+		var type = null;
 		if(valueType == "string"){
 			type = GeoBeans.FieldType.STRING;
 		}else if(valueType == "number"){
 			type = GeoBeans.FieldType.DOUBLE;
 		}
-		var field = new GeoBeans.Field(fieldName,type,this.layer.featureType,null);
 
-		this.layer.featureType.fields.push(field);
-	},
-});
+		var fieldObj = {
+			name : key,
+			type : type
+		};
+		fields.push(fieldObj);
+	}
 
-GeoBeans.Format.GeoJSON
+	return fields;
+};
+
+
+/**
+ * 判断是否添加field到featureType中
+ * @param {[FeatureType]} 		featureType []
+ * @param {[Array.<Object>]} 	fieldsArray [字段数组]
+ */
+GeoBeans.GeoJsonFormat.prototype.addFields = function(featureType,fieldsArray){
+	if(featureType == null || fieldsArray == null){
+		return;
+	}
+
+	var fields = featureType.fields;
+
+	for(var i = 0; i < fieldsArray.length;++i){
+		var fieldObj = fieldsArray[i];
+		var name = fieldObj.name;
+		var index = featureType.getFieldIndex(name);
+		if(index == -1){
+			var field = new GeoBeans.Field(name,fieldObj.type,featureType,null);
+			featureType.fields.push(field);
+		}
+	}
+};	
+
+/**
+ * 从feature部分的geoJson读取Feature
+ * { "type": "Feature", "properties": { "name": "Saguenay (Arrondissement Latterière)" }, "geometry": { "type": "Point", "coordinates": [ -75.849253579389796, 47.6434349837781 ] } },
+ * @param  {[string]} 			geoJson [geoJson字符串]
+ * @param  {[Array.<Field>]} 	fields  [字段数组]
+ * @return {[Feautre]}        			[返回要素]
+ */
+GeoBeans.GeoJsonFormat.prototype.readFeature = function(geoJson,fields){
+	if(geoJson == null || fields == null){
+		return null;
+	}
+
+	var type = geoJson.type;
+	if(type != "Feature"){
+		return null;
+	}
+	var featureType = null;
+	var field = fields[0];
+	if(field != null){
+		featureType = field.featureType;
+	}else{
+		featureType = new GeoBeans.FeatureType();
+	}
+
+	var fid = this.readID(geoJson);
+	if(fid == null){
+		fid = GeoBeans.Utility.uuid();
+	}
+
+	var geometry = this.readGeometry(geoJson.geometry);
+
+	var values = this.readProperties(geoJson.properties,fields);
+
+	if(geometry != null && values != null && fid != null && featureType != null){
+		return new GeoBeans.Feature(featureType,fid,geometry,values);
+	}else{
+		return null;
+	}
+};
+
+
+/**
+ * 读取id
+ * @private
+ * @param  {[string]} geoJson [geoJson字符串]
+ * @return {[string]}         [id值]
+ */
+GeoBeans.GeoJsonFormat.prototype.readID = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	var id = geoJson.id;
+	return id;
+};
+
+
+/**
+ * 从geometry部分geoJson读取geometry
+ *   "geometry": {
+	    "type": "Point",
+	    "coordinates": [125.6, 10.1]
+	  },
+ * @private
+ * @param  {[string]}  	geoJson [geoJson字符串]
+ * @return {[Geometry]}         [空间geometry]
+ */
+GeoBeans.GeoJsonFormat.prototype.readGeometry = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	var type = geoJson.type;
+	var geometry = null;
+	switch(type){
+		case "Point":{
+			geometry = this.readPoint(geoJson);
+			break;
+		}
+		case "LineString":{
+			geometry = this.readLineString(geoJson);
+			break;
+		}
+		case "Polygon":{
+			geometry = this.readPolygon(geoJson);
+			break;
+		}
+		case "MultiPoint":{
+			geometry = this.readMultiPoint(geoJson);
+			break;
+		}
+		case "MultiPolygon":{
+			geometry = this.readMultiPolygon(geoJson);
+			break;
+		}
+		case "MultiLineString":{
+			geometry = this.readMultiLineString(geoJson);
+			break;
+		}
+		case "GeometryCollection":{
+			geometry = this.readGeometryCollection(geoJson);
+			break;
+		}
+		default:
+			break;
+	}
+	return geometry;
+};
+
+
+/**
+ * 读取point
+ * @private
+ * @param  {[string]} geoJson [geoJson字符串]
+ * @return {[Point]}          []
+ */
+GeoBeans.GeoJsonFormat.prototype.readPoint = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "Point"){
+		return null;
+	}
+	var coordinates = geoJson.coordinates;
+	return this.readPointCoords(coordinates);
+};
+
+
+/**
+ * 读取lineString
+ * @private
+ * @param  {[string]} 		geoJson [geoJson字符串]
+ * @return {[LineString]}         
+ */
+GeoBeans.GeoJsonFormat.prototype.readLineString = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "LineString"){
+		return null;
+	}
+
+	var coordinates = geoJson.coordinates;
+	return this.readLineStringCoords(coordinates);
+};
+
+
+/**
+ * 读取polygon
+ * @private
+ * @param  {[string]} 	geoJson [geoJson字符串]
+ * @return {[Polygon]}         	
+ */
+GeoBeans.GeoJsonFormat.prototype.readPolygon = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "Polygon"){
+		return null;
+	}
+	var coordinates = geoJson.coordinates;
+	return this.readPolygonCoords(coordinates);
+};
+
+
+/**
+ * 读取MultiPoint
+ * @private
+ * @param  {[string]} 	geoJson [geoJson字符串]
+ * @return {[MultiPoint]}       
+ */
+GeoBeans.GeoJsonFormat.prototype.readMultiPoint = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "MultiPoint"){
+		return null;
+	}
+
+	var points = [];
+	var coordinates = geoJson.coordinates;
+	for(var i = 0; i < coordinates.length;++i){
+		var point = this.readPointCoords(coordinates[i]);
+		if(point != null){
+			points.push(point);
+		}
+	}
+	if(points.length != 0){
+		return new GeoBeans.Geometry.MultiPoint(points);
+	}else{
+		return null;
+	}
+};
+
+/**
+ * 读取MultiLineString
+ * @private
+ * @param  {[string]} 		geoJson [geoJson字符串]
+ * @return {[MultiString]}          
+ */
+GeoBeans.GeoJsonFormat.prototype.readMultiLineString = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "MultiLineString"){
+		return null;
+	}
+	var lines = [];
+	var coordinates = geoJson.coordinates;
+	for(var i = 0; i < coordinates.length;++i){
+		var line = this.readLineStringCoords(coordinates[i]);
+		if(line != null){
+			lines.push(line);
+		}
+	}
+	if(lines.length != 0){
+		return new GeoBeans.Geometry.MultiLineString(lines);
+	}else{
+		return null;
+	}
+};
+
+
+/**
+ * 读取MultiPolygon
+ * @private
+ * @param  {[string]} 		geoJson [geoJson字符串]
+ * @return {[MultiPolygon]}         
+ */
+GeoBeans.GeoJsonFormat.prototype.readMultiPolygon = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "MultiPolygon"){
+		return null;
+	}
+
+	var polygons = [];
+	var coordinates = geoJson.coordinates;
+
+	for(var i = 0; i < coordinates.length;++i){
+		var polygon = this.readPolygonCoords(coordinates[i]);
+		if(polygon != null){
+			polygons.push(polygon);
+		}
+	}
+	if(polygons.length != 0){
+		return new GeoBeans.Geometry.MultiPolygon(polygons);
+	}else{
+		return null;
+	}
+};
+
+/**
+ * 读取GeometryCollection
+ * @private
+ * @param  {[string]} 			geoJson [geoJson字符串]
+ * @return {[GeometryCollection]}        
+ */
+GeoBeans.GeoJsonFormat.prototype.readGeometryCollection = function(geoJson){
+	if(geoJson == null){
+		return null;
+	}
+	if(geoJson.type != "GeometryCollection"){
+		return null;
+	}
+
+	var components = [];
+	var geometryJson = geoJson.geometries;
+	for(var i = 0; i < geometryJson.length;++i){
+		var geometry = this.readGeometry(geometryJson[i]);
+		if(geometry != null){
+			components.push(geometry);
+		}			
+	}		
+	if(components.length != 0){
+		return new GeoBeans.Geometry.GeometryCollection(components);
+	}else{
+		return null;
+	}	
+};
+
+/**
+ * 点坐标读取坐标
+ * @private
+ * @param  {[string]} coordinates [geoJson字符串]
+ * @return {[Point]}              [点]
+ */
+GeoBeans.GeoJsonFormat.prototype.readPointCoords = function(coordinates){
+	if(coordinates == null && !($.isArray(coordinates))){
+		return null;
+	}
+	return new GeoBeans.Geometry.Point(coordinates[0],coordinates[1]);
+};
+
+/**
+ * 线坐标字符串读取坐标
+ * @private
+ * @param  {[string]} 	coordinates [geoJson字符串]
+ * @return {[LineString]}           [线]
+ */
+GeoBeans.GeoJsonFormat.prototype.readLineStringCoords = function(coordinates){
+	if(coordinates == null && !($.isArray(coordinates))){
+		return null;
+	}
+
+	var points = [];
+	for(var i = 0; i < coordinates.length;++i){
+		var point = this.readPointCoords(coordinates[i]);
+		if(point != null){
+			points.push(point);
+		}
+	}
+	if(points.length != 0){
+		return new GeoBeans.Geometry.LineString(points);
+	}else{
+		return null;
+	}
+};
+
+/**
+ * polygon坐标值转换polgyon
+ * @private
+ * @param  {[string]} coordinates [geoJson字符串]
+ * @return {[Polygon]}             
+ */
+GeoBeans.GeoJsonFormat.prototype.readPolygonCoords = function(coordinates){
+	if(coordinates == null && !($.isArray(coordinates))){
+		return null;
+	}
+
+	var rings = [];
+
+	for(var i = 0; i < coordinates.length;++i){
+		var ring = this.readLineStringCoords(coordinates[i]);
+		if(ring != null){
+			rings.push(ring);
+		}
+	}
+	if(rings.length != 0){
+		return new GeoBeans.Geometry.Polygon(rings);
+	}else{
+		return null;
+	}
+};
+/**
+ * 读取Properties中的字段对应数值
+ * @private
+ * @param  {[string]} 			geoJson [geoJson字符串]
+ * @param  {[Array.<Field>]} 	fields  [字段数组]
+ * @return {[Array]}         			[字段值数组]
+ */
+GeoBeans.GeoJsonFormat.prototype.readProperties = function(geoJson,fields){
+	if(geoJson == null || fields == null){
+		return null;
+	}
+
+	var values = [];
+	for(var i = 0; i < fields.length;++i){
+		var field = fields[i];
+		var fieldName = field.name;
+		if(geoJson[fieldName] != null){
+			values.push(geoJson[fieldName]);
+		}else{
+			values.push(null);
+		}
+	}
+	return values;
+}

@@ -100,6 +100,9 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(features==null){
 			return;	
 		}
+		if(this.features == null){
+			this.features = [];
+		}
 		if(!(features instanceof Array)){
 			return ;
 		}
