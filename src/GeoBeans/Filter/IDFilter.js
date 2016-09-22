@@ -1,4 +1,10 @@
-GeoBeans.IDFilter = GeoBeans.Class(GeoBeans.Filter,{
+/**
+ * @classdesc
+ * ID过滤器
+ * @class
+ * @extends {GeoBeans.Filter}
+ */
+GeoBeans.Filter.IDFilter = GeoBeans.Class(GeoBeans.Filter,{
 	ids : null,
 
 	initialize : function(){

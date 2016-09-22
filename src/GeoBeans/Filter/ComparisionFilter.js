@@ -1,4 +1,10 @@
-GeoBeans.ComparisionFilter = GeoBeans.Class(GeoBeans.Filter,{
+/**
+ * @classdesc
+ * 比较过滤器
+ * @class
+ * @extends {GeoBeans.Filter}
+ */
+GeoBeans.Filter.ComparisionFilter = GeoBeans.Class(GeoBeans.Filter,{
 
 	operator : null,
 

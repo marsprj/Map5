@@ -1,4 +1,9 @@
-GeoBeans.OrderBy = GeoBeans.Class({
+/**
+ * @classdesc
+ * 排序类
+ * @class
+ */
+GeoBeans.Query.OrderBy = GeoBeans.Class({
 	fields : null,
 
 	order : null,

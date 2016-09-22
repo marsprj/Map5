@@ -1,4 +1,10 @@
-GeoBeans.SpatialFilter = GeoBeans.Class(GeoBeans.Filter,{
+/**
+ * @classdesc
+ * 空间查询过滤器
+ * @class
+ * @extends {GeoBeans.Filter}
+ */
+GeoBeans.Filter.SpatialFilter = GeoBeans.Class(GeoBeans.Filter,{
 
 
 	initialize : function(){

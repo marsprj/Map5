@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * XML格式过滤器转换为对象
+ * @class
+ */
 GeoBeans.FilterReader = GeoBeans.Class({
 	
 	initialize : function(){

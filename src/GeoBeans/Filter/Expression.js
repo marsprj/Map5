@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 查询表达式
+ * @class
+ */
 GeoBeans.Expression = GeoBeans.Class({
 	type : null,
 

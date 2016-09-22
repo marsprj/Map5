@@ -1,4 +1,10 @@
-GeoBeans.BeyondFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
+/**
+ * @classdesc
+ * Beyond空间查询过滤器
+ * @class
+ * @extends {GeoBeans.Filter.SpatialFilter}
+ */
+GeoBeans.Filter.BeyondFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
 	distance : null,
 
 

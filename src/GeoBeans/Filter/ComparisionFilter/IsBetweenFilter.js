@@ -1,4 +1,10 @@
-GeoBeans.IsBetweenFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
+/**
+ * @classdesc
+ * Between比较过滤器
+ * @class
+ * @extends {GeoBeans.Filter.ComparisionFilter}
+ */
+GeoBeans.Filter.IsBetweenFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
 	expression : null,
 	lowerBound : null,
 	upperBound : null,

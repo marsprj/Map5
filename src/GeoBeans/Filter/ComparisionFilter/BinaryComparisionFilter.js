@@ -1,4 +1,10 @@
-GeoBeans.BinaryComparisionFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
+/**
+ * @classdesc
+ * 二元比较过滤器
+ * @class
+ * @extends {GeoBeans.Filter.ComparisionFilter}
+ */
+GeoBeans.Filter.BinaryComparisionFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
 
 	expression1	: null,
 	expression2 : null,

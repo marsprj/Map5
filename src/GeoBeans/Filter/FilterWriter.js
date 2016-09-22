@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 过滤器对象转换为XML格式
+ * @class
+ */
 GeoBeans.FilterWriter = GeoBeans.Class({
 	
 	initialize : function(){

@@ -1,4 +1,10 @@
-GeoBeans.DistanceBufferFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
+/**
+ * @classdesc
+ * 距离缓冲去空间查询过滤器
+ * @class
+ * @extends {GeoBeans.Filter.SpatialFilter}
+ */
+GeoBeans.Filter.DistanceBufferFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
 	distance : null,
 
 	initialize : function(propName,geometry,distance){

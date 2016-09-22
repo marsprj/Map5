@@ -1,4 +1,10 @@
-GeoBeans.BBoxFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
+/**
+ * @classdesc
+ * 矩形空间查询过滤器
+ * @class
+ * @extends {GeoBeans.Filter.SpatialFilter}
+ */
+GeoBeans.Filter.BBoxFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
 	// propExpression 	: null,
 	extent 		: null,
 

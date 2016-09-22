@@ -1,4 +1,10 @@
-GeoBeans.PropertyName = GeoBeans.Class({
+/**
+ * @classdesc
+ * 属性名称表达式
+ * @class
+ * @extends {GeoBeans.ComparisionFilter}
+ */
+GeoBeans.PropertyName = GeoBeans.Class(GeoBeans.Expression, {
 	name : null,
 
 	initialize : function(){

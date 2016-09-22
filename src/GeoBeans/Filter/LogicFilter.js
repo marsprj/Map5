@@ -1,4 +1,10 @@
-GeoBeans.LogicFilter = GeoBeans.Class(GeoBeans.Filter,{
+/**
+ * @classdesc
+ * 逻辑过滤器
+ * @class
+ * @extends {GeoBeans.Filter}
+ */
+GeoBeans.Filter.LogicFilter = GeoBeans.Class(GeoBeans.Filter,{
 	operator : null,
 
 

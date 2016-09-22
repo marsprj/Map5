@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 属性值表达式
+ * @class
+ * @extends {GeoBeans.ComparisionFilter}
+ */
 GeoBeans.Literal = GeoBeans.Class(GeoBeans.Expression,{
 	value : null,
 

@@ -1,5 +1,10 @@
-// 可以用BinaryComparisionFilter代替
-GeoBeans.IsLikeFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
+/**
+ * @classdesc
+ * like比较过滤器
+ * @class
+ * @extends {GeoBeans.Filter.ComparisionFilter}
+ */
+GeoBeans.Filter.IsLikeFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
 	properyName : null,
 	literal 	: null,
 
