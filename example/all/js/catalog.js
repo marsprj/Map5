@@ -481,7 +481,7 @@ var g_catalog = [
 				"link" : "format_gmal.html"
 			},{
 				"name" : "(*)GeoJSON<-->Geometry",
-				"link" : "format_gmal.html"
+				"link" : "Format/geoJson.html"
 			}
 		]
 	},{
