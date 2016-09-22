@@ -732,7 +732,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	// 更新瓦片
-	_updateTile : function(layer,x,y,img_size,img_size){
+	_updateTile : function(layer,x,y,img_width,img_height){
 		if(layer == null){
 			return;
 		}
@@ -747,9 +747,9 @@ GeoBeans.Map = GeoBeans.Class({
 			this.baseLayerRenderer.context.translate(width/2,height/2);
 			this.baseLayerRenderer.context.rotate(rotation* Math.PI/180);
 			this.baseLayerRenderer.context.translate(-width/2,-height/2);
-			this.baseLayerRenderer.context.clearRect(x,y,img_size,img_size);
+			this.baseLayerRenderer.context.clearRect(x,y,img_width,img_height);
 		}else{
-			this.baseLayerRenderer.context.clearRect(x,y,img_size,img_size);
+			this.baseLayerRenderer.context.clearRect(x,y,img_width,img_height);
 		}
 		if(this.layers == null){
 			return;
@@ -764,10 +764,10 @@ GeoBeans.Map = GeoBeans.Class({
 						var y_2 = rotateCanvas.height/4 + y;
 						x_2 = Math.floor(x_2 + 0.5);
 						y_2 = Math.floor(y_2 + 0.5);
-						this.baseLayerRenderer.drawImageParms(rotateCanvas,x_2,y_2,img_size,img_size,x,y,img_size,img_size);
+						this.baseLayerRenderer.drawImageParms(rotateCanvas,x_2,y_2,img_width,img_height,x,y,img_width,img_height);
 					}
 				}else{
-					this.baseLayerRenderer.drawImageParms(l.canvas,x,y,img_size,img_size,x,y,img_size,img_size);
+					this.baseLayerRenderer.drawImageParms(l.canvas,x,y,img_width,img_height,x,y,img_width,img_height);
 				}
 			}
 		}

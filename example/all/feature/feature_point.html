@@ -171,6 +171,12 @@
 
 	}
 
+	/**
+	 * [createFeatureLayer description]
+	 * @param  {[type]} layerName   [description]
+	 * @param  {[type]} featureType [description]
+	 * @return {[type]}             [description]
+	 */
 	function createFeatureLayer(layerName, featureType){
 		var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
 		featureLayer.featureType = featureType;
@@ -182,6 +188,10 @@
 		return featureLayer;
 	}
 
+	/**
+	 * [addFeatures description]
+	 * @param {[type]} featureLayer [description]
+	 */
 	function addFeatures(featureLayer){
 		for(var i = 0; i < 10000; ++i){
 			var x = Math.random() * 360 - 180;
@@ -199,6 +209,11 @@
 		}
 	}
 
+	/**
+	 * 创建点图层样式
+	 * @description feature包含status字段。status字段值为on绘制为紫色。status字段值为off绘制为黄色。
+	 * @return {[type]} [description]
+	 */
 	function createPointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 
@@ -210,12 +225,13 @@
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
 		
-		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("status");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("on");
-		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
+		var filter = new GeoBeans.BinaryComparisionFilter(	GeoBeans.ComparisionFilter.OperatorType.ComOprEqual,
+															prop,
+															literal);
 		rule.filter = filter;
 		style.addRule(rule);
 
@@ -226,14 +242,14 @@
 		symbolizer.fill.color.setByHex('#ddb926',1);
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
 		var prop = new GeoBeans.PropertyName();
 		prop.setName("status");
 		var literal = new GeoBeans.Literal();
 		literal.setValue("off");
-		var filter = new GeoBeans.BinaryComparisionFilter(operator,prop,literal);
+		var filter = new GeoBeans.BinaryComparisionFilter(GeoBeans.ComparisionFilter.OperatorType.ComOprEqual,
+														  prop,
+														  literal);
 		rule.filter = filter;
-
 		style.addRule(rule);		
 
 		return style;
