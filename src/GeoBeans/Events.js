@@ -1,5 +1,11 @@
+/**
+ * @classdesc
+ * Map5的事件类。
+ * @class
+ */
 GeoBeans.Event = {	
-	/* mouse event */
+	/** 地图事件 */
+	/** @type {string} */
 	CLICK 		: "click",			
 	DBCLICK		: "dbclick",
 	RESIZE		: "resize",
@@ -24,9 +30,7 @@ GeoBeans.Event = {
 	TOUCH_WHEEL	: 'touchwheel'
 };
 
-/*
- * 
- */
+
 GeoBeans.Event.MouseButton = {
 	LEFT	: "left",
 	RIGHT	: "right",
@@ -45,6 +49,12 @@ GeoBeans.Event.MouseArgs = function(){
 	zoom : null;
 };
 
+/**
+ * @classdesc
+ * Map5的事件类集合。
+ * @class
+ * @private
+ */
 GeoBeans.Events = GeoBeans.Class({
 	
 	events : null,

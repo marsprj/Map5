@@ -1,5 +1,8 @@
-
-
+/**
+ * @classdesc
+ * 小控件基类。
+ * @class
+ */
 GeoBeans.Widget = GeoBeans.Class({
 	_type : null,
 	_map  : null,

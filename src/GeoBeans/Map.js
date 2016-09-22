@@ -1,4 +1,8 @@
-// JavaScript Document
+/**
+ * @classdesc
+ * Map5的地图空间，实现地图的展示、渲染、查询、专题图以及用户交互功能。
+ * @class
+ */
 GeoBeans.Map = GeoBeans.Class({
 	
 	// TOLERANCE : 10,
@@ -2120,7 +2124,7 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 
 /**
  * Map上添加Interactions
- * @param {[type]} interaction [description]
+ * @param {GeoBeans.Interaction} interaction [description]
  */
 GeoBeans.Map.prototype.addInteraction = function(interaction){
 	this._interactions.add(interaction);

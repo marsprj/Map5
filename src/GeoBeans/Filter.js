@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * Map5的查询过滤器类。
+ * @class
+ */
 GeoBeans.Filter = GeoBeans.Class({
 	type : null,
 

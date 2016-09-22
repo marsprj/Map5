@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * Map5的图层类。
+ * @class
+ */
 GeoBeans.Layer = GeoBeans.Class({
 	
 	id : null,

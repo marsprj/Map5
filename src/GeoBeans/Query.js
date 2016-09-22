@@ -1,8 +1,6 @@
 /**
- * @class Feature Soure查询类
- * @param  {[type]}   ){	} [description]
- * @param  {GeoBeans} clone  :             function(){		var clone [description]
- * @return {[type]}          [description]
+ * 查询类
+ * @class
  */
 GeoBeans.Query = GeoBeans.Class({
 	_typeName		: null,

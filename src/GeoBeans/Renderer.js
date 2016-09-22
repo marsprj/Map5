@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * Map5的渲染类，实现地图相关的渲染功能。
+ * @class
+ * @private
+ */
 GeoBeans.Renderer = GeoBeans.Class({
 	
 	canvas  : null,

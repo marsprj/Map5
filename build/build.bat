@@ -1,1 +1,1 @@
-jsdoc -t jaguarjs-jsdoc -c jaguarjs-jsdoc/conf.json -r ../lib/GeoBeans -d ../doc 
+jsdoc -t jaguarjs-jsdoc -c jaguarjs-jsdoc/conf.json -r ../src/GeoBeans -d ../doc 

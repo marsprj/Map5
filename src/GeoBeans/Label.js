@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * Map的标注基类。
+ * @class
+ */
 GeoBeans.Label = GeoBeans.Class({
 	text 			: null,
 	geometry 		: null,

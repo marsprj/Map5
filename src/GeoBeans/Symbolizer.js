@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 几何对象渲染基类。
+ * @class
+ */
 GeoBeans.Symbolizer = GeoBeans.Class({
 	type : null,
 

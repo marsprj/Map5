@@ -1,5 +1,8 @@
-// JavaScript Document
-
+/**
+ * @classdesc
+ * Map5的几何类
+ * @class
+ */
 GeoBeans.Geometry = GeoBeans.Class({
 	id : null,
 	

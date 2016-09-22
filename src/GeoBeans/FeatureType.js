@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * Map5的Feature要素集类。
+ * @class
+ */
 GeoBeans.FeatureType = GeoBeans.Class({
 	
 	workspace	: null,

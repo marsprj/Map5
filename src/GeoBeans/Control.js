@@ -1,4 +1,8 @@
-
+/**
+ * @classdesc
+ * Map的控件基类。
+ * @class
+ */
 GeoBeans.Control = GeoBeans.Class({
 	type : null,
 	map : null,

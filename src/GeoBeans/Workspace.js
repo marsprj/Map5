@@ -1,3 +1,8 @@
+/**
+ * @classdesc
+ * 数据源类。
+ * @class
+ */
 GeoBeans.Workspace = GeoBeans.Class({
 	name : null,
 	
