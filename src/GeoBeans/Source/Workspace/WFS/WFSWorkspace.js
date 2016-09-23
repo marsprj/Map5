@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * WFS数据源类
+ * @class
+ * @extends {GeoBeans.Workspace}
+ */
 GeoBeans.WFSWorkspace = GeoBeans.Class(GeoBeans.Workspace, {
 	server : null,
 	service: "wfs",

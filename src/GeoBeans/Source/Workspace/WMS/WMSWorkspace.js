@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * WMS数据源类
+ * @class
+ * @extends {GeoBeans.Workspace}
+ */
 GeoBeans.WMSWorkspace = GeoBeans.Class(GeoBeans.Workspace, {
 	server : null,
 	service: "wms",

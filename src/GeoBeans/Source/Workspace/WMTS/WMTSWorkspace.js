@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * WMTS数据源类
+ * @class
+ * @extends {GeoBeans.Workspace}
+ */
 GeoBeans.WMTSWorkspace = GeoBeans.Class(GeoBeans.Workspace,{
 	name 	: null,
 	server 	: null,
