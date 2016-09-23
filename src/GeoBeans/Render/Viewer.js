@@ -28,52 +28,7 @@ GeoBeans.Viewer = GeoBeans.Class({
 		// }
 		// this.setViewer(this._viewer);
 		this.setExtent(this._extent);
-	},
-	
-	setExtent : null,
-
-	getExtent : null,
-
-	setCenter : null,
-
-	getCenter : null,
-
-	setResolution : null,
-
-	getResolution : null,
-
-	setRotation : null,
-
-	getRotation : null,
-
-	setMap : null,
-
-	getMap : null,
-
-	setViewer : null,
-
-	getViewer : null,
-
-	getZoom : null,
-
-	setZoom : null,
-
-	_setZoom : null,
-
-	updateMapExtent : null,
-
-	scaleView : null,
-
-	scaleViewWidth : null,
-
-	scaleViewHeight : null,
-
-	offset : null,
-
-	toMapPoint : null,
-
-	toScreenPoint : null,	
-
+	}
 });
 
 /**
@@ -107,9 +62,9 @@ GeoBeans.Viewer.prototype.setExtent = function(val){
 
 
 /**
- * [getExtent 返回地图范围]
+ * 返回视口范围
  * @public
- * @return {GeoBeans.Envelope} 地图的范围
+ * @return {GeoBeans.Envelope} 视口范围范围
  */
 GeoBeans.Viewer.prototype.getExtent = function(){
 	return this._extent;
@@ -148,10 +103,10 @@ GeoBeans.Viewer.prototype.getCenter = function(){
 /**
  * 设置Viewer的地图显示分辨率
  * @public
- * @param {float} val 分辨率
+ * @param {float} resolution 分辨率
  */
-GeoBeans.Viewer.prototype.setResolution = function(val){
-	this._resolution = val;
+GeoBeans.Viewer.prototype.setResolution = function(resolution){
+	this._resolution = resolution;
 };
 
 
@@ -167,10 +122,10 @@ GeoBeans.Viewer.prototype.getResolution = function(){
 /**
  * 设置地图的旋转角度
  * @public
- * @param {float} val 地图旋转角
+ * @param {float} angle 地图旋转角
  */
-GeoBeans.Viewer.prototype.setRotation = function(val){
-	this._rotation = val;
+GeoBeans.Viewer.prototype.setRotation = function(angle){
+	this._rotation = angle;
 	this._map.drawBackground();
 	this.setZoom(this._zoom);
 };
@@ -531,6 +486,7 @@ GeoBeans.Viewer.prototype.rotateViewer = function(){
  * 返回地图
  * @public
  * @return {GeoBeans.Map} 地图
+ * @deprecated 
  */
 GeoBeans.Viewer.prototype.getMap = function(){
 	return this._map;
@@ -538,9 +494,8 @@ GeoBeans.Viewer.prototype.getMap = function(){
 
 
 /**
- * 更新
+ * 根据地图窗口的长宽，更新地图视口的大小。
  * @private
- * @return 
  */
 GeoBeans.Viewer.prototype.update = function(){
 	var extent = this.getExtent();
@@ -567,8 +522,8 @@ GeoBeans.Viewer.prototype.update = function(){
 
 
 /**
- * 获取地图的最大级别
- * @return {[type]} [description]
+ * 获取地图的最大显示级别
+ * @return {int} 最大显示级别
  */
 GeoBeans.Viewer.prototype.getMaxZoom = function(){
 	var map = this._map;
@@ -593,8 +548,8 @@ GeoBeans.Viewer.prototype.getMaxZoom = function(){
 };
 
 /**
- * 获取地图的最小级别
- * @return {[type]} [description]
+ * 获取地图的最小显示级别
+ * @return {int} 最小显示级别
  */
 GeoBeans.Viewer.prototype.getMinZoom = function(){
 	var map = this._map;
