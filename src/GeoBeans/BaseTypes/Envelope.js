@@ -102,44 +102,6 @@ GeoBeans.Envelope = GeoBeans.Class({
 
 		return (xmin < xmax) && (ymin < ymax) ;
 	},
-
-	// // 沿着中心点旋转，逆时针角度
-	// rotate : function(angle){
-
-	// 	var x_min = this.xmin * Math.cos(angle * Math.PI/180) - this.ymin * Math.sin(angle * Math.PI/180);
-	// 	var y_min = this.xmin * Math.sin(angle * Math.PI/180) + this.ymin * Math.cos(angle * Math.PI/180);
-
-	// 	var x_max = this.xmax * Math.cos(angle * Math.PI/180) - this.ymax * Math.sin(angle * Math.PI/180);
-	// 	var y_max = this.xmax * Math.sin(angle * Math.PI/180) + this.ymax * Math.cos(angle * Math.PI/180);
-
-
-	// 	var xmin = (x_min < x_max) ? x_min : x_max;
-	// 	var xmax = (x_min > x_max) ? x_min : x_max;
-	// 	var ymin = (y_min < y_max) ? y_min : y_max;
-	// 	var ymax = (y_min > y_max) ? y_min : y_max;
-	// 	return new GeoBeans.Envelope(Math.round(xmin* 1000000)/1000000
-	// 		,Math.round(ymin* 1000000)/1000000
-	// 		,Math.round(xmax* 1000000)/1000000
-	// 		,Math.round(ymax* 1000000)/1000000);
-	// },
-
-	// // 旋转之后，
-	// rotateMaxMin : function(angle){
-	// 	var x_min = this.xmin * Math.cos(angle * Math.PI/180) - this.ymin * Math.sin(angle * Math.PI/180);
-	// 	var y_min = this.xmin * Math.sin(angle * Math.PI/180) + this.ymin * Math.cos(angle * Math.PI/180);
-
-	// 	var x_max = this.xmax * Math.cos(angle * Math.PI/180) - this.ymax * Math.sin(angle * Math.PI/180);
-	// 	var y_max = this.xmax * Math.sin(angle * Math.PI/180) + this.ymax * Math.cos(angle * Math.PI/180);
-
-	// 	var point_min = new GeoBeans.Geometry.Point(x_min,y_min);
-
-	// 	var point_max = new GeoBeans.Geometry.Point(x_max,y_max);
-
-	// 	return {
-	// 		min : point_min,
-	// 		max : point_max
-	// 	}
-	// }
 });
 
 GeoBeans.Envelope.prototype.clone = function(){
@@ -151,13 +113,12 @@ GeoBeans.Envelope.prototype.clone = function(){
 
 /**
  * 将Envelope的中心点移动到指定点
- * @param  {[type]} ncx [description]
- * @param  {[type]} ncy [description]
- * @return {[type]}     [description]
+ * @param  {double} x x坐标
+ * @param  {double} y x坐标
  */
-GeoBeans.Envelope.prototype.moveTo = function(ncx, ncy){
+GeoBeans.Envelope.prototype.moveTo = function(x, y){
 	var c = this.getCenter()
-	var ox = ncx - c.x;
-	var oy = ncy - c.y;
+	var ox = x - c.x;
+	var oy = y - c.y;
 	this.offset(ox,oy);
 }
