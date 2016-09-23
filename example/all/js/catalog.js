@@ -466,7 +466,7 @@ var g_catalog = [
 		"items":[
 			{
 				"name" : "(*)WKT<-->Geometry",
-				"link" : "Format/wkt.html"
+				"link" : "format/wkt.html"
 			},{
 				"name" : "(*)GML<-->Geometry",
 				"link" : "format_gmal.html"
@@ -475,7 +475,7 @@ var g_catalog = [
 				"link" : "format_gmal.html"
 			},{
 				"name" : "(*)GeoJSON<-->Geometry",
-				"link" : "Format/geoJson.html"
+				"link" : "format/geojson.html"
 			}
 		]
 	},{
