@@ -5,35 +5,57 @@
  */
 GeoBeans.Event = {	
 	/** 地图事件 */
-	/** @type {string} */
+	/** @type {String} 单击地图*/
 	CLICK 		: "click",			
+	/** @type {string} 双击地图*/
 	DBCLICK		: "dbclick",
+	/** @type {string} 地图大小变化*/
 	RESIZE		: "resize",
 
+	/** @type {string} 状态发生变化*/
 	CHANGE		: "change",
+	/** @type {string} 开始拖动*/
 	DRAG_BEGIN	: "dragbegin",
+	/** @type {string} 拖动地图*/
 	DRAGING		: "dragging",
+	/** @type {string} 拖动结束*/
 	DRAG_END	: "dragend",
 
 	/* mouse Event */
+	/** @type {string} 鼠标按下*/
 	MOUSE_DOWN	: "mousedown",
+	/** @type {string} 鼠标抬起*/
 	MOUSE_UP 	: "mouseup",
+	/** @type {string} 鼠标移动*/
 	MOUSE_MOVE 	: "mousemove",
+	/** @type {string} 鼠标位于元素之上*/
 	MOUSE_OVER 	: "mouseover",
+	/** @type {string} 鼠标离开元素*/
 	MOUSE_OUT 	: "mouseout",
 	// RESIZE		: "resize",
 	MOUSE_WHEEL : "mousewheel",
 	/* touch Event */
+	/** @type {string} 手势按下*/
 	TOUCH_START	: 'touchstart',
+	/** @type {string} 手势移动*/
 	TOUCH_MOVE 	: 'touchmove',
+	/** @type {string} 手势终止*/
 	TOUCH_END 	: 'touchend',
+	/** @type {string} 手势旋转*/
 	TOUCH_WHEEL	: 'touchwheel'
 };
 
-
+/**
+ * @classdesc
+ * 鼠标按键。
+ * @class
+ */
 GeoBeans.Event.MouseButton = {
+	/** @type {string} 鼠标左键*/
 	LEFT	: "left",
+	/** @type {string} 鼠标右键*/
 	RIGHT	: "right",
+	/** @type {string} 鼠标中键*/
 	MID		: "mid"
 };
 
