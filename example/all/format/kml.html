@@ -34,9 +34,11 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/TextSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
 <!--Control-->
@@ -54,6 +56,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
 
@@ -85,6 +88,9 @@
 <!--Events-->
 <script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
 <!--Render-->
+<script type="text/javascript" src="../../../src/GeoBeans/Label.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/PointLabel.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/LabelSet.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
 <!--Widget-->
 <script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
@@ -93,7 +99,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 
 <!-- format -->
-<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJson.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/KMLFormat.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
@@ -113,18 +119,19 @@
 	}
 
 	function getGeoJson(){
-		var url = "../data/geojson/point-samples.geojson";
-		// var url = "../data/geojson/line-samples.geojson";
-		// var url = "../data/geojson/polygon-samples.geojson";
-		// var url = "../data/geojson/countries.geojson";
+		var url = "../data/kml/point.kml";
+		var url = "../data/kml/line.kml";
+		var url = "../data/kml/polygon.kml";
+		// var url = "../data/kml/2012-02-10.kml";
+		
 		$.ajax({
 			url : url,
-			dataType: "json",
+			dataType: "xml",
 			async	: false,
 			beforeSend: function(XMLHttpRequest){
 			},
-			success	: function(json, textStatus){
-				readJson(json);
+			success	: function(text, textStatus){
+				readKML(text);
 			},
 			complete: function(XMLHttpRequest, textStatus){
 			},
@@ -133,49 +140,33 @@
 		});		
 	}
 
+	function readKML(kml){
+		var kmlFormat = new GeoBeans.KMLFormat();
 
-	function readJson(geoJson){
-		if(geoJson == null){
-			return;
-		}
-		var geoJsonFormat = new GeoBeans.GeoJsonFormat();
-		var fields = geoJsonFormat.readFields(geoJson);
+		var style = kmlFormat.readStyle(kml);
+		console.log(style);
 
-		var features = geoJsonFormat.read(geoJson,fields);
+		var fields = kmlFormat.readFields(kml);
+		console.log(fields);
+
+		var features = kmlFormat.read(kml,style,fields);
 
 		var featureType = new GeoBeans.FeatureType();
 		featureType.fields =  fields;
 		featureType.geomFieldName = "geometry";
 
-		var featureLayer = new GeoBeans.Layer.FeatureLayer("point");
+		var featureLayer = new GeoBeans.Layer.FeatureLayer("kml");
 		featureLayer.featureType = featureType;
 
 		featureLayer.addFeatures(features);
 
+		featureLayer.setStyle(style);
+
 		mapObj.addLayer(featureLayer);
-
-		// var style = createStyle();
-		// featureLayer.setStyle(style);
-
-		var zoom = 8;
-		var center = new GeoBeans.Geometry.Point(-72.6,47.7);
-		var viewer = mapObj.getViewer();	
-		viewer.setZoomCenter(zoom,center);
 
 		mapObj.refresh();
 	}
 
-	function createStyle(){
-		var style = new GeoBeans.Style.FeatureStyle();
-		var rule = new GeoBeans.Rule();
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 6;
-		symbolizer.fill.color.set(255, 0, 0,1);
-		symbolizer.stroke.color.set(0,255, 0,1);
-		rule.symbolizer = symbolizer;
-		style.addRule(rule);
-		return style;
-	}
 </script>
 <title>格式:GeoJson</title>
 <body onload="init()">

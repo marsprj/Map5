@@ -29,7 +29,7 @@ GeoBeans.GeoJsonFormat.prototype.read = function(geoJson,fields){
 		});
 		return features;
 	}else if(type == "Feature"){
-		var feature = this.readFeature(geoJson);
+		var feature = this.readFeature(geoJson,fields);
 		if(feature != null){
 			return [feature];
 		}
