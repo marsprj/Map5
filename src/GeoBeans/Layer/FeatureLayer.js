@@ -1309,52 +1309,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		callback(this,layerX,layerY,null);		
 	},
 
-/***********************缓冲区*******************************************/
-	// getBufferTracker : function(){
-	// 	if(this.bufferTracker == null){
-	// 		var bufferTracker = new GeoBeans.Control.TrackBufferControl();
-	// 		var index = this.map.controls.find(bufferTracker.type); 
-	// 		if(index == -1){
-	// 			this.bufferTracker = bufferTracker;
-	// 			this.map.controls.add(this.bufferTracker);
-	// 		}else{
-	// 			this.bufferTracker = this.map.controls.get(index);
-	// 		}
-	// 	}
-	// 	return this.bufferTracker;
-	// },
-
-	// //线缓冲区
-	// queryByBufferLine : function(distance,callback){
-	// 	var bufferTracker = this.getBufferTracker(); 
-	// 	bufferTracker.trackBufferLine(this,distance,callback,this.callbackQueryByBufferTrack);
-	// },
-
-
-	// //圆缓冲区
-	// queryByBufferCircle : function(callback){
-	// 	var bufferTracker = this.getBufferTracker();
-	// 	bufferTracker.trackBufferCircle(this,callback,this.callbackQueryByBufferTrack);
-	// },
-
-	// //回调函数，调用wfs的
-	// callbackQueryByBufferTrack : function(layer,distance,geometry,callback){
-	// 	if(geometry == null || distance < 0){
-	// 		return;
-	// 	}
-
-	// 	var featureType = layer.featureType;
-	// 	if(featureType == null){
-	// 		return;
-	// 	}
-
-	// 	var workspace = layer.workspace;
-	// 	if(workspace == null){
-	// 		return;
-	// 	}
-	// 	workspace.queryByBuffer(distance,geometry,featureType,callback);
-
-	// },
 
 /***********************插入更新*******************************************/
 	//插入

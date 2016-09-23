@@ -28,10 +28,6 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			if(trackOverlayControl.drawing){
 				map.restoreSnap();
 			}
-			var trackBufferControl = map._getBufferTracker();
-			if(trackBufferControl != null && trackBufferControl.drawing){
-				map.restoreSnap();
-			}
 			var tracker = map.tracker;
 			if(tracker != null && tracker.drawing){
 				map.restoreSnap();
@@ -108,9 +104,6 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			map.saveSnap();
 			if(trackOverlayControl.drawing){
 				trackOverlayControl.drawingEvent();
-			}
-			if(trackBufferControl != null && trackBufferControl.drawing){
-				trackBufferControl.drawingEvent();
 			}
 			if(tracker != null && tracker.drawing){
 				tracker.drawingEvent();
