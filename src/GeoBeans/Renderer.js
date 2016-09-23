@@ -44,32 +44,32 @@ GeoBeans.Renderer = GeoBeans.Class({
 	drawGeometry : function(geometry, symbolizer, viewer){
 		
 		switch(geometry.type){
-		case GeoBeans.Geometry.Type.POINT:
-			this.drawPoint(geometry,symbolizer, viewer);
-			break;
-		case GeoBeans.Geometry.Type.MULTIPOINT:
-			this.drawMultiPoint(geometry,symbolizer, viewer);
-			break;
-		case GeoBeans.Geometry.Type.LINESTRING:
-			this.drawLineString(geometry,symbolizer, viewer);
-			break;
-		case GeoBeans.Geometry.Type.MULTILINESTRING:
-			this.drawMultiLineString(geometry,symbolizer, viewer);
-			break;
-		case GeoBeans.Geometry.Type.POLYGON:
-			this.drawPolygon(geometry, symbolizer, viewer);
-			break;
-		case GeoBeans.Geometry.Type.MULTIPOLYGON:
-			this.drawMultiPolygon(geometry, symbolizer, viewer);
-			break;
-		case GeoBeans.Geometry.Type.CIRCLE:
-			this.drawCircle(geometry,symbolizer,viewer);
-			break;
-		case GeoBeans.Geometry.Type.COLLECTION:
-			this.drawMultiGeometry(geometry,symbolizer,viewer);
-			break;
-		default: 
-			break;			
+			case GeoBeans.Geometry.Type.POINT:
+				this.drawPoint(geometry,symbolizer, viewer);
+				break;
+			case GeoBeans.Geometry.Type.MULTIPOINT:
+				this.drawMultiPoint(geometry,symbolizer, viewer);
+				break;
+			case GeoBeans.Geometry.Type.LINESTRING:
+				this.drawLineString(geometry,symbolizer, viewer);
+				break;
+			case GeoBeans.Geometry.Type.MULTILINESTRING:
+				this.drawMultiLineString(geometry,symbolizer, viewer);
+				break;
+			case GeoBeans.Geometry.Type.POLYGON:
+				this.drawPolygon(geometry, symbolizer, viewer);
+				break;
+			case GeoBeans.Geometry.Type.MULTIPOLYGON:
+				this.drawMultiPolygon(geometry, symbolizer, viewer);
+				break;
+			case GeoBeans.Geometry.Type.CIRCLE:
+				this.drawCircle(geometry,symbolizer,viewer);
+				break;
+			case GeoBeans.Geometry.Type.COLLECTION:
+				this.drawMultiGeometry(geometry,symbolizer,viewer);
+				break;
+			default: 
+				break;			
 		};
 	},
 	

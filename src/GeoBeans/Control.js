@@ -30,15 +30,15 @@ GeoBeans.Control = GeoBeans.Class({
 });
 
 GeoBeans.Control.Type = {
-	SCROLL_MAP	: "ScrollMapControl",
-	DRAG_MAP	: "DragMapControl",
-	TRACK		: "TrackControl",
-	TRACKBUFFER : "TrackBufferControl",
-	TRACKTRANSACTION : "TrackTransactionControl",
-	TRACKOVERLAY : "TrackOverlayControl",
-	HIT_FEATURE	: "FeatureHitControl",
-	NAV 		: "navControl",
-	ZOOM 		: "zoom"
+	SCROLL_MAP		: "ScrollMapControl",
+	DRAG_MAP		: "DragMapControl",
+	TRACK			: "TrackControl",
+	TRACKBUFFER 	: "TrackBufferControl",
+	TRACKTRANSACTION: "TrackTransactionControl",
+	TRACKOVERLAY 	: "TrackOverlayControl",
+	HIT_FEATURE		: "FeatureHitControl",
+	NAV 			: "navControl",
+	ZOOM 			: "zoom"
 };
 
 
