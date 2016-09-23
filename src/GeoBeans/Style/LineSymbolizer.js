@@ -1,3 +1,13 @@
+/**
+ * @classdesc
+ * 线几何对象样式类。
+ * 定义线的渲染样式，包括颜色、线型、宽度等。
+ * @class
+ * @extends {GeoBeans.Symbolizer}
+ * @param {GeoBeans.Style.Stroke} stroke 线样式
+ * @param {GeoBeans.Style.Fill} fill 填充样式
+ * @param {GeoBeans.Style.Symbol} symbol 符号
+ */
 GeoBeans.Symbolizer.LineSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 	stroke 	: null,
 	fill 	: null,

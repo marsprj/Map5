@@ -1,4 +1,11 @@
-GeoBeans.Fill = GeoBeans.Class({
+/**
+ * @classdesc
+ * 定义填充演示，包括颜色，透明度等。
+ * @class
+ * @param {GeoBeans.Color} color 颜色
+ * @param {double} opacity 透明度
+ */
+GeoBeans.Style.Fill = GeoBeans.Class({
 	color : null,
 	// opacity : null
 

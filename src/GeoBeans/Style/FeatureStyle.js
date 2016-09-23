@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * Feature样式。
+ * @class
+ * @extends {GeoBeans.Style}
+ */
 GeoBeans.Style.FeatureStyle = GeoBeans.Class(GeoBeans.Style,{
 	rules  		: null,
 	// 自定义样式类型

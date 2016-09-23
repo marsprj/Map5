@@ -1,4 +1,13 @@
-GeoBeans.Font = GeoBeans.Class({
+/**
+ * @classdesc
+ * 字体类
+ * @class
+ * @param {string} family 字体
+ * @param {GeoBeans.Font.StyleType} style 样式
+ * @param {GeoBeans.Font.WeightType} weight 是否加粗
+ * @param {double} size 大小
+ */
+GeoBeans.Style.Font = GeoBeans.Class({
 	family 	: null,
 	style 	: null,
 	weight 	: null,

@@ -1,3 +1,22 @@
+/**
+ * @classdesc
+ * 文本对象样式类。
+ * 定义线的渲染样式，包括颜色、线型、宽度等。
+ * @class
+ * @extends {GeoBeans.Symbolizer}
+ * @param {GeoBeans.Style.Stroke}	stroke	边界线样式
+ * @param {GeoBeans.Style.Fill}		fill	填充样式
+ * @param {GeoBeans.Style.Symbol}	symbol	符号
+ * @param {GeoBeans.Style.Font}		font	字体
+ * @param {string} 			rotation	旋转角
+ * @param {string} 			rotationField	旋转字段
+ * @param {string} 			labelText	标注文字
+ * @param {string} 			rotationProp	标注文字字段
+ * @param {double} anchorX x方向旋转锚点
+ * @param {double} anchorY y方向旋转锚点
+ * @param {double} displaceX x方向偏移量
+ * @param {double} displaceY y方向偏移量
+ */
 GeoBeans.Symbolizer.TextSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 	fill 		: null,
 	stroke 		: null,

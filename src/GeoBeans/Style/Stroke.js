@@ -1,4 +1,15 @@
-GeoBeans.Stroke = GeoBeans.Class({
+/**
+ * @classdesc
+ * 线样式。
+ * 定义线的渲染样式，包括颜色、线型、宽度等。
+ * @class
+ * @param {GeoBeans.Color} color  颜色
+ * @param {double} width 线宽
+ * @param {GeoBeans.Stroke.LineCapType} lineCap 线端点样式
+ * @param {GeoBeans.Stroke.LineJoinType} lineCap 线连接点样式
+ * @param {Array} dashOffset 虚线模式定义
+ */
+GeoBeans.Style.Stroke = GeoBeans.Class({
 	color 		: null,
 	width 		: null,
 	lineCap 	: null,
