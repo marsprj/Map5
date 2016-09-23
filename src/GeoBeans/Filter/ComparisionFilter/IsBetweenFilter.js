@@ -19,7 +19,7 @@ GeoBeans.Filter.IsBetweenFilter = GeoBeans.Class(GeoBeans.Filter.ComparisionFilt
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.IsBetweenFilter();
+		var clone = new GeoBeans.Filter.IsBetweenFilter();
 		clone.type = this.type;
 		if(this.expression != null){
 			clone.expression = this.expression.clone();

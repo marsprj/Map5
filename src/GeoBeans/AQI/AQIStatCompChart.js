@@ -76,25 +76,25 @@ GeoBeans.AQIStatCompChart = GeoBeans.Class({
 	},
 
 	getFeatures : function(){
-		var filter = new GeoBeans.BinaryLogicFilter();
-		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		var filter = new GeoBeans.Filter.BinaryLogicFilter();
+		filter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;
 
 
 		// 站点字段
-		var stationsFilter = new GeoBeans.BinaryLogicFilter();
-		stationsFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+		var stationsFilter = new GeoBeans.Filter.BinaryLogicFilter();
+		stationsFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr;
 		var stationCode = null;
-		var stationCodeFieldProp = new GeoBeans.PropertyName();
+		var stationCodeFieldProp = new GeoBeans.Expression.PropertyName();
 		stationCodeFieldProp.setName(this.stationCodeField);
 		for(var i = 0; i < this.stationCodes.length; ++i){
 			stationCode = this.stationCodes[i];
 			if(stationCode == null){
 				continue;
 			}
-			var stationFilter = new GeoBeans.BinaryComparisionFilter();
-			stationFilter.operator = GeoBeans.ComparisionFilter.
+			var stationFilter = new GeoBeans.Filter.BinaryComparisionFilter();
+			stationFilter.operator = GeoBeans.Filter.ComparisionFilter.
 				OperatorType.ComOprEqual;
-			var stationCodeLiteral = new GeoBeans.Literal();
+			var stationCodeLiteral = new GeoBeans.Expression.Literal();
 			stationCodeLiteral.setValue(stationCode);
 			stationFilter.expression1 = stationCodeFieldProp;
 			stationFilter.expression2 = stationCodeLiteral;
@@ -102,21 +102,21 @@ GeoBeans.AQIStatCompChart = GeoBeans.Class({
 		}
 
 		// 时间filter
-		var timeFilter = new GeoBeans.BinaryLogicFilter();
-		timeFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;;
+		var timeFilter = new GeoBeans.Filter.BinaryLogicFilter();
+		timeFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;;
 		
-		var startTimeFilter =  new GeoBeans.BinaryComparisionFilter();
-		startTimeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
-		var timeProp = new GeoBeans.PropertyName();
+		var startTimeFilter =  new GeoBeans.Filter.BinaryComparisionFilter();
+		startTimeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
+		var timeProp = new GeoBeans.Expression.PropertyName();
 		timeProp.setName(this.timeField);
-		literal = new GeoBeans.Literal();
+		literal = new GeoBeans.Expression.Literal();
 		literal.setValue(this.startTime);
 		startTimeFilter.expression1 = timeProp;
 		startTimeFilter.expression2 = literal;
 
-		var endTimeFilter =  new GeoBeans.BinaryComparisionFilter();
-		endTimeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
-		literal = new GeoBeans.Literal();
+		var endTimeFilter =  new GeoBeans.Filter.BinaryComparisionFilter();
+		endTimeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+		literal = new GeoBeans.Expression.Literal();
 		literal.setValue(this.endTime);
 		endTimeFilter.expression1 = timeProp;
 		endTimeFilter.expression2 = literal;

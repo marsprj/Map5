@@ -687,7 +687,7 @@ GeoBeans.Format.KML.prototype.addFilterByID = function(style,styleName,fid){
 		if(r.name == styleName){
 			var filter = r.filter;
 			if(filter == null){
-				filter = new GeoBeans.IDFilter();
+				filter = new GeoBeans.Filter.IDFilter();
 				r.filter = filter;
 			}	
 			filter.addID(fid);

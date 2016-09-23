@@ -347,7 +347,7 @@ GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
  */
 GeoBeans.Interaction.Select.prototype.createBBoxQuery = function(rect){
 	var featureType = this._layer.getFeatureType();
-	var filter = new GeoBeans.BBoxFilter(
+	var filter = new GeoBeans.Filter.BBoxFilter(
 						featureType.geomFieldName,
 						rect);
 
@@ -361,7 +361,7 @@ GeoBeans.Interaction.Select.prototype.createBBoxQuery = function(rect){
 
 GeoBeans.Interaction.Select.prototype.createDistanceBufferFilterQuery = function(g, r){
 	var featureType = this._layer.getFeatureType();
-	var filter = new GeoBeans.DistanceBufferFilter(
+	var filter = new GeoBeans.Filter.DistanceBufferFilter(
 						featureType.geomFieldName,
 						g,
 						r);

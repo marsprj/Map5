@@ -946,7 +946,7 @@ GeoBeans.Map = GeoBeans.Class({
 		map.queryGeometry = rect;
 		map.queryTrackLayer = layer;
 		map.queryLayer.setLayer(layer,style);
-		var filter = new GeoBeans.BBoxFilter(layer.featureType.geomFieldName,rect);
+		var filter = new GeoBeans.Filter.BBoxFilter(layer.featureType.geomFieldName,rect);
 		layer.getFeatureFilter(filter,map.queryLayer.maxFeatures,null,null,callback_u);
 	},
 
@@ -1034,7 +1034,7 @@ GeoBeans.Map = GeoBeans.Class({
 			return;
 		}
 		var map = layer.map;
-		var filter = new GeoBeans.DistanceBufferFilter(layer.featureType.geomFieldName,geometry,distance);
+		var filter = new GeoBeans.Filter.DistanceBufferFilter(layer.featureType.geomFieldName,geometry,distance);
 		var maxFeatures = map.queryLayer.maxFeatures;
 		layer.getFeatureFilter(filter,maxFeatures,null,null,callback);
 
@@ -1113,7 +1113,7 @@ GeoBeans.Map = GeoBeans.Class({
 	// 			null,obj);
 	// 	}else{
 	// 		// features = layer.getFeatureBBoxGet(bbox,null,null);
-	// 		var boxFilter = new GeoBeans.BBoxFilter();
+	// 		var boxFilter = new GeoBeans.Filter.BBoxFilter();
 	// 		boxFilter.extent = bbox;
 	// 		var geomFieldName = featureType.geomFieldName;
 	// 		boxFilter.propName = geomFieldName;

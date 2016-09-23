@@ -232,7 +232,7 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	parsePropertyName : function(xml){
 		var name = $(xml).text();
 		if(name != null){
-			var propertyName = new GeoBeans.PropertyName();
+			var propertyName = new GeoBeans.Expression.PropertyName();
 			propertyName.name = name;
 			return propertyName;
 		}
@@ -242,7 +242,7 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	parseLiteral : function(xml){
 		var value = $(xml).text();
 		if(name != null){
-			var literal = new GeoBeans.Literal();
+			var literal = new GeoBeans.Expression.Literal();
 			literal.value = value;
 			return literal;
 		}

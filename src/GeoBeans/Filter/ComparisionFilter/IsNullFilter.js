@@ -12,5 +12,14 @@ GeoBeans.Filter.IsNullFilter = GeoBeans.Class(GeoBeans.Filter.ComparisionFilter,
 		GeoBeans.Filter.ComparisionFilter.prototype.initialize.apply(this,arguments);
 		this.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull;
 		this.properyName = properyName;
-	}
+	},
+
+	clone : function(){
+		var clone = new GeoBeans.Filter.IsNullFilter();
+		clone.type = this.type;
+		if(clone.properyName != null){
+			clone.properyName = this.properyName.clone();
+		}
+		return clone;
+	},
 });

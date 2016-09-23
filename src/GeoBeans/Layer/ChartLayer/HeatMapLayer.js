@@ -51,7 +51,7 @@ GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		if(this.features == null){
 			return;
 		}
-		var bboxFilter = new GeoBeans.BBoxFilter(this.featureType.geomFieldName,this.viewer);
+		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
 		var features = this.selectFeaturesByFilter(bboxFilter,this.features);
 
 		var fieldIndex = -1;

@@ -200,11 +200,11 @@ GeoBeans.SubManager = GeoBeans.Class({
 
 		// 保险起见，时间先减去一分钟
 		var time2 = this.dateAdd(time,"minute",-1);
-		var timeFilter = new GeoBeans.BinaryComparisionFilter();
-		timeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
-		var prop = new GeoBeans.PropertyName();
+		var timeFilter = new GeoBeans.Filter.BinaryComparisionFilter();
+		timeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName(this.aqiDowntimeField);
-		var literal = new GeoBeans.Literal();
+		var literal = new GeoBeans.Expression.Literal();
 		var timeStr = this.getTimeFormat(time2);
 		literal.setValue(timeStr);
 		timeFilter.expression1 = prop;
@@ -277,16 +277,16 @@ GeoBeans.SubManager = GeoBeans.Class({
 			return;
 		}
 
-		var areaFilter = new GeoBeans.BinaryLogicFilter();
-		areaFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+		var areaFilter = new GeoBeans.Filter.BinaryLogicFilter();
+		areaFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr;
 		var city = null;
 		for(var i = 0; i < citys.length; ++i){
 			city = citys[i];
-			var cityFilter = new GeoBeans.BinaryComparisionFilter();
-			cityFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
-			var prop = new GeoBeans.PropertyName();
+			var cityFilter = new GeoBeans.Filter.BinaryComparisionFilter();
+			cityFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
+			var prop = new GeoBeans.Expression.PropertyName();
 			prop.setName(this.aqiCityField);
-			var literal = new GeoBeans.Literal();
+			var literal = new GeoBeans.Expression.Literal();
 			literal.setValue(city);
 			cityFilter.expression1 = prop;
 			cityFilter.expression2 = literal;
@@ -294,23 +294,23 @@ GeoBeans.SubManager = GeoBeans.Class({
 		}
 
 		var uptime = null;
-		var uptimeListFilter = new GeoBeans.BinaryLogicFilter();
-		uptimeListFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+		var uptimeListFilter = new GeoBeans.Filter.BinaryLogicFilter();
+		uptimeListFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr;
 		for(var i = 0; i < uptimeArray.length; ++i){
 			uptime = uptimeArray[i];
-			var uptimeFilter = new GeoBeans.BinaryComparisionFilter();
-			uptimeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
-			var prop = new GeoBeans.PropertyName();
+			var uptimeFilter = new GeoBeans.Filter.BinaryComparisionFilter();
+			uptimeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
+			var prop = new GeoBeans.Expression.PropertyName();
 			prop.setName(this.aqiTimeField);
-			var literal = new GeoBeans.Literal();
+			var literal = new GeoBeans.Expression.Literal();
 			literal.setValue(uptime);
 			uptimeFilter.expression1 = prop;
 			uptimeFilter.expression2 = literal;
 			uptimeListFilter.addFilter(uptimeFilter);
 		}
 
-		var filter = new GeoBeans.BinaryLogicFilter();
-		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		var filter = new GeoBeans.Filter.BinaryLogicFilter();
+		filter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;
 		filter.addFilter(areaFilter);
 		filter.addFilter(uptimeListFilter);
 
@@ -391,27 +391,27 @@ GeoBeans.SubManager = GeoBeans.Class({
 		if(aqiCitys.length == 0){
 			this.aqiFeatures = [];
 		}
-		var timeFilter = new GeoBeans.BinaryComparisionFilter();
-		timeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
-		var prop = new GeoBeans.PropertyName();
+		var timeFilter = new GeoBeans.Filter.BinaryComparisionFilter();
+		timeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan;
+		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName(this.aqiTimeField);
-		var literal = new GeoBeans.Literal();
+		var literal = new GeoBeans.Expression.Literal();
 		
 		var timeStr = this.getTimeFormat(time);
 		literal.setValue(timeStr);
 		timeFilter.expression1 = prop;
 		timeFilter.expression2 = literal;
 
-		var areaFilter = new GeoBeans.BinaryLogicFilter();
-		areaFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+		var areaFilter = new GeoBeans.Filter.BinaryLogicFilter();
+		areaFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr;
 		var city = null;
 		for(var i = 0; i < aqiCitys.length; ++i){
 			city = aqiCitys[i];
-			var cityFilter = new GeoBeans.BinaryComparisionFilter();
-			cityFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
-			var prop = new GeoBeans.PropertyName();
+			var cityFilter = new GeoBeans.Filter.BinaryComparisionFilter();
+			cityFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
+			var prop = new GeoBeans.Expression.PropertyName();
 			prop.setName(this.aqiCityField);
-			var literal = new GeoBeans.Literal();
+			var literal = new GeoBeans.Expression.Literal();
 			literal.setValue(city);
 			cityFilter.expression1 = prop;
 			cityFilter.expression2 = literal;
@@ -419,8 +419,8 @@ GeoBeans.SubManager = GeoBeans.Class({
 		}
 
 
-		var filter = new GeoBeans.BinaryLogicFilter();
-		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		var filter = new GeoBeans.Filter.BinaryLogicFilter();
+		filter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;
 		filter.addFilter(timeFilter);
 		filter.addFilter(areaFilter);
 

@@ -48,6 +48,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
 <!--Format-->
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
@@ -59,8 +60,9 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/PropertyName.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/Literal.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+
 
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
@@ -225,11 +227,11 @@
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
 		
-		var prop = new GeoBeans.PropertyName();
+		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName("status");
-		var literal = new GeoBeans.Literal();
+		var literal = new GeoBeans.Expression.Literal();
 		literal.setValue("on");
-		var filter = new GeoBeans.BinaryComparisionFilter(	GeoBeans.ComparisionFilter.OperatorType.ComOprEqual,
+		var filter = new GeoBeans.Filter.BinaryComparisionFilter(	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual,
 															prop,
 															literal);
 		rule.filter = filter;
@@ -242,11 +244,11 @@
 		symbolizer.fill.color.setByHex('#ddb926',1);
 		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var prop = new GeoBeans.PropertyName();
+		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName("status");
-		var literal = new GeoBeans.Literal();
+		var literal = new GeoBeans.Expression.Literal();
 		literal.setValue("off");
-		var filter = new GeoBeans.BinaryComparisionFilter(GeoBeans.ComparisionFilter.OperatorType.ComOprEqual,
+		var filter = new GeoBeans.Filter.BinaryComparisionFilter(GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual,
 														  prop,
 														  literal);
 		rule.filter = filter;

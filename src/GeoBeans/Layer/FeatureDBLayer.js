@@ -240,7 +240,7 @@ GeoBeans.Layer.FeatureDBLayer = GeoBeans.Class(GeoBeans.Layer.DBLayer,{
 		var that = this;
 		that.flag = GeoBeans.Layer.Flag.READY;
 		
-		var filter = new GeoBeans.BBoxFilter();
+		var filter = new GeoBeans.Filter.BBoxFilter();
 		filter.extent = this.viewer;
 		filter.propName =this.featureType.geomFieldName;
 		var fields = [this.featureType.geomFieldName];

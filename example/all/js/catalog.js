@@ -472,7 +472,7 @@ var g_catalog = [
 				"link" : "format_gmal.html"
 			},{
 				"name" : "(*)KML<-->Geometry",
-				"link" : "format_gmal.html"
+				"link" : "format/kml.html"
 			},{
 				"name" : "(*)GeoJSON<-->Geometry",
 				"link" : "format/geojson.html"

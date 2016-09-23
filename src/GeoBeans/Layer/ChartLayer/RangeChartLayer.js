@@ -88,7 +88,7 @@ GeoBeans.Layer.RangeChartLayer  = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 				
 
-			var filter = new GeoBeans.IDFilter();
+			var filter = new GeoBeans.Filter.IDFilter();
 			filter.addID(feature.fid);
 
 

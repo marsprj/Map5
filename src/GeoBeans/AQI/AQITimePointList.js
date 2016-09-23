@@ -36,23 +36,23 @@ GeoBeans.AQITimePointList = GeoBeans.Class({
 		if(this.map == null){
 			return null;
 		}
-		var filter = new GeoBeans.BinaryLogicFilter();
-		filter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+		var filter = new GeoBeans.Filter.BinaryLogicFilter();
+		filter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;
 
-		var startTimeFilter =  new GeoBeans.BinaryComparisionFilter();
-		startTimeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
-		prop = new GeoBeans.PropertyName();
+		var startTimeFilter =  new GeoBeans.Filter.BinaryComparisionFilter();
+		startTimeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
+		prop = new GeoBeans.Expression.PropertyName();
 		prop.setName(this.timeField);
-		literal = new GeoBeans.Literal();
+		literal = new GeoBeans.Expression.Literal();
 		literal.setValue(this.startTime);
 		startTimeFilter.expression1 = prop;
 		startTimeFilter.expression2 = literal;
 
-		var endTimeFilter =  new GeoBeans.BinaryComparisionFilter();
-		endTimeFilter.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
-		prop = new GeoBeans.PropertyName();
+		var endTimeFilter =  new GeoBeans.Filter.BinaryComparisionFilter();
+		endTimeFilter.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan;
+		prop = new GeoBeans.Expression.PropertyName();
 		prop.setName(this.timeField);
-		literal = new GeoBeans.Literal();
+		literal = new GeoBeans.Expression.Literal();
 		literal.setValue(this.endTime);
 		endTimeFilter.expression1 = prop;
 		endTimeFilter.expression2 = literal;

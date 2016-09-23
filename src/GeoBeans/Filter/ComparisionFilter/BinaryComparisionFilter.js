@@ -18,7 +18,7 @@ GeoBeans.Filter.BinaryComparisionFilter = GeoBeans.Class(GeoBeans.Filter.Compari
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.BinaryComparisionFilter();
+		var clone = new GeoBeans.Filter.BinaryComparisionFilter();
 		clone.type = this.type;
 		if(this.expression1 != null){
 			clone.expression1 = this.expression1.clone();

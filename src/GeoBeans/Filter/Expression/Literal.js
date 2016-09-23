@@ -2,9 +2,9 @@
  * @classdesc
  * 属性值表达式
  * @class
- * @extends {GeoBeans.ComparisionFilter}
+ * @extends {GeoBeans.Expression}
  */
-GeoBeans.Literal = GeoBeans.Class(GeoBeans.Expression,{
+GeoBeans.Expression.Literal = GeoBeans.Class(GeoBeans.Expression,{
 	value : null,
 
 	initialize : function(){
@@ -17,7 +17,7 @@ GeoBeans.Literal = GeoBeans.Class(GeoBeans.Expression,{
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.Literal();
+		var clone = new GeoBeans.Expression.Literal();
 		clone.value = this.value;
 		clone.type = this.type;
 		return clone;

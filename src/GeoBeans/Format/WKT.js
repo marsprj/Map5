@@ -16,7 +16,7 @@ GeoBeans.Format.WKT = GeoBeans.Class(GeoBeans.Format,{
 /**
  * 将WKT字符串转换为Geometry对象
  * @public
- * @return {Geometry} [description]
+ * @return {GeoBeans.Geometry} geometry对象
  */
 GeoBeans.Format.WKT.prototype.read = function(wkt){
 	if(wkt == null){
@@ -285,8 +285,8 @@ GeoBeans.Format.WKT.prototype.prasePointsByCoordinates = function(string){
 /**
  * 将Geometry对象转换为WKT字符串
  * @public
- * @param  {Geometry} geometry [geometry对象]
- * @return {string}          [wkt字符串]
+ * @param  {GeoBeans.Geometry} geometry geometry对象
+ * @return {string}          wkt字符串
  */
 GeoBeans.Format.WKT.prototype.write = function(geometry){
 	if(geometry == null){

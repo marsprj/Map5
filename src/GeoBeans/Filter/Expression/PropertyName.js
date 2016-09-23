@@ -2,9 +2,9 @@
  * @classdesc
  * 属性名称表达式
  * @class
- * @extends {GeoBeans.ComparisionFilter}
+ * @extends {GeoBeans.Expression}
  */
-GeoBeans.PropertyName = GeoBeans.Class(GeoBeans.Expression, {
+GeoBeans.Expression.PropertyName = GeoBeans.Class(GeoBeans.Expression, {
 	name : null,
 
 	initialize : function(){
@@ -12,7 +12,7 @@ GeoBeans.PropertyName = GeoBeans.Class(GeoBeans.Expression, {
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.PropertyName();
+		var clone = new GeoBeans.Expression.PropertyName();
 		clone.name = this.name;
 		return clone;
 	},

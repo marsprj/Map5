@@ -14,8 +14,8 @@ GeoBeans.Format.GeoJson = GeoBeans.Class(GeoBeans.Format,{
  * 读取features
  * @public
  * @param  {string} 			geoJson [geoJson字符串]
- * @param  {Array.<Field>} 	fields  [字段数组]
- * @return {Array.<Feature>}         	[feature数组]
+ * @param  {Array.<GeoBeans.Field>} 	fields  [字段数组]
+ * @return {Array.<GeoBeans.Feature>}         	[feature数组]
  */
 GeoBeans.Format.GeoJson.prototype.read = function(geoJson,fields){
 	if(geoJson == null || fields == null){
@@ -46,8 +46,8 @@ GeoBeans.Format.GeoJson.prototype.read = function(geoJson,fields){
 /**
  * geoJson读取字段fields
  * @public
- * @param  {string} geoJson 	[geoJson字符串]
- * @return {Array.<Field>}    [字段数组]
+ * @param  {string} geoJson 	geoJson字符串
+ * @return {Array.<GeoBeans.Field>}    字段数组
  */
 GeoBeans.Format.GeoJson.prototype.readFields = function(geoJson){
 	if(geoJson == null){
@@ -223,6 +223,7 @@ GeoBeans.Format.GeoJson.prototype.readFieldsByFeature = function(featureJson){
 
 /**
  * 判断是否添加field到featureType中
+ * @private
  * @param {FeatureType} 		featureType []
  * @param {Array.<Object>} 	fieldsArray [字段数组]
  */
@@ -258,6 +259,7 @@ GeoBeans.Format.GeoJson.prototype.addFields = function(featureType,fieldsArray){
  *		]
  *	} 
  * }
+ * @private
  * @param  {string} 			geoJson [geoJson字符串]
  * @param  {Array.<Field>} 	fields  [字段数组]
  * @return {Feautre}        			[返回要素]

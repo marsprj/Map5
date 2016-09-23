@@ -50,6 +50,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
 <!--Format-->
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/KML.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
@@ -57,8 +59,9 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+
 
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
@@ -98,8 +101,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 
-<!-- format -->
-<script type="text/javascript" src="../../../src/GeoBeans/Format/KMLFormat.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
@@ -141,7 +142,7 @@
 	}
 
 	function readKML(kml){
-		var kmlFormat = new GeoBeans.KMLFormat();
+		var kmlFormat = new GeoBeans.Format.KML();
 
 		var style = kmlFormat.readStyle(kml);
 		console.log(style);

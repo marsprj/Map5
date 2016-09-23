@@ -610,7 +610,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 
 		switch(oper){
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprEqual:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -635,7 +635,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprNotEqual:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -660,7 +660,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -685,7 +685,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}				
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -710,7 +710,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -735,7 +735,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -760,7 +760,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprIsLike:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike:{
 				if(field == null || value == null){
 					selection = features;
 					break;
@@ -785,7 +785,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprIsNull:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull:{
 				// if(field == null || value == null){
 				// 	selection = features;
 				// 	break;
@@ -811,7 +811,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				}
 				break;
 			}
-			case GeoBeans.ComparisionFilter.OperatorType.ComOprIsBetween:{
+			case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween:{
 				var expression = filter.expression;
 				var lowerBound = filter.lowerBound;
 				var upperBound = filter.upperBound;
@@ -876,15 +876,15 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 		var oper = filter.operator;
 		switch(oper){
-			case GeoBeans.LogicFilter.OperatorType.LogicOprAnd:{
+			case GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd:{
 				selection = this.selectFeatureByLogicAnd(filter,features,maxFeatures,offset); 
 				break;
 			}
-			case GeoBeans.LogicFilter.OperatorType.LogicOprOr:{
+			case GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr:{
 				selection = this.selectFeatureByLogicOr(filter,features,maxFeatures,offset);
 				break;
 			}
-			case GeoBeans.LogicFilter.OperatorType.LogicOprNot:{
+			case GeoBeans.Filter.LogicFilter.OperatorType.LogicOprNot:{
 				selection = this.selectFeatureByLogicNot(filter,features,maxFeatures,offset);
 				break;
 			}

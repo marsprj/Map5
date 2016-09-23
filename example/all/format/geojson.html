@@ -48,14 +48,15 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
 <!--Format-->
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
@@ -93,7 +94,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 
 <!-- format -->
-<script type="text/javascript" src="../../../src/GeoBeans/Format/KMLFormat.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
@@ -138,7 +140,7 @@
 		if(geoJson == null){
 			return;
 		}
-		var geoJsonFormat = new GeoBeans.GeoJsonFormat();
+		var geoJsonFormat = new GeoBeans.Format.GeoJson();
 		var fields = geoJsonFormat.readFields(geoJson);
 
 		var features = geoJsonFormat.read(geoJson,fields);

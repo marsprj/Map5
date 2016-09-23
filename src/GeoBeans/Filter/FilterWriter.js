@@ -151,11 +151,11 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 	writeLogicFilter : function(xml,logicFilter){
 		var operator = logicFilter.operator;
 		var logicXML = null;
-		if(operator == GeoBeans.LogicFilter.OperatorType.LogicOprAnd){
+		if(operator == GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd){
 			logicXML = xml.createElement("ogc:And");
-		}else if(operator == GeoBeans.LogicFilter.OperatorType.LogicOprOr){
+		}else if(operator == GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr){
 			logicXML = xml.createElement("ogc:Or");
-		}else if(operator == GeoBeans.LogicFilter.OperatorType.LogicOprNot){
+		}else if(operator == GeoBeans.Filter.LogicFilter.OperatorType.LogicOprNot){
 			logicXML = xml.createElement("ogc:Not");
 			var filter = logicFilter.filter;
 			var filterXML = this.writeFilter(xml,filter);
@@ -231,7 +231,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 	writeBBoxFilter : function(xml,bboxFilter){
 		var filterXML = xml.createElement("ogc:BBOX");
 		var propName = bboxFilter.propName;
-		var prop = new GeoBeans.PropertyName();
+		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName(propName);
 		var propXML = this.writeExpression(xml,prop);
 		$(filterXML).append(propXML);
