@@ -84,6 +84,9 @@ GeoBeans.Layer = GeoBeans.Class({
 	cleanup : function(){},
 
 
+	/**
+	 * @deprecated  ??
+	 */
 	setTransformation : function(transformation){
 		if(transformation == null || transformation.view_c == null){
 			return;
@@ -103,6 +106,9 @@ GeoBeans.Layer = GeoBeans.Class({
 
 	},
 
+	/**
+	 * @deprecated  ??
+	 */
 	//绘制截屏
 	drawLayerSnap : function(){
 		
@@ -135,7 +141,6 @@ GeoBeans.Layer = GeoBeans.Class({
 /**
  * 单个图层重绘
  * @public
- * @return {[type]} [description]
  */
 GeoBeans.Layer.prototype.refresh = function() {
 	this.draw();

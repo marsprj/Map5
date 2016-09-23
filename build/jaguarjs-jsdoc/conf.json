@@ -7,9 +7,9 @@
 		"cleverLinks": true,
 		"monospaceLinks": true,
 		"default": {
-			"outputSourceFiles" : true
+			"outputSourceFiles" : false
 		},
-		"applicationName": "GeoBeans HTML5 Map Client",
+		"applicationName": "Map5",
 		"disqus": "",
 		"googleAnalytics": "",
 		"openGraph": {
