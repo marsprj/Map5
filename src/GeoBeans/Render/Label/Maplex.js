@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 标注控制类，实现文字标注的碰撞检测等处理。
+ * @class
+ * @public
+ */
 GeoBeans.Maplex = GeoBeans.Class({
 	map : null,
 

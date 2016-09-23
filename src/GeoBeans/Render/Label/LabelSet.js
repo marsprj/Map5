@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * Label集合
+ * @class
+ * @private
+ */
 GeoBeans.LabelSet = GeoBeans.Class({
 
 	name : null,

@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 点Label集合
+ * @class
+ * @private
+ */
 GeoBeans.PointLabel = GeoBeans.Class(GeoBeans.Label,{
 	pos : null,
 	extent : null,

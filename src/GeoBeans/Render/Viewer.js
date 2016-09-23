@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 地图视图类
+ * 设置Map显示的分辨率、范围、旋转角等参数。
+ * @class
+ */
 GeoBeans.Viewer = GeoBeans.Class({
 	
 	_map : null,
@@ -73,7 +79,6 @@ GeoBeans.Viewer = GeoBeans.Class({
 /**
  * cleanup
  * @private
- * @return {} 
  */
 GeoBeans.Viewer.prototype.cleanup = function(){
 	this._center = null;
@@ -212,8 +217,8 @@ GeoBeans.Viewer.prototype.setZoom = function(zoom){
 /**
  * 设置视口的中心点和缩放级
  * @public
- * @param {[type]} zoom   [description]
- * @param {[type]} center [description]
+ * @param {int} zoom   zoom级别
+ * @param {GeoBeans.Geometry.Point} center 中心点坐标
  */
 GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 	var map = this._map;
@@ -245,7 +250,7 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 /**
  * 获取地图的屏幕宽度
  * @public
- * @return {[type]} [description]
+ * @return {int} 屏幕宽度
  * @description 单位为像素(pixel)
  */
 GeoBeans.Viewer.prototype.getWindowWidth = function(){
@@ -255,7 +260,7 @@ GeoBeans.Viewer.prototype.getWindowWidth = function(){
 /**
  * 获取地图的屏幕宽度
  * @public
- * @return {[type]} [description]
+ * @return {int} 屏幕高度
  * @description 单位为像素(pixel)
  */
 GeoBeans.Viewer.prototype.getWindowHeight = function(){
@@ -300,6 +305,7 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
 
 /**
  * 设置地图的级别，不改变缩放比例,绘制出的底图会放大或者缩小
+ * @private
  * @param {int} zoom 地图的级别
  */
 GeoBeans.Viewer.prototype._setZoom = function(zoom){
@@ -317,6 +323,7 @@ GeoBeans.Viewer.prototype._setZoom = function(zoom){
 
 /**
  * 根据分辨率和中心点计算当前视图范围的Viewer
+ * @private
  * @param  {GeoBeans.Envelope} resolution 地图分辨率
  */
 GeoBeans.Viewer.prototype.updateMapExtent = function(resolution){
@@ -346,6 +353,7 @@ GeoBeans.Viewer.prototype.updateMapExtent = function(resolution){
 
 /**
  * 根据长宽比例调整范围
+ * @private
  * @param  {GeoBeans.Envelope} extent 范围
  * @return {GeoBeans.Envelope}        调整后的范围
  */
@@ -387,6 +395,7 @@ GeoBeans.Viewer.prototype.scaleView = function(extent){
 
 /**
  * 固定高度，拉伸宽度，调整范围
+ * @private
  * @param  {GeoBeans.Envelope} extent 范围
  * @return {GeoBeans.Envelope}        调整后的范围
  */
@@ -410,6 +419,7 @@ GeoBeans.Viewer.prototype.scaleViewWidth = function(extent){
 
 /**
  * 固定宽度，拉伸高度，调整范围
+ * @private
  * @param  {GeoBeans.Envelope} extent 范围
  * @return {GeoBeans.Envelope}        调整后的范围
  */
@@ -450,11 +460,14 @@ GeoBeans.Viewer.prototype.offset = function(offset_x,offset_y){
 
 /**
  * 屏幕坐标转换为地图坐标
- * @param  {float} sx 屏幕坐标X值
- * @param  {float} sy 屏幕坐标Y值
+ * @param  {float} x 屏幕坐标X值
+ * @param  {float} y 屏幕坐标Y值
  * @return {GeoBeans.Geometry.Point}    转换后的地图坐标值
  */
-GeoBeans.Viewer.prototype.toMapPoint = function(sx,sy){
+GeoBeans.Viewer.prototype.toMapPoint = function(x,y){
+	var sx = x;
+	var sy = y;
+
 	var rotation = this.getRotation();
 	var mapX = ((sx - this.win_cx)* Math.cos(rotation * Math.PI/180) - (this.win_cy-  sy) * Math.sin(rotation * Math.PI/180) )/ this.scale + this.view_c.x;
 	var mapY = ((sx - this.win_cx)* Math.sin(rotation * Math.PI/180) + (this.win_cy-  sy) * Math.cos(rotation * Math.PI/180) )/ this.scale + this.view_c.y;
@@ -464,11 +477,14 @@ GeoBeans.Viewer.prototype.toMapPoint = function(sx,sy){
 
 /**
  * 地图坐标转换为屏幕坐标
- * @param  {float} mx 地图坐标X值
- * @param  {float} my 地图坐标Y值
+ * @param  {float} x 地图坐标X值
+ * @param  {float} y 地图坐标Y值
  * @return {GeoBeans.Geometry.Point}    转换后的屏幕坐标值
  */
-GeoBeans.Viewer.prototype.toScreenPoint = function(mx,my){
+GeoBeans.Viewer.prototype.toScreenPoint = function(x,y){
+	var mx = x;
+	var my = y;
+
 	var rotation = this.getRotation();
 	var screenX = this.scale *((mx - this.view_c.x)* Math.cos(rotation * Math.PI/180) + (my - this.view_c.y) * Math.sin(rotation * Math.PI/180)) + this.win_cx;
 	var screenY = this.scale *((mx - this.view_c.x)* Math.sin(rotation * Math.PI/180) - (my - this.view_c.y) * Math.cos(rotation * Math.PI/180)) + this.win_cy;
@@ -477,8 +493,8 @@ GeoBeans.Viewer.prototype.toScreenPoint = function(mx,my){
 
 
 /**
- *  旋转地图的范围
- * @return 
+ * 旋转地图的范围
+ * @private
  */
 GeoBeans.Viewer.prototype.rotateViewer = function(){
 	var leftTop = this.toMapPoint(0,0);

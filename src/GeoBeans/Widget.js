@@ -88,7 +88,7 @@ GeoBeans.Widget.prototype.getPosition = function(){
 
 /**
  * 设置widget的位置
- * @param {x:0,y:0} pos [widget左上角的位置]
+ * @param {Point} pos [widget左上角的位置]
  */
 GeoBeans.Widget.prototype.setPosition = function(pos){
 	this._pos = pos;
