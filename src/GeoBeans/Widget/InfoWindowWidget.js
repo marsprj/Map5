@@ -1,3 +1,9 @@
+/**
+ * @classdesc
+ * 信息弹窗
+ * @class
+ * @extends {GeoBeans.Widget}
+ */
 GeoBeans.Widget.InfoWindowWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 	initialize : function(map){

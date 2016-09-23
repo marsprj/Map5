@@ -1,7 +1,10 @@
 /**
+ * @classdesc
  * 图例控件
+ * @class
+ * @extends {GeoBeans.Widget}
  */
-GeoBeans.Control.LegendControl = GeoBeans.Class(GeoBeans.Control, {
+GeoBeans.Widget.LegendControl = GeoBeans.Class(GeoBeans.Control, {
 	
 		initialize : function(map){
 		GeoBeans.Control.prototype.initialize.apply(this, arguments);		

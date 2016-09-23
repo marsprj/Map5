@@ -1,5 +1,8 @@
 /**
+ * @classdesc
  * 版权控件
+ * @class
+ * @extends {GeoBeans.Widget}
  */
 GeoBeans.Widget.CopyRightWidget = GeoBeans.Class(GeoBeans.Widget,{
 	
