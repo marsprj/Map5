@@ -21,7 +21,7 @@ GeoBeans.Style.Font = GeoBeans.Class({
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.Font();
+		var clone = new GeoBeans.Style.Font();
 		clone.family = this.family;
 		clone.style = this.style;
 		clone.weight = this.weight;
@@ -34,13 +34,13 @@ GeoBeans.Style.Font = GeoBeans.Class({
  * [StyleType description]
  * @type {Object}
  */
-GeoBeans.Font.StyleType = {
+GeoBeans.Style.Font.StyleType = {
 	Normal : "normal",
 	Italic : "italic",
 	Oblique: "oblique"
 };
 
-GeoBeans.Font.WeightType = {
+GeoBeans.Style.Font.WeightType = {
 	Normal 	: "normal",
 	Bold 	: "bold"
 };

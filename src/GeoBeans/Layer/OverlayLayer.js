@@ -230,11 +230,11 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		switch(type){
 			case GeoBeans.Overlay.Type.MARKER:
 				symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-				var symbol = new GeoBeans.Symbol();
+				var symbol = new GeoBeans.Style.Symbol();
 				symbol.icon = "../images/marker-hit.png";
 				symbolizer.symbol = symbol;
 				break;
-			case GeoBeans.Overlay.Type.PLOYLINE:
+			case GeoBeans.Overlay.Type.POLYLINE:
 				symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 				symbolizer.stroke.color.set(255,0,0,1);
 				symbolizer.stroke.width = 4;
@@ -390,11 +390,11 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		switch(type){
 			case GeoBeans.Overlay.Type.MARKER:
 				symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-				var symbol = new GeoBeans.Symbol();
+				var symbol = new GeoBeans.Style.Symbol();
 				symbol.icon = "../images/marker-edit.png";
 				symbolizer.symbol = symbol;
 				break;
-			case GeoBeans.Overlay.Type.PLOYLINE:
+			case GeoBeans.Overlay.Type.POLYLINE:
 				symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 				symbolizer.stroke.color.set(255,0,0,1);
 				symbolizer.stroke.width = 6;
@@ -654,7 +654,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				var width = (symbolizer.symbol.width == null)? image.width : symbolizer.symbol.width;
 				var height = (symbolizer.symbol.height == null)? image.height : symbolizer.symbol.height;
 				clickSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-				var symbol = new GeoBeans.Symbol();
+				var symbol = new GeoBeans.Style.Symbol();
 				symbol.icon = symbolizer.symbol.icon;
 				symbol.icon_width = width * 1.2;
 				symbol.icon_height = height * 1.2;
@@ -673,7 +673,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 
 				var stroke = symbolizer.stroke;
 				if(stroke == null){
-					var stroke = new GeoBeans.Stroke();
+					var stroke = new GeoBeans.Style.Stroke();
 					stroke.color.setByHex("#0099FF",1);
 					stroke.width = 5;
 					clickSymbolizer.stroke = stroke;

@@ -26,7 +26,7 @@ GeoBeans.Style.Fill = GeoBeans.Class({
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.Fill();
+		var clone = new GeoBeans.Style.Fill();
 		if(this.color != null){
 			clone.color = this.color.clone();
 		}

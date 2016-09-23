@@ -218,7 +218,7 @@
 		var style = new GeoBeans.Style.FeatureStyle();
 
 		// 状态为on的要素，标记为紫色
-		var rule = new GeoBeans.Rule();
+		var rule = new GeoBeans.Style.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 6;
 		symbolizer.fill.color.setByHex('#800080',1);
@@ -236,7 +236,7 @@
 		style.addRule(rule);
 
 		// 状态为off的要素，标记为黄色
-		var rule = new GeoBeans.Rule();
+		var rule = new GeoBeans.Style.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 6;
 		symbolizer.fill.color.setByHex('#ddb926',1);

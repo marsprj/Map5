@@ -134,39 +134,39 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var symbolizers = [];
 
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		var symbol = new GeoBeans.Symbol();
+		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/marker.png";
 		symbolizer.symbol = symbol;
 		symbolizers.push(symbolizer);
 
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		var symbol = new GeoBeans.Symbol();
+		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/m0.png";
 		symbolizer.symbol = symbol;
 		symbolizers.push(symbolizer);	
 
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		var symbol = new GeoBeans.Symbol();
+		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/m1.png";
 		symbolizer.symbol = symbol;
 		symbolizers.push(symbolizer);
 
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		var symbol = new GeoBeans.Symbol();
+		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/m2.png";
 		symbolizer.symbol = symbol;
 		symbolizers.push(symbolizer);
 
 
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		var symbol = new GeoBeans.Symbol();
+		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/m3.png";
 		symbolizer.symbol = symbol;
 		symbolizers.push(symbolizer);		
 
 
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		var symbol = new GeoBeans.Symbol();
+		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/m4.png";
 		symbolizer.symbol = symbol;
 		symbolizers.push(symbolizer);
@@ -210,7 +210,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
 		textSymbolizer.font.family = "Microsoft Yahei";
-		textSymbolizer.font.weight = GeoBeans.Font.WeightType.Bold;
+		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
 		textSymbolizer.fill.color.setByHex("#000000",1);
 
 		this.renderer.setSymbolizer(textSymbolizer);

@@ -4,13 +4,13 @@
  * @class
  * @extends {GeoBeans.Filter.SpatialFilter}
  */
-GeoBeans.Filter.BBoxFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
+GeoBeans.Filter.BBoxFilter = GeoBeans.Class(GeoBeans.Filter.SpatialFilter,{
 	// propExpression 	: null,
 	extent 		: null,
 
 	initialize : function(propName,extent){
-		GeoBeans.SpatialFilter.prototype.initialize.apply(this,arguments);
-		this.operator = GeoBeans.SpatialFilter.OperatorType.SpOprBBox;
+		GeoBeans.Filter.SpatialFilter.prototype.initialize.apply(this,arguments);
+		this.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprBBox;
 
 
 		this.propName = propName;

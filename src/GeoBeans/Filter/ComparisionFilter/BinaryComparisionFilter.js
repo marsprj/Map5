@@ -4,14 +4,14 @@
  * @class
  * @extends {GeoBeans.Filter.ComparisionFilter}
  */
-GeoBeans.Filter.BinaryComparisionFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
+GeoBeans.Filter.BinaryComparisionFilter = GeoBeans.Class(GeoBeans.Filter.ComparisionFilter,{
 
 	expression1	: null,
 	expression2 : null,
 	
 
 	initialize : function(operator,expression1,expression2){
-		GeoBeans.ComparisionFilter.prototype.initialize.apply(this,arguments);
+		GeoBeans.Filter.ComparisionFilter.prototype.initialize.apply(this,arguments);
 		this.operator = operator;
 		this.expression1 = expression1;
 		this.expression2 = expression2;

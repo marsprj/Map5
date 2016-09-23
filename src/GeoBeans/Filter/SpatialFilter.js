@@ -14,7 +14,7 @@ GeoBeans.Filter.SpatialFilter = GeoBeans.Class(GeoBeans.Filter,{
 
 });
 
-GeoBeans.SpatialFilter.OperatorType = {
+GeoBeans.Filter.SpatialFilter.OperatorType = {
 	SpOprIntersects 	: "intersects",
 	SpOprDWithin 		: "dwithin",
 	SpOprWithin 		: "within",

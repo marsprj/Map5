@@ -445,7 +445,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		var f = null;
 		var g = null;
 		var features = new Array();
-		var reader  = new GeoBeans.Geometry.GML.Reader(GeoBeans.Geometry.GML.Version.v_2_0);
+		var reader  = new GeoBeans.Format.GML.Reader(GeoBeans.Format.GML.Version.v_2_0);
 		$(xml).find("featureMember").each(function() {
             f = that.parseFeature($(this).children()[0], reader);
 			features.push(f);
@@ -674,7 +674,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 			}
 		}
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(point);
 		xml +=  "xmlns:world=\"www.world.ac.cn\" "
 	         +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "

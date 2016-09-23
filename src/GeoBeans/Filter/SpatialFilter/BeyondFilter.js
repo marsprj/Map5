@@ -4,13 +4,13 @@
  * @class
  * @extends {GeoBeans.Filter.SpatialFilter}
  */
-GeoBeans.Filter.BeyondFilter = GeoBeans.Class(GeoBeans.SpatialFilter,{
+GeoBeans.Filter.BeyondFilter = GeoBeans.Class(GeoBeans.Filter.SpatialFilter,{
 	distance : null,
 
 
 	initialize : function(propName,geometry,distance){
-		GeoBeans.SpatialFilter.prototype.initialize.apply(this,arguments);
-		this.operator = GeoBeans.SpatialFilter.OperatorType.SpOprBeyond;
+		GeoBeans.Filter.SpatialFilter.prototype.initialize.apply(this,arguments);
+		this.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprBeyond;
 
 		this.propName = propName;
 		this.geometry = geometry;

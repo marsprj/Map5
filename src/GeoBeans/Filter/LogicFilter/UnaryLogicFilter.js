@@ -4,12 +4,12 @@
  * @class
  * @extends {GeoBeans.Filter.LogicFilter}
  */
-GeoBeans.Filter.UnaryLogicFilter = GeoBeans.Class(GeoBeans.LogicFilter,{
+GeoBeans.Filter.UnaryLogicFilter = GeoBeans.Class(GeoBeans.Filter.LogicFilter,{
 	filter : null,
 
 	initialize : function(filter){
-		GeoBeans.LogicFilter.prototype.initialize.apply(this,arguments);
-		this.operator = GeoBeans.LogicFilter.OperatorType.LogicOprNot;
+		GeoBeans.Filter.LogicFilter.prototype.initialize.apply(this,arguments);
+		this.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprNot;
 		this.filter = filter;
 	}
 });

@@ -676,7 +676,7 @@ GeoBeans.StyleManager = GeoBeans.Class({
 		var icon = $(xml).find("Icon").attr("xlink:href");
 		var symbol = null;
 		if(name != null ||icon != null){
-			symbol = new GeoBeans.Symbol(name,icon);
+			symbol = new GeoBeans.Style.Symbol(name,icon);
 		}
 		return symbol;
 	},

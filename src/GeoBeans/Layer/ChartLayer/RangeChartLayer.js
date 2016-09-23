@@ -93,11 +93,11 @@ GeoBeans.Layer.RangeChartLayer  = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 
 			var color = new GeoBeans.Color();
-			var fill = new GeoBeans.Fill();
+			var fill = new GeoBeans.Style.Fill();
 			fill.color = color;
 
 
-			var rule = new GeoBeans.Rule();
+			var rule = new GeoBeans.Style.Rule();
 			rule.filter = filter;
 			rule.name = chartValue;
 			rule.symbolizer = symbolizer;

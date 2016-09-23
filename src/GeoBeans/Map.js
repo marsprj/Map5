@@ -1177,9 +1177,9 @@ GeoBeans.Map = GeoBeans.Class({
 		map.queryGeometry = polygon;
 		map.queryTrackLayer = layer;
 		map.queryLayer.setLayer(layer);
-		var filter = new GeoBeans.SpatialFilter();
+		var filter = new GeoBeans.Filter.SpatialFilter();
 		filter.geometry = polygon;
-		filter.operator = GeoBeans.SpatialFilter.OperatorType.SpOprIntersects;
+		filter.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects;
 		var featureType = layer.getFeatureType();
 		var geomName = featureType.geomFieldName;
 		filter.propName = geomName;

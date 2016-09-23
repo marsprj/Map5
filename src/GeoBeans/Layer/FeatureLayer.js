@@ -179,7 +179,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(extent != null && this.viewer != null && extent.equal(this.viewer)
 			&& this.flag == GeoBeans.Layer.Flag.LOADED){
 			this.flag = GeoBeans.Layer.Flag.LOADED;
-			var bboxFilter = new GeoBeans.BBoxFilter(this.featureType.geomFieldName,this.viewer);
+			var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
 			var features = this.selectFeaturesByFilter(bboxFilter,this.features);
 			this.drawLabelFeatures(features);
 			this.drawClickLayer();
@@ -189,7 +189,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
 			extent.xmax,extent.ymax);
 		this.renderer.clearRect();
-		var bboxFilter = new GeoBeans.BBoxFilter(this.featureType.geomFieldName,this.viewer);
+		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
 		var features = this.selectFeaturesByFilter(bboxFilter,this.features);
 		console.log("count:" + features.length);
 		this.drawLayerFeatures(features);
@@ -297,7 +297,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			case GeoBeans.Geometry.Type.POINT:
 			case GeoBeans.Geometry.Type.MULTIPOINT:{
 				style = new GeoBeans.Style.FeatureStyle();
-				var rule = new GeoBeans.Rule();
+				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 				rule.symbolizer = symbolizer;
 				style.addRule(rule);
@@ -306,7 +306,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			case GeoBeans.Geometry.Type.LINESTRING:
 			case GeoBeans.Geometry.Type.MULTILINESTRING:{
 				style = new GeoBeans.Style.FeatureStyle();
-				var rule = new GeoBeans.Rule();
+				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 				rule.symbolizer = symbolizer;
 				style.addRule(rule);
@@ -315,7 +315,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			case GeoBeans.Geometry.Type.POLYGON:
 			case GeoBeans.Geometry.Type.MULTIPOLYGON:{
 				style = new GeoBeans.Style.FeatureStyle();
-				var rule = new GeoBeans.Rule();
+				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer(); 
 				rule.symbolizer = symbolizer;
 				style.addRule(rule);
@@ -1045,7 +1045,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		for(var i=0; i<len; i++){
 			var r = rules[i];
 			var s = r.symbolizer;
-			if(!(s instanceof GeoBeans.Style.TextSymbolizer)){
+			if(!(s instanceof GeoBeans.Symbolizer.TextSymbolizer)){
 				return s;
 			}
 		}
@@ -1060,7 +1060,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var oper = filter.operator;
 		var selection = features;
 		switch(oper){
-			case GeoBeans.SpatialFilter.OperatorType.SpOprBBox:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprBBox:{
 				selection = this.selectFeaturesByBBoxFilter(filter,features,maxFeatures,offset);
 				break;
 			}
@@ -1117,7 +1117,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	getFeatureBBoxGet : function(bbox,maxFeatures,offset){
-		var bboxFilter = new GeoBeans.BBoxFilter(this.featureType.geomFieldName,bbox);
+		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,bbox);
 		return this.selectFeaturesByFilter(bboxFilter,this.features,maxFeatures,offset);
 	},
 	/******************************************************************/

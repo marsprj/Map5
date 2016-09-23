@@ -4,15 +4,15 @@
  * @class
  * @extends {GeoBeans.Filter.ComparisionFilter}
  */
-GeoBeans.Filter.IsBetweenFilter = GeoBeans.Class(GeoBeans.ComparisionFilter,{
+GeoBeans.Filter.IsBetweenFilter = GeoBeans.Class(GeoBeans.Filter.ComparisionFilter,{
 	expression : null,
 	lowerBound : null,
 	upperBound : null,
 
 
 	initialize : function(expression,lowerBound,upperBound){
-		GeoBeans.ComparisionFilter.prototype.initialize.apply(this,arguments);
-		this.operator = GeoBeans.ComparisionFilter.OperatorType.ComOprIsBetween;
+		GeoBeans.Filter.ComparisionFilter.prototype.initialize.apply(this,arguments);
+		this.operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween;
 		this.expression = expression;
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;

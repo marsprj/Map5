@@ -80,7 +80,7 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 			case "POINT":
 			case "MULTIPOINT":{
 				style = new GeoBeans.Style.FeatureStyle();
-				var rule = new GeoBeans.Rule();
+				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 				symbolizer.fill.color.set(255,0,0,1);
 				symbolizer.stroke.color.set(252,240,244,0.9);
@@ -91,7 +91,7 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 			case "LINESTRING":
 			case "MULTILINESTRING":{
 				style = new GeoBeans.Style.FeatureStyle();
-				var rule = new GeoBeans.Rule();
+				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 				symbolizer.stroke.color.set(255,0,0,1);
 				symbolizer.stroke.width = 4;
@@ -103,7 +103,7 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 			case "POLYGON":
 			case "MULTIPOLYGON":{
 				style = new GeoBeans.Style.FeatureStyle();
-				var rule = new GeoBeans.Rule();
+				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer(); 
 				symbolizer.fill.color.set(255,0,0,1);
 				symbolizer.stroke.color.set(252,240,244,0.9);

@@ -16,8 +16,8 @@ GeoBeans.Symbolizer.LineSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 	initialize : function(){
 		GeoBeans.Symbolizer.prototype.initialize.apply(this, arguments);
 		this.type = GeoBeans.Symbolizer.Type.Line;
-		this.stroke = new GeoBeans.Stroke();
-		this.fill = new GeoBeans.Fill();
+		this.stroke = new GeoBeans.Style.Stroke();
+		this.fill = new GeoBeans.Style.Fill();
 	},
 
 	clone : function(){

@@ -17,8 +17,8 @@ GeoBeans.Symbolizer.PolygonSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 	initialize : function(){
 		GeoBeans.Symbolizer.prototype.initialize.apply(this, arguments);
 		this.type = GeoBeans.Symbolizer.Type.Polygon;
-		this.fill = new GeoBeans.Fill();
-		this.stroke = new GeoBeans.Stroke();
+		this.fill = new GeoBeans.Style.Fill();
+		this.stroke = new GeoBeans.Style.Stroke();
 	},
 
 	clone : function(){

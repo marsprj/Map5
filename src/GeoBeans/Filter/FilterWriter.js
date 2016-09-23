@@ -42,7 +42,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var operator = comparisionFilter.operator;
 		var comparsionXML = null;
 
-		if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprEqual){
+		if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual){
 			comparsionXML = xml.createElement("ogc:PropertyIsEqualTo");
 			var expression1 = comparisionFilter.expression1;
 			var expression2 = comparisionFilter.expression2;
@@ -50,7 +50,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprNotEqual){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual){
 			comparsionXML = xml.createElement("ogc:PropertyIsNotEqualTo");
 			var expression1 = comparisionFilter.expression1;
 			var expression2 = comparisionFilter.expression2;
@@ -58,7 +58,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan){
 			comparsionXML = xml.createElement("ogc:PropertyIsLessThan");
 			var expression1 = comparisionFilter.expression1;
 			var expression2 = comparisionFilter.expression2;
@@ -66,7 +66,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan){
 			comparsionXML = xml.createElement("ogc:PropertyIsGreaterThan");
 			var expression1 = comparisionFilter.expression1;
 			var expression2 = comparisionFilter.expression2;
@@ -74,7 +74,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual){
 			comparsionXML = xml.createElement("ogc:PropertyIsLessThanOrEqualTo");
 			var expression1 = comparisionFilter.expression1;
 			var expression2 = comparisionFilter.expression2;
@@ -82,7 +82,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual){
 			comparsionXML = xml.createElement("ogc:PropertyIsGreaterThanOrEqualTo");
 			var expression1 = comparisionFilter.expression1;
 			var expression2 = comparisionFilter.expression2;
@@ -90,7 +90,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprIsLike){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike){
 			comparsionXML = xml.createElement("ogc:PropertyIsLike");
 			$(comparsionXML).attr("escapeChar","!");
 			$(comparsionXML).attr("singleChar","#");
@@ -101,12 +101,12 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 			var expression2XML = this.writeExpression(xml,expression2);
 			$(comparsionXML).append(expression1XML);
 			$(comparsionXML).append(expression2XML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprIsNull){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull){
 			comparsionXML = xml.createElement("ogc:PropertyIsNull");
 			var properyName = comparisionFilter.properyName;
 			var properyNameXML = this.writeExpression(xml,properyName);
 			$(comparsionXML).append(properyNameXML);
-		}else if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprIsBetween){
+		}else if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween){
 			comparsionXML = xml.createElement("ogc:PropertyIsBetween");
 			var expression = comparisionFilter.expression;
 			var expressionXML = this.writeExpression(xml,expression);
@@ -176,48 +176,48 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var operator = filter.operator;
 		var spatialXML = null;
 		switch(operator){
-			case GeoBeans.SpatialFilter.OperatorType.SpOprBBox:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprBBox:{
 				spatialXML = this.writeBBoxFilter(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprIntersects:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects:{
 				spatialXML = this.writeSpatialFilterIntersects(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprDWithin:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprDWithin:{
 				spatialXML = this.writeSpatialFilterDWithin(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprWithin:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprWithin:{
 				spatialXML = this.writeSpatialFilterWithin(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprContains:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprContains:{
 				spatialXML = this.writeSpatialFilterContains(xml,filter);
 				break;
 			}
 
-			case GeoBeans.SpatialFilter.OperatorType.SpOprDisjoint:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprDisjoint:{
 				spatialXML = this.writeSpatialFilterDisjoint(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprEquals:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprEquals:{
 				spatialXML = this.writeSpatialFilterEquals(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprTouches:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprTouches:{
 				spatialXML = this.writeSpatialFilterTouches(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprCrosses:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprCrosses:{
 				spatialXML = this.writeSpatialFilterCrosses(xml,filter);
 				break;
 			}
-			case GeoBeans.SpatialFilter.OperatorType.SpOprBeyond:{
+			case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprBeyond:{
 				spatialXML = this.writeSpatialFilterBeyond(xml,filter);
 				break;
 			}
-			case  GeoBeans.SpatialFilter.OperatorType.SpOprOverlaps:{
+			case  GeoBeans.Filter.SpatialFilter.OperatorType.SpOprOverlaps:{
 				spatialXML = this.writeSpatialFilterOverlaps(xml,filter);
 				break;
 			}
@@ -266,7 +266,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var filterXML = xml.createElement("Intersects");
 		var geometry  = filter.geometry;
 		var propName = filter.propName;
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -281,7 +281,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var distance = filter.distance;
 		var propName = filter.propName;
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -301,7 +301,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -318,7 +318,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -335,7 +335,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -352,7 +352,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -368,7 +368,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -384,7 +384,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -400,7 +400,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var distance = filter.distance;
 		var propName = filter.propName;
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
@@ -419,7 +419,7 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Geometry.GML.Writer(GeoBeans.Geometry.GML.Version.v_2_0);
+		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
 		var geomGml = gmlWriter.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");

@@ -195,7 +195,7 @@ GeoBeans.Format.KML.prototype.readRuleByStyleNode = function(kml){
 	if(name == null){
 		return null;
 	}
-	var rule = new GeoBeans.Rule(name);
+	var rule = new GeoBeans.Style.Rule(name);
 	var that = this;
 
 	var pointSymbolizer = null;
@@ -285,7 +285,7 @@ GeoBeans.Format.KML.prototype.getDefaultSymbolizer = function(geomType){
 	switch(geomType){
 		case GeoBeans.Geometry.Type.POINT:{
 			symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-			var symbol = new GeoBeans.Symbol();
+			var symbol = new GeoBeans.Style.Symbol();
 			symbol.icon = "../images/ylw-pushpin.png";
 			symbolizer.symbol = symbol;
 			break;
@@ -390,7 +390,7 @@ GeoBeans.Format.KML.prototype.getDefaultTextSymbolizer = function(){
 	textSymbolizer.stroke.color.set(51,51,51,1);
 	textSymbolizer.stroke.width = 1;
 	textSymbolizer.font.family = "Helvetica";
-	textSymbolizer.font.weight = GeoBeans.Font.WeightType.Bold;
+	textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
 	textSymbolizer.font.size = 16;
 	textSymbolizer.displaceX = 8;
 	textSymbolizer.displaceY = -5;		
@@ -655,7 +655,7 @@ GeoBeans.Format.KML.prototype.getDefaultRule = function(name,geomType){
 	if(symbolizer == null){
 		return null;
 	}
-	var rule = new GeoBeans.Rule();
+	var rule = new GeoBeans.Style.Rule();
 	rule.name = name;
 	rule.symbolizer = symbolizer;
 	if(geomType == GeoBeans.Geometry.Type.POINT){

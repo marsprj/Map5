@@ -325,9 +325,9 @@ GeoBeans.Interaction.Select.prototype.onchange = function(handler){
  */
 GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
 	// Filter
-	var filter = new GeoBeans.SpatialFilter();
+	var filter = new GeoBeans.Filter.SpatialFilter();
 	filter.geometry = g;
-	filter.operator = GeoBeans.SpatialFilter.OperatorType.SpOprIntersects;
+	filter.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects;
 	var featureType = this._layer.getFeatureType();
 	filter.propName = featureType.geomFieldName;
 

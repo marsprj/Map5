@@ -5,8 +5,8 @@
  * @class
  * @param {GeoBeans.Color} color  颜色
  * @param {double} width 线宽
- * @param {GeoBeans.Stroke.LineCapType} lineCap 线端点样式
- * @param {GeoBeans.Stroke.LineJoinType} lineCap 线连接点样式
+ * @param {GeoBeans.Style.Stroke.LineCapType} lineCap 线端点样式
+ * @param {GeoBeans.Style.Stroke.LineJoinType} lineCap 线连接点样式
  * @param {Array} dashOffset 虚线模式定义
  */
 GeoBeans.Style.Stroke = GeoBeans.Class({
@@ -19,8 +19,8 @@ GeoBeans.Style.Stroke = GeoBeans.Class({
 	initialize : function(){
 		this.color = new GeoBeans.Color();
 		this.width = 2;
-		this.lineCap = GeoBeans.Stroke.LineCapType.RoundCap;
-		this.lineJoin = GeoBeans.Stroke.LineJoinType.RoundJoin;
+		this.lineCap = GeoBeans.Style.Stroke.LineCapType.RoundCap;
+		this.lineJoin = GeoBeans.Style.Stroke.LineJoinType.RoundJoin;
 	},
 
 	getRgba : function(){
@@ -36,7 +36,7 @@ GeoBeans.Style.Stroke = GeoBeans.Class({
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.Stroke();
+		var clone = new GeoBeans.Style.Stroke();
 		if(this.color != null){
 			clone.color = this.color.clone();
 		}
@@ -50,14 +50,14 @@ GeoBeans.Style.Stroke = GeoBeans.Class({
 
 });
 
-GeoBeans.Stroke.LineCapType = {
+GeoBeans.Style.Stroke.LineCapType = {
 	ButtCap 	: "butt",
 	SquareCap 	: "square",
 	RoundCap 	: "round",
 	LineCapMax	: "max"
 };
 
-GeoBeans.Stroke.LineJoinType = {
+GeoBeans.Style.Stroke.LineJoinType = {
 	MiterJoin 		: "miter",
 	MiterRevertJoin	: "miterRevert",
 	RoundJoin 		: "round",

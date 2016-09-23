@@ -14,7 +14,7 @@ GeoBeans.Filter.LogicFilter = GeoBeans.Class(GeoBeans.Filter,{
 	}
 });
 
-GeoBeans.LogicFilter.OperatorType = {
+GeoBeans.Filter.LogicFilter.OperatorType = {
 	LogicOprAnd : "and",
 	LogicOprOr  : "or",
 	LogicOprNot : "not"

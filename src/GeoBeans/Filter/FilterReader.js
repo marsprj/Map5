@@ -42,7 +42,7 @@ GeoBeans.FilterReader = GeoBeans.Class({
 
 	parseBBox : function(xml){
 		var that = this;
-		var bboxFilter = new GeoBeans.BBoxFilter();
+		var bboxFilter = new GeoBeans.Filter.BBoxFilter();
 		$(xml).children().each(function(){
 			var tagName = this.tagName;
 			tagName = tagName.slice(tagName.lastIndexOf(":")+1, 
@@ -60,9 +60,9 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	},
 
 	parseBinaryComparision : function(operatorName,xml){
-		var binaryComparisionFilter = new GeoBeans.BinaryComparisionFilter();
+		var binaryComparisionFilter = new GeoBeans.Filter.BinaryComparisionFilter();
 		var operator = this.parseComparisionOperator(operatorName);
-		if(operator == GeoBeans.ComparisionFilter.OperatorType.ComOprIsBetween){
+		if(operator == GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween){
 			var isBetweenFilter = this.parseIsBetween(xml);
 			return isBetweenFilter;
 		}
@@ -90,7 +90,7 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	},
 
 	parseIsBetween : function(xml){
-		var filter = new GeoBeans.IsBetweenFilter();
+		var filter = new GeoBeans.Filter.IsBetweenFilter();
 		var children = $(xml).children();
 		for(var i = 0; i < children.length; ++i){
 			var childrenXML = children[i];
@@ -118,11 +118,11 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	},
 	parseBinaryLogical : function(operator,xml){
 		var that = this;
-		var binaryLogicFilter = new GeoBeans.BinaryLogicFilter();
+		var binaryLogicFilter = new GeoBeans.Filter.BinaryLogicFilter();
 		if(operator == "and"){
-			binaryLogicFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprAnd;
+			binaryLogicFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;
 		}else if(operator == "or"){
-			binaryLogicFilter.operator = GeoBeans.LogicFilter.OperatorType.LogicOprOr;
+			binaryLogicFilter.operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr;
 		}
 		$(xml).children().each(function(){
 			var filter = that.parseFilter(this);
@@ -135,7 +135,7 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	},
 
 	parseUnaryLogic : function(xml){
-		var unaryLogicFilter = new GeoBeans.UnaryLogicFilter();
+		var unaryLogicFilter = new GeoBeans.Filter.UnaryLogicFilter();
 		var xmlNode = $(xml).children()[0];
 		if(xmlNode != null){
 			var filter = this.parseFilter(xmlNode);
@@ -149,7 +149,7 @@ GeoBeans.FilterReader = GeoBeans.Class({
 
 	parseID : function(xml){
 		var doc = $(xml);
-		var idFilter = new GeoBeans.IDFilter();
+		var idFilter = new GeoBeans.Filter.IDFilter();
 		while(doc.length != 0){
 			var id = doc.attr("gml:id");
 			if(id == null){
@@ -169,43 +169,43 @@ GeoBeans.FilterReader = GeoBeans.Class({
 		oper = oper.toLowerCase();
 		switch(oper){
 			case "propertyisequal":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
 				break;
 			}
 			case "propertyisnotequal":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprNotEqual;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual;
 				break;
 			}
 			case "propertyislessthan":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThan;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan;
 				break;
 			}
 			case "propertyisgreaterthan":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThan;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan;
 				break;
 			}
 			case "propertyislessthanorequalto":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
 				break;
 			}
 			case "propertyisgreaterthanorequalto":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
 				break;
 			}
 			case "propertyisislike":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprIsLike;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike;
 				break;
 			}
 			case "propertyisisnull":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprIsNull;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull;
 				break;
 			}
 			case "propertyisbetween":{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprIsBetween;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween;
 				break;
 			}
 			default:{
-				operator = GeoBeans.ComparisionFilter.OperatorType.ComOprEqual;
+				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
 			}	break;
 		}
 		return operator;

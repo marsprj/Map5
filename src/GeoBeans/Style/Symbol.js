@@ -41,7 +41,7 @@ GeoBeans.Style.Symbol = GeoBeans.Class({
 	},
 
 	clone : function(){
-		var clone = new GeoBeans.Symbol();
+		var clone = new GeoBeans.Style.Symbol();
 		if(this.name != null){
 			clone.name = this.name;
 		}

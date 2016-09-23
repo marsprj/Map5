@@ -23,7 +23,7 @@ GeoBeans.Style.Rule = GeoBeans.Class({
 	},	
 
 	clone : function(){
-		var clone = new GeoBeans.Rule();
+		var clone = new GeoBeans.Style.Rule();
 		clone.name = this.name;
 		if(this.symbolizer != null){
 			clone.symbolizer = this.symbolizer.clone();

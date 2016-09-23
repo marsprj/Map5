@@ -47,7 +47,7 @@ GeoBeans.Query.OrderBy = GeoBeans.Class({
 
 });
 
-GeoBeans.OrderBy.OrderType = {
+GeoBeans.Query.OrderBy.OrderType = {
 	OrderAsc : "asc",
 	OrderDesc : "desc"
 }

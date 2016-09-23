@@ -66,7 +66,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 
 	parseRule : function(xml){
 		var that = this;
-		var rule = new GeoBeans.Rule();
+		var rule = new GeoBeans.Style.Rule();
 		xml.children().each(function(){
 			var tagName = this.tagName;
 			tagName = tagName.slice(tagName.lastIndexOf(":")+1, 
@@ -246,7 +246,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	},
 
 	parseStroke : function(xml){
-		var stroke = new GeoBeans.Stroke();
+		var stroke = new GeoBeans.Style.Stroke();
 		var strokeColr = null;
 		var opacity = null;
 		var strokeWidth = null;
@@ -268,7 +268,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	},
 
 	parseFill : function(xml){
-		var fill = new GeoBeans.Fill();
+		var fill = new GeoBeans.Style.Fill();
 		var value = null;
 		var opacity = null;
 		xml.children().each(function(){
@@ -289,7 +289,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	parseSymbol : function(xml){
 		var text = xml.text();
 		if(text != null || text != ""){
-			var symbol = new GeoBeans.Symbol(text,null);
+			var symbol = new GeoBeans.Style.Symbol(text,null);
 			return symbol;
 		}
 		return null;
@@ -339,7 +339,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	},
 
 	parseFont : function(xml){
-		var font = new GeoBeans.Font();
+		var font = new GeoBeans.Style.Font();
 		xml.children().each(function(){
 			var name = $(this).attr("name");
 			if(name == "font-family"){
@@ -351,18 +351,18 @@ GeoBeans.StyleReader = GeoBeans.Class({
 			}else if(name == "font-style"){
 				var style = $(this).text();
 				if(style == "normal"){
-					font.style = GeoBeans.Font.StyleType.Normal;
+					font.style = GeoBeans.Style.Font.StyleType.Normal;
 				}else if(style == "italic"){
-					font.style = GeoBeans.Font.StyleType.Italic;
+					font.style = GeoBeans.Style.Font.StyleType.Italic;
 				}else if(style == "oblique"){
-					font.style = GeoBeans.Font.StyleType.Oblique;
+					font.style = GeoBeans.Style.Font.StyleType.Oblique;
 				}
 			}else if(name == "font-weight"){
 				var weight = $(this).text();
 				if(weight == "normal"){
-					font.weight = GeoBeans.Font.WeightType.Normal;
+					font.weight = GeoBeans.Style.Font.WeightType.Normal;
 				}else if(weight == "bold"){
-					font.weight = GeoBeans.Font.WeightType.Bold;
+					font.weight = GeoBeans.Style.Font.WeightType.Bold;
 				}
 			}
 		});

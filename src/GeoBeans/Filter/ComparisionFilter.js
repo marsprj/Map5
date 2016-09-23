@@ -15,7 +15,7 @@ GeoBeans.Filter.ComparisionFilter = GeoBeans.Class(GeoBeans.Filter,{
 });
 
 
-GeoBeans.ComparisionFilter.OperatorType = {
+GeoBeans.Filter.ComparisionFilter.OperatorType = {
 	ComOprEqual 			: "equal",
 	ComOprNotEqual 			: "notequal",
 	ComOprLessThan 			: "lessthan",

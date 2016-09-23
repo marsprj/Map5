@@ -36,9 +36,9 @@ GeoBeans.Symbolizer.TextSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 		GeoBeans.Symbolizer.prototype.initialize.apply(this, arguments);
 		this.type = GeoBeans.Symbolizer.Type.Text;
 
-		this.fill = new GeoBeans.Fill();
-		this.stroke = new GeoBeans.Stroke();
-		this.font = new GeoBeans.Font();
+		this.fill = new GeoBeans.Style.Fill();
+		this.stroke = new GeoBeans.Style.Stroke();
+		this.font = new GeoBeans.Style.Font();
 		// this.labelText = "文字标注";
 		this.anchorX = 0;
 		this.anchorY = 0;
