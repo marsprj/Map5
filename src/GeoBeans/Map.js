@@ -237,7 +237,7 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	// 统一添加图层
 	addLayer : function(layer){
-		if(layer == null){
+		if(!isValid(layer)){
 			return "";
 		}
 
@@ -304,10 +304,11 @@ GeoBeans.Map = GeoBeans.Class({
  		}
 	 },
 
-/**
- * 删除底图，如果还有其他tileLayer则设置为底图
- * @return {[type]} [description]
- */
+	/**
+	 * 删除底图，如果还有其他tileLayer则设置为底图
+	 * @deprecated 这个函数没有意义
+	 * @return {[type]} [description]
+	 */
 	 removeBaseLayer : function(){
 	 	var baseLayerName = this.baseLayer.name;
 
@@ -380,30 +381,6 @@ GeoBeans.Map = GeoBeans.Class({
 
 		// this.renderer.save();
 		this.time = new Date();
-
-		// var layer = null;
-		// var tileLayerCount = 0;
-		// for(var i = 0; i < this.layers.length;++i){
-		// 	layer = this.layers[i];
-		// 	if(layer instanceof GeoBeans.Layer.TileLayer){
-		// 		var viewer = this.getViewer();
-		// 		var zoom = viewer.getZoom();
-		// 		if(zoom == null){
-		// 			var zoom = viewer.getZoomByExtent(viewer.getExtent());
-		// 			viewer.setZoom(zoom);
-		// 		}
-
-		// 		if(layer.visible){
-		// 			tileLayerCount++;
-		// 			layer.preDraw();
-		// 			layer.loadingTiles(this.drawBaseLayerCallback);
-		// 		}
-		// 	}
-		// }
-		// if(tileLayerCount == 0){
-		// 	this.baseLayerRenderer.clearRect();
-		// 	this.baseLayerSnap = null;
-		// }
 
 		this.drawBaseLayer();
 
@@ -715,10 +692,11 @@ GeoBeans.Map = GeoBeans.Class({
 		}
 
 		if(this.baseLayerSnap != null){
-			var baseLayerCanvasNew = $("<canvas>")
-			    .attr("width", this.baseLayerSnap.width)
-			    .attr("height", this.baseLayerSnap.height)[0];
-			baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
+                  var baseLayerCanvasNew =
+                      $("<canvas>")
+                          .attr("width", this.baseLayerSnap.width)
+                          .attr("height", this.baseLayerSnap.height)[0];
+                        baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
 			this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
 		}
 
@@ -1828,9 +1806,8 @@ GeoBeans.Map.prototype.getHeight = function(){
 }
 
 /**
- * 绘制由draw接口的Interactions
+ * 绘制有draw接口的Interactions
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.drawInteractions = function(){
 
@@ -1839,7 +1816,7 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 
 	for(var i=count-1; i>=0; i--){
 		interaction = this._interactions.get(i);
-		if(isValid(interaction.draw)){
+		if(isDefined(interaction.draw)){
 			interaction.draw();
 			this.renderer.drawImage(interaction._canvas,0,0,interaction._canvas.width,interaction._canvas.height);
 		}
@@ -1848,7 +1825,7 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 
 /**
  * Map上添加Interactions
- * @param {GeoBeans.Interaction} interaction [description]
+ * @param {GeoBeans.Interaction} interaction 向Map上添加新的interaction
  */
 GeoBeans.Map.prototype.addInteraction = function(interaction){
 	this._interactions.add(interaction);

@@ -203,3 +203,7 @@ String.prototype.like = function(search) {
 function isValid(o){
 	return ((o!=null) && (o!=undefined));
 }
+
+function isDefined(o){
+	return ((o!=null) && (o!=undefined));
+}
