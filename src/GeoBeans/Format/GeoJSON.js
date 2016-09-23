@@ -1,4 +1,9 @@
-GeoBeans.GeoJsonFormat = GeoBeans.Class({
+/**
+ * @classdesc
+ * GeoJSON数据格式类
+ * @class
+ */
+GeoBeans.Format.GeoJson = GeoBeans.Class(GeoBeans.Format,{
 	
 	initialize : function(){
 
@@ -8,11 +13,11 @@ GeoBeans.GeoJsonFormat = GeoBeans.Class({
 /**
  * 读取features
  * @public
- * @param  {[string]} 			geoJson [geoJson字符串]
- * @param  {[Array.<Field>]} 	fields  [字段数组]
- * @return {[Array.<Feature>]}         	[feature数组]
+ * @param  {string} 			geoJson [geoJson字符串]
+ * @param  {Array.<Field>} 	fields  [字段数组]
+ * @return {Array.<Feature>}         	[feature数组]
  */
-GeoBeans.GeoJsonFormat.prototype.read = function(geoJson,fields){
+GeoBeans.Format.GeoJson.prototype.read = function(geoJson,fields){
 	if(geoJson == null || fields == null){
 		return null;
 	}
@@ -41,10 +46,10 @@ GeoBeans.GeoJsonFormat.prototype.read = function(geoJson,fields){
 /**
  * geoJson读取字段fields
  * @public
- * @param  {[string]} geoJson 	[geoJson字符串]
- * @return {[Array.<Field>]}    [字段数组]
+ * @param  {string} geoJson 	[geoJson字符串]
+ * @return {Array.<Field>}    [字段数组]
  */
-GeoBeans.GeoJsonFormat.prototype.readFields = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readFields = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -80,10 +85,10 @@ GeoBeans.GeoJsonFormat.prototype.readFields = function(geoJson){
 /**
  * 从geoJson中读取geometry的类型
  * @private
- * @param  {[string]} 					geoJson [geoJson字符串]
- * @return {[GeoBeans.Geometry.Type]}         	[geometry类型]
+ * @param  {string} 					geoJson [geoJson字符串]
+ * @return {GeoBeans.Geometry.Type}         	[geometry类型]
  */
-GeoBeans.GeoJsonFormat.prototype.readGeometryType = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readGeometryType = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -115,10 +120,10 @@ GeoBeans.GeoJsonFormat.prototype.readGeometryType = function(geoJson){
 	    "coordinates": [125.6, 10.1]
 	},
  * @private
- * @param  {[string]}					geoJson [geoJson字符串]
- * @return {[GeoBeans.Geometry.Type]}         	[geometry类型]
+ * @param  {string}					geoJson [geoJson字符串]
+ * @return {GeoBeans.Geometry.Type}         	[geometry类型]
  */
-GeoBeans.GeoJsonFormat.prototype.readGeometryTypeByGeometry = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readGeometryTypeByGeometry = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -162,12 +167,23 @@ GeoBeans.GeoJsonFormat.prototype.readGeometryTypeByGeometry = function(geoJson){
 
 /**
  * 从feature部分读取field
- * { "type": "Feature", "properties": { "name": "Saguenay (Arrondissement Latterière)" }, "geometry": { "type": "Point", "coordinates": [ -75.849253579389796, 47.6434349837781 ] } },
+ * { 
+ *      "type": "Feature", 
+ *      "properties": { 
+ *		"name": "Saguenay (Arrondissement Latterière)" 
+ *	 }, 
+ *	"geometry": { 
+ *		"type": "Point", 
+ *		"coordinates": [ 
+ *			-75.849253579389796, 47.6434349837781 
+ *		]
+ *	} 
+ * }
  * @private
- * @param  {[string]} 			featureJson [geoJson字符串]
- * @return {[Array.<Object>]}             	[字段的数组]
+ * @param  {string} 			featureJson [geoJson字符串]
+ * @return {Array.<Object>}             	[字段的数组]
  */
-GeoBeans.GeoJsonFormat.prototype.readFieldsByFeature = function(featureJson){
+GeoBeans.Format.GeoJson.prototype.readFieldsByFeature = function(featureJson){
 	if(featureJson == null){
 		return;
 	}
@@ -207,10 +223,10 @@ GeoBeans.GeoJsonFormat.prototype.readFieldsByFeature = function(featureJson){
 
 /**
  * 判断是否添加field到featureType中
- * @param {[FeatureType]} 		featureType []
- * @param {[Array.<Object>]} 	fieldsArray [字段数组]
+ * @param {FeatureType} 		featureType []
+ * @param {Array.<Object>} 	fieldsArray [字段数组]
  */
-GeoBeans.GeoJsonFormat.prototype.addFields = function(featureType,fieldsArray){
+GeoBeans.Format.GeoJson.prototype.addFields = function(featureType,fieldsArray){
 	if(featureType == null || fieldsArray == null){
 		return;
 	}
@@ -230,12 +246,23 @@ GeoBeans.GeoJsonFormat.prototype.addFields = function(featureType,fieldsArray){
 
 /**
  * 从feature部分的geoJson读取Feature
- * { "type": "Feature", "properties": { "name": "Saguenay (Arrondissement Latterière)" }, "geometry": { "type": "Point", "coordinates": [ -75.849253579389796, 47.6434349837781 ] } },
- * @param  {[string]} 			geoJson [geoJson字符串]
- * @param  {[Array.<Field>]} 	fields  [字段数组]
- * @return {[Feautre]}        			[返回要素]
+ * { 
+ *      "type": "Feature", 
+ *      "properties": { 
+ *		"name": "Saguenay (Arrondissement Latterière)" 
+ *	 }, 
+ *	"geometry": { 
+ *		"type": "Point", 
+ *		"coordinates": [ 
+ *			-75.849253579389796, 47.6434349837781 
+ *		]
+ *	} 
+ * }
+ * @param  {string} 			geoJson [geoJson字符串]
+ * @param  {Array.<Field>} 	fields  [字段数组]
+ * @return {Feautre}        			[返回要素]
  */
-GeoBeans.GeoJsonFormat.prototype.readFeature = function(geoJson,fields){
+GeoBeans.Format.GeoJson.prototype.readFeature = function(geoJson,fields){
 	if(geoJson == null || fields == null){
 		return null;
 	}
@@ -272,10 +299,10 @@ GeoBeans.GeoJsonFormat.prototype.readFeature = function(geoJson,fields){
 /**
  * 读取id
  * @private
- * @param  {[string]} geoJson [geoJson字符串]
- * @return {[string]}         [id值]
+ * @param  {string} geoJson [geoJson字符串]
+ * @return {string}         [id值]
  */
-GeoBeans.GeoJsonFormat.prototype.readID = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readID = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -291,10 +318,10 @@ GeoBeans.GeoJsonFormat.prototype.readID = function(geoJson){
 	    "coordinates": [125.6, 10.1]
 	  },
  * @private
- * @param  {[string]}  	geoJson [geoJson字符串]
- * @return {[Geometry]}         [空间geometry]
+ * @param  {string}  	geoJson [geoJson字符串]
+ * @return {Geometry}         [空间geometry]
  */
-GeoBeans.GeoJsonFormat.prototype.readGeometry = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readGeometry = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -339,10 +366,10 @@ GeoBeans.GeoJsonFormat.prototype.readGeometry = function(geoJson){
 /**
  * 读取point
  * @private
- * @param  {[string]} geoJson [geoJson字符串]
- * @return {[Point]}          []
+ * @param  {string} geoJson [geoJson字符串]
+ * @return {Point}          []
  */
-GeoBeans.GeoJsonFormat.prototype.readPoint = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readPoint = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -357,10 +384,10 @@ GeoBeans.GeoJsonFormat.prototype.readPoint = function(geoJson){
 /**
  * 读取lineString
  * @private
- * @param  {[string]} 		geoJson [geoJson字符串]
- * @return {[LineString]}         
+ * @param  {string} 		geoJson [geoJson字符串]
+ * @return {LineString}         
  */
-GeoBeans.GeoJsonFormat.prototype.readLineString = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readLineString = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -376,10 +403,10 @@ GeoBeans.GeoJsonFormat.prototype.readLineString = function(geoJson){
 /**
  * 读取polygon
  * @private
- * @param  {[string]} 	geoJson [geoJson字符串]
- * @return {[Polygon]}         	
+ * @param  {string} 	geoJson [geoJson字符串]
+ * @return {Polygon}         	
  */
-GeoBeans.GeoJsonFormat.prototype.readPolygon = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readPolygon = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -394,10 +421,10 @@ GeoBeans.GeoJsonFormat.prototype.readPolygon = function(geoJson){
 /**
  * 读取MultiPoint
  * @private
- * @param  {[string]} 	geoJson [geoJson字符串]
- * @return {[MultiPoint]}       
+ * @param  {string} 	geoJson [geoJson字符串]
+ * @return {MultiPoint}       
  */
-GeoBeans.GeoJsonFormat.prototype.readMultiPoint = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readMultiPoint = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -423,10 +450,10 @@ GeoBeans.GeoJsonFormat.prototype.readMultiPoint = function(geoJson){
 /**
  * 读取MultiLineString
  * @private
- * @param  {[string]} 		geoJson [geoJson字符串]
- * @return {[MultiString]}          
+ * @param  {string} 		geoJson [geoJson字符串]
+ * @return {MultiString}          
  */
-GeoBeans.GeoJsonFormat.prototype.readMultiLineString = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readMultiLineString = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -452,10 +479,10 @@ GeoBeans.GeoJsonFormat.prototype.readMultiLineString = function(geoJson){
 /**
  * 读取MultiPolygon
  * @private
- * @param  {[string]} 		geoJson [geoJson字符串]
- * @return {[MultiPolygon]}         
+ * @param  {string} 		geoJson [geoJson字符串]
+ * @return {MultiPolygon}         
  */
-GeoBeans.GeoJsonFormat.prototype.readMultiPolygon = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readMultiPolygon = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -482,10 +509,10 @@ GeoBeans.GeoJsonFormat.prototype.readMultiPolygon = function(geoJson){
 /**
  * 读取GeometryCollection
  * @private
- * @param  {[string]} 			geoJson [geoJson字符串]
- * @return {[GeometryCollection]}        
+ * @param  {string} 			geoJson [geoJson字符串]
+ * @return {GeometryCollection}        
  */
-GeoBeans.GeoJsonFormat.prototype.readGeometryCollection = function(geoJson){
+GeoBeans.Format.GeoJson.prototype.readGeometryCollection = function(geoJson){
 	if(geoJson == null){
 		return null;
 	}
@@ -511,10 +538,10 @@ GeoBeans.GeoJsonFormat.prototype.readGeometryCollection = function(geoJson){
 /**
  * 点坐标读取坐标
  * @private
- * @param  {[string]} coordinates [geoJson字符串]
- * @return {[Point]}              [点]
+ * @param  {string} coordinates [geoJson字符串]
+ * @return {Point}              [点]
  */
-GeoBeans.GeoJsonFormat.prototype.readPointCoords = function(coordinates){
+GeoBeans.Format.GeoJson.prototype.readPointCoords = function(coordinates){
 	if(coordinates == null && !($.isArray(coordinates))){
 		return null;
 	}
@@ -524,10 +551,10 @@ GeoBeans.GeoJsonFormat.prototype.readPointCoords = function(coordinates){
 /**
  * 线坐标字符串读取坐标
  * @private
- * @param  {[string]} 	coordinates [geoJson字符串]
- * @return {[LineString]}           [线]
+ * @param  {string} 	coordinates [geoJson字符串]
+ * @return {LineString}           [线]
  */
-GeoBeans.GeoJsonFormat.prototype.readLineStringCoords = function(coordinates){
+GeoBeans.Format.GeoJson.prototype.readLineStringCoords = function(coordinates){
 	if(coordinates == null && !($.isArray(coordinates))){
 		return null;
 	}
@@ -549,10 +576,10 @@ GeoBeans.GeoJsonFormat.prototype.readLineStringCoords = function(coordinates){
 /**
  * polygon坐标值转换polgyon
  * @private
- * @param  {[string]} coordinates [geoJson字符串]
- * @return {[Polygon]}             
+ * @param  {string} coordinates [geoJson字符串]
+ * @return {Polygon}             
  */
-GeoBeans.GeoJsonFormat.prototype.readPolygonCoords = function(coordinates){
+GeoBeans.Format.GeoJson.prototype.readPolygonCoords = function(coordinates){
 	if(coordinates == null && !($.isArray(coordinates))){
 		return null;
 	}
@@ -574,11 +601,11 @@ GeoBeans.GeoJsonFormat.prototype.readPolygonCoords = function(coordinates){
 /**
  * 读取Properties中的字段对应数值
  * @private
- * @param  {[string]} 			geoJson [geoJson字符串]
- * @param  {[Array.<Field>]} 	fields  [字段数组]
- * @return {[Array]}         			[字段值数组]
+ * @param  {string} 			geoJson [geoJson字符串]
+ * @param  {Array.<Field>} 	fields  [字段数组]
+ * @return {Array}         			[字段值数组]
  */
-GeoBeans.GeoJsonFormat.prototype.readProperties = function(geoJson,fields){
+GeoBeans.Format.GeoJson.prototype.readProperties = function(geoJson,fields){
 	if(geoJson == null || fields == null){
 		return null;
 	}

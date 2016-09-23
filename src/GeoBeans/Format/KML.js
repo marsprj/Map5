@@ -1,4 +1,9 @@
-GeoBeans.KMLFormat = GeoBeans.Class({
+/**
+ * @classdesc
+ * KML数据格式类
+ * @class
+ */
+GeoBeans.Format.KML = GeoBeans.Class(GeoBeans.Format,{
 	
 	initialize : function(){
 		
@@ -6,7 +11,7 @@ GeoBeans.KMLFormat = GeoBeans.Class({
 });
 
 
-GeoBeans.KMLFormat.prototype.read = function(kml,style,fields){
+GeoBeans.Format.KML.prototype.read = function(kml,style,fields){
 	if(kml == null || fields == null){
 		return null;
 	}
@@ -38,7 +43,7 @@ GeoBeans.KMLFormat.prototype.read = function(kml,style,fields){
 };
 
 
-GeoBeans.KMLFormat.prototype.readFields = function(kml){
+GeoBeans.Format.KML.prototype.readFields = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -57,7 +62,7 @@ GeoBeans.KMLFormat.prototype.readFields = function(kml){
 	return featureType.fields;
 };
 
-GeoBeans.KMLFormat.prototype.readGeometryType = function(kml){
+GeoBeans.Format.KML.prototype.readGeometryType = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -92,7 +97,7 @@ GeoBeans.KMLFormat.prototype.readGeometryType = function(kml){
 	return geomType;
 };
 
-GeoBeans.KMLFormat.prototype.readStyle = function(kml){
+GeoBeans.Format.KML.prototype.readStyle = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -133,7 +138,7 @@ GeoBeans.KMLFormat.prototype.readStyle = function(kml){
 };
 
 
-GeoBeans.KMLFormat.prototype.readRuleByFolderNode = function(kml){
+GeoBeans.Format.KML.prototype.readRuleByFolderNode = function(kml){
 	if(kml == null){
 		return;
 	}
@@ -181,7 +186,7 @@ GeoBeans.KMLFormat.prototype.readRuleByFolderNode = function(kml){
 //          </Icon>
 //       </IconStyle>
 //   </Style>
-GeoBeans.KMLFormat.prototype.readRuleByStyleNode = function(kml){
+GeoBeans.Format.KML.prototype.readRuleByStyleNode = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -246,7 +251,7 @@ GeoBeans.KMLFormat.prototype.readRuleByStyleNode = function(kml){
 //   <hotSpot x="0.5"  y="0.5"
 //     xunits="fraction" yunits="fraction"/>    <!-- kml:vec2 -->
 // </IconStyle>
-GeoBeans.KMLFormat.prototype.readIconStyle = function(kml){
+GeoBeans.Format.KML.prototype.readIconStyle = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -275,7 +280,7 @@ GeoBeans.KMLFormat.prototype.readIconStyle = function(kml){
 	return pointSymbolizer;
 };
 
-GeoBeans.KMLFormat.prototype.getDefaultSymbolizer = function(geomType){
+GeoBeans.Format.KML.prototype.getDefaultSymbolizer = function(geomType){
 	var symbolizer = null;
 	switch(geomType){
 		case GeoBeans.Geometry.Type.POINT:{
@@ -302,7 +307,7 @@ GeoBeans.KMLFormat.prototype.getDefaultSymbolizer = function(geomType){
 	return symbolizer;
 },	
 
-GeoBeans.KMLFormat.prototype.readIcon = function(kml){
+GeoBeans.Format.KML.prototype.readIcon = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -311,7 +316,7 @@ GeoBeans.KMLFormat.prototype.readIcon = function(kml){
 	return href;
 };
 
-GeoBeans.KMLFormat.prototype.readScale = function(kml){
+GeoBeans.Format.KML.prototype.readScale = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -329,7 +334,7 @@ GeoBeans.KMLFormat.prototype.readScale = function(kml){
 //   <!-- specific to LabelStyle -->
 //   <scale>1</scale>                   <!-- float -->
 // </LabelStyle>	
-GeoBeans.KMLFormat.prototype.readLabelStyle = function(kml){
+GeoBeans.Format.KML.prototype.readLabelStyle = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -358,7 +363,7 @@ GeoBeans.KMLFormat.prototype.readLabelStyle = function(kml){
 };
 
 // <color>ffffffff</color>,abgr
-GeoBeans.KMLFormat.prototype.readColor = function(kml){
+GeoBeans.Format.KML.prototype.readColor = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -379,7 +384,7 @@ GeoBeans.KMLFormat.prototype.readColor = function(kml){
 
 
 
-GeoBeans.KMLFormat.prototype.getDefaultTextSymbolizer = function(){
+GeoBeans.Format.KML.prototype.getDefaultTextSymbolizer = function(){
 	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
 	textSymbolizer.fill.color.set(255,255,255,1);
 	textSymbolizer.stroke.color.set(51,51,51,1);
@@ -405,7 +410,7 @@ GeoBeans.KMLFormat.prototype.getDefaultTextSymbolizer = function(){
 //   <gx:physicalWidth>0.0</gx:physicalWidth>    <!-- float -->
 //   <gx:labelVisibility>0</gx:labelVisibility>  <!-- boolean -->
 // </LineStyle>
-GeoBeans.KMLFormat.prototype.readLineStyle = function(kml){
+GeoBeans.Format.KML.prototype.readLineStyle = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -430,7 +435,7 @@ GeoBeans.KMLFormat.prototype.readLineStyle = function(kml){
 	return lineSymbolizer;	
 };
 
-GeoBeans.KMLFormat.prototype.readWidth = function(kml){
+GeoBeans.Format.KML.prototype.readWidth = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -448,7 +453,7 @@ GeoBeans.KMLFormat.prototype.readWidth = function(kml){
 //   <fill>1</fill>                     <!-- boolean -->
 //   <outline>1</outline>               <!-- boolean -->
 // </PolyStyle>
-GeoBeans.KMLFormat.prototype.readPolyStyle = function(kml){
+GeoBeans.Format.KML.prototype.readPolyStyle = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -484,7 +489,7 @@ GeoBeans.KMLFormat.prototype.readPolyStyle = function(kml){
 };
 
 // <fill>1</fill>
-GeoBeans.KMLFormat.prototype.readFill = function(kml){
+GeoBeans.Format.KML.prototype.readFill = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -497,7 +502,7 @@ GeoBeans.KMLFormat.prototype.readFill = function(kml){
 	}
 };
 
-GeoBeans.KMLFormat.prototype.readOutline = function(kml){
+GeoBeans.Format.KML.prototype.readOutline = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -511,7 +516,7 @@ GeoBeans.KMLFormat.prototype.readOutline = function(kml){
 };
 
 
-GeoBeans.KMLFormat.prototype.readPlacemark = function(kml,style,fields){
+GeoBeans.Format.KML.prototype.readPlacemark = function(kml,style,fields){
 	if(kml == null || style == null || fields == null){
 		return null;
 	}
@@ -594,7 +599,7 @@ GeoBeans.KMLFormat.prototype.readPlacemark = function(kml,style,fields){
 };
 
 //看读取出来的style里面有没有该rule
-GeoBeans.KMLFormat.prototype.getRuleFromStyle = function(ruleName,style){
+GeoBeans.Format.KML.prototype.getRuleFromStyle = function(ruleName,style){
 	if(ruleName == null || style == null){
 		return null;
 	}
@@ -606,7 +611,7 @@ GeoBeans.KMLFormat.prototype.getRuleFromStyle = function(ruleName,style){
 	}
 	return null;
 };
-GeoBeans.KMLFormat.prototype.createDefaultRules = function(documentXML){
+GeoBeans.Format.KML.prototype.createDefaultRules = function(documentXML){
 	if(documentXML == null){
 		return;
 	}
@@ -642,7 +647,7 @@ GeoBeans.KMLFormat.prototype.createDefaultRules = function(documentXML){
 	this.polygonDefaultRule = this.getDefaultRule(polygonRuleName,GeoBeans.Geometry.Type.POLYGON);
 };
 
-GeoBeans.KMLFormat.prototype.getDefaultRule = function(name,geomType){
+GeoBeans.Format.KML.prototype.getDefaultRule = function(name,geomType){
 	if(name == null || geomType == null){
 		return null;
 	}
@@ -659,7 +664,7 @@ GeoBeans.KMLFormat.prototype.getDefaultRule = function(name,geomType){
 	return rule;	
 };
 
-GeoBeans.KMLFormat.prototype.getDefaultRuleByGeomType = function(geomType){
+GeoBeans.Format.KML.prototype.getDefaultRuleByGeomType = function(geomType){
 	if(geomType == GeoBeans.Geometry.Type.POINT){
 		return this.pointDefaultRule;
 	}else if(geomType == GeoBeans.Geometry.Type.LINESTRING){
@@ -671,7 +676,7 @@ GeoBeans.KMLFormat.prototype.getDefaultRuleByGeomType = function(geomType){
 };
 
 
-GeoBeans.KMLFormat.prototype.addFilterByID = function(style,styleName,fid){
+GeoBeans.Format.KML.prototype.addFilterByID = function(style,styleName,fid){
 	if(style == null || styleName == null || fid == null){
 		return;
 	}
@@ -691,7 +696,7 @@ GeoBeans.KMLFormat.prototype.addFilterByID = function(style,styleName,fid){
 };
 
 // <styleUrl>#exampleStyleDocument</styleUrl>
-GeoBeans.KMLFormat.prototype.readStyleUrl = function(kml){
+GeoBeans.Format.KML.prototype.readStyleUrl = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -702,7 +707,7 @@ GeoBeans.KMLFormat.prototype.readStyleUrl = function(kml){
 	return null;
 };
 
-GeoBeans.KMLFormat.prototype.readPoint = function(kml){
+GeoBeans.Format.KML.prototype.readPoint = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -712,7 +717,7 @@ GeoBeans.KMLFormat.prototype.readPoint = function(kml){
 	return point;
 };
 
-GeoBeans.KMLFormat.prototype.readLineString = function(kml){
+GeoBeans.Format.KML.prototype.readLineString = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -722,7 +727,7 @@ GeoBeans.KMLFormat.prototype.readLineString = function(kml){
 	return lineString;
 };
 
-GeoBeans.KMLFormat.prototype.readPolygon = function(kml){
+GeoBeans.Format.KML.prototype.readPolygon = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -752,7 +757,7 @@ GeoBeans.KMLFormat.prototype.readPolygon = function(kml){
 	return (new GeoBeans.Geometry.Polygon(rings));
 };
 
-GeoBeans.KMLFormat.prototype.readMultiGeometry = function(kml){
+GeoBeans.Format.KML.prototype.readMultiGeometry = function(kml){
 	if(kml == null){
 		return null;
 	}
@@ -785,7 +790,7 @@ GeoBeans.KMLFormat.prototype.readMultiGeometry = function(kml){
 };
 
 
-GeoBeans.KMLFormat.prototype.readPointCoords = function(coordinates){
+GeoBeans.Format.KML.prototype.readPointCoords = function(coordinates){
 	if(coordinates == null || coordinates.trim() == ""){
 		return null;
 	}
@@ -799,7 +804,7 @@ GeoBeans.KMLFormat.prototype.readPointCoords = function(coordinates){
 	return null;
 };
 
-GeoBeans.KMLFormat.prototype.readLineStringCoords = function(coordinates){
+GeoBeans.Format.KML.prototype.readLineStringCoords = function(coordinates){
 	if(coordinates == null || coordinates.trim() == ""){
 		return null;
 	}

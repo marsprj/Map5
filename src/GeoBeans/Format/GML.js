@@ -1,4 +1,9 @@
-GeoBeans.Geometry.GML = GeoBeans.Class({
+/**
+ * @classdesc
+ * GML数据格式类
+ * @class
+ */
+GeoBeans.Format.GML = GeoBeans.Class(GeoBeans.Format,{
 	initialize : function(name){
 		this.name = name;
 	},
@@ -8,7 +13,7 @@ GeoBeans.Geometry.GML = GeoBeans.Class({
 	},	
 });
 
-GeoBeans.Geometry.GML.Version = {
+GeoBeans.Format.GML.Version = {
 	v_2_0  : "2.0",
 	v_3_1_1: "3.1.1",
 	v_3_2_1: "3.2.1"
@@ -18,7 +23,7 @@ GeoBeans.Geometry.GML.Version = {
  * [Type description]
  * @type {Object}
  */
-GeoBeans.Geometry.GML.Type = {
+GeoBeans.Format.GML.Type = {
 	Point  		: "gml:Point",
 	LineString  : "gml:LineString",
 	Polygon	 	: "gml:Polygon",
@@ -29,12 +34,12 @@ GeoBeans.Geometry.GML.Type = {
 
 /**
  * [initialize description]
- * @param  {[type]} version){		this.version [description]
- * @param  {[type]} destory                  :             function(){		GeoBeans.Class.prototype.destory.apply(this, arguments);	} [description]
- * @param  {[type]} write                    :             function(geometry){		if(geometry                          [description]
- * @return {[type]}                          [description]
+ * @param  {type} version){		this.version [description]
+ * @param  {type} destory                  :             function(){		GeoBeans.Class.prototype.destory.apply(this, arguments);	} [description]
+ * @param  {type} write                    :             function(geometry){		if(geometry                          [description]
+ * @return {type}                          [description]
  */
-GeoBeans.Geometry.GML.Writer = GeoBeans.Class({
+GeoBeans.Format.GML.Writer = GeoBeans.Class({
 	version : null,
 	
 	initialize : function(version){
@@ -78,8 +83,8 @@ GeoBeans.Geometry.GML.Writer = GeoBeans.Class({
 
 	/**
 	 * [writePoint description]
-	 * @param  {[type]} point [description]
-	 * @return {[type]}       [description]
+	 * @param  {type} point [description]
+	 * @return {type}       [description]
 	 */
 	writePoint : function(point){
 		var gml = "";
@@ -199,7 +204,7 @@ GeoBeans.Geometry.GML.Writer = GeoBeans.Class({
 	}
 });
 
-GeoBeans.Geometry.GML.Reader = GeoBeans.Class({
+GeoBeans.Format.GML.Reader = GeoBeans.Class({
 	
 	version : null,
 	
@@ -217,21 +222,21 @@ GeoBeans.Geometry.GML.Reader = GeoBeans.Class({
 		
 		var type = gml.tagName;
 		switch(type){
-		case GeoBeans.Geometry.GML.Type.Point:
+		case GeoBeans.Format.GML.Type.Point:
 			geometry = this.readPoint(gml);
 		break;
-		case GeoBeans.Geometry.GML.Type.LineString:
+		case GeoBeans.Format.GML.Type.LineString:
 			geometry = this.readLineString(gml);
 		break;
-		case GeoBeans.Geometry.GML.Type.Polygon:
+		case GeoBeans.Format.GML.Type.Polygon:
 			geometry = this.readPolygon(gml);
 		break;
-		case GeoBeans.Geometry.GML.Type.MultiPoint:
+		case GeoBeans.Format.GML.Type.MultiPoint:
 		break;
-		case GeoBeans.Geometry.GML.Type.MultiLineString:
+		case GeoBeans.Format.GML.Type.MultiLineString:
 			geometry = this.readMultiLineString(gml);
 		break;
-		case GeoBeans.Geometry.GML.Type.MultiPolygon:
+		case GeoBeans.Format.GML.Type.MultiPolygon:
 			geometry = this.readMultiPolygon(gml);
 		break;
 		}

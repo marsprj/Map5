@@ -1,4 +1,9 @@
-GeoBeans.WKTFormat = GeoBeans.Class({
+/**
+ * @classdesc
+ * WKT数据格式类
+ * @class
+ */
+GeoBeans.Format.WKT = GeoBeans.Class(GeoBeans.Format,{
 
 	initialize : function(){
 	},
@@ -11,9 +16,9 @@ GeoBeans.WKTFormat = GeoBeans.Class({
 /**
  * 将WKT字符串转换为Geometry对象
  * @public
- * @return {[Geometry]} [description]
+ * @return {Geometry} [description]
  */
-GeoBeans.WKTFormat.prototype.read = function(wkt){
+GeoBeans.Format.WKT.prototype.read = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -40,10 +45,10 @@ GeoBeans.WKTFormat.prototype.read = function(wkt){
 /**
  * 将wkt字符串转换为点对象
  * @private
- * @param  {[string]} wkt 字符串
- * @return {[Geometry]}     
+ * @param  {string} wkt 字符串
+ * @return {Geometry}     
  */
-GeoBeans.WKTFormat.prototype.getWKTPoint = function(wkt){
+GeoBeans.Format.WKT.prototype.getWKTPoint = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -57,10 +62,10 @@ GeoBeans.WKTFormat.prototype.getWKTPoint = function(wkt){
 /**
  * 将wkt字符串转换为线对象
  * @private
- * @param  {[string]} wkt 字符串
- * @return {[Geometry]}     [description]
+ * @param  {string} wkt 字符串
+ * @return {Geometry}     [description]
  */
-GeoBeans.WKTFormat.prototype.getWKTLineString = function(wkt){
+GeoBeans.Format.WKT.prototype.getWKTLineString = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -81,10 +86,10 @@ GeoBeans.WKTFormat.prototype.getWKTLineString = function(wkt){
 /**
  * 将wkt字符串转换为面对象
  * @private
- * @param  {[string]} wkt 字符串
- * @return {[Geometry]}     
+ * @param  {string} wkt 字符串
+ * @return {Geometry}     
  */
-GeoBeans.WKTFormat.prototype.getWKTPolygon = function(wkt){
+GeoBeans.Format.WKT.prototype.getWKTPolygon = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -118,10 +123,10 @@ GeoBeans.WKTFormat.prototype.getWKTPolygon = function(wkt){
 /**
  * 将wkt字符串转换为多点对象
  * @private
- * @param  {[string]} wkt 字符串
- * @return {[Geometry]}     
+ * @param  {string} wkt 字符串
+ * @return {Geometry}     
  */
-GeoBeans.WKTFormat.prototype.getWKTMultiPoint = function(wkt){
+GeoBeans.Format.WKT.prototype.getWKTMultiPoint = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -142,10 +147,10 @@ GeoBeans.WKTFormat.prototype.getWKTMultiPoint = function(wkt){
 /**
  * 将wkt字符串转换为多线对象
  * @private
- * @param  {[type]} wkt [description]
- * @return {[type]}     [description]
+ * @param  {type} wkt [description]
+ * @return {type}     [description]
  */
-GeoBeans.WKTFormat.prototype.getWKTMultiLineString = function(wkt){
+GeoBeans.Format.WKT.prototype.getWKTMultiLineString = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -182,10 +187,10 @@ GeoBeans.WKTFormat.prototype.getWKTMultiLineString = function(wkt){
 /**
  * 将wkt字符串转换为多面对象
  * @private
- * @param  {[type]} wkt [description]
- * @return {[type]}     [description]
+ * @param  {type} wkt [description]
+ * @return {type}     [description]
  */
-GeoBeans.WKTFormat.prototype.getWKTMultiPolygon = function(wkt){
+GeoBeans.Format.WKT.prototype.getWKTMultiPolygon = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -244,10 +249,10 @@ GeoBeans.WKTFormat.prototype.getWKTMultiPolygon = function(wkt){
 /**
  * 字符串转换为点对象
  * @private
- * @param  {[type]} string [description]
- * @return {[type]}        [description]
+ * @param  {type} string [description]
+ * @return {type}        [description]
  */
-GeoBeans.WKTFormat.prototype.prasePointByCoordinate = function(string){
+GeoBeans.Format.WKT.prototype.prasePointByCoordinate = function(string){
 	var array = string.trim().split(/[ ]+/);
 	if(array.length != 2){
 		return null;
@@ -259,10 +264,10 @@ GeoBeans.WKTFormat.prototype.prasePointByCoordinate = function(string){
 /**
  * 字符串转换为点数组
  * @private
- * @param  {[string]} string [字符串]
- * @return {[Array]}        [点数组]
+ * @param  {string} string [字符串]
+ * @return {Array}        [点数组]
  */
-GeoBeans.WKTFormat.prototype.prasePointsByCoordinates = function(string){
+GeoBeans.Format.WKT.prototype.prasePointsByCoordinates = function(string){
 	var coordinatesArray = string.split(/[,]+/);
 	var points = [];
 	for(var i = 0; i < coordinatesArray.length;++i){
@@ -280,10 +285,10 @@ GeoBeans.WKTFormat.prototype.prasePointsByCoordinates = function(string){
 /**
  * 将Geometry对象转换为WKT字符串
  * @public
- * @param  {[Geometry]} geometry [geometry对象]
- * @return {[string]}          [wkt字符串]
+ * @param  {Geometry} geometry [geometry对象]
+ * @return {string}          [wkt字符串]
  */
-GeoBeans.WKTFormat.prototype.write = function(geometry){
+GeoBeans.Format.WKT.prototype.write = function(geometry){
 	if(geometry == null){
 		return null;
 	}
@@ -326,10 +331,10 @@ GeoBeans.WKTFormat.prototype.write = function(geometry){
 /**
  * 将点对象转换为WKT对象
  * @private
- * @param  {[Geometry]} geometry [点对象]
- * @return {[string]}          [wkt]
+ * @param  {Geometry} geometry [点对象]
+ * @return {string}          [wkt]
  */
-GeoBeans.WKTFormat.prototype.writePoint = function(geometry){
+GeoBeans.Format.WKT.prototype.writePoint = function(geometry){
 	if(geometry == null){
 		return null;
 	}
@@ -342,10 +347,10 @@ GeoBeans.WKTFormat.prototype.writePoint = function(geometry){
 /**
  * 将线对象转换为WKT对象
  * @private
- * @param  {[Geometry]} geometry [线对象]
- * @return {[string]}            [wkt]
+ * @param  {Geometry} geometry [线对象]
+ * @return {string}            [wkt]
  */
-GeoBeans.WKTFormat.prototype.writeLineString = function(geometry){
+GeoBeans.Format.WKT.prototype.writeLineString = function(geometry){
 	if(geometry == null){
 		return null;
 	}
@@ -366,10 +371,10 @@ GeoBeans.WKTFormat.prototype.writeLineString = function(geometry){
 /**
  * 将面对象转换为WKT对象
  * @private
- * @param  {[Geometry]} geometry [面对象]
- * @return {[string]}            [wkt]
+ * @param  {Geometry} geometry [面对象]
+ * @return {string}            [wkt]
  */
-GeoBeans.WKTFormat.prototype.writePolygon = function(geometry){
+GeoBeans.Format.WKT.prototype.writePolygon = function(geometry){
 	if(geometry == null){
 		return null;
 	}
@@ -402,10 +407,10 @@ GeoBeans.WKTFormat.prototype.writePolygon = function(geometry){
 /**
  * 将多点对象转换为WKT对象
  * @private
- * @param  {[Geometry]} geometry [多点对象]
- * @return {[string]}            [wkt]
+ * @param  {Geometry} geometry [多点对象]
+ * @return {string}            [wkt]
  */
-GeoBeans.WKTFormat.prototype.writeMultiPoint = function(geometry){
+GeoBeans.Format.WKT.prototype.writeMultiPoint = function(geometry){
 	if(geometry == null){
 		return null;
 	}
@@ -423,10 +428,10 @@ GeoBeans.WKTFormat.prototype.writeMultiPoint = function(geometry){
 /**
  * 将多线对象转换为WKT对象
  * @private
- * @param  {[Geometry]} geometry [多线对象]
- * @return {[string]}            [wkt]
+ * @param  {Geometry} geometry [多线对象]
+ * @return {string}            [wkt]
  */
-GeoBeans.WKTFormat.prototype.writeMultiLineString = function(geometry){
+GeoBeans.Format.WKT.prototype.writeMultiLineString = function(geometry){
 	if(geometry == null){
 		return null;
 	}	
@@ -457,10 +462,10 @@ GeoBeans.WKTFormat.prototype.writeMultiLineString = function(geometry){
 /**
  * 将多面对象转换为WKT对象
  * @private
- * @param  {[Geometry]} geometry [多面对象]
- * @return {[string]}            [wkt]
+ * @param  {Geometry} geometry [多面对象]
+ * @return {string}            [wkt]
  */
-GeoBeans.WKTFormat.prototype.writeMultiPolygon = function(geometry){
+GeoBeans.Format.WKT.prototype.writeMultiPolygon = function(geometry){
 	if(geometry == null){
 		return null;
 	}
@@ -507,10 +512,10 @@ GeoBeans.WKTFormat.prototype.writeMultiPolygon = function(geometry){
 /**
  * 将点数组对象转换为string
  * @private
- * @param  {[Array]} geometry 	[点数组]
- * @return {[string]}           [字符串]
+ * @param  {Array} geometry 	[点数组]
+ * @return {string}           [字符串]
  */
-GeoBeans.WKTFormat.prototype.writePoints = function(points){
+GeoBeans.Format.WKT.prototype.writePoints = function(points){
 	if(points == null){
 		return null;
 	}
