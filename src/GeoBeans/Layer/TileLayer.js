@@ -83,28 +83,28 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 	computeTileBound : null,
 	
 	
-	// getResolution : function(level){
-	// 	if( level<=0 || level>=this.RESOLUTIONS.length){
+	// getResolution : function(zoom){
+	// 	if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
 	// 		return -1;
 	// 	}
-	// 	return this.RESOLUTIONS[level-1];
+	// 	return this.RESOLUTIONS[zoom-1];
 	// },
 
-	getResolution : function(level){
+	getResolution : function(zoom){
 		if(this.resolution != null){
 			return this.resolution;
 		}
-		if( level<=0 || level>=this.RESOLUTIONS.length){
+		if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
 			return -1;
 		}
-		return this.RESOLUTIONS[level-1];
+		return this.RESOLUTIONS[zoom-1];
 	},
 
-	getResolutionByZoom : function(level){
-		if( level<=0 || level>=this.RESOLUTIONS.length){
+	getResolutionByZoom : function(zoom){
+		if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
 			return -1;
 		}
-		return this.RESOLUTIONS[level-1];
+		return this.RESOLUTIONS[zoom-1];
 	},
 	
 	getZoom : function(resolution){
@@ -141,10 +141,10 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 		// update resultion
 		var map = this.map;
 		
-		// set the level of the layer
-		this.level = this.map.level;		
+		// set the zoom of the layer
+		this.zoom = this.map.zoom;		
 		// get resolution according to 
-		this.resolution = this.getResolution(this.level);
+		this.resolution = this.getResolution(this.zoom);
 		// compute extent of the map
 		map.setResolution(this.resolution);
 		map.updateMapExtent();
@@ -161,8 +161,8 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 
 	// 设置该图层的最大级别
-	setMaxZoom : function(level){
-		this.MAX_ZOOM_LEVEL = level;
+	setMaxZoom : function(zoom){
+		this.MAX_ZOOM_LEVEL = zoom;
 	},
 
 	// 获取该图层的最大级别
@@ -171,8 +171,8 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	// 设置该图层的最小级别
-	setMinZoom : function(level){
-		this.MIN_ZOOM_LEVEL = level;
+	setMinZoom : function(zoom){
+		this.MIN_ZOOM_LEVEL = zoom;
 	},
 
 	// 获取该图层的最小级别

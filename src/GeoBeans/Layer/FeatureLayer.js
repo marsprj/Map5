@@ -1,4 +1,9 @@
-
+/**
+ * @classdesc
+ * 要素图层
+ * @class
+ * @extends {GeoBeans.Layer}
+ */
 GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
 	features : [],
@@ -11,7 +16,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
 	enableHit : false,
 	selection : null,
-	unselection : null,
+	unselection : null,			//有什么用？
 
 	hitControl : null,
 	hitEvent : null,
@@ -73,10 +78,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 	
 	addFeature : function(feature){
-		if(feature!=null){
-			if(this.features == null){
-				this.features = [];
-			}
+		if(isValid(feature){
 			this.features.push(feature);
 		}
 	},
@@ -117,19 +119,13 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 	
 	getFeature : function(i){
-		if(i<0){
-			return null;
-		}
-		if(i>=this.features.length){
+		if(i<0 || i>=this.features.length){
 			return null;
 		}
 		return this.features[i];
 	},
 
 	getFeatureByID : function(id){
-		if(this.features == null){
-			return null;
-		}
 		var feature = null;
 		for(var i = 0; i < this.features.length; ++i){
 			feature = this.features[i];
@@ -205,8 +201,9 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	//绘制要素
+	// ？？ 这个features内所有的feature的symbolizer都一样，否则和Layer的draw有什么区别？
 	drawLayerFeatures : function(features){
-		var style = this.style;
+		var style = this.style;	
 		if(style==null){
 			style = this.getDefaultStyle();
 			if(style == null){
@@ -220,6 +217,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 		for(var i=0; i<rules.length; i++){
 			var rule = rules[i];
+			//放到selection里面干什么？
 			var selection = this.selectFeaturesByFilter(rule.filter,features);
 			if(rule.symbolizer != null){
 				if(rule.symbolizer.symbol != null){
@@ -277,6 +275,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(geomFieldName == null){
 			return null;
 		}
+		//？？直接调用getField就可以，又何必多此一举先获得index
 		var geomFieldIndex = featureType.getFieldIndex(geomFieldName);
 		if(geomFieldIndex == null){
 			return null;
@@ -332,7 +331,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(features.length==0){
 			return;
 		}
-		
 
 		this.renderer.save();
 		this.renderer.setSymbolizer(symbolizer);
@@ -346,6 +344,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	// 单独绘制文本
+	// ？？ 这个features内所有的feature的symbolizer都一样，否则和Layer的draw有什么区别？
 	drawLabelFeatures : function(features){
 		var style = this.style;
 		if(style==null){
@@ -371,6 +370,8 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	// 加上碰撞检测的文字样式
+	// ？？？这里不做碰撞检测
+	// ？？？即便是做碰检测，Maplex类已经实现了，这里又何必再实现一次？
 	labelFeatures : function(features,symbolizer){
 		if(features == null || features.length == 0){
 			return;
@@ -455,6 +456,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// 	}
 	// },
 	
+	// ？？？下面几个selectXXX全都归到query函数里面
 	selectFeatures : function(filter){
 		if(filter == null){
 			return this.features;
@@ -1116,6 +1118,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		return result;
 	},
 
+	// ？？？这个函数是什么意思
 	getFeatureBBoxGet : function(bbox,maxFeatures,offset){
 		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,bbox);
 		return this.selectFeaturesByFilter(bboxFilter,this.features,maxFeatures,offset);
@@ -1139,6 +1142,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.enableHit = enable;
 	},
 	
+	// ？？？已经setHitControl了，为什么还要保留hit函数？？？
 	hit : function(x, y, callback){
 		if(this.features==null){
 			return;
@@ -1215,6 +1219,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	//绘制选中的图层
+	//？？？drawHitFeature与drawFeature有啥区别？
 	drawHitFeature : function(feature, symbolizer){
 
 		var rules = this.selectRules(feature);
@@ -1312,6 +1317,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 /***********************插入更新*******************************************/
 	//插入
+	//？？？这个函数是要干什么？为什么要调用track
 	beginTransaction : function(callback){
 		var geomFieldIndex = this.featureType.getFieldIndex(this.featureType.geomFieldName);
 		var geomField = this.featureType.fields[geomFieldIndex];

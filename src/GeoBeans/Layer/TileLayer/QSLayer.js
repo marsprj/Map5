@@ -8,10 +8,10 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	
 	//"http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8"
 	
-	AMP_URL : "/QuadServer/maprequest?services=world_image",
-	// AMP_URL : "/QuadServer/maprequest?services=world_vector",
-	//AMP_URL : "http://ourgis.digitalearth.cn/QuadServer/maprequest?services=world_image",
-	//AMP_URL : "http://127.0.0.1:8080/QuadServer/maprequest?services=world_vector",
+	QS_URL : "/QuadServer/maprequest?services=world_image",
+	// QS_URL : "/QuadServer/maprequest?services=world_vector",
+	//QS_URL : "http://ourgis.digitalearth.cn/QuadServer/maprequest?services=world_image",
+	//QS_URL : "http://127.0.0.1:8080/QuadServer/maprequest?services=world_vector",
 	
 /*	ORIGIN :{
         x: -20037508.3427892,
@@ -282,17 +282,5 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 			rmax:row_max + 1,
 			cmin:col_min - 1,
 			cmax:col_max + 1};
-	},
-
-
-	// toScreenPoint : function(mx,my){
-	// 	var transformation = this.map.transformation;
-	// 	var screenX = transformation.scale * (mx - transformation.view_c.x) + transformation.win_cx;
-	// 	var screenY = transformation.win_cy - transformation.scale * (my - transformation.view_c.y);
-		
-	// 	return new GeoBeans.Geometry.Point(screenX, screenY);
-	// },
-
-
-
+	}
 });

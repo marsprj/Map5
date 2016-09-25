@@ -344,7 +344,12 @@ GeoBeans.Control.TrackControl = GeoBeans.Class(GeoBeans.Control, {
 				point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
 				that.map.restoreSnap();
 				var points = [];
-				points.push({x:point_b.x,y:point_b.y,mapX:point_b_m.x,mapY:point_b_m.y});
+				points.push({
+								x:point_b.x,
+								y:point_b.y,
+								mapX:point_b_m.x,
+								mapY:point_b_m.y
+							});
 				points.push({x:evt.layerX,y:point_b.y,mapX:point_e.x,mapY:point_b_m.y});
 				points.push({x:evt.layerX,y:evt.layerY,mapX:point_e.x,mapY:point_e.y});
 				points.push({x:point_b.x,y:evt.layerY,mapX:point_b_m.x,mapY:point_e.y});

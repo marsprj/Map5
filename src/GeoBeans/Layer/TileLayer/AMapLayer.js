@@ -323,14 +323,14 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 
 	
 	/*这个函数没用*/
-	isCached : function(url){
-		for(var k in this.tileCache){
-			var tile = this.tileCache[k];
-			if(tile.url==url){
-				return true;
-			}
-		}
-		return false;
-	}
+	// isCached : function(url){
+	// 	for(var k in this.tileCache){
+	// 		var tile = this.tileCache[k];
+	// 		if(tile.url==url){
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+	// }
 	
 });

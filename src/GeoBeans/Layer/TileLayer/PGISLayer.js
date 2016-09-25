@@ -224,7 +224,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 		var img_size = this.IMG_WIDTH * (this.imageScale);
 		var resolution = this.map.getMapViewer().getResolution();
-		var re = this.getResolutionByZoom(this.map.level);
+		var re = this.computeResolution(this.map.level);
 		if(resolution != re){
 			img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
 		}
@@ -286,7 +286,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var map = this.map;
 		var level = map.level;
 		// var resolution = map.resolution;
-		var resolution = this.getResolutionByZoom(level)
+		var resolution = this.computeResolution(level)
 		var tile_map_size = resolution * this.IMG_WIDTH;
 		console.log(tile_map_size);
 		var ve = this.getValidView();
@@ -354,9 +354,14 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	// },
 
 	getUrl : function(){
-		return "typeName:" + this.typeName + ";format:" + this.format + ";tms:" + this.tms
-			+ ";extent:" + this.extent.toString() + ";sourceName:" + this.sourceName
-			+ ";url:" + this.url + ";startLevel:" + this.MIN_ZOOM_LEVEL + ";endLevel:" + this.MAX_ZOOM_LEVEL;
+		return "typeName:" + this.typeName 
+			 + ";format:" + this.format 
+			 + ";tms:" + this.tms
+			 + ";extent:" + this.extent.toString() 
+			 + ";sourceName:" + this.sourceName
+			 + ";url:" + this.url 
+			 + ";startLevel:" + this.MIN_ZOOM_LEVEL 
+			 + ";endLevel:" + this.MAX_ZOOM_LEVEL;
 	},
 
 
@@ -407,6 +412,5 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		}
 		tile.layer.flag = GeoBeans.Layer.Flag.LOADED;
 		drawBaseLayerCallback(tile.map);
-	},
-
+	}
 });

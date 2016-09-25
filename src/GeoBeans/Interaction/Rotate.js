@@ -17,7 +17,7 @@ GeoBeans.Interaction.Rotate = GeoBeans.Class(GeoBeans.Interaction, {
 	_map	: null,
 	_onMouseMove : null,
 
-	_rotateing : false,
+	_rotating : false,
 
 
 	initialize : function(options){
@@ -92,7 +92,7 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 		// 鼠标点击事件
 		if(evt instanceof MouseEvent){
 			if(keyCode == 16){
-				that._rotateing = true;
+				that._rotating = true;
 				console.log("begin move");
 				var rotation = viewer.getRotation();
 				var point_b = viewer.toMapPoint(evt.layerX,evt.layerY);
@@ -133,7 +133,7 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 					that._map.renderer.restore();
 				};
 				var onmouseup = function(evt){
-					that._rotateing = false;
+					that._rotating = false;
 					var point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
 					var angle_e = GeoBeans.Utility.getAngle(center.x,center.y,point_e.x,point_e.y);
 

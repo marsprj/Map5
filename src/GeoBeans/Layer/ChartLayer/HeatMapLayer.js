@@ -14,6 +14,7 @@ GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		this.div = document.createElement("div");
 		this.div.className = "heatmap";	
 
+		//???canvas是map的private属性，不能直接调用
 		var mapCanvas = map.canvas;
 		var mapCanvasHeight = mapCanvas.height;
 		var mapCanvasWidth = mapCanvas.width;

@@ -86,6 +86,7 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 			cmin:col_min,
 			cmax:col_max};
 	},
+
 	updateTileCache : function(tbound){
 		
 		var row_min = tbound.rmin;
@@ -108,8 +109,7 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 					this.cache.putTile(tile);
 				}
 			}
-		}
-			
+		}			
 	},
 	
 	draw : function(){
@@ -304,5 +304,5 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 
 	getTileID : function(row, col, zoom){
 		return ("x=" + col + "&y=" + row + "&z=" + zoom);
-	},	
+	}
 });
