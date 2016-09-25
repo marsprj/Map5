@@ -48,7 +48,7 @@ GeoBeans.Map = GeoBeans.Class({
 	level  : null,	
 	resolution : null,
 	
-	layers : null,	
+	layers : [],	
 	baseLayer : null,
 	overlayLayer : null,
 	queryLayer : null,
@@ -187,7 +187,6 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	destroy : function(){
 
-
 		$(this._container).find(".chart-legend ").remove();
 		$(this._container).find("canvas").remove();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
@@ -196,7 +195,6 @@ GeoBeans.Map = GeoBeans.Class({
 		this.unRegisterMapRippleHitEvent();
 		this.controls.cleanup();
 		this.viewer.cleanup();
-
 
 		this.canvas = null;
 		this.animateCanvas = null;
@@ -221,89 +219,6 @@ GeoBeans.Map = GeoBeans.Class({
 		handler.apply(window,[flag]);
 	},
 
-
-	getLayer : function(name){
-		if(name == null || this.layers == null){
-	 		return;
-	 	}
-	 	var layer = null;
-	 	for(var i = 0; i < this.layers.length;++i){
-	 		var layer = this.layers[i];
-	 		if(layer.name == name){
-	 			return layer;
-	 		}
-	 	}
-	},
-	
-	// 统一添加图层
-	addLayer : function(layer){
-		if(!isValid(layer)){
-			return "";
-		}
-
-		var l = this.getLayer(layer.name);
-		if(l != null){
-			//console.log("this map has [" + layer.name + "] layer")
-			return "this map has [" + layer.name + "] layer";
-		}
-		if(layer instanceof GeoBeans.Layer.ChartLayer ){
-			var l = this.getLayer(layer.baseLayerName);
-			if(l == null){
-				//console.log("this map does not has [" + layer.baseLayerName + "] layer");
-				return "this map does not has [" + layer.baseLayerName + "] layer";
-			}
-			if(layer instanceof GeoBeans.Layer.RangeChartLayer){
-				var index = l.featureType.getFieldIndex(layer.baseLayerField);
-				if(index == -1){
-					//console.log("layer does not has this field[" +　layer.baseLayerField + "]");
-					return "layer does not has this field[" +　layer.baseLayerField + "]";	
-				}
-			}
-			if(layer instanceof GeoBeans.Layer.HeatMapLayer){
-				var geomType = l.getGeomType();
-				if(geomType != GeoBeans.Geometry.Type.POINT){
-					//console.log("base layer is not point layer");
-					return "base layer is not point layer";
-				}
-			}
-		}
-		this.layers.push(layer);
-		if(layer instanceof GeoBeans.Layer.TileLayer){
-			if(this.baseLayer == null){
-				this.baseLayer = layer;
-			}
-		}
-		layer.setMap(this);
-	},
-
-	removeLayer : function(name,callback){
-	 	if(name == null){
-	 		return;
-	 	}
-
-	 	var layer = this.getLayer(name);
-	 	if(layer == null){
-	 		return;
-	 	}
-	 	
- 		var layers = this.layers;
- 		for(var i = 0; i < layers.length;++i){
- 			if(layer.name == layers[i].name){
- 				if(layer== this.baseLayer){
- 					this.removeBaseLayer();
- 					// this.setBaseLayer(null);
- 				}
- 				this.layers.splice(i,1);
- 				layer.destroy();
- 				layer = null;
- 				if(callback != undefined){
- 					callback("success");
- 				}
- 				break;
- 			}
- 		}
-	 },
-
 	/**
 	 * 删除底图，如果还有其他tileLayer则设置为底图
 	 * @deprecated 这个函数没有意义
@@ -324,10 +239,6 @@ GeoBeans.Map = GeoBeans.Class({
 	 		this.level = null;
 	 	}
 	 	this.baseLayerRenderer.clearRect();
-	},
-	
-	getViewer : function(){		
-		return this.viewer;
 	},
 	
 	/**
@@ -365,355 +276,40 @@ GeoBeans.Map = GeoBeans.Class({
 		
 	// },
 	
-	getBaseLayer : function(){
-		return this.baseLayer;
-	},
-	
+	// draw : function(){
+	// 	var time = new Date();
+	// 	// var delta = time.getTime() - this.authTime.getTime();
+	// 	// if(delta > 30*24*3600*1000){
+	// 	// 	alert("请联系管理员进行授权");
+	// 	// 	return;
+	// 	// }
 
+	// 	// this.renderer.save();
+	// 	this.time = new Date();
 
-	draw : function(){
-		var time = new Date();
-		// var delta = time.getTime() - this.authTime.getTime();
-		// if(delta > 30*24*3600*1000){
-		// 	alert("请联系管理员进行授权");
-		// 	return;
-		// }
+	// 	this.drawBaseLayer();
 
-		// this.renderer.save();
-		this.time = new Date();
+	// 	this.drawLayersAll();
+	// 	// this.renderer.restore();
 
-		this.drawBaseLayer();
+	// 	// Draw Interactions
+	// 	this.drawInteractions();
 
-		this.drawLayersAll();
-		// this.renderer.restore();
+	// 	//设置地图控件
+	// 	// this.mapNavControl.setZoomSlider(this.level);
+	// 	var index = this.controls.find(GeoBeans.Control.Type.NAV);
+	// 	var mapNavControl = this.controls.get(index);
+	// 	var zoom = this.getViewer().getZoom();
+	// 	mapNavControl.setZoomSlider(zoom);
 
-		// Draw Interactions
-		this.drawInteractions();
-
-		//设置地图控件
-		// this.mapNavControl.setZoomSlider(this.level);
-		var index = this.controls.find(GeoBeans.Control.Type.NAV);
-		var mapNavControl = this.controls.get(index);
-		var zoom = this.getViewer().getZoom();
-		mapNavControl.setZoomSlider(zoom);
-
-	},
-
-
+	// },
 
 	drawBaseLayerCallback:function(map){
 		
 	},
 
-
-	//绘制所有图层，较为通用，包括hitCanvas和bufferCanvas
-	drawLayersAll : function(){
-		
-		this.maplex.cleanup();
-		
-		for(var i = 0; i < this.layers.length; ++i){
-			var layer = this.layers[i];
-			if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
-				layer.load();
-			}
-		}
-		this.overlayLayer.load();
-
-		this.queryLayer.load();
-
-		this.panoramaLayer.load();
-
-		this.imageLayer.load();
-
-		for(var i = 0; i < this.layers.length; ++i){
-			var layer = this.layers[i];
-			if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
-				if(layer.flag != GeoBeans.Layer.Flag.LOADED){
-					return;
-				}				
-			}
-		}
-
-		var overlayLayerFlag = this.overlayLayer.getLoadFlag();
-		if(overlayLayerFlag != GeoBeans.Layer.Flag.LOADED){
-			return;
-		}
-
-		if(this.queryLayer.flag != GeoBeans.Layer.Flag.LOADED){
-			return;
-		}
-
-		var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
-		if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
-			return;
-		}
-
-		var imageLayerFlag = this.imageLayer.getLoadFlag();
-		if(imageLayerFlag != GeoBeans.Layer.Flag.LOADED){
-			return;
-		}
-
-		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-
-		for(var i = 0; i < this.layers.length; ++i){
-			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.RippleLayer){
-				continue;
-			}
-			if(!layer.visible || (layer instanceof GeoBeans.Layer.TileLayer)){
-				if(layer instanceof GeoBeans.Layer.ChartLayer){
-					layer.hideLegend();
-				}
-				continue;
-			}
-			var canvas = layer.canvas;
-			if(canvas != null){
-				this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-			}
-			// var hitCanvas = layer.hitCanvas;
-			// if(hitCanvas != null){
-			// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
-			// }
-
-			// var clickCanvas = layer.clickCanvas;
-			// if(clickCanvas != null){
-			// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
-			// }
-			if(layer instanceof GeoBeans.Layer.ChartLayer){
-				layer.showLegend();
-			}
-		}
-
-		var canvas = this.overlayLayer.canvas;
-		this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-
-		//queryLayer
-		var queryLayerCanvas = this.queryLayer.canvas;
-		if(queryLayerCanvas != null){
-			this.renderer.drawImage(queryLayerCanvas,0,0,queryLayerCanvas.width,queryLayerCanvas.height);
-		}
-
-
-		// 全景图
-		var panoramaLayerCanvas = this.panoramaLayer.canvas;
-		if(panoramaLayerCanvas != null){
-			this.renderer.drawImage(panoramaLayerCanvas,0,0,panoramaLayerCanvas.width,panoramaLayerCanvas.height);
-		}
-
-		// 图片图层
-		var imageLayerCanvas = this.imageLayer.canvas;
-		if(imageLayerCanvas != null){
-			this.renderer.drawImage(imageLayerCanvas,0,0,imageLayerCanvas.width,imageLayerCanvas.height);	
-		}
-
-		var infoWindow = this.getInfoWindow();
-		infoWindow.refresh();
-
-
-		this.maplex.draw();
-		var maplexCanvas = this.maplex.canvas;
-		if(maplexCanvas != null){
-			this.renderer.drawImage(maplexCanvas,0,0,maplexCanvas.width,maplexCanvas.height);
-		}
-
-	},
-	
-
-	// 有问题
-	drawBackground : function(){
-		// this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-		// if(this.baseLayer != null){
-		// 	this.baseLayer.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);	
-		// }
-		// if(this.backgroundColor != null){
-		// 	var color = this.backgroundColor.getRgba();
-		// 	this.renderer.context.fillStyle = color;
-		// 	this.renderer.context.fillRect(0,0,this.width,this.height)
-		// }
-
-
-		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-		this.baseLayerRenderer.clearRect(0,0,this.baseLayerCanvas.width,this.baseLayerCanvas.height);
-
-		this.renderer.restore();
-		this.baseLayerRenderer.restore();
-	},
-
-	// 是否可以拖拽
-	enableDrag : function(dragable){
-		var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
-		if(i>=0){
-			this.controls.get(i).enable(dragable);
-		}
-	},
-
-	// 是否可以滚动
-	enableScroll : function(flag){
-		var i = this.controls.find(GeoBeans.Control.Type.SCROLL_MAP);
-		if(i>=0){
-			this.controls.get(i).enable(flag);
-		}
-	},
-	
-
-	
-	// 保存缩略图
-	saveSnap : function(){
-		this.snap = this.renderer.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-		this.baseLayerSnap = this.baseLayerRenderer.context.getImageData(0, 0, 
-				this.baseLayerCanvas.width, this.baseLayerCanvas.height);	
-		for(var i = 0; i < this.layers.length;++i){
-			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer){
-				layer.snap = layer.renderer.context.getImageData(0,0,layer.canvas.width,layer.canvas.height);
-			}
-		}
-	},
-	
-	// 绘制缩略图
-	restoreSnap : function(){
-		if(this.snap!=null){
-			this.renderer.context.putImageData(this.snap, 0, 0);
-		}
-		if(this.baseLayerSnap != null && this.baseLayer != null){
-			this.baseLayer.renderer.context.putImageData(this.baseLayerSnap, 0, 0);	
-		}
-	},
-	
-	putSnap : function(x, y){
-		if(x=='undefined')	x =0;
-		if(y=='undefined')	y =0;
-		if(this.snap!=null){
-			this.renderer.context.putImageData(this.snap, x, y);
-		}
-
-		if(this.baseLayerSnap != null){
-			this.baseLayerRenderer.context.putImageData(this.baseLayerSnap, x, y);
-		}
-
-		for(var i = 0; i < this.layers.length;++i){
-			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer && this.level < layer.getMaxZoom()){
-				layer.renderer.clearRect();
-				layer.renderer.context.putImageData(layer.snap, x, y);
-			}
-		}
-	},
-
-	cleanupSnap : function(){
-		this.snap = null;
-		this.baseLayerSnap = null;
-		for(var i = 0; i < this.layers.length;++i){
-			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer){
-				layer.snap = null;	
-			}
-		}
-	},
-
-	drawBaseLayerSnap:function(level){
-
-		var center = this.viewer.getCenter();
-		if(center == null){
-			return;
-		}
-		var centerx = center.x;
-		var centery = center.y;
-
-		var x = null;
-		var y = null;
-		var width = null;
-		var height = null;
-		var zoom = level - this.getViewer().getZoom();
-		var zoomSize = Math.pow(2,zoom);
-		width = this.width * zoomSize;
-		height = this.height * zoomSize;
-
-		x = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.width);
-		y = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.height);
-
-		x = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.width);
-		y = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.height);
-
-		if(this.baseLayerSnap != null){
-			var baseLayerCanvasNew = $("<canvas>")
-			    .attr("width", this.baseLayerSnap.width)
-			    .attr("height", this.baseLayerSnap.height)[0];
-			baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
-			this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
-		}
-
-		if(this.snap != null){
-			var newCanvas = $("<canvas>")
-			    .attr("width", this.snap.width)
-			    .attr("height", this.snap.height)[0];
-			newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
-			this.renderer.context.drawImage(newCanvas,x,y,width,height);
-		}
-
-		for(var i = 0; i < this.layers.length;++i){
-			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer && level < layer.getMaxZoom()
-				&& level > layer.getMinZoom()){
-				var canvas = $("<canvas>")
-				    .attr("width", layer.snap.width)
-				    .attr("height", layer.snap.height)[0];
-				canvas.getContext("2d").putImageData(layer.snap, 0, 0);
-				layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
-				layer.renderer.context.drawImage(canvas,x,y,width,height);
-			}else{
-				// layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
-			}
-		}
-	},
-
-	drawLayersSnap : function(zoom){
-		var center = this.viewer.getCenter();
-		var centerx = center.x;
-		var centery = center.y;
-		var x = null;
-		var y = null;
-		var width = null;
-		var height = null;
-
-		width = this.width / zoom;
-		height = this.height / zoom;
-
-		x = this.width/2  - 1/2* width;
-		y = this.height/2 - 1/2* height;
-
-
-		if(this.snap != null){
-			var newCanvas = $("<canvas>")
-			    .attr("width", this.snap.width)
-			    .attr("height", this.snap.height)[0];
-			newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
-			this.renderer.context.drawImage(newCanvas,x,y,width,height);
-		}
-
-		if(this.baseLayerSnap != null){
-                  var baseLayerCanvasNew =
-                      $("<canvas>")
-                          .attr("width", this.baseLayerSnap.width)
-                          .attr("height", this.baseLayerSnap.height)[0];
-                        baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
-			this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
-		}
-
-		for(var i = 0; i < this.layers.length;++i){
-			var layer = this.layers[i];
-			if(layer instanceof GeoBeans.Layer.TileLayer){
-				var canvas = $("<canvas>")
-				    .attr("width", layer.snap.width)
-				    .attr("height", layer.snap.height)[0];
-				canvas.getContext("2d").putImageData(layer.snap, 0, 0);
-				layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
-				layer.renderer.context.drawImage(canvas,x,y,width,height);
-			}
-		}
-	},
-
 	// 更新瓦片
+	// @deprecated
 	_updateTile : function(layer,x,y,img_width,img_height){
 		if(layer == null){
 			return;
@@ -755,21 +351,6 @@ GeoBeans.Map = GeoBeans.Class({
 		}
 		this.baseLayerRenderer.restore();
 	},
-
-	//设置导航
-	setNavControl:function(flag){
-		var index = this.controls.find(GeoBeans.Control.Type.NAV);
-		var mapNavControl = this.controls.get(index);
-		mapNavControl.enable(flag);
-	},
-
-	// 设置导航位置
-	setNavControlPosition : function(left,top){
-		var index = this.controls.find(GeoBeans.Control.Type.NAV);
-		var mapNavControl = this.controls.get(index);
-		mapNavControl.setPosition(left,top);
-	},
-
 
 	//覆盖物操作
 	addOverlay:function(overlay){
@@ -996,7 +577,7 @@ GeoBeans.Map = GeoBeans.Class({
 	// },
 
 
-
+	// @deprecated
 	getFeatureFilter : function(layerName,filter,maxFeatures,fields,style,callback){
 		var layer = this.getLayer(layerName);
 		if(layer == null){
@@ -1007,11 +588,6 @@ GeoBeans.Map = GeoBeans.Class({
 		}
 		this.queryLayer.setLayer(layer,style);
 		layer.getFeatureFilter(filter,maxFeatures,null,fields,callback);
-	},
-
-
-	refresh : function(){
-		this.draw();
 	},
 
 	// 增加全景图
@@ -1318,6 +894,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 
 	// 拉框放大
+	// @deprecated
 	zoomIn : function(){
 		var i = this.controls.find(GeoBeans.Control.Type.ZOOM);
 		if(i < 0){
@@ -1329,6 +906,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	// 拉框缩小
+	// @deprecated
 	zoomOut : function(){
 		var i = this.controls.find(GeoBeans.Control.Type.ZOOM);
 		if(i < 0){
@@ -1340,6 +918,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	// 停止拉框
+	// @deprecated
 	endZoom : function(){
 		var i = this.controls.find(GeoBeans.Control.Type.ZOOM);
 		if(i < 0){
@@ -1428,10 +1007,123 @@ GeoBeans.Map = GeoBeans.Class({
 		this.layers.push(layer);
 		layer.setMap(this);
 		this.animationLayer = layer;
-		return this.animationLayer;
+                return this.animationLayer;
 	},
 
 });
+
+/**
+ * 根据图层名称获取图层对象
+ * @public
+ * @param  {string} name 图层名
+ * @return {GeoBeans.Layer}      图层对象。如果name非法或图层不存在，返回null。
+ */
+GeoBeans.Map.prototype.getLayer = function(name){
+	if(!isValid(name)){
+		return null;
+	}
+	var layer = null;
+	for(var i = 0; i < this.layers.length;++i){
+		var layer = this.layers[i];
+		if(layer.name == name){
+			return layer;
+		}
+	}
+	return null;
+}
+
+/**
+ * 向map上添加图层
+ * @public
+ * @param {GeoBeans.Layer} layer 图层对象
+ */
+GeoBeans.Map.prototype.addLayer = function(layer){
+	if(!isValid(layer)){
+		return "";
+	}
+
+	var l = this.getLayer(layer.name);
+	if(l != null){
+          // console.log("this map has [" + layer.name + "] layer")
+        return "this map has [" + layer.name + "] layer";
+	}
+	if(layer instanceof GeoBeans.Layer.ChartLayer ){
+		var l = this.getLayer(layer.baseLayerName);
+		if(l == null){
+			//console.log("this map does not has [" + layer.baseLayerName + "] layer");
+			return "this map does not has [" + layer.baseLayerName + "] layer";
+		}
+		if(layer instanceof GeoBeans.Layer.RangeChartLayer){
+			var index = l.featureType.getFieldIndex(layer.baseLayerField);
+			if(index == -1){
+				//console.log("layer does not has this field[" +　layer.baseLayerField + "]");
+				return "layer does not has this field[" +　layer.baseLayerField + "]";	
+			}
+		}
+		if(layer instanceof GeoBeans.Layer.HeatMapLayer){
+			var geomType = l.getGeomType();
+			if(geomType != GeoBeans.Geometry.Type.POINT){
+				//console.log("base layer is not point layer");
+				return "base layer is not point layer";
+			}
+		}
+	}
+	this.layers.push(layer);
+	if(layer instanceof GeoBeans.Layer.TileLayer){
+		if(this.baseLayer == null){
+			this.baseLayer = layer;
+		}
+	}
+	layer.setMap(this);
+}
+
+/**
+ * 向map上添加多个图层
+ * @public
+ * @param {Array<GeoBeans.Layer>} layers 图层集合
+ */
+GeoBeans.Map.prototype.addLayers = function(layers){
+	if(isValid(layers)){
+		var that = this;
+		layers.forEach(function(l){
+			that.addLayer(l);
+		})
+	}
+}
+
+/**
+ * [removeLayer description]
+ * @param  {[type]}   name     [description]
+ * @param  {Function} callback [description]
+ * @return {[type]}            [description]
+ */
+GeoBeans.Map.prototype.removeLayer = function(name,callback){
+	if(name == null){
+		return;
+	}
+
+	var layer = this.getLayer(name);
+	if(layer == null){
+		return;
+	}
+	
+	var layers = this.layers;
+	for(var i = 0; i < layers.length;++i){
+		if(layer.name == layers[i].name){
+			if(layer== this.baseLayer){
+				this.removeBaseLayer();
+				// this.setBaseLayer(null);
+			}
+			this.layers.splice(i,1);
+			layer.destroy();
+			layer = null;
+			if(callback != undefined){
+				callback("success");
+			}
+			break;
+		}
+	}
+}
 
 /**
  * 初始化地图容器
@@ -1739,21 +1431,6 @@ GeoBeans.Map.prototype.un = function(event){
 }
 
 /**
- * 添加多个图层
- * @public
- * @param {[type]} layers [description]
- * @description layers为[]类型
- */
-GeoBeans.Map.prototype.addLayers = function(layers){
-	if(isValid(layers)){
-		var that = this;
-		layers.forEach(function(l){
-			that.addLayer(l);
-		})
-	}
-}
-
-/**
  * 设置Map的底图
  * @public
  * @param {[TileLayer]} l Baselayer必须是TileLayer
@@ -1775,6 +1452,14 @@ GeoBeans.Map.prototype.setBaseLayer = function(l){
 	return false;
 }
 
+/**
+ * 获取BaseLayer
+ * @public
+ * @return {GeoBeans.Layer} Base图层对象
+ */
+GeoBeans.Map.prototype.getBaseLayer = function(){
+	return this.baseLayer;
+}
 
 /**
  * 获得map的容器对象
@@ -1806,6 +1491,63 @@ GeoBeans.Map.prototype.getHeight = function(){
 }
 
 /**
+ * 获取Map视图类
+ * @public
+ * @return {GeoBeans.Viewer} 地图视图
+ */
+GeoBeans.Map.prototype.getViewer = function(){		
+	return this.viewer;
+}
+
+/**
+ * 启用/禁止Map拖拽
+ * @public
+ * @param  {boolean} flag 是否可以拖拽
+ */
+GeoBeans.Map.prototype.enableDrag = function(flag){
+	var i = this.controls.find(GeoBeans.Control.Type.DRAG_MAP);
+	if(i>=0){
+		this.controls.get(i).enable(flag);
+	}
+}
+
+/**
+ * 启用/禁止Map滚轮缩放
+ * @public
+ * @param  {boolean} flag 是否可以滚轮缩放
+ */
+GeoBeans.Map.prototype.enableScroll = function(flag){
+	var i = this.controls.find(GeoBeans.Control.Type.SCROLL_MAP);
+	if(i>=0){
+		this.controls.get(i).enable(flag);
+	}
+}
+
+/**
+ * 启用/禁止导航控件
+ * @public
+ * @param {boolean} flag  启用/禁止标志
+ */
+GeoBeans.Map.prototype.enableNavControl = function(flag){
+	var index = this.controls.find(GeoBeans.Control.Type.NAV);
+	var mapNavControl = this.controls.get(index);
+	mapNavControl.enable(flag);
+},
+
+/**
+ * 设置导航控件的左上角位置
+ * @public
+ * @param {int} x  x坐标
+ * @param {int} y  y坐标
+ */
+GeoBeans.Map.prototype.setNavControlPosition = function(x, y){
+	var index = this.controls.find(GeoBeans.Control.Type.NAV);
+	var mapNavControl = this.controls.get(index);
+	mapNavControl.setPosition(x, y);
+},
+
+
+/**
  * 绘制有draw接口的Interactions
  * @private
  */
@@ -1825,6 +1567,7 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 
 /**
  * Map上添加Interactions
+ * @public
  * @param {GeoBeans.Interaction} interaction 向Map上添加新的interaction
  */
 GeoBeans.Map.prototype.addInteraction = function(interaction){
@@ -1841,6 +1584,44 @@ GeoBeans.Map.prototype.getInteraction = function(type){
 	return this._interactions.find(type);
 };
 
+/**
+ * 刷新地图
+ * @public
+ */
+GeoBeans.Map.prototype.refresh = function(){
+	this.draw();
+}
+
+/**
+ * 绘制地图
+ * @private
+ */
+GeoBeans.Map.prototype.draw = function(){
+	var time = new Date();
+	// var delta = time.getTime() - this.authTime.getTime();
+	// if(delta > 30*24*3600*1000){
+	// 	alert("请联系管理员进行授权");
+	// 	return;
+	// }
+
+	// this.renderer.save();
+	this.time = new Date();
+
+	this.drawBaseLayer();
+
+	this.drawLayersAll();
+	// this.renderer.restore();
+
+	// Draw Interactions
+	this.drawInteractions();
+
+	//设置地图控件
+	// this.mapNavControl.setZoomSlider(this.level);
+	var index = this.controls.find(GeoBeans.Control.Type.NAV);
+	var mapNavControl = this.controls.get(index);
+	var zoom = this.getViewer().getZoom();
+	mapNavControl.setZoomSlider(zoom);
+}
 
 
 GeoBeans.Map.prototype.drawBaseLayer = function(){
@@ -1867,4 +1648,316 @@ GeoBeans.Map.prototype.drawBaseLayer = function(){
 		this.baseLayerRenderer.clearRect();
 		this.baseLayerSnap = null;
 	}	
+}
+
+/**
+ * 绘制所有图层，较为通用，包括hitCanvas和bufferCanvas
+ * @private
+ */
+GeoBeans.Map.prototype.drawLayersAll = function(){
+	
+	this.maplex.cleanup();
+	
+	for(var i = 0; i < this.layers.length; ++i){
+		var layer = this.layers[i];
+		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
+			layer.load();
+		}
+	}
+	this.overlayLayer.load();
+
+	this.queryLayer.load();
+
+	this.panoramaLayer.load();
+
+	this.imageLayer.load();
+
+	for(var i = 0; i < this.layers.length; ++i){
+		var layer = this.layers[i];
+		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
+			if(layer.flag != GeoBeans.Layer.Flag.LOADED){
+				return;
+			}				
+		}
+	}
+
+	var overlayLayerFlag = this.overlayLayer.getLoadFlag();
+	if(overlayLayerFlag != GeoBeans.Layer.Flag.LOADED){
+		return;
+	}
+
+	if(this.queryLayer.flag != GeoBeans.Layer.Flag.LOADED){
+		return;
+	}
+
+	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
+	if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
+		return;
+	}
+
+	var imageLayerFlag = this.imageLayer.getLoadFlag();
+	if(imageLayerFlag != GeoBeans.Layer.Flag.LOADED){
+		return;
+	}
+
+	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+
+	for(var i = 0; i < this.layers.length; ++i){
+		var layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.RippleLayer){
+			continue;
+		}
+		if(!layer.visible || (layer instanceof GeoBeans.Layer.TileLayer)){
+			if(layer instanceof GeoBeans.Layer.ChartLayer){
+				layer.hideLegend();
+			}
+			continue;
+		}
+		var canvas = layer.canvas;
+		if(canvas != null){
+			this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
+		}
+		// var hitCanvas = layer.hitCanvas;
+		// if(hitCanvas != null){
+		// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+		// }
+
+		// var clickCanvas = layer.clickCanvas;
+		// if(clickCanvas != null){
+		// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
+		// }
+		if(layer instanceof GeoBeans.Layer.ChartLayer){
+			layer.showLegend();
+		}
+	}
+
+	var canvas = this.overlayLayer.canvas;
+	this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
+
+	//queryLayer
+	var queryLayerCanvas = this.queryLayer.canvas;
+	if(queryLayerCanvas != null){
+		this.renderer.drawImage(queryLayerCanvas,0,0,queryLayerCanvas.width,queryLayerCanvas.height);
+	}
+
+
+	// 全景图
+	var panoramaLayerCanvas = this.panoramaLayer.canvas;
+	if(panoramaLayerCanvas != null){
+		this.renderer.drawImage(panoramaLayerCanvas,0,0,panoramaLayerCanvas.width,panoramaLayerCanvas.height);
+	}
+
+	// 图片图层
+	var imageLayerCanvas = this.imageLayer.canvas;
+	if(imageLayerCanvas != null){
+		this.renderer.drawImage(imageLayerCanvas,0,0,imageLayerCanvas.width,imageLayerCanvas.height);	
+	}
+
+	var infoWindow = this.getInfoWindow();
+	infoWindow.refresh();
+
+
+	this.maplex.draw();
+	var maplexCanvas = this.maplex.canvas;
+	if(maplexCanvas != null){
+		this.renderer.drawImage(maplexCanvas,0,0,maplexCanvas.width,maplexCanvas.height);
+	}
+}
+
+/**
+ * 有问题
+ * @private
+ */
+GeoBeans.Map.prototype.drawBackground = function(){
+	// this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+	// if(this.baseLayer != null){
+	// 	this.baseLayer.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);	
+	// }
+	// if(this.backgroundColor != null){
+	// 	var color = this.backgroundColor.getRgba();
+	// 	this.renderer.context.fillStyle = color;
+	// 	this.renderer.context.fillRect(0,0,this.width,this.height)
+	// }
+
+
+	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+	this.baseLayerRenderer.clearRect(0,0,this.baseLayerCanvas.width,this.baseLayerCanvas.height);
+
+	this.renderer.restore();
+	this.baseLayerRenderer.restore();
+}
+
+/**
+ * 保存缩略图
+ * @private
+ */
+GeoBeans.Map.prototype.saveSnap = function(){
+	this.snap = this.renderer.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+	this.baseLayerSnap = this.baseLayerRenderer.context.getImageData(0, 0, 
+			this.baseLayerCanvas.width, this.baseLayerCanvas.height);	
+	for(var i = 0; i < this.layers.length;++i){
+		var layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer){
+			layer.snap = layer.renderer.context.getImageData(0,0,layer.canvas.width,layer.canvas.height);
+		}
+	}
+},
+
+/**
+ * 绘制缩略图
+ * @private
+ */
+GeoBeans.Map.prototype.restoreSnap = function(){
+	if(this.snap!=null){
+		this.renderer.context.putImageData(this.snap, 0, 0);
+	}
+	if(this.baseLayerSnap != null && this.baseLayer != null){
+		this.baseLayer.renderer.context.putImageData(this.baseLayerSnap, 0, 0);	
+	}
+}
+
+/**
+ * 绘制缩略图
+ * @private
+ */
+GeoBeans.Map.prototype.putSnap = function(x, y){
+	if(x=='undefined')	x =0;
+	if(y=='undefined')	y =0;
+	if(this.snap!=null){
+		this.renderer.context.putImageData(this.snap, x, y);
+	}
+
+	if(this.baseLayerSnap != null){
+		this.baseLayerRenderer.context.putImageData(this.baseLayerSnap, x, y);
+	}
+
+	for(var i = 0; i < this.layers.length;++i){
+		var layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer && this.level < layer.getMaxZoom()){
+			layer.renderer.clearRect();
+			layer.renderer.context.putImageData(layer.snap, x, y);
+		}
+	}
+}
+
+/**
+ * 清除snap
+ * @private
+ */
+GeoBeans.Map.prototype.cleanupSnap = function(){
+	this.snap = null;
+	this.baseLayerSnap = null;
+	for(var i = 0; i < this.layers.length;++i){
+		var layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer){
+			layer.snap = null;	
+		}
+	}
+}
+
+GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
+
+	var center = this.viewer.getCenter();
+	if(center == null){
+		return;
+	}
+	var centerx = center.x;
+	var centery = center.y;
+
+	var x = null;
+	var y = null;
+	var width = null;
+	var height = null;
+	var zoom = level - this.getViewer().getZoom();
+	var zoomSize = Math.pow(2,zoom);
+	width = this.width * zoomSize;
+	height = this.height * zoomSize;
+
+	x = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.width);
+	y = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.height);
+
+	x = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.width);
+	y = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.height);
+
+	if(this.baseLayerSnap != null){
+		var baseLayerCanvasNew = $("<canvas>")
+		    .attr("width", this.baseLayerSnap.width)
+		    .attr("height", this.baseLayerSnap.height)[0];
+		baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
+		this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
+	}
+
+	if(this.snap != null){
+		var newCanvas = $("<canvas>")
+		    .attr("width", this.snap.width)
+		    .attr("height", this.snap.height)[0];
+		newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
+		this.renderer.context.drawImage(newCanvas,x,y,width,height);
+	}
+
+	for(var i = 0; i < this.layers.length;++i){
+		var layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer && level < layer.getMaxZoom()
+			&& level > layer.getMinZoom()){
+			var canvas = $("<canvas>")
+			    .attr("width", layer.snap.width)
+			    .attr("height", layer.snap.height)[0];
+			canvas.getContext("2d").putImageData(layer.snap, 0, 0);
+			layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
+			layer.renderer.context.drawImage(canvas,x,y,width,height);
+		}else{
+			// layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
+		}
+	}
+}
+
+/**
+ * 绘制Layer的snap
+ * @private
+ * @deprecated 
+ */
+GeoBeans.Map.prototype.drawLayersSnap = function(zoom){
+	var center = this.viewer.getCenter();
+	var centerx = center.x;
+	var centery = center.y;
+	var x = null;
+	var y = null;
+	var width = null;
+	var height = null;
+
+	width = this.width / zoom;
+	height = this.height / zoom;
+
+	x = this.width/2  - 1/2* width;
+	y = this.height/2 - 1/2* height;
+
+
+	if(this.snap != null){
+		var newCanvas = $("<canvas>")
+		    .attr("width", this.snap.width)
+		    .attr("height", this.snap.height)[0];
+		newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
+		this.renderer.context.drawImage(newCanvas,x,y,width,height);
+	}
+
+	if(this.baseLayerSnap != null){
+              var baseLayerCanvasNew =
+                  $("<canvas>")
+                      .attr("width", this.baseLayerSnap.width)
+                      .attr("height", this.baseLayerSnap.height)[0];
+                    baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
+		this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
+	}
+
+	for(var i = 0; i < this.layers.length;++i){
+		var layer = this.layers[i];
+		if(layer instanceof GeoBeans.Layer.TileLayer){
+			var canvas = $("<canvas>")
+			    .attr("width", layer.snap.width)
+			    .attr("height", layer.snap.height)[0];
+			canvas.getContext("2d").putImageData(layer.snap, 0, 0);
+			layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
+			layer.renderer.context.drawImage(canvas,x,y,width,height);
+		}
+	}
 }

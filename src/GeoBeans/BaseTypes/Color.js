@@ -9,13 +9,13 @@ GeoBeans.Color = GeoBeans.Class({
 	b : null,
 	a : null,
 
-	initialize = function(){
+	initialize : function(){
 		this.r = parseInt(Math.random()*255);
 		this.g = parseInt(Math.random()*255);
 		this.b = parseInt(Math.random()*255);
 		this.a = Math.random();
 	}
-}
+});
 
 /**
  * [set description]

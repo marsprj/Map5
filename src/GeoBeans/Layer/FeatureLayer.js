@@ -78,7 +78,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 	
 	addFeature : function(feature){
-		if(isValid(feature){
+		if(isValid(feature)){
 			this.features.push(feature);
 		}
 	},
