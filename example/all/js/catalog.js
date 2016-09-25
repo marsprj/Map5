@@ -95,6 +95,12 @@ var g_catalog = [
 			},{
 				"name" : "(*)Bing图层(待实现)",
 				"link" : "layer/layer_add_bing.html"
+			},{
+				"name" : "(*)GeoJSON图层",
+				"link" : "layer/layer_add_geojson.html"
+			},{
+				"name" : "(*)KML图层",
+				"link" : "layer/layer_add_kml.html"
 			}
 		]
 	},{
