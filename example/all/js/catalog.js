@@ -173,7 +173,7 @@ var g_catalog = [
 				"name" : "(*)ID查询",
 				"link" : "query/filter_id.html"
 			},{
-				"name" : "(*)比较查询",
+				"name" : "二元比较查询",
 				"link" : "query/filter_binary_comparision.html"
 			},{
 				"name" : "(*)Between查询",
