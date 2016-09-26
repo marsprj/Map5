@@ -1655,11 +1655,8 @@ GeoBeans.Map.prototype.draw = function(){
 	this.drawSelection();
 
 	//设置地图控件
-	// this.mapNavControl.setZoomSlider(this.level);
-	var index = this.controls.find(GeoBeans.Control.Type.NAV);
-	var mapNavControl = this.controls.get(index);
-	var zoom = this.getViewer().getZoom();
-	mapNavControl.setZoomSlider(zoom);
+	this.drawNavControl();
+	
 }
 
 
@@ -2000,3 +1997,14 @@ GeoBeans.Map.prototype.drawLayersSnap = function(zoom){
 		}
 	}
 }
+
+/**
+ * 绘制地图的导航条
+ * @private
+ */
+GeoBeans.Map.prototype.drawNavControl = function(){
+	var index = this.controls.find(GeoBeans.Control.Type.NAV);
+	var mapNavControl = this.controls.get(index);
+	var zoom = this.getViewer().getZoom();
+	mapNavControl.setZoomSlider(zoom);
+};
