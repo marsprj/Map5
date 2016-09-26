@@ -171,3 +171,12 @@ GeoBeans.Interaction.Rotate.prototype.stop = function(){
 	}
 	this._listenEvent = null;
 }
+
+/**
+ * 返回是否已经在交互的状态
+ * @private
+ * @return {bool} 交互状态
+ */
+GeoBeans.Interaction.Rotate.prototype.getRotateStatus = function(){
+	return this._rotating;
+};
