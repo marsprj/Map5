@@ -58,7 +58,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 
-
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
@@ -93,6 +92,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 <!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
 <style type="text/css">
@@ -152,7 +152,7 @@
 			"layer" : wfsLayer
 		});
 		//select.attach(mapObj);
-		select.onchange(onSelectionChange);
+		//select.onchange(onSelectionChange);
 		mapObj.addInteraction(select);
 		//var select = new GeoBeans.Interaction(null);
 	}

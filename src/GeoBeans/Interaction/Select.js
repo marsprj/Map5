@@ -17,14 +17,9 @@ GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 	_map	: null,
 	_layer	: null,
 	_condition: GeoBeans.Interaction.SelectType.CLICK,
-	_onMouseDown : null,
-	_selection	 : [],
+	_onMouseDown : null,	
 	_onchange    : null,
-	_show		 : true,
-	_symbolizer	 : null,
-	_symbolizers : null,
-	_renderer	 : null,
-	_canvas		 : null,
+	_selection	 : [],
 
 	initialize : function(options){
 		//GeoBeans.Class.prototype.initialize.apply(this, arguments);
@@ -43,8 +38,8 @@ GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 		//this._renderer = this._map.renderer;
 
 		this.init();
-		this.initRenderer();
-		this.loadSymbols();
+		// this.initRenderer();
+		// this.loadSymbols();
 	},
 	
 	destory : function(){
@@ -98,8 +93,8 @@ GeoBeans.Interaction.Select.prototype.init = function(){
 
 /**
  * 初始化renderer
+ * @deprecated 
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Interaction.Select.prototype.initRenderer = function(){
 	this._canvas = $("<canvas>")
@@ -129,7 +124,9 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 		var handler = {
 			target : that,
 			execute : function(features){
-				this.target.setSelection(features);
+				//this.target.setSelection(features);
+				var selection = this.target._map.getSelection();
+				selection.setFeatures(features);
 			}
 		}
 		that._layer.query(query, handler);
@@ -198,7 +195,8 @@ GeoBeans.Interaction.Select.prototype.selectByCircle = function(){
 			var handler = {
 				target : that,
 				execute : function(features){
-					this.target.setSelection(features);
+					var selection = this.target._map.getSelection();
+					selection.setFeatures(features);
 				}
 			}
 			that._layer.query(query, handler);
@@ -277,7 +275,8 @@ GeoBeans.Interaction.Select.prototype.selectByBBox = function(){
 			var handler = {
 				target : that,
 				execute : function(features){
-					this.target.setSelection(features);
+					var selection = this.target._map.getSelection();
+					selection.setFeatures(features);
 				}
 			}
 			that._layer.query(query, handler);
@@ -374,109 +373,6 @@ GeoBeans.Interaction.Select.prototype.createDistanceBufferFilterQuery = function
 	return query;
 }
 
-/**
- * 设置是否在地图上显示选择集
- * @public
- * @param  {[type]} f [description]
- * @return {[type]}   [description]
- */
-GeoBeans.Interaction.Select.prototype.show = function(f){
-	this._show = f;
-}
-
-/**
- * 返回是否在地图上显示选择集
- * @public
- * @return {Boolean} [description]
- */
-GeoBeans.Interaction.Select.prototype.isShow = function(){
-	return this._show;
-}
-
-/**
- * 绘制选择集
- * @private
- * @return {[type]} [description]
- */
-GeoBeans.Interaction.Select.prototype.draw = function(){
-
-	//绘制选择集
-	var viewer = this._map.getViewer();
-	var w = viewer.getWindowWidth();
-	var h= viewer.getWindowHeight();
-	this._canvas.width = w;
-	this._canvas.height= h;
-	this._renderer.clearRect(0,0,w,h);
-
-	if(!this._show){
-		return;
-	}
-
-	if(!isValid(this._selection)){
-		return;
-	}
-
-	if(this._selection.length==0){
-		return;
-	}
-
-
-	
-	var symbolizer = this.getSymbolizer(this._selection[0].geometry.type);
-	this._renderer.setSymbolizer(symbolizer);
-	
-	var count = this._selection.length;
-	for(var i=0; i<count; i++){
-		var feature = this._selection[i];
-		this._renderer.draw(feature, symbolizer, viewer);
-	}
-}
-
-/**
- * [loadSymbols description]
- * @private
- * @return {[type]} [description]
- */
-GeoBeans.Interaction.Select.prototype.loadSymbols = function(){
-
-	var point = new GeoBeans.Symbolizer.PointSymbolizer();
-	point.size = 6;
-	point.fill.color.set(255, 0, 0,0.6);
-	point.stroke.color.set(0,255, 0,0.6);
-
-	var line  = new GeoBeans.Symbolizer.LineSymbolizer();
-	line.stroke.color.set(0,0,255,0.6);
-	line.stroke.width = 3;
-
-	var polygon = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	polygon.fill.color.set(0, 255, 0,0.6);
-	polygon.stroke.color.set(255, 0, 0,0.6);
-	polygon.stroke.width = 1;;
-
-	// this._symbolizers = {
-	// 	GeoBeans.Geometry.Type.POINT 		: point,
-	// 	GeoBeans.Geometry.Type.LINESTRING	: line,
-	// 	GeoBeans.Geometry.Type.POLYGON		: polygon
-	// };
-	this._symbolizers = {
-		"Point" 		: point,
-		"LineString"	: line,
-		"Polygon"		: polygon,
-		"MultiPoint" 		: point,
-		"MultiLineString"	: line,
-		"MultiPolygon"		: polygon
-	};
-}
-
-/**
- * [getSymbolizer description]
- * @private
- * @param  {[type]} type [description]
- * @return {[type]}      [description]
- */
-GeoBeans.Interaction.Select.prototype.getSymbolizer = function(type){
-	return this._symbolizers[type];
-}
 
 /**
  * 查询结果回调函数，处理查询到的features。然后将features，设置为选择集合_selections，用于高亮显示。

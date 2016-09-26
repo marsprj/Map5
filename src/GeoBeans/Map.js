@@ -41,6 +41,12 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	width : null,	
 	height : null,
+
+	/**
+	 * 选择集
+	 * @private
+	 **/
+	_selection : null,
 	
 	/**
 	 * level有默认值null
@@ -171,6 +177,8 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* Layers End
 		/**************************************************************************************/
+
+		this.initSelection();
 	
 		this.maplex = new GeoBeans.Maplex(this);
 
@@ -1229,6 +1237,22 @@ GeoBeans.Map.prototype.initLayers = function(){
 	this.queryLayer.setMap(this);
 }
 
+/**
+ * 初始化选择集
+ * @private
+ */
+GeoBeans.Map.prototype.initSelection = function(){
+	this._selection = new GeoBeans.Selection(this);
+}
+
+/**
+ * 获得选择集对象
+ * @public 
+ * @return {GeoBeans.Selection} 选择集对象
+ */
+GeoBeans.Map.prototype.getSelection = function(){
+	return this._selection;
+}
 		
 /**
  * 初始化地图大小改变
@@ -1566,6 +1590,19 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 }
 
 /**
+ * 绘制有draw接口的Interactions
+ * @private
+ */
+GeoBeans.Map.prototype.drawSelection = function(){
+
+	this._selection.refresh();
+	this.renderer.drawImage(this._selection._canvas,
+							0,0,
+							this._selection._canvas.width,
+							this._selection._canvas.height);
+}
+
+/**
  * Map上添加Interactions
  * @public
  * @param {GeoBeans.Interaction} interaction 向Map上添加新的interaction
@@ -1614,6 +1651,8 @@ GeoBeans.Map.prototype.draw = function(){
 
 	// Draw Interactions
 	this.drawInteractions();
+
+	this.drawSelection();
 
 	//设置地图控件
 	// this.mapNavControl.setZoomSlider(this.level);
