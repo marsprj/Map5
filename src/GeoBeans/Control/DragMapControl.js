@@ -30,7 +30,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 
 			// 是否在rotate交互
 			var interaction = that.map.getInteraction(GeoBeans.Interaction.Type.ROTATE);
-			if(interaction != null && interaction.getRotateStatus){
+			if(interaction != null && interaction.getRotateStatus()){
 				return;
 			}
 			e.preventDefault();
