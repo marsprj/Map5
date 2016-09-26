@@ -22,9 +22,10 @@ GeoBeans.Query = GeoBeans.Class({
 		if(isValid(options.fields)){
 			this._fields = options.fields;
 		}
-		if(isValid(options.maxFeatures)){
-			this._maxFeatures = options.maxFeatures;
-		}
+		// if(isValid(options.maxFeatures)){
+		// 	this._maxFeatures = options.maxFeatures;
+		// }
+		this._maxFeatures = options.maxFeatures;
 		if(isValid(options.offset)){
 			this._offset = options.offset;
 		}

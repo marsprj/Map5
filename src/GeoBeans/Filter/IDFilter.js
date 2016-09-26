@@ -15,5 +15,9 @@ GeoBeans.Filter.IDFilter = GeoBeans.Class(GeoBeans.Filter,{
 
 	addID : function(id){
 		this.ids.push(id);
-	}
+	},
+
+	getIDs : function(){
+		return this.ids;
+	},
 });

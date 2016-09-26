@@ -35,7 +35,27 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 	},
 
 	writeIDFilter : function(xml,idFilter){
+		if(xml == null || idFilter == null){
+			return "";
+		}
 
+		var filterXML = null;
+		var ids = idFilter.getIDs();
+		for(var i = 0; i < ids.length;++i){
+			var id = ids[i];
+			if(id == null){
+				continue;
+			}
+			if(filterXML == null){
+				filterXML = xml.createElement("ogc:FeatureId");
+				$(filterXML).attr("fid",id);
+			}else{
+				var idFilterXML = xml.createElement("ogc:FeatureId");
+				$(idFilterXML).attr("fid",id);
+				$(filterXML).append(idFilterXML);
+			}
+		}
+		return filterXML;
 	},
 
 	writeComparsionFilter : function(xml,comparisionFilter){

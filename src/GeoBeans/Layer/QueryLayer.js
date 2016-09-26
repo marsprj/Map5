@@ -56,7 +56,7 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 
 			if(rule.symbolizer != null){
 				if(rule.symbolizer.symbol!=null){
-					this.renderer.drawIcons(features, rule.symbolizer, this.map.getMapViewer());
+					this.renderer.drawIcons(features, rule.symbolizer, this.map.getViewer());
 				}else{
 					this.drawFeatures(features, rule.symbolizer);
 				}	

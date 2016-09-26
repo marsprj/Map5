@@ -1132,7 +1132,7 @@ GeoBeans.FeatureType.prototype.writeQuery = function(query, mapName, sourceName)
 	/* Query Node
 	/**************************************************************/
 	// create query node
-	var qnode = doc.createElement("wfs.Query");
+	var qnode = doc.createElement("wfs:Query");
 	$(qnode).attr("typeName", this.name);
 	$(root).append(qnode);
 
@@ -1140,7 +1140,7 @@ GeoBeans.FeatureType.prototype.writeQuery = function(query, mapName, sourceName)
 	var fields = query.getFields();
 	for (f in fields){
 		fn = doc.createElement("wfs:PropertyName");
-		$(fn).text(f)
+		$(fn).text(fields[f]);
 		$(qnode).append(fn);
 	}
 
