@@ -99,6 +99,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 <!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
 <style type="text/css">
@@ -205,6 +206,9 @@
 			var name = feature.getValue("name"); 
 			console.log(name + " : " + populat);
 		}
+
+		var selection = mapObj.getSelection();
+		selection.setFeatures(features);
 	}	
 </script>
 <title>Map5 -- 查询设置最大的返回的features个数</title>

@@ -9,13 +9,13 @@ var g_catalog = [
 				"name" : "(*)关闭地图",
 				"link" : "map/map_close.html"
 			},{
-				"name" : "拖拽地图",
+				"name" : "(*)拖拽地图",
 				"link" : "map/map_drag.html"
 			},{
-				"name" : "滚轮缩放",
+				"name" : "(*)滚轮缩放",
 				"link" : "map/map_scroll.html"
 			},{
-				"name" : "拉框缩放",
+				"name" : "(*)拉框缩放",
 				"link" : "map/map_zoom.html"
 			}
 		]

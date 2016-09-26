@@ -100,6 +100,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 <!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
 <style type="text/css">
@@ -203,6 +204,9 @@
 			var fid = feature.fid;
 			console.log(fid);
 		}
+
+		var selection = mapObj.getSelection();
+		selection.setFeatures(features);
 	}	
 </script>
 <title>Map5 -- 相离查询</title>
