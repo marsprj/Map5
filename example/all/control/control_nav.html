@@ -16,7 +16,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
 
 <!--View-->
-<script type="text/javascript" src="../../../src/GeoBeans/Render/Viewer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Geometry-->
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry.js"></script>
@@ -109,12 +109,12 @@
 	}
 
 	function show(){
-		mapObj.setNavControl(true);
+		mapObj.enableNavControl(true);
 	}
 
 	function hide(){
 
-		mapObj.setNavControl(false);
+		mapObj.enableNavControl(false);
 	}
 	function setPosition(){
 		// 默认位置为右下角

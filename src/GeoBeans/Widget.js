@@ -25,7 +25,7 @@ GeoBeans.Widget = GeoBeans.Class({
 	/**
 	 * 创建widget的div容器
 	 * @type {函数}
-	 * @return {div element object} [返回创建widget的div容器对象]
+	 * @return {div element object} 返回创建widget的div容器对象
 	 */
 	createContainer : null,
 	
@@ -64,7 +64,8 @@ GeoBeans.Widget.Type = {
 
 /**
  * 获得widget的宽度
- * @return {[_type]} widget的宽度
+ * @public
+ * @return {int} widget的宽度
  */
 GeoBeans.Widget.prototype.getWidth = function(){
 	return this._width;
@@ -72,7 +73,8 @@ GeoBeans.Widget.prototype.getWidth = function(){
 
 /**
  * 获得widget的高度
- * @return {[_type]} widget的高度
+ * @public
+ * @return {int} widget的高度
  */
 GeoBeans.Widget.prototype.getHeight = function(){
 	return this._height;
@@ -80,7 +82,8 @@ GeoBeans.Widget.prototype.getHeight = function(){
 
 /**
  * 获得widget的位置
- * @return {[_type]} [description]
+ * @public
+ * @return {GeoBeans.Geometry.Point} widget的位置
  */
 GeoBeans.Widget.prototype.getPosition = function(){
 	return this._pos;
@@ -88,7 +91,8 @@ GeoBeans.Widget.prototype.getPosition = function(){
 
 /**
  * 设置widget的位置
- * @param {Point} pos [widget左上角的位置]
+ * @public
+ * @param {GeoBeans.Geometry.Point} pos widget左上角的位置
  */
 GeoBeans.Widget.prototype.setPosition = function(pos){
 	this._pos = pos;
