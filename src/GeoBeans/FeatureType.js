@@ -1177,11 +1177,40 @@ GeoBeans.FeatureType.prototype.writeOrderby = function(orderby, xmlDoc){
 	$(onode).attr("order", orderby.isAsc() ? "asc" : "desc");
 
 	var fields = orderby.getFields();
-	for (field in fields){
-		fnode = xml.createElement("wfs:PropertyName");
-		$(fnode).text(field);
+	for (f in fields){
+		fnode = xmlDoc.createElement("wfs:PropertyName");
+		$(fnode).text(fields[f]);
 		$(onode).append(fnode);
 	}
 
 	return onode;
 }
+
+/**
+ * 生成Orderby的XML格式--  测试不可用
+ * @param  {[type]} orderby [description]
+ * @param  {[type]} xmlDoc  [description]
+ * @return {[type]}         [description]
+ */
+// GeoBeans.FeatureType.prototype.writeOrderby = function(orderby, xmlDoc){
+// 	if(!isValid(orderby)){
+// 		return null;
+// 	}
+// 	var onode = xmlDoc.createElement("ogc:SortBy");
+
+
+// 	var fields = orderby.getFields();
+// 	for (f in fields){
+// 		var snode = xmlDoc.createElement("ogc:SortProperty");
+// 		var fnode = xmlDoc.createElement("wfs:PropertyName");
+// 		$(fnode).text(fields[f]);
+// 		$(snode).append(fnode);
+
+// 		var sonode = xmlDoc.createElement("ogc:SortOrder");
+// 		$(sonode).text(orderby.isAsc() ? "ASC" : "DESC");
+// 		$(snode).append(sonode);
+// 		$(onode).append(snode);
+// 	}
+
+// 	return onode;
+// }

@@ -173,50 +173,50 @@ var g_catalog = [
 				"name" : "(*)ID查询",
 				"link" : "query/filter_id.html"
 			},{
-				"name" : "(*)比较查询",
+				"name" : "比较查询",
 				"link" : "query/filter_binary_comparision.html"
 			},{
-				"name" : "(*)Between查询",
+				"name" : "Between查询",
 				"link" : "query/filter_between.html"
 			},{
-				"name" : "(*)Like查询",
+				"name" : "Like查询",
 				"link" : "query/filter_like.html"
 			},{
-				"name" : "(*)IsNull查询",
+				"name" : "IsNull查询",
 				"link" : "query/filter_isnull.html"
 			},{
-				"name" : "(*)逻辑查询",
+				"name" : "逻辑查询",
 				"link" : "query/filter_logic.html"
 			},{
-				"name" : "(*)矩形查询",
-				"link" : "query_spatial_bbox.html"
+				"name" : "矩形查询",
+				"link" : "query/query_spatial_bbox.html"
 			},{
-				"name" : "(*)相交查询",
-				"link" : "query_spatial_intersects.html"
+				"name" : "相交查询",
+				"link" : "query/query_spatial_intersects.html"
 			},{
-				"name" : "(*)相离查询",
-				"link" : "query_spatial_disjoint.html"
+				"name" : "相离查询",
+				"link" : "query/query_spatial_disjoint.html"
 			},{
-				"name" : "(*)包含查询",
-				"link" : "query_spatial_contain.html"
+				"name" : "包含查询",
+				"link" : "query/query_spatial_contain.html"
 			},{
-				"name" : "(*)包含于查询",
-				"link" : "query_spatial_within.html"
+				"name" : "包含于查询",
+				"link" : "query/query_spatial_within.html"
 			},{
-				"name" : "(*)周边查询",
-				"link" : "query_spatial_dwithin.html"
+				"name" : "周边查询",
+				"link" : "query/query_spatial_dwithin.html"
 			},{
-				"name" : "(*)设置返回的字段",
-				"link" : "query_set_fields.html"
+				"name" : "设置返回的字段",
+				"link" : "query/query_set_fields.html"
 			},{
-				"name" : "(*)设置最大的返回的features个数",
-				"link" : "query_set_maxfeatures.html"
+				"name" : "设置最大的返回的features个数",
+				"link" : "query/query_set_maxfeatures.html"
 			},{
 				"name" : "(*)设置返回结果的偏移量",
 				"link" : "query_set_offset.html"
 			},{
 				"name" : "(*)设置返回结果排序",
-				"link" : "query_set_orderbt.html"
+				"link" : "query/query_set_orderby.html"
 			}
 		]
 	},{

@@ -30,7 +30,7 @@ GeoBeans.Query.OrderBy = GeoBeans.Class({
 	},
 
 	getFields : function(){
-		return fields;
+		return this.fields;
 	},
 
 	getFieldCount : function(){
@@ -42,7 +42,7 @@ GeoBeans.Query.OrderBy = GeoBeans.Class({
 	},
 
 	isAsc : function(){
-		return this.order == GeoBeans.OrderBy.OrderType.OrderAsc;
+		return this.order == GeoBeans.Query.OrderBy.OrderType.OrderAsc;
 	}
 
 });
