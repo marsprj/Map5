@@ -74,6 +74,7 @@ if(platform == "win32"){
 			'src/GeoBeans/Format/*.js',
 			'src/GeoBeans/Geometry/*.js',
 			'src/GeoBeans/Geometry/*/*.js',
+			'src/GeoBeans/Interaction/*.js',
 			'src/GeoBeans/Layer/DBLayer.js',
 			'src/GeoBeans/Layer/FeatureDBLayer.js',
 			'src/GeoBeans/Layer/RasterDBLayer.js',
