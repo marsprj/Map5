@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
@@ -51,10 +52,10 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/PropertyName.js"></script>
@@ -69,6 +70,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WMS/WMSWorkspace.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
@@ -83,6 +85,9 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/MapLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer/WMSLayer.js"></script>
 <!--Interaction-->
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
@@ -100,153 +105,110 @@
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
+<script type="text/javascript" src="../js/initMap.js"></script>
+
 <style type="text/css">
 	body{
 		margin: 0px;
 	}
 </style>
 <script type="text/javascript">
-	
-	var mapObj = null;
+	 var vector = null;
 	function init(){
-		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		
-		// 2、初始化地图变量，参数分别为:
-		// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
-		mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
-		if(mapObj == null){
-			return;
-		}
-		
-		// 3、添加一个底图
-		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
-		mapObj.addLayer(baselayer);
-		var server = "/geoserver/radi/ows?";
-		
-		// 4、添加WFS图层
-		wfsLayer = new GeoBeans.Layer.WFSLayer("country", 		//在地图中的名称
-													server, 		//服务器
-													"radi:country_2", //图层在geoserver的名称
-													"GML2"); 		// 格式
-		mapObj.addLayer(wfsLayer);
-
-
-		// 5、设置中心点和显示级别
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		var viewer = mapObj.getViewer();	
-		viewer.setZoomCenter(zoom,center);
+		loadMap();
+		vector = mapObj.getLayer("country");
 	}
-
-/**
-	属性查询
-	属性查询主要指的是与属性有关的比较查询，具体支持的类型有：
-	equal、notequal、lessthan、greaterthan、lessthanorequal、greaterthanorequal、
-	islike、isnull、isbetween等。
-	属性查询filter基类是GeoBeans.Filter.ComparisionFilter
-
-
-	操作符包括以下几种类型：
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual  : == 
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual  : != 
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan : <
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan : >
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual : <= 
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual  : >=
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike : like
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull  : is null
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween  : is between
-
-	其中GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual  : == 
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual  : != 
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan : <
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan : >
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual : <= 
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual  : >=
-	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike : like
-	上述六个查询统一为GeoBeans.Filter.BinaryComparisionFilter
-
-	var filter = new GeoBeans.BinaryComparisionFilter(operator,expression1,expression2);
-	1、其中operator为操作符，同查询类型一致。即为上述六种操作符
-	2、expression1和expression2为查询属性和属性值，两者位置可以互换
-	3、查询属性表示
-	var prop = new GeoBeans.Expression.PropertyName();
-	prop.setName("populat");
-	populat 为查询的字段
-	4、查询值表示
-	var literal = new GeoBeans.Expression.Literal();
-	literal.setValue("100000");
-	100000 为查询的数值
-**/
-	function query(){
-
-		// 1、定义查询操作符
-		var operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
-
-		// 2、定义字段
+	function onQuery(){
+		//获取运算符
+		var oper = document.getElementById("oper").value;
+		//创建查询对象
+		var query = createQuery(oper);
+		//定义查询结果回调函数,
+		//execute为回调函数接口
+		var handler = {
+			execute : query_succeed
+		}
+		//执行查询
+		vector.query(query, handler);
+	}
+	function createQuery(oper){
+		// 1、定义字段
 		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName("continent");
-
-		// 3、定义查询值
+		// 2、定义查询值
 		var literal = new GeoBeans.Expression.Literal();
 		literal.setValue("Africa");
-
-		// 4、定义查询过滤条件
+		// 3、定义查询过滤条件
 		// 第一个参数为查询操作符
 		// 第二个和第三个分别为字段和查询值
-		var filter = new GeoBeans.Filter.BinaryComparisionFilter(operator,prop,literal);
-
-		// 5、定义查询类
+		var filter = new GeoBeans.Filter.BinaryComparisionFilter(
+							oper,
+							prop,
+							literal);
+		// 4、创建查询对象
 		var query = new GeoBeans.Query({
-			typeName : null,
-			fields : null,		// 字段
-			maxFeatures : null, //返回结果数
-			offset : null,		//偏移量
-			orderby : null,		//排序类
-			filter : filter 	//查询过滤条件
+			"typeName"  : vector.getName(),
+			"filter"	: filter
 		});
-
-		// 6、定义查询结果
-		var handler = {
-			target : this,
-			execute : queryFeatures_callback //查询回调函数
-		};
-
-		// 7、图层查询
-		wfsLayer.query(query,handler);
+		return query;
 	}
-
-	// 查询结果回调函数
-	function queryFeatures_callback(features){
+	//查询结果回调函数
+	//参数为features集合
+	function query_succeed(features){
 		
-		// 返回查询的features
-		if(!$.isArray(features)){
+		if(features.length==0){
+			document.getElementById("result").innerHTML = "";
 			return;
 		}
-
-		$("#result span").html(features.length);
-		for(var i = 0; i< features.length;++i){
-
-			var feature = features[i];
+		var fields = features[0].getFeatureType().getFields();
+		var nfield = fields.length;
+		var html = "<table border='1'>";
+		features.forEach(function(f){
+			html += "<tr>";
+			fields.forEach(function(field){
+				if(field.type!=GeoBeans.FieldType.GEOMETRY){
+					html += "<td>";
+					html += f.getValue(field.name);
+					html += "</td>"
+				}
+			})
 			
-			// 查询id
-			var fid = feature.fid;
-			console.log(fid);
-		}
-	}	
+			html += "</tr>";			
+		})
+		html += "</table>";
+		document.getElementById("result").innerHTML = html;
+	}
 </script>
-<title>Map5 -- 比较查询</title>
+<title>查询:二元比较查询</title>
 <body onload="init()">
-	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px;">
+	<div>
+		<span>比较运算符</span>
+		<select id="oper">
+			<option value="equal">相等</option>
+			<option value="notequal">不相等</option>
+			<option value="lessthan">小于</option>
+			<option value="greaterthan">大于</option>
+			<option value="lessthanorequal">小于等于</option>
+			<option value="greaterthanorequal">大于等于</option>
+		</select>
+		<button onclick="onQuery()">查询</button>
 	</div>
-	<button onclick="query()">查询</button>
-	<br/>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px;"></div>
+	
+<!-- 	<button onclick="queryFeatures_equal()">equal</button>
+	<button onclick="queryFeatures_notequal()">notequal</button>
+	<button onclick="queryFeatures_lessthan()">lessthan</button>
+	<button onclick="queryFeatures_greaterthan()">greaterthan</button>
+	<button onclick="queryFeatures_lessthanorequal()">lessthanorequal</button>
+	<button onclick="queryFeatures_greaterthanorequal()">greaterthanorequal</button>
+	<button onclick="queryFeatures_like()">like</button>
+	<button onclick="queryFeatures_isnull()">null</button>
+	<button onclick="queryFeatures_between()">between</button>
+	
+	<button onclick="clearQuery()">停止查询</button>
+	
+	<br/> -->
 	<div id="result">
-		返回的结果个数：<span></span>
+		<!-- 返回的结果个数：<span></span> -->
 	</div>
 </body>
-	
