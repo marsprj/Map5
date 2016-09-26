@@ -142,11 +142,25 @@
 		
 		alert("当前地图的级别是:" + level);
 	}
+
+	function setMaxZoom(){
+		var viewer = mapObj.getViewer();
+
+		viewer.setMaxZoom(10);
+	}
+
+	function setMinZoom(){
+		var viewer = mapObj.getViewer();
+
+		viewer.setMinZoom(3);
+	}
 </script>
 <title>Map5 -- 初始化地图</title>
 <body onload="init()">
 	<button onclick="getZoom()">显示级别</button>
 	<button onclick="setZoom()">设置级别</button>
+	<button onclick="setMaxZoom()">设置最大显示级别</button>
+	<button onclick="setMinZoom()">设置最小显示级别</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
 	</div>
 </body>

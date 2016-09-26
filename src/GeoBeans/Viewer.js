@@ -15,7 +15,8 @@ GeoBeans.Viewer = GeoBeans.Class({
 	_rotation : 0.0,
 	_resolution : 1.0,
 
-	_transformation : null,
+	_minZoom : null,
+	_maxZoom : null,
 	
 	
 	initialize : function(map, options){
@@ -526,6 +527,10 @@ GeoBeans.Viewer.prototype.update = function(){
  * @return {int} 最大显示级别
  */
 GeoBeans.Viewer.prototype.getMaxZoom = function(){
+
+	if(this._maxZoom != null){
+		return this._maxZoom;
+	}
 	var map = this._map;
 
 	var layers = map.layers;
@@ -552,6 +557,9 @@ GeoBeans.Viewer.prototype.getMaxZoom = function(){
  * @return {int} 最小显示级别
  */
 GeoBeans.Viewer.prototype.getMinZoom = function(){
+	if(this._minZoom != null){
+		return this._minZoom;
+	}
 	var map = this._map;
 
 	var layers = map.layers;
@@ -572,3 +580,21 @@ GeoBeans.Viewer.prototype.getMinZoom = function(){
 	}
 	return minZoom;
 };
+
+/**
+ * 设置最大的显示级别
+ * @public
+ * @param {int} zoom 最大显示级别
+ */
+GeoBeans.Viewer.prototype.setMaxZoom = function(zoom){
+	this._maxZoom = zoom;
+};
+
+/**
+ * 设置最小的显示级别
+ * @public
+ * @param {int} zoom 最小的显示级别
+ */
+GeoBeans.Viewer.prototype.setMinZoom = function(zoom){
+	this._minZoom = zoom;
+}
