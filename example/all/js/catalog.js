@@ -153,10 +153,10 @@ var g_catalog = [
 				"name" : "点要素",
 				"link" : "feature/feature_point.html"
 			},{
-				"name" : "(*)线要素",
+				"name" : "线要素",
 				"link" : "feature/feature_line.html"
 			},{
-				"name" : "(*)面要素",
+				"name" : "面要素",
 				"link" : "feature/feature_polygon.html"
 			},{
 				"name" : "(*)加载GeoJSON数据",
@@ -223,29 +223,29 @@ var g_catalog = [
 		"name" : "图层样式",
 		"items":[
 			{
-				"name" : "(*)点样式(简单)",
-				"link" : "style_simple_point.html"
+				"name" : "点样式(简单)",
+				"link" : "style/style_simple_point.html"
 			},{
 				"name" : "(*)点样式(图片)",
-				"link" : "style_pic_point.html"
+				"link" : "style/style_pic_point.html"
 			},{
-				"name" : "(*)线样式(简单)",
-				"link" : "style_simple_line.html"
+				"name" : "线样式(简单)",
+				"link" : "style/style_simple_line.html"
 			},{
 				"name" : "(*)面样式(简单)",
-				"link" : "style_simple_polygon.html"
+				"link" : "style/style_simple_polygon.html"
 			},{
 				"name" : "(*)面样式(填充)",
-				"link" : "style_fill_polygon.html"
+				"link" : "style/style_fill_polygon.html"
 			},{
 				"name" : "(*)文字样式(点)",
-				"link" : "style_text_point.html"
+				"link" : "style/style_text_point.html"
 			},{
 				"name" : "(*)文字样式(线)",
-				"link" : "style_text_line.html"
+				"link" : "style/style_text_line.html"
 			},{
 				"name" : "(*)文字样式(面)",
-				"link" : "style_text_polygon.html"
+				"link" : "style/style_text_polygon.html"
 			}
 		]
 	},{

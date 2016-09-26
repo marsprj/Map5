@@ -15,9 +15,7 @@ GeoBeans.Symbolizer.PointSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 	size : null,
 	fill : null,
 	stroke : null,
-	icon_url : null,
-	icon_offset_x : null,
-	icon_offset_y : null,
+	icon : null,
 
 	// 符号名称
 	symbol : null,
@@ -51,3 +49,54 @@ GeoBeans.Symbolizer.PointSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 		return clone;
 	}
 });
+
+/**
+ * 设置Icon的路径
+ * @public
+ * @param {string} url icon图片的路径
+ */
+GeoBeans.Symbolizer.PointSymbolizer.prototype.setIcon = function(url){
+	this.icon_url = url;
+}
+
+/**
+ * 获得Icon的URL
+ * @return {stirng} Icon的URL
+ */
+GeoBeans.Symbolizer.PointSymbolizer.prototype.getIcon = function(){
+	return this.icon_url;
+}
+
+/**
+ * 设置Stroke对象
+ * @public
+ * @param {GeoBeans.Style.Stroke} stroke stroke对象
+ */
+GeoBeans.Symbolizer.PointSymbolizer.prototype.setStroke = function(stroke){
+	this.stroke = stroke;
+}
+
+/**
+ * 获得Stroke对象
+ * @return {GeoBeans.Style.Stroke} stroke对象
+ */
+GeoBeans.Symbolizer.PointSymbolizer.prototype.getStroke = function(){
+	return this.stroke;
+}
+
+/**
+ * 设置Fill对象
+ * @public
+ * @param {GeoBeans.Style.Fill} fill fill
+ */
+GeoBeans.Symbolizer.PointSymbolizer.prototype.setFill = function(fill){
+	this.fill = fill;
+}
+
+/**
+ * 获得Stroke对象
+ * @return {GeoBeans.Style.Fill} fill
+ */
+GeoBeans.Symbolizer.PointSymbolizer.prototype.getFill = function(){
+	return this.fill;
+}
