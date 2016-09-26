@@ -7,7 +7,7 @@ GeoBeans.Feature = GeoBeans.Class({
 	
 	featureType : null,
 	
-	fid 	 : null,
+	fid 	 : -1,
 	geometry : null,
 	values	 : null,
 	symbolizer: null,
@@ -47,3 +47,12 @@ GeoBeans.Feature = GeoBeans.Class({
 		}
 	}
 });
+
+/**
+ * 获得FeatureType
+ * @public
+ * @return {GeoBeans.FeatureType} FeatureType对象
+ */
+GeoBeans.Feature.prototype.getFeatureType = function(){
+	return this.featureType;
+}

@@ -139,6 +139,14 @@ GeoBeans.Layer = GeoBeans.Class({
 });
 
 /**
+ * 获得图层名称
+ * @return {string} 图层名称
+ */
+GeoBeans.Layer.prototype.getName = function(){
+	return this.name;
+}
+
+/**
  * 单个图层重绘
  * @public
  */
