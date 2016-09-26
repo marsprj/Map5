@@ -103,6 +103,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
 <!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -155,6 +156,9 @@
 	//查询结果回调函数
 	//参数为features集合
 	function query_succeed(features){
+
+		var selection = mapObj.getSelection();
+		selection.setFeatures(features);
 		
 		if(features.length==0){
 			document.getElementById("result").innerHTML = "";
