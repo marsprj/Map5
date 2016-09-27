@@ -35,15 +35,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		this.extent = null;
 		this.geomFieldName = null;
 	},
-	
-	setName : function(name){
-		this.name = name;
-	},
-
-	getName : function(){
-		return this.name;
-	},
-	
+		
 	setTitle : function(title){
 		this.title = title;
 	},
@@ -60,10 +52,6 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		this.extent = extent;
 	},
 	
-	getFields : function(){
-		return this.fields;
-	},
-
 	getFieldsAsync : function(obj,callback){
 		if(this.fields!=null && this.fields.length != 0){
 			if(callback != null){
@@ -99,17 +87,6 @@ GeoBeans.FeatureType = GeoBeans.Class({
 			error	: function(){
 			}
 		});		
-	},
-	
-	getFieldIndex : function(field_name){
-		var fields = this.getFields();
-		for(var i=0, len=fields.length; i<len; i++){
-			var f = fields[i];
-			if(f.name == field_name){
-				return i;
-			}
-		}
-		return -1;
 	},
 	
 	parseFields : function(xml){
@@ -336,7 +313,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		return xhr;
 	},
 
-
+	//@deprecated
 	getFeatureBBoxGet : function(mapName,sourceName,
 			viewer,maxFeatures,offset){
 		var that = this;
@@ -399,6 +376,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		return that.features;
 	},
 
+	//@deprecated
 	getFeaturesBBox : function(callback,viewer,filter){
 		var xmin = viewer.xmin;
 		var xmax = viewer.xmax;
@@ -489,6 +467,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		return strfid.substring(dot+1, strfid.length);
 	},
 
+	//@deprecated
 	buildGetFeatureXMLBboxFilter : function(bbox,filter){
 		var xml = "";
 		var workspaceName = this.workspace.workspaceName;
@@ -600,6 +579,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	// 	return parseInt(count);
 	// },
 
+	//@deprecated
 	getFeaturesWithin : function(mapName,sourceName,point){
 		var that = this;
 		var url = this.workspace.server; 
@@ -627,6 +607,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		return that.features;
 	},
 
+	//@deprecated
 	getFeaturesWithinAsync : function(mapName,sourceName,point,callback,fields,obj){
 		var that = this;
 		var url = this.workspace.server; 
@@ -654,6 +635,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		});		
 	},
 
+	//@deprecated
 	buildGetFeaturesXMLWithin : function(mapName,sourceName,point,fields){
 		var xml = "";
 		xml += "<wfs:GetFeature service=\"WFS\" version=\"1.1.0\" ";
@@ -696,6 +678,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	},
 
 	// 较为通用的查询fitler
+	//@deprecated
 	getFeaturesFilter : function(mapName,sourceName,filter,maxFeatures,offset,fields,orderby){
 		var that = this;
 		var url = this.workspace.server;
@@ -727,7 +710,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		return that.features;
 	},
 
-
+	//@deprecated
 	getFeaturesFilterAsync : function(mapName,sourceName,filter,maxFeatures,offset,fields,orderby,callback){
 		var that = this;
 		var url = this.workspace.server;
@@ -763,6 +746,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	},
 
 	// 带有object的回调函数
+	//@deprecated
 	getFeaturesFilterAsync2 : function(mapName,sourceName,filter,maxFeatures,offset,fields,orderby,obj,callback){
 		var that = this;
 		var url = this.workspace.server;
@@ -1041,12 +1025,55 @@ GeoBeans.FeatureType = GeoBeans.Class({
 // 	return xhr;
 // }
 
+/**
+ * 设置名称
+ * @public
+ * @param {string} name 名称
+ */
+GeoBeans.FeatureType.prototype.setName = function(name){
+	this.name = name;
+}
 
+/**
+ * 获取名称
+ * @public
+ * @return {string} 名称
+ */
+GeoBeans.FeatureType.prototype.getName = function(){
+	return this.name;
+}
+
+/**
+ * 获取Field集合
+ * @return {Array.<GeoBeans.Field>} Field集合
+ */
+GeoBeans.FeatureType.prototype.getFields = function(){
+	return this.fields;
+}
+
+/**
+ * 根据字段name获得字段序号
+ * @param  {string} name 字段名称
+ * @return {integer}     字段序号
+ */
+GeoBeans.FeatureType.prototype.findField = function(name){
+	if(!isValid(name)){
+		return -1;
+	}
+	var fields = this.getFields();
+	for(var i=0, len=fields.length; i<len; i++){
+		var f = fields[i];
+		if(f.name == name){
+			return i;
+		}
+	}
+	return -1;
+}
 
 /**
  * [query description]
- * @param  {[type]} filter [description]
- * @return {[type]}        [description]
+ * @param  {GeoBeans.Query}		query	查询对象
+ * @param  {GeoBeans.Handler}	handler 查询结果回调函数
  */
 GeoBeans.FeatureType.prototype.query = function(query, handler){
 	var that = this;
@@ -1084,17 +1111,13 @@ GeoBeans.FeatureType.prototype.query = function(query, handler){
 	return xhr;
 }
 
-GeoBeans.FeatureType.prototype.writeFilter = function(query){
-
-}
-
 /**
  * 生成Query的XML格式
  * @private
- * @param  {[type]} query      [description]
- * @param  {[type]} mapName    [description]
- * @param  {[type]} sourceName [description]
- * @return {[type]}            [description]
+ * @param  {GeoBeans.Query} query      查询对象
+ * @param  {string}			mapName    地图名称
+ * @param  {string}			sourceName 数据源名称
+ * @return {string}            		   XML格式的Query
  */
 GeoBeans.FeatureType.prototype.writeQuery = function(query, mapName, sourceName){
 
@@ -1166,8 +1189,8 @@ GeoBeans.FeatureType.prototype.writeQuery = function(query, mapName, sourceName)
 /**
  * 生成Orderby的XML格式
  * @private
- * @param  {[type]} orderby [description]
- * @return {[type]}         [description]
+ * @param  {GeoBeans.Query.OrderBy} orderby  排序对象
+ * @return {string}         		 字符串格式的Orderby对象
  */
 GeoBeans.FeatureType.prototype.writeOrderby = function(orderby, xmlDoc){
 	if(!isValid(orderby)){
@@ -1188,9 +1211,9 @@ GeoBeans.FeatureType.prototype.writeOrderby = function(orderby, xmlDoc){
 
 /**
  * 生成Orderby的XML格式--  测试不可用
- * @param  {[type]} orderby [description]
- * @param  {[type]} xmlDoc  [description]
- * @return {[type]}         [description]
+ * @param  {GeoBeans.Query.Order} orderby  排序对象
+ * @param  {object} xmlDoc  xml对象
+ * @return {string}         		 字符串格式的Orderby对象
  */
 // GeoBeans.FeatureType.prototype.writeOrderby = function(orderby, xmlDoc){
 // 	if(!isValid(orderby)){

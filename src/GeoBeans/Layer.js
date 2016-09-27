@@ -26,8 +26,6 @@ GeoBeans.Layer = GeoBeans.Class({
 	mapPoint_lt : null,
 	mapPoint_rb : null,
 
-	transformation_brf : null,
-
 	flag : null,
 	
 	initialize : function(name){
@@ -83,29 +81,6 @@ GeoBeans.Layer = GeoBeans.Class({
 
 	cleanup : function(){},
 
-
-	/**
-	 * @deprecated  ??
-	 */
-	setTransformation : function(transformation){
-		if(transformation == null || transformation.view_c == null){
-			return;
-		}
-		this.transformation_brf = new GeoBeans.Transformation();
-		this.transformation_brf.map = transformation.map;
-		this.transformation_brf.scale = transformation.scale;
-
-		this.transformation_brf.view_c = new GeoBeans.Geometry.Point(transformation.view_c.x,
-																	transformation.view_c.y);
-		this.transformation_brf.view_h = transformation.view_h;
-		this.transformation_brf.view_w = transformation.view_w;
-		this.transformation_brf.win_cx = transformation.win_cx;
-		this.transformation_brf.win_cy = transformation.win_cy;
-		this.transformation_brf.win_h = transformation.win_h;
-		this.transformation_brf.win_w = transformation.win_w;
-
-	},
-
 	/**
 	 * @deprecated  ??
 	 */
@@ -144,6 +119,54 @@ GeoBeans.Layer = GeoBeans.Class({
  */
 GeoBeans.Layer.prototype.getName = function(){
 	return this.name;
+}
+
+/**
+ * 设置图层名称
+ * @param {string} name 名称
+ */
+GeoBeans.Layer.prototype.setName = function(name){
+	this.name = name;
+}
+
+/**
+ * 设置图层是否可见
+ * @param {boolean} visible 是否可见
+ */
+GeoBeans.Layer.prototype.setVisible = function(visible){
+	this.visible = visible;
+}
+
+/**
+ * 获取图层是否可见
+ * @return {boolean} 是否可见
+ */
+GeoBeans.Layer.prototype.isVisible = function(){
+	return this.visible;
+}
+
+/**
+ * 获取图层Spatial Reference
+ * @return {integer} srid
+ */
+GeoBeans.Layer.prototype.getSrid = function(){
+	return this.srid;
+}
+
+/**
+ * 获取图层范围
+ * @return {GeoBeans.Envelope} 图层范围
+ */
+GeoBeans.Layer.prototype.getExtent = function(){
+	return this.extent;
+}
+
+/**
+ * 获取图层所在地图
+ * @return {GeoBeans.Map} 图层所在地图
+ */
+GeoBeans.Layer.prototype.getMap = function(){
+	return this.map;
 }
 
 /**

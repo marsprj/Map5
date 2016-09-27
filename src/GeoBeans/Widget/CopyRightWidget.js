@@ -18,7 +18,6 @@ GeoBeans.Widget.CopyRightWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 /**
  * 初始化容器
- * @return {[type]} [description]
  */
 GeoBeans.Widget.CopyRightWidget.prototype.createContainer = function(){
 	
@@ -35,8 +34,7 @@ GeoBeans.Widget.CopyRightWidget.prototype.createContainer = function(){
 
 /**
  * 设置是否显示
- * @param  {} v 是否显示
- * @return {[type]}   [description]
+ * @param  {boolean} v 是否显示
  */
 GeoBeans.Widget.CopyRightWidget.prototype.show = function(v){
 	this._visible = v;

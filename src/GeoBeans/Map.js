@@ -230,7 +230,6 @@ GeoBeans.Map = GeoBeans.Class({
 	/**
 	 * 删除底图，如果还有其他tileLayer则设置为底图
 	 * @deprecated 这个函数没有意义
-	 * @return {[type]} [description]
 	 */
 	 removeBaseLayer : function(){
 	 	var baseLayerName = this.baseLayer.name;
@@ -1098,10 +1097,9 @@ GeoBeans.Map.prototype.addLayers = function(layers){
 }
 
 /**
- * [removeLayer description]
- * @param  {[type]}   name     [description]
- * @param  {Function} callback [description]
- * @return {[type]}            [description]
+ * 删除图层
+ * @public
+ * @param  {string}   name     图层名
  */
 GeoBeans.Map.prototype.removeLayer = function(name,callback){
 	if(name == null){
@@ -1134,7 +1132,6 @@ GeoBeans.Map.prototype.removeLayer = function(name,callback){
 /**
  * 初始化地图容器
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.createMapContainer = function(){
 	this._container = $("#" + this.id)[0];
@@ -1169,7 +1166,6 @@ GeoBeans.Map.prototype.createMapContainer = function(){
 /**
  * 初始化地图控件
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initControls = function(){
 	this.controls = new GeoBeans.Control.Controls(this);
@@ -1177,7 +1173,7 @@ GeoBeans.Map.prototype.initControls = function(){
 
 /**
  * 初始化地图Widgets
- * @return {[type]} [description]
+ * @private
  */
 GeoBeans.Map.prototype.initWidgets = function(){
 
@@ -1197,7 +1193,6 @@ GeoBeans.Map.prototype.initWidgets = function(){
 /**
  * 初始化地图事件
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initEvents = function(){
 	this.events = new GeoBeans.Events();
@@ -1206,7 +1201,6 @@ GeoBeans.Map.prototype.initEvents = function(){
 /**
  * 初始化地图交互工具
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initInteractions = function(){
 	this._interactions = new GeoBeans.Interaction.Interactions(this);
@@ -1215,7 +1209,6 @@ GeoBeans.Map.prototype.initInteractions = function(){
 /**
  * 初始化地图图层要素
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initLayers = function(){
 	this.layers = [];
@@ -1254,7 +1247,6 @@ GeoBeans.Map.prototype.getSelection = function(){
 		
 /**
  * 初始化地图大小改变
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.initResize = function(){
 	var that = this;
@@ -1391,7 +1383,7 @@ GeoBeans.Map.prototype.initResize = function(){
 /**
  * 获取infoWindow对象
  * @public
- * @return {[type]} [description]
+ * @return {GeoBeans.Widget.InfoWindow} InfoWindow对象
  */
 GeoBeans.Map.prototype.getInfoWindow = function(){
 	return this._infoWindowWidget;
@@ -1402,7 +1394,6 @@ GeoBeans.Map.prototype.getInfoWindow = function(){
  * @public
  * @param  {GeoBeans.Event} event   事件
  * @param  {function} handler 回调函数
- * @return {[type]}         [description]
  */
 GeoBeans.Map.prototype.on = function(event, handler){
 
@@ -1439,7 +1430,6 @@ GeoBeans.Map.prototype.on = function(event, handler){
 /**
  * Map解除事件绑定
  * @param  {GeoBeans.Event} event 事件
- * @return {[type]}       [description]
  */
 GeoBeans.Map.prototype.un = function(event){
 	var e = this.events.getEvent(event);
@@ -1455,7 +1445,7 @@ GeoBeans.Map.prototype.un = function(event){
 /**
  * 设置Map的底图
  * @public
- * @param {[TileLayer]} l Baselayer必须是TileLayer
+ * @param {GeoBeans.Layer.TileLayer} l Baselayer必须是TileLayer
  * @description 需要是地图里面的一个图层，才可以设置
  */
 GeoBeans.Map.prototype.setBaseLayer = function(l){
@@ -1486,7 +1476,7 @@ GeoBeans.Map.prototype.getBaseLayer = function(){
 /**
  * 获得map的容器对象
  * @public
- * @return {[type]} [description]
+ * @return {div} div容器
  */
 GeoBeans.Map.prototype.getContainer = function(){
 	return this._container;
@@ -1495,7 +1485,7 @@ GeoBeans.Map.prototype.getContainer = function(){
 /**
  * 获取地图的屏幕宽度
  * @public
- * @return {[type]} [description]
+ * @return {int} 屏幕宽度
  * @description 单位为像素(pixel)
  */
 GeoBeans.Map.prototype.getWidth = function(){
@@ -1505,7 +1495,7 @@ GeoBeans.Map.prototype.getWidth = function(){
 /**
  * 获取地图的屏幕高度
  * @public
- * @return {[type]} [description]
+ * @return {int} 屏幕高度
  * @description 单位为像素(pixel)
  */
 GeoBeans.Map.prototype.getHeight = function(){

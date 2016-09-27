@@ -101,8 +101,7 @@ GeoBeans.Selection.prototype.refresh = function(){
 /**
  * 设置是否在地图上显示选择集
  * @public
- * @param  {[type]} f [description]
- * @return {[type]}   [description]
+ * @param  {boolean} v 是否显示
  */
 GeoBeans.Selection.prototype.show = function(f){
 	this._show = f;
@@ -123,17 +122,15 @@ GeoBeans.Selection.prototype.isShow = function(){
  * function onchange(features){<br>
  * }<br>
  * @public
- * @param  {[type]} handler [description]
- * @return {[type]}         [description]
+ * @param  {function} handler [description]
  */
 GeoBeans.Selection.prototype.onchange = function(handler){
 	this._onchange = handler;
 }
 
 /**
- * [loadSymbols description]
+ * 加载默认样式
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Selection.prototype.loadSymbols = function(){
 
@@ -210,10 +207,9 @@ GeoBeans.Selection.prototype.initRenderer = function(){
 }
 
 /**
- * [getSymbolizer description]
+ * 根据Geometry类型获取对应的样式
  * @private
- * @param  {[type]} type [description]
- * @return {[type]}      [description]
+ * @return {GeoBeans.Symbolizer}      样式
  */
 GeoBeans.Selection.prototype.getSymbolizer = function(type){
 	return this._symbolizers[type];

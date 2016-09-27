@@ -15,7 +15,7 @@ GeoBeans.Widget.InfoWindowWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 /**
  * 设置容器
- * @return {[type]} [description]
+ * @private
  */
 GeoBeans.Widget.InfoWindowWidget.prototype.createContainer = function(){
 
@@ -72,9 +72,8 @@ GeoBeans.Widget.InfoWindowWidget.prototype.setOption = function(option){
 
 
 /**
- * 显示
- * @param  {[type]} v [description]
- * @return {[type]}   [description]
+ * 设置Widget是否显示
+ * @param  {boolean} v 显示标志
  */
 GeoBeans.Widget.InfoWindowWidget.prototype.show  = function(v){
 	this._visible = v;
@@ -124,7 +123,6 @@ GeoBeans.Widget.InfoWindowWidget.prototype.show  = function(v){
 
 /**
  * 地图视口更新时，更新infowindow
- * @return {[type]} [description]
  */
 GeoBeans.Widget.InfoWindowWidget.prototype.refresh = function(){
 	var mapContainer = this._map.getContainer();

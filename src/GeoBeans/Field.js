@@ -1,5 +1,5 @@
 
-GeoBeans.FieldType = {
+GeoBeans.Field.Type = {
 	DOUBLE 	: "double",
 	STRING	: "string",
 	GEOMETRY: "geometry"
@@ -35,3 +35,35 @@ GeoBeans.Field = GeoBeans.Class({
 		this.geomType = type;
 	}
 });
+
+/**
+ * 获得字段名称
+ * @return {string} 字段名称
+ */
+GeoBeans.Field.prototype.getName = function(){
+	return this.name;
+}
+
+/**
+ * 获得字段类型
+ * @return {GeoBeans.Field.Type} 字段类型
+ */
+GeoBeans.Field.prototype.getType = function(){
+	return this.type;
+}
+
+/**
+ * 获得字段长度
+ * @return {integer} 字段长度
+ */
+GeoBeans.Field.prototype.getLength = function(){
+	return this.length;
+}
+
+/**
+ * 获得字段几何类型
+ * @return {GeoBeans.Geometry.Type} 几何类型
+ */
+GeoBeans.Field.prototype.getGeometryType = function(){
+	return this.geomType;
+}

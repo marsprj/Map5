@@ -33,11 +33,14 @@ GeoBeans.Interaction = GeoBeans.Class({
 
 /**
  * Interaction类型
- * @type {Object}
+ * @type {string}
  */
 GeoBeans.Interaction.Type = {
+	/** 绘制 */
 	DRAW	: "Draw",
+	/** 选择 */
 	SELECT	: "Select",
+	/** 旋转 */
 	ROTATE	: "Rotate"
 };
 
@@ -85,6 +88,7 @@ GeoBeans.Interaction.Interactions = GeoBeans.Class({
 		}
 		this._interactions = [];
 	},
+
 	find : function(type){
 		var len = this._interactions.length;
 		for(var i=0; i<len; i++){
