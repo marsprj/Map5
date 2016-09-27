@@ -485,30 +485,28 @@ GeoBeans.Map = GeoBeans.Class({
 		this.overlayLayer.unRegisterOverlayClickEvent();
 	},
 
+	// // 获取查询结果
+	// getQuerySelection : function(){
+	// 	return this.queryLayer.features;
+	// },
+
+	// //闪烁
+	// setFeatureBlink : function(feature,count){
+	// 	if(feature == null || count == null){
+	// 		return;
+	// 	}
+	// 	this.queryLayer.setFeatureBlink(feature,count);
+	// },
 
 
-	// 获取查询结果
-	getQuerySelection : function(){
-		return this.queryLayer.features;
-	},
-
-	//闪烁
-	setFeatureBlink : function(feature,count){
-		if(feature == null || count == null){
-			return;
-		}
-		this.queryLayer.setFeatureBlink(feature,count);
-	},
-
-
-	// 停止查询
-	endQuery : function(){
-		this.tracker.end();
-		this.queryLayer.clearFeatures();
-		// this.infoWindow.popover("hide");
-		var infoWindow = this.getInfoWindow();
-		infoWindow.show(false);
-	},
+	// // 停止查询
+	// endQuery : function(){
+	// 	this.tracker.end();
+	// 	this.queryLayer.clearFeatures();
+	// 	// this.infoWindow.popover("hide");
+	// 	var infoWindow = this.getInfoWindow();
+	// 	infoWindow.show(false);
+	// },
 
 
 	openInfoWindow : function(option,point){
@@ -585,18 +583,18 @@ GeoBeans.Map = GeoBeans.Class({
 	// },
 
 
-	// @deprecated
-	getFeatureFilter : function(layerName,filter,maxFeatures,fields,style,callback){
-		var layer = this.getLayer(layerName);
-		if(layer == null){
-			if(callback != null){
-				callback("this is not layer named " + layername);
-			}
-			return;
-		}
-		this.queryLayer.setLayer(layer,style);
-		layer.getFeatureFilter(filter,maxFeatures,null,fields,callback);
-	},
+	// // @deprecated
+	// getFeatureFilter : function(layerName,filter,maxFeatures,fields,style,callback){
+	// 	var layer = this.getLayer(layerName);
+	// 	if(layer == null){
+	// 		if(callback != null){
+	// 			callback("this is not layer named " + layername);
+	// 		}
+	// 		return;
+	// 	}
+	// 	this.queryLayer.setLayer(layer,style);
+	// 	layer.getFeatureFilter(filter,maxFeatures,null,fields,callback);
+	// },
 
 	// 增加全景图
 	addPanorama : function(point,name,htmlPath,icon){
@@ -964,22 +962,22 @@ GeoBeans.Map = GeoBeans.Class({
 		return featureLayer;
 	},
 
-	// KML文件创建featureLayer
-	// @deprecated
-	createFeatureLayerByKML : function(name,url){
-		var kmlReader = new GeoBeans.KMLReader();
-		var layer = kmlReader.read(name,url);
-		return layer;
-	},
+	// // KML文件创建featureLayer
+	// // @deprecated
+	// createFeatureLayerByKML : function(name,url){
+	// 	var kmlReader = new GeoBeans.KMLReader();
+	// 	var layer = kmlReader.read(name,url);
+	// 	return layer;
+	// },
 
 
-	// GeoJson文件创建featureLayer
-	// @deprecated
-	createFeatureLayerByGeoJson : function(name,url){
-		var geoJsonReader = new GeoBeans.GeoJsonReader();
-		var layer = geoJsonReader.read(name,url);
-		return layer;
-	},
+	// // GeoJson文件创建featureLayer
+	// // @deprecated
+	// createFeatureLayerByGeoJson : function(name,url){
+	// 	var geoJsonReader = new GeoBeans.GeoJsonReader();
+	// 	var layer = geoJsonReader.read(name,url);
+	// 	return layer;
+	// },
 
 	// 动画
 	addMoveObject : function(moveObject){

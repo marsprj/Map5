@@ -21,13 +21,6 @@ GeoBeans.Widget = GeoBeans.Class({
 	initialize : function(name){
 		//GeoBeans.Class.prototype.initialize.apply(this, arguments);
 	},
-
-	/**
-	 * 创建widget的div容器
-	 * @type {函数}
-	 * @return {div element object} 返回创建widget的div容器对象
-	 */
-	createContainer : null,
 	
 	destory : function(){
 		//GeoBeans.Class.prototype.destory.apply(this, arguments);
@@ -96,4 +89,13 @@ GeoBeans.Widget.prototype.getPosition = function(){
  */
 GeoBeans.Widget.prototype.setPosition = function(pos){
 	this._pos = pos;
+}
+
+/**
+ * 创建widget的div容器
+ * @public
+ * @return {div} widget的div容器
+ */
+GeoBeans.Widget.prototype.createContainer = function(){
+	return null;
 }
