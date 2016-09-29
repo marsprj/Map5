@@ -47,9 +47,8 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		
 		this.featureType = null;
-		// this.features = [];
-		this.features = null;
-		
+		this.features = [];
+
 		this.selection = [];
 		this.unselection = [];
 
@@ -77,12 +76,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.clickRenderer  = new GeoBeans.Renderer(this.clickCanvas);
 	},
 	
-	addFeature : function(feature){
-		if(isValid(feature)){
-			this.features.push(feature);
-		}
-	},
-	
 	/**
 	 * [addFeatureObj description]
 	 * @deprecated [description]
@@ -96,22 +89,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 		var feature = new GeoBeans.Feature(this.featureType,fid,geometry,values);
 		this.addFeature(feature);
-	},
-
-	addFeatures : function(features){
-		if(features==null){
-			return;	
-		}
-		if(this.features == null){
-			this.features = [];
-		}
-		if(!(features instanceof Array)){
-			return ;
-		}
-		for(var i=0,len=features.length; i<len; i++){
-			var f = features[i];
-			this.features.push(f);
-		}
 	},
 
 	getFeatures : function(){
@@ -1607,7 +1584,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// 查询
 	/**
 	 * [getFeatureFilter description]
-	 * @deprecated [description]
+	 * @deprecated
 	 * @param  {[type]}   filter      [description]
 	 * @param  {[type]}   maxFeatures [description]
 	 * @param  {[type]}   offset      [description]
@@ -1634,4 +1611,113 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
  */
 GeoBeans.Layer.FeatureLayer.prototype.query = function(query, handler){
 
+}
+
+/**
+ * 获得图层当前的空间范围
+ * @return {GeoBeans.Envelope}	图层的空间范围
+ */
+GeoBeans.Layer.FeatureLayer.prototype.getExtent = function(){
+
+	var extent = new GeoBeans.Envelope();	
+	if(isValid(this.features)){
+		var that = this;
+		this.features.forEach(function(f){
+			if(isValid(f.geometry)){
+				var rect = f.geometry.extent;
+				if(isValid(rect)){
+					extent.union(rect);
+				}
+			}
+		});
+	}
+	return extent;
+}
+
+/**
+ * 向图层上添加一个feature
+ * @public
+ * @param  {GeoBeasn.Feature} feature feature对象
+ */
+GeoBeans.Layer.FeatureLayer.prototype.addFeature = function(feature){
+	if(isValid(feature)){
+		this.features.push(feature);
+	}
+}
+
+/**
+ * 向图层上添加features
+ * @public
+ * @param  {Array.<GeoBeasn.Feature>} features feature集合
+ */
+GeoBeans.Layer.FeatureLayer.prototype.addFeatures = function(features){
+	if(features==null){
+		return;	
+	}
+	if(this.features == null){
+		this.features = [];
+	}
+	if(!(features instanceof Array)){
+		return ;
+	}
+	for(var i=0,len=features.length; i<len; i++){
+		var f = features[i];
+		this.features.push(f);
+	}
+}
+
+/**
+ * 设置图层上的features
+ * @public
+ * @param  {Array.<GeoBeasn.Feature>} features feature集合
+ */
+GeoBeans.Layer.FeatureLayer.prototype.setFeatures = function(features){
+	if(!isValid(features)){
+		this.features = [];
+	}
+	else{
+		this.features = features;
+	}
+}
+
+GeoBeans.Layer.FeatureLayer.prototype.getMinMaxValue = function(fname){
+	var minmax = {
+		min : 0,
+		max : 0
+	};
+	if(isValid(this.features)){
+		return minmax;
+	}
+	var min = null;
+	var max = null;
+	var feature = null;
+
+	var findex = this.featureType.findField(fname);
+	for(var i = 0; i < this.features.length; ++i){
+		feature = this.features[i];
+		if(feature == null){
+			continue;
+		}
+		var values = feature.values;
+		var value = values[findex];
+		if(value == null){
+			continue;
+		}
+		value = parseFloat(value);
+		if(min == null){
+			min = value;
+		}else{
+			min = (value < min ) ? value : min; 
+		}
+		if(max == null){
+			max = value;
+		}else{
+			max = (value > max) ? value : max;
+		}			
+
+	}
+	return {
+		min : min,
+		max : max
+	};
 }

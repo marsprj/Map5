@@ -30,7 +30,7 @@ GeoBeans.Layer.RangeChartLayer  = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		
 		var style = new GeoBeans.Style.FeatureStyle();
 
-		var fieldIndex = this.featureType.getFieldIndex(this.baseLayerField);
+		var fieldIndex = this.featureType.findField(this.baseLayerField);
 
 		var count = this.features.length;
 		for(var i = 0; i < count; ++i){
@@ -52,7 +52,7 @@ GeoBeans.Layer.RangeChartLayer  = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			var color = null;
 			if(chartValue == null){
 				color = new GeoBeans.Color();
-				color.setByHex("#ffffff",1.0);
+				color.setHex("#ffffff",1.0);
 			}else{
 				// 根据值获得颜色
 				chartValue = parseFloat(chartValue);
@@ -75,7 +75,7 @@ GeoBeans.Layer.RangeChartLayer  = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}else{
 				color = new GeoBeans.Color();
 				if(this.option.border != null){
-					color.setByHex(this.option.border,1);
+					color.setHex(this.option.border,1);
 				}
 				if(this.option.borderOpacity != null){
 					color.setOpacity(this.option.borderOpacity);

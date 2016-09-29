@@ -36,7 +36,7 @@ GeoBeans.Style.Icon = GeoBeans.Class({
 		if(isValid(options.anchorY)){
 			this.scale = options.scale;
 		}
-	}
+	},
 
 	clone : function(){
 		var clone = new GeoBeans.Style.Icon();

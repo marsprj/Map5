@@ -4,10 +4,10 @@
  * @class
  */
 GeoBeans.Envelope = GeoBeans.Class({
-	xmin : null,
-	xmax : null,
-	ymin : null,
-	ymax : null,
+	xmin :  Number.MAX_VALUE,
+	xmax : -Number.MAX_VALUE,
+	ymin :  Number.MAX_VALUE,
+	ymax : -Number.MAX_VALUE,
 	
 	initialize : function(xmin, ymin, xmax, ymax){
 		this.xmin = xmin;

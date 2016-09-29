@@ -49,7 +49,7 @@ GeoBeans.Layer.ChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		var max = null;
 		var feature = null;
 
-		var fieldIndex = this.featureType.getFieldIndex(this.baseLayerField);
+		var fieldIndex = this.featureType.findField(this.baseLayerField);
 		for(var i = 0; i < this.features.length; ++i){
 			feature = this.features[i];
 			if(feature == null){
@@ -83,15 +83,18 @@ GeoBeans.Layer.ChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 	},
 
 	removeLegend : function(){
-		this.map.mapDiv.find(".chart-legend#"+this.name).remove();
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).find(".chart-legend#"+this.name).remove();
 	},
 
 	showLegend : function(){
-		this.map.mapDiv.find(".chart-legend#"+this.name).css("display","block");
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).find(".chart-legend#"+this.name).css("display","block");
 	},
 
 	hideLegend : function(){
-		this.map.mapDiv.find(".chart-legend#"+this.name).css("display","none");
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).find(".chart-legend#"+this.name).css("display","none");
 	},
 	
 });

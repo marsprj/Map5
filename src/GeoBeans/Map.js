@@ -935,31 +935,31 @@ GeoBeans.Map = GeoBeans.Class({
 
 	// 创建一个featureLayer
 	// @deprecated
-	createFeatureLayer : function(layerName,fields,geomType){
-		if(layerName == null || (!$.isArray(fields)) || geomType == null){
-			return null;
-		}
-		var featureType = new GeoBeans.FeatureType(null,layerName);
-		var fieldsArray = [];
-		for(var i = 0; i < fields.length;++i){
-			var f = fields[i];
-			var type = f.type;
-			var name = f.name;
-			var field = new GeoBeans.Field(name, type, featureType,null);
-			if(type == "geometry"){
-				featureType.geomFieldName = name;
-				field.setGeomType(geomType);
-			}
-			fieldsArray.push(field); 
-		}
+	// createFeatureLayer : function(layerName,fields,geomType){
+	// 	if(layerName == null || (!$.isArray(fields)) || geomType == null){
+	// 		return null;
+	// 	}
+	// 	var featureType = new GeoBeans.FeatureType(null,layerName);
+	// 	var fieldsArray = [];
+	// 	for(var i = 0; i < fields.length;++i){
+	// 		var f = fields[i];
+	// 		var type = f.type;
+	// 		var name = f.name;
+	// 		var field = new GeoBeans.Field(name, type, featureType,null);
+	// 		if(type == "geometry"){
+	// 			featureType.geomFieldName = name;
+	// 			field.setGeomType(geomType);
+	// 		}
+	// 		fieldsArray.push(field); 
+	// 	}
 
-		featureType.fields = fieldsArray;
+	// 	featureType.fields = fieldsArray;
 
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
-		featureLayer.featureType = featureType;
-		featureLayer.features = [];
-		return featureLayer;
-	},
+	// 	var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
+	// 	featureLayer.featureType = featureType;
+	// 	featureLayer.features = [];
+	// 	return featureLayer;
+	// },
 
 	// // KML文件创建featureLayer
 	// // @deprecated
@@ -1059,7 +1059,7 @@ GeoBeans.Map.prototype.addLayer = function(layer){
 			return "this map does not has [" + layer.baseLayerName + "] layer";
 		}
 		if(layer instanceof GeoBeans.Layer.RangeChartLayer){
-			var index = l.featureType.getFieldIndex(layer.baseLayerField);
+			var index = l.featureType.findField(layer.baseLayerField);
 			if(index == -1){
 				//console.log("layer does not has this field[" +　layer.baseLayerField + "]");
 				return "layer does not has this field[" +　layer.baseLayerField + "]";	

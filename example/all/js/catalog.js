@@ -220,7 +220,7 @@ var g_catalog = [
 			}
 		]
 	},{
-		"name" : "图层样式",
+		"name" : "图层样式(前端)",
 		"items":[
 			{
 				"name" : "点样式(简单)",
@@ -238,37 +238,69 @@ var g_catalog = [
 				"name" : "(*)面样式(填充)",
 				"link" : "style/style_fill_polygon.html"
 			},{
-				"name" : "(*)文字样式(点)",
+				"name" : "文字样式(点)",
 				"link" : "style/style_text_point.html"
-			},{
+			}/*,{
 				"name" : "(*)文字样式(线)",
 				"link" : "style/style_text_line.html"
 			},{
 				"name" : "(*)文字样式(面)",
 				"link" : "style/style_text_polygon.html"
-			}
+			}*/
+		]
+	},{
+		"name" : "图层样式(服务端)",
+		"items":[
+			{
+				"name" : "(*)点样式(简单)",
+				"link" : "style/style_simple_point.html"
+			},{
+				"name" : "(*)点样式(图片)",
+				"link" : "style/style_pic_point.html"
+			},{
+				"name" : "(*)线样式(简单)",
+				"link" : "style/style_simple_line.html"
+			},{
+				"name" : "(*)面样式(简单)",
+				"link" : "style/style_simple_polygon.html"
+			},{
+				"name" : "(*)面样式(填充)",
+				"link" : "style/style_fill_polygon.html"
+			},{
+				"name" : "(*)文字样式(点)",
+				"link" : "style/style_text_point.html"
+			}/*,{
+				"name" : "(*)文字样式(线)",
+				"link" : "style/style_text_line.html"
+			},{
+				"name" : "(*)文字样式(面)",
+				"link" : "style/style_text_polygon.html"
+			}*/
 		]
 	},{
 		"name" : "专题图",
 		"items":[
 			{
 				"name" : "(*)唯一值图",
-				"link" : "theme_unique.html"
+				"link" : "theme/theme_unique.html"
 			},{
-				"name" : "(*)分级样图",
-				"link" : "theme_class.html"
+				"name" : "分级样图(前端)[需要修改]",
+				"link" : "theme/theme_class_c.html"
+			},{
+				"name" : "(*)分级样图(后端)",
+				"link" : "theme/theme_class_s.html"
 			},{
 				"name" : "(*)热力图",
-				"link" : "theme_heatmap.html"
+				"link" : "theme/theme_heatmap.html"
 			},{
 				"name" : "(*)点聚合图-示例1",
-				"link" : "theme_cluster_1.html"
+				"link" : "theme/theme_cluster_1.html"
 			},{
 				"name" : "(*)点聚合图-示例2",
-				"link" : "theme_cluster_2.html"
+				"link" : "theme/theme_cluster_2.html"
 			},{
 				"name" : "(*)点聚合图-示例3",
-				"link" : "theme_cluster_2.html"
+				"link" : "theme/theme_cluster_2.html"
 			},{
 				"name" : "(*)分级图",
 				"link" : "rangeChart.html"
