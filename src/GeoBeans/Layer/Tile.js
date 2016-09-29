@@ -69,7 +69,7 @@ GeoBeans.Tile = GeoBeans.Class({
 	// }
 
 	// 加上旋转角度后
-	draw : function(x, y, img_size, img_size){
+	draw : function(x, y, img_width, img_height){
 		var imageScale = this.layer.imageScale;
 
 		var viewer = this.map.getViewer();
@@ -91,8 +91,8 @@ GeoBeans.Tile = GeoBeans.Class({
 
 				// x = Math.floor(x+0.5);
 				// y = Math.floor(y+0.5);
-				this.layer.renderer.context.clearRect(x,y,img_size,img_size);
-				this.layer.renderer.drawImage(this.image, x, y, img_size, img_size);
+				this.layer.renderer.context.clearRect(x,y,img_width,img_height);
+				this.layer.renderer.drawImage(this.image, x, y, img_width, img_height);
 				this.layer.renderer.restore();
 				if(rotation != 0){
 					var rotateCanvas = this.layer.getRotateCanvas();
@@ -114,7 +114,7 @@ GeoBeans.Tile = GeoBeans.Class({
 					}
 				}
 
-				this.map._updateTile(this.layer,x,y,img_size,img_size);
+				this.map._updateTile(this.layer,x,y,img_width,img_height);
 			}
 		}		
 	}
