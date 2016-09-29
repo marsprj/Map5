@@ -149,16 +149,17 @@
 		var layer = createFeatureLayer(name, featureType);
 		layer.setFeatures(features);
 
+		//创建分级图样式
+		var style = createRangeStyle(layer, "gdp");
+		layer.setStyle(style);
+
 		mapObj.addLayer(layer);
-		mapObj.getViewer().setExtent(layer.getExtent());
+		mapObj.getViewer().setExtent(layer.getExtent());		
 	}
 
 	function createFeatureLayer(name, featureType){
 		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
 		featureLayer.featureType = featureType;
-
-		var style = createStyle();
-		featureLayer.setStyle(style);
 
 		return featureLayer;
 	}
@@ -230,34 +231,52 @@
 
 	}
 
-	function createStyle(){
-		// 定义元素的样式
+	/**
+	 * 创建分级图样式
+	 * 读取Feature某个字段的值，根据该值，在ColorMap上生成对应颜色列表。
+	 */
+	function createRangeStyle(layer,fieldName){
+		//1. 创建ColorMap
+		var start = "#00ff00";
+		var end   = "#ff0000";
+		var minmax = layer.getMinMaxValue(fieldName);
+		var colorMap = new GeoBeans.ColorRangeMap(start, end, minmax.min, minmax.max);
+
+		//2. 创建默认样式
+		var stroke = new GeoBeans.Style.Stroke();
+		stroke.width = 0.5;
+		stroke.color.setHex("#000000");
 		var style = new GeoBeans.Style.FeatureStyle();
 
-		// 定义一个规则
-		var rule = new GeoBeans.Style.Rule();
+		//3. 计算指定字段的序号
+		var featureType = layer.getFeatureType();
+		var findex = featureType.findField(fieldName);
 
-		// 定义一个面样式
-		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		//4. 遍历图层上的feature
+		var features = layer.getFeatures();
+		features.forEach(function(f){
+			//5. 读取指定字段的值
+			var v = parseFloat(f.getValueByIndex(findex));
+			//6. 在颜色铺上读取对应的颜色值
+			var color = colorMap.getValue(v);
+			color.setOpacity(0.7);
+			//7. 根据上面的color生成该feature对应的symbolizer
+			var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+			symbolizer.fill.color = color;
+			symbolizer.stroke = stroke;
+			//8. 生成该feature的过滤器
+			var filter = new GeoBeans.Filter.IDFilter();
+			filter.addID(f.fid);
+			//9. 生成样式规则（rule），设置样式和对应的过滤器。
+			var rule = new GeoBeans.Style.Rule();
+			rule.symbolizer = symbolizer;
+			rule.filter = filter;
+			//10. 将rule添加到样式对象上。
+			style.addRule(rule);
+		});
 
-		// 定义面样式的填充颜色
-		symbolizer.fill.color.set(0, 255, 0,0.6);
-
-		// 定义面样式的边框的颜色
-		symbolizer.stroke.color.set(255, 0, 0,0.6);
-
-		// 定义面样式的边框的宽度，默认为2
-		symbolizer.stroke.width = 1;
-
-		// 定义该规则的样式
-		rule.symbolizer = symbolizer;
-
-		// 添加该项规则
-		style.addRule(rule);
-		
 		return style;
 	}
-
 
 </script>
 	

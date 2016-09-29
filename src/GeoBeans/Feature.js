@@ -75,7 +75,7 @@ GeoBeans.Feature.prototype.getValue = function(field){
  */
 GeoBeans.Feature.prototype.getValueByIndex = function(index){
 	var fields = this.featureType.getFields();
-	if(index<0||index>=fields.length){
+	if(index>=0 && index<fields.length){
 		return this.values[index];
 	}
 	return null;

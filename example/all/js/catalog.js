@@ -284,10 +284,10 @@ var g_catalog = [
 				"name" : "(*)唯一值图",
 				"link" : "theme/theme_unique.html"
 			},{
-				"name" : "分级样图(前端)[需要修改]",
+				"name" : "分级图(前端)",
 				"link" : "theme/theme_class_c.html"
 			},{
-				"name" : "(*)分级样图(后端)",
+				"name" : "(*)分级图(后端)",
 				"link" : "theme/theme_class_s.html"
 			},{
 				"name" : "(*)热力图",

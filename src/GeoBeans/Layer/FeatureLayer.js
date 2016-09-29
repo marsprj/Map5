@@ -1680,12 +1680,21 @@ GeoBeans.Layer.FeatureLayer.prototype.setFeatures = function(features){
 	}
 }
 
+/**
+ * 获得图层相关的featureType
+ * @public
+ * @return  {GeoBeasn.FeatureType>} 图层相关的featureType
+ */
+GeoBeans.Layer.FeatureLayer.prototype.getFeatureType = function(){
+	return this.featureType;
+}
+
 GeoBeans.Layer.FeatureLayer.prototype.getMinMaxValue = function(fname){
 	var minmax = {
 		min : 0,
 		max : 0
 	};
-	if(isValid(this.features)){
+	if(!isValid(this.features)){
 		return minmax;
 	}
 	var min = null;
