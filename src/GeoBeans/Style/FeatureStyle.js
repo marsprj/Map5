@@ -15,26 +15,40 @@ GeoBeans.Style.FeatureStyle = GeoBeans.Class(GeoBeans.Style,{
 	initialize : function(){
 		this.type = GeoBeans.Style.Type.FeatureType;
 		this.rules = [];
-	},
-
-	addRule : function(rule){
-		this.rules.push(rule);
-	},
-
-	removeRule : function(index){
-		this.rules.splice(index,1);
-	},
-
-	clone : function(){
-		var clone = new GeoBeans.Style.FeatureStyle();
-		for(var i = 0; i < this.rules.length;++i){
-			var rule = this.rules[i].clone();
-			clone.addRule(rule);
-		}
-		clone.styleClass = this.styleClass;
-		return clone;
 	}
 });
+
+/**
+ * 增加渲染规则
+ * @public
+ * @param {GeoBeans.Style.Rule} rule  规则
+ */
+GeoBeans.Style.FeatureStyle.prototype.addRule = function(rule){
+	this.rules.push(rule);
+}
+
+/**
+ * 移除渲染规则
+ * @public
+ * @param {integer} index  序号
+ */
+GeoBeans.Style.FeatureStyle.prototype.removeRule = function(index){
+	this.rules.splice(index,1);
+}
+
+/**
+ * 复制Style对象
+ * @private
+ */
+GeoBeans.Style.FeatureStyle.prototype.clone = function(){
+	var clone = new GeoBeans.Style.FeatureStyle();
+	for(var i = 0; i < this.rules.length;++i){
+		var rule = this.rules[i].clone();
+		clone.addRule(rule);
+	}
+	clone.styleClass = this.styleClass;
+	return clone;
+}
 
 GeoBeans.Style.FeatureStyle.StyleClass ={
 	SINGLE 		: "single",

@@ -14,6 +14,6 @@ GeoBeans.Style = GeoBeans.Class({
 });
 
 GeoBeans.Style.Type = {
-	FeatureType : "featureType",
-	RasterType : "rasterType"
+	FeatureType : "FeatureType",
+	RasterType : "RasterType"
 };

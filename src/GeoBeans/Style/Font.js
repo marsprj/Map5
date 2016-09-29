@@ -31,7 +31,7 @@ GeoBeans.Style.Font = GeoBeans.Class({
 });
 
 /**
- * [StyleType description]
+ * 字体风格
  * @type {Object}
  */
 GeoBeans.Style.Font.StyleType = {
@@ -40,6 +40,10 @@ GeoBeans.Style.Font.StyleType = {
 	Oblique: "oblique"
 };
 
+/**
+ * 字体粗度
+ * @type {string}
+ */
 GeoBeans.Style.Font.WeightType = {
 	Normal 	: "normal",
 	Bold 	: "bold"
