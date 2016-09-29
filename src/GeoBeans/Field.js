@@ -1,10 +1,3 @@
-
-GeoBeans.Field.Type = {
-	DOUBLE 	: "double",
-	STRING	: "string",
-	GEOMETRY: "geometry"
-};
-
 /**
  * @classdesc
  * Map5的Feature对象的字段类。
@@ -67,3 +60,9 @@ GeoBeans.Field.prototype.getLength = function(){
 GeoBeans.Field.prototype.getGeometryType = function(){
 	return this.geomType;
 }
+
+GeoBeans.Field.Type = {
+	DOUBLE 	: "double",
+	STRING	: "string",
+	GEOMETRY: "geometry"
+};

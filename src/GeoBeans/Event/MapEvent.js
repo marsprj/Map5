@@ -6,6 +6,6 @@
  */
 GeoBeans.Event.MapEvent = function(){
 	map  : null,
-	type : "",
+	type : ""
 };
 

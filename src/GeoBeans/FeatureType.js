@@ -114,7 +114,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 
 		var f = new GeoBeans.Field(name, type, this,length);
 		
-		if(type==GeoBeans.FieldType.GEOMETRY){
+		if(type==GeoBeans.Field.Type.GEOMETRY){
 			var geomType = this.parseGeometryType(xtype);
 			f.setGeomType(geomType);
 			this.geomFieldName = name;
@@ -125,7 +125,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	
 	parseFieldType : function(xtype){
 		if(xtype.substr(0,3) == "gml"){
-			return GeoBeans.FieldType.GEOMETRY;
+			return GeoBeans.Field.Type.GEOMETRY;
 		}		
 		return xtype.substring(4, xtype.length);
 	},
@@ -443,7 +443,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		var len = this.fields.length;
 		for(var i=0; i<len; i++){
 			f = this.fields[i];
-			if(f.type==GeoBeans.FieldType.GEOMETRY){
+			if(f.type==GeoBeans.Field.Type.GEOMETRY){
 				var gml = $(xml).find(f.name + ":first").children()[0];
 				if(gml==null){
 					values.push(null);			

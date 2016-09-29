@@ -276,7 +276,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			return null;
 		}
 		//？？直接调用getField就可以，又何必多此一举先获得index
-		var geomFieldIndex = featureType.getFieldIndex(geomFieldName);
+		var geomFieldIndex = featureType.findField(geomFieldName);
 		if(geomFieldIndex == null){
 			return null;
 		}
@@ -385,7 +385,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(labelText == null || labelText.length == 0){
 			var labelProp = symbolizer.labelProp;
 			if(labelProp != null){
-				var findex = feature.featureType.getFieldIndex(labelProp);
+				var findex = feature.featureType.findField(labelProp);
 			}
 		}else{
 			text = labelText;
@@ -431,7 +431,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// 		this.map.renderer.save();
 	// 		this.map.renderer.setSymbolizer(symbolizer);
 	// 		if(symbolizer instanceof GeoBeans.Symbolizer.TextSymbolizer){
-	// 			var findex = feature.featureType.getFieldIndex(symbolizer.field);
+	// 			var findex = feature.featureType.findField(symbolizer.field);
 	// 			this.map.renderer.label(feature.geometry, feature.values[findex], symbolizer, this.map.transformation);
 	// 		}
 	// 		else{
@@ -491,7 +491,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			return this.features;
 		}
 		var selection = [];
-		var findex = this.featureType.getFieldIndex(field);
+		var findex = this.featureType.findField(field);
 		if(findex >= 0){
 			var feature = null;
 			var length = this.features.length;
@@ -618,7 +618,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -643,7 +643,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -668,7 +668,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -693,7 +693,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -718,7 +718,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -743,7 +743,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -768,7 +768,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					break;
 				}
 
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -794,7 +794,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				// }
 				var properyName = filter.properyName;
 				var field = properyName.name;
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -825,7 +825,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 					selection = features;
 					break;
 				}
-				var findex = this.featureType.getFieldIndex(field);
+				var findex = this.featureType.findField(field);
 				if(findex == -1){
 					selection = features;
 					break;
@@ -1027,7 +1027,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				if(r.filter!=null){
 					var fname = r.filter.field;
 					var value = null;
-					var findex = this.featureType.getFieldIndex(fname);
+					var findex = this.featureType.findField(fname);
 					value = f.values[findex];
 					if(value==r.filter.value){
 						rules.push(r);
@@ -1232,7 +1232,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			this.hitRenderer.save();
 			this.hitRenderer.setSymbolizer(symbolizer);
 			if(symbolizer instanceof GeoBeans.Symbolizer.TextSymbolizer){
-				var findex = feature.featureType.getFieldIndex(symbolizer.field);
+				var findex = feature.featureType.findField(symbolizer.field);
 				this.hitRenderer.label(feature.geometry, feature.values[findex], symbolizer, this.map.getViewer());
 			}
 			else{
@@ -1319,7 +1319,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	//插入
 	//？？？这个函数是要干什么？为什么要调用track
 	beginTransaction : function(callback){
-		var geomFieldIndex = this.featureType.getFieldIndex(this.featureType.geomFieldName);
+		var geomFieldIndex = this.featureType.findField(this.featureType.geomFieldName);
 		var geomField = this.featureType.fields[geomFieldIndex];
 		var geomType = geomField.geomType;
 
@@ -1556,7 +1556,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			var labelProp = symbolizer.labelProp;
 			if(labelProp != null){
 				var findex = feature.featureType
-					.getFieldIndex(labelProp);
+					.findField(labelProp);
 			}
 		}else{
 			text = labelText;

@@ -194,22 +194,22 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	/**
 	 * 转换到屏幕坐标，不加旋转角度的
-	 * @param  {[type]} mx [description]
-	 * @param  {[type]} my [description]
-	 * @return {[type]}    [description]
+	 * @param  {float} x x坐标
+	 * @param  {float} y y坐标
+	 * @return {GeoBeans.Geometry.Point}    屏幕坐标
 	 */
-	toScreenPoint : function(mx,my){
+	toScreenPoint : function(x,y){
 		var viewer = this.map.viewer;
-		var screenX = viewer.scale * (mx - viewer.view_c.x) + viewer.win_cx;
-		var screenY = viewer.win_cy - viewer.scale * (my - viewer.view_c.y);
+		var screenX = viewer.scale * (x - viewer.view_c.x) + viewer.win_cx;
+		var screenY = viewer.win_cy - viewer.scale * (y - viewer.view_c.y);
 		
 		return new GeoBeans.Geometry.Point(screenX, screenY);
 	},
 });
 
 /**
- * [Type description]
- * @type {Object}
+ * 瓦片图层类型
+ * @type {string}
  */
 GeoBeans.Layer.TileLayer.Type = {
 	QS : "QuadServer",

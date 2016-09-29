@@ -232,7 +232,7 @@ var g_catalog = [
 				"name" : "线样式(简单)",
 				"link" : "style/style_simple_line.html"
 			},{
-				"name" : "(*)面样式(简单)",
+				"name" : "面样式(简单)",
 				"link" : "style/style_simple_polygon.html"
 			},{
 				"name" : "(*)面样式(填充)",
