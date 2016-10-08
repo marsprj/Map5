@@ -50,10 +50,10 @@ GeoBeans.Format.KML.prototype.readFields = function(kml){
 	var featureType = new GeoBeans.FeatureType();
 	featureType.fields = [];
 
-	var field = new GeoBeans.Field("name",GeoBeans.FieldType.STRING,featureType,null);
+	var field = new GeoBeans.Field("name",GeoBeans.Field.Type.STRING,featureType,null);
 	featureType.fields.push(field);
 
-	var field = new GeoBeans.Field("geometry",GeoBeans.FieldType.GEOMETRY,featureType,null);
+	var field = new GeoBeans.Field("geometry",GeoBeans.Field.Type.GEOMETRY,featureType,null);
 
 	var geomType = this.readGeometryType(kml);
 	field.setGeomType(geomType);

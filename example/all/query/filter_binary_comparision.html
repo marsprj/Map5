@@ -170,7 +170,7 @@
 		features.forEach(function(f){
 			html += "<tr>";
 			fields.forEach(function(field){
-				if(field.type!=GeoBeans.FieldType.GEOMETRY){
+				if(field.type!=GeoBeans.Field.Type.GEOMETRY){
 					html += "<td>";
 					html += f.getValue(field.name);
 					html += "</td>"

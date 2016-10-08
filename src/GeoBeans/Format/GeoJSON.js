@@ -73,7 +73,7 @@ GeoBeans.Format.GeoJson.prototype.readFields = function(geoJson){
 
 
 	// 增加geometry字段
-	var field = new GeoBeans.Field("geometry",GeoBeans.FieldType.GEOMETRY,featureType,null);
+	var field = new GeoBeans.Field("geometry",GeoBeans.Field.Type.GEOMETRY,featureType,null);
 
 	var geomType = this.readGeometryType(geoJson);
 	field.setGeomType(geomType);
@@ -205,9 +205,9 @@ GeoBeans.Format.GeoJson.prototype.readFieldsByFeature = function(featureJson){
 		var valueType = typeof(value);
 		var type = null;
 		if(valueType == "string"){
-			type = GeoBeans.FieldType.STRING;
+			type = GeoBeans.Field.Type.STRING;
 		}else if(valueType == "number"){
-			type = GeoBeans.FieldType.DOUBLE;
+			type = GeoBeans.Field.Type.DOUBLE;
 		}
 
 		var fieldObj = {

@@ -57,7 +57,7 @@ GeoBeans.DataSet = GeoBeans.Class({
 				continue;
 			}
 			type = field.type;
-			if(type != GeoBeans.FieldType.GEOMETRY){
+			if(type != GeoBeans.Field.Type.GEOMETRY){
 				fields_2.push(field.name);
 			}
 		}
