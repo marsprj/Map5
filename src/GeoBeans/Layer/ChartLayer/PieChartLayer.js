@@ -24,7 +24,6 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			this.hideLegend();
 		}
 		this.renderer.clearRect();
-		this.setTransformation(this.map.transformation);
 		this.drawLayer();
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 	},

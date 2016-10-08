@@ -81,35 +81,6 @@ GeoBeans.Layer = GeoBeans.Class({
 
 	cleanup : function(){},
 
-	/**
-	 * @deprecated  ??
-	 */
-	//绘制截屏
-	drawLayerSnap : function(){
-		
-		var transformation = this.map.transformation;
-		var viewer = this.map.viewer;
-		if(viewer == null){
-			return;
-		}
-
-		var map_lt = new GeoBeans.Geometry.Point(viewer.xmin,viewer.ymax);
-		var map_rb = new GeoBeans.Geometry.Point(viewer.xmax,viewer.ymin);
-
-		var screen_lt = this.transformation_brf.toScreenPoint(map_lt.x,map_lt.y);
-		var screen_rb = this.transformation_brf.toScreenPoint(map_rb.x,map_rb.y);
-
-		var width = screen_rb.x - screen_lt.x;
-		var height = screen_rb.y - screen_lt.y;
-
-
-		this.renderer.context.drawImage(this.canvas,screen_lt.x,screen_lt.y,
-			width,height,0,0,this.map.canvas.width,this.map.canvas.height);
-		this.map.renderer.drawImage(this.canvas,0,0);
-
-		this.setTransformation(transformation);
-	},
-
 	CLASS_NAME : "GeoBeans.Layer"
 });
 

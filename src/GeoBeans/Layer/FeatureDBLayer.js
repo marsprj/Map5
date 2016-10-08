@@ -263,7 +263,6 @@ GeoBeans.Layer.FeatureDBLayer = GeoBeans.Class(GeoBeans.Layer.DBLayer,{
 		}
 		
 		// layer.requestFlag = false;
-		layer.setTransformation(layer.map.transformation);
 		layer.features = features;
 		layer.featureLayer.features = features;
 		// layer.drawLayerSnap();
