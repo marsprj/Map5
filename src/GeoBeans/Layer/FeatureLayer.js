@@ -79,9 +79,9 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	/**
 	 * [addFeatureObj description]
 	 * @deprecated [description]
-	 * @param {[type]} fid      [description]
-	 * @param {[type]} geometry [description]
-	 * @param {[type]} values   [description]
+	 * @param {integer} fid      fid
+	 * @param {GeoBeans.Geometry} geometry 几何对象
+	 * @param {Array} values   字段及对应的值
 	 */
 	addFeatureObj : function(fid,geometry,values){
 		if(fid == null || values == null || geometry == null){
@@ -1581,16 +1581,9 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.flag = GeoBeans.Layer.Flag.READY;
 	},
 
-	// 查询
 	/**
-	 * [getFeatureFilter description]
+	 * 查询
 	 * @deprecated
-	 * @param  {[type]}   filter      [description]
-	 * @param  {[type]}   maxFeatures [description]
-	 * @param  {[type]}   offset      [description]
-	 * @param  {[type]}   fields      [description]
-	 * @param  {Function} callback    [description]
-	 * @return {[type]}               [description]
 	 */
 	getFeatureFilter : function(filter,maxFeatures,offset,fields,callback){
 		var time = new Date();
@@ -1683,7 +1676,7 @@ GeoBeans.Layer.FeatureLayer.prototype.setFeatures = function(features){
 /**
  * 获得图层相关的featureType
  * @public
- * @return  {GeoBeasn.FeatureType>} 图层相关的featureType
+ * @return  {GeoBeasn.FeatureType} 图层相关的featureType
  */
 GeoBeans.Layer.FeatureLayer.prototype.getFeatureType = function(){
 	return this.featureType;
