@@ -245,7 +245,7 @@ GeoBeans.Map = GeoBeans.Class({
 	 		this.baseLayer = null;
 	 		this.level = null;
 	 	}
-	 	this.baseLayerRenderer.clearRect();
+	 	this.baseLayerRenderer.clearRect(0,0,this.baseLayerCanvas.width,this.baseLayerCanvas.height);
 	},
 	
 	/**
@@ -329,12 +329,12 @@ GeoBeans.Map = GeoBeans.Class({
 		var rotation = viewer.getRotation();
 
 		if(rotation != 0){
-			this.baseLayerRenderer.context.translate(width/2,height/2);
-			this.baseLayerRenderer.context.rotate(rotation* Math.PI/180);
-			this.baseLayerRenderer.context.translate(-width/2,-height/2);
-			this.baseLayerRenderer.context.clearRect(x,y,img_width,img_height);
+			this.baseLayerRenderer.translate(width/2,height/2);
+			this.baseLayerRenderer.rotate(rotation* Math.PI/180);
+			this.baseLayerRenderer.translate(-width/2,-height/2);
+			this.baseLayerRenderer.clearRect(x,y,img_width,img_height);
 		}else{
-			this.baseLayerRenderer.context.clearRect(x,y,img_width,img_height);
+			this.baseLayerRenderer.clearRect(x,y,img_width,img_height);
 		}
 		if(this.layers == null){
 			return;
@@ -712,7 +712,7 @@ GeoBeans.Map = GeoBeans.Class({
 		// var context = animateCanvas.getContext("2d");
 		// context.clearRect(0,0,animateCanvas.width,animateCanvas.height);
 
-		map.animateRenderer.clearRect();
+		map.animateRenderer.clearRect(0,0,this.animateCanvas.width,this.animateCanvas.height);
 		var rippleLayers = map._getRippleLayer();
 		if(rippleLayers == null){
 			return;
@@ -1114,7 +1114,7 @@ GeoBeans.Map.prototype.createMapContainer = function(){
 	this._container.innerHTML = mapCanvasHtml;
 
 
-	// baseCanvas
+	// baseLayerCanvas
 	var baseCanvasID = this.id + "_basecanvas";
 	var canvasHtml = "<canvas  id='" + baseCanvasID  +"' class='map5-base-canvas' height='" 
 				+ this.height + "' width='" 
@@ -1623,7 +1623,7 @@ GeoBeans.Map.prototype.drawBaseLayer = function(){
 		}
 	}
 	if(tileLayerCount == 0){
-		this.baseLayerRenderer.clearRect();
+		this.baseLayerRenderer.clearRect(0,0,this.baseLayerCanvas.width,this.baseLayerCanvas.height);
 		this.baseLayerSnap = null;
 	}	
 }
@@ -1770,13 +1770,13 @@ GeoBeans.Map.prototype.drawBackground = function(){
  * @private
  */
 GeoBeans.Map.prototype.saveSnap = function(){
-	this.snap = this.renderer.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-	this.baseLayerSnap = this.baseLayerRenderer.context.getImageData(0, 0, 
+	this.snap = this.renderer.getImageData(0, 0, this.canvas.width, this.canvas.height);
+	this.baseLayerSnap = this.baseLayerRenderer.getImageData(0, 0, 
 			this.baseLayerCanvas.width, this.baseLayerCanvas.height);	
 	for(var i = 0; i < this.layers.length;++i){
 		var layer = this.layers[i];
 		if(layer instanceof GeoBeans.Layer.TileLayer){
-			layer.snap = layer.renderer.context.getImageData(0,0,layer.canvas.width,layer.canvas.height);
+			layer.snap = layer.renderer.getImageData(0,0,layer.canvas.width,layer.canvas.height);
 		}
 	}
 },
@@ -1787,10 +1787,10 @@ GeoBeans.Map.prototype.saveSnap = function(){
  */
 GeoBeans.Map.prototype.restoreSnap = function(){
 	if(this.snap!=null){
-		this.renderer.context.putImageData(this.snap, 0, 0);
+		this.renderer.putImageData(this.snap, 0, 0);
 	}
 	if(this.baseLayerSnap != null && this.baseLayer != null){
-		this.baseLayer.renderer.context.putImageData(this.baseLayerSnap, 0, 0);	
+		this.baseLayer.renderer.putImageData(this.baseLayerSnap, 0, 0);	
 	}
 }
 
@@ -1802,18 +1802,18 @@ GeoBeans.Map.prototype.putSnap = function(x, y){
 	if(x=='undefined')	x =0;
 	if(y=='undefined')	y =0;
 	if(this.snap!=null){
-		this.renderer.context.putImageData(this.snap, x, y);
+		this.renderer.putImageData(this.snap, x, y);
 	}
 
 	if(this.baseLayerSnap != null){
-		this.baseLayerRenderer.context.putImageData(this.baseLayerSnap, x, y);
+		this.baseLayerRenderer.putImageData(this.baseLayerSnap, x, y);
 	}
 
 	for(var i = 0; i < this.layers.length;++i){
 		var layer = this.layers[i];
 		if(layer instanceof GeoBeans.Layer.TileLayer && this.level < layer.getMaxZoom()){
-			layer.renderer.clearRect();
-			layer.renderer.context.putImageData(layer.snap, x, y);
+			layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
+			layer.renderer.putImageData(layer.snap, x, y);
 		}
 	}
 }
@@ -1862,7 +1862,7 @@ GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
 		    .attr("width", this.baseLayerSnap.width)
 		    .attr("height", this.baseLayerSnap.height)[0];
 		baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
-		this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
+		this.baseLayerRenderer.drawImage(baseLayerCanvasNew,x,y,width,height);
 	}
 
 	if(this.snap != null){
@@ -1870,7 +1870,7 @@ GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
 		    .attr("width", this.snap.width)
 		    .attr("height", this.snap.height)[0];
 		newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
-		this.renderer.context.drawImage(newCanvas,x,y,width,height);
+		this.renderer.drawImage(newCanvas,x,y,width,height);
 	}
 
 	for(var i = 0; i < this.layers.length;++i){
@@ -1882,7 +1882,7 @@ GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
 			    .attr("height", layer.snap.height)[0];
 			canvas.getContext("2d").putImageData(layer.snap, 0, 0);
 			layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
-			layer.renderer.context.drawImage(canvas,x,y,width,height);
+			layer.renderer.drawImage(canvas,x,y,width,height);
 		}else{
 			// layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
 		}
@@ -1915,7 +1915,7 @@ GeoBeans.Map.prototype.drawLayersSnap = function(zoom){
 		    .attr("width", this.snap.width)
 		    .attr("height", this.snap.height)[0];
 		newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
-		this.renderer.context.drawImage(newCanvas,x,y,width,height);
+		this.renderer.drawImage(newCanvas,x,y,width,height);
 	}
 
 	if(this.baseLayerSnap != null){
@@ -1924,7 +1924,7 @@ GeoBeans.Map.prototype.drawLayersSnap = function(zoom){
                       .attr("width", this.baseLayerSnap.width)
                       .attr("height", this.baseLayerSnap.height)[0];
                     baseLayerCanvasNew.getContext("2d").putImageData(this.baseLayerSnap, 0, 0);
-		this.baseLayerRenderer.context.drawImage(baseLayerCanvasNew,x,y,width,height);
+		this.baseLayerRenderer.drawImage(baseLayerCanvasNew,x,y,width,height);
 	}
 
 	for(var i = 0; i < this.layers.length;++i){
@@ -1935,7 +1935,7 @@ GeoBeans.Map.prototype.drawLayersSnap = function(zoom){
 			    .attr("height", layer.snap.height)[0];
 			canvas.getContext("2d").putImageData(layer.snap, 0, 0);
 			layer.renderer.clearRect(0,0,layer.canvas.width,layer.canvas.height);
-			layer.renderer.context.drawImage(canvas,x,y,width,height);
+			layer.renderer.drawImage(canvas,x,y,width,height);
 		}
 	}
 }

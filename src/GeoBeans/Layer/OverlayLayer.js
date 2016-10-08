@@ -103,20 +103,20 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			n = this.overlays.length;
 		}
 		if(this.editRenderer != null){
-			this.editRenderer.clearRect();
+			this.editRenderer.clearRect(0,0,this.editCanvas.width,this.editCanvas.height);
 		}
 		if(this.hitRenderer != null){
-			this.hitRenderer.clearRect();
+			this.hitRenderer.clearRect(0,0,this.editCanvas.width,this.editCanvas.height);
 		}
 	},
 
 	load : function(){
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		if(this.hitRenderer != null){
-			this.hitRenderer.clearRect();
+			this.hitRenderer.clearRect(0,0,this.hitCanvas.width,this.hitCanvas.height);
 		}
 		if(this.editRenderer != null){
-			this.editRenderer.clearRect();
+			this.editRenderer.clearRect(0,0,this.editCanvas.width,this.editCanvas.height);
 		}
 		
 		for(var i = 0; i < this.overlays.length;++i){
@@ -163,7 +163,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 	},
 
 	drawClickLayer : function(){
-		this.clickRenderer.clearRect();
+		this.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
 		if(this.clickOverlay == null){
 			return;
 		}
@@ -188,7 +188,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		if(len >=1){
 			var f = selection[len-1];
 			if(f.isEdit){
-				layer.hitRenderer.clearRect();
+				layer.hitRenderer.clearRect(0,0,layer.hitCanvas.width,layer.hitCanvas.height);
 				layer.map.drawLayersAll();
 				return;
 			}
@@ -251,7 +251,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 
 	//绘制选中的overlay
 	drawHitOverlay : function(overlay,symbolizer){
-		this.hitRenderer.clearRect();
+		this.hitRenderer.clearRect(0,0,this.hitCanvas.width,this.hitCanvas.height);
 		this.hitRenderer.setSymbolizer(symbolizer);
 		var ret = this.hitRenderer.drawOverlay(overlay, symbolizer, this.map.getViewer());
 		if(ret){
@@ -302,8 +302,8 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		map.canvas.removeEventListener('mousemove', this.hitEvent);
 		this.unregisterEditEvent();
 		this.editOverlay = null;
-		this.editRenderer.clearRect();
-		this.hitRenderer.clearRect();
+		this.editRenderer.clearRect(0,0,this.editCanvas.width,this.editCanvas.height);
+		this.hitRenderer.clearRect(0,0,this.hitCanvas.width,this.hitCanvas.height);
 		this.map.drawLayersAll();
 	},
 
@@ -329,7 +329,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			}
 		}
 		
-		this.hitRenderer.clearRect();
+		this.hitRenderer.clearRect(0,0,this.hitCanvas.width,this.hitCanvas.height);
 		this.map.drawLayersAll();
 		if(this.onOverlayHit != undefined){
 			this.onOverlayHit(this,this.selection);
@@ -412,7 +412,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 
 	//绘制编辑中的overlay
 	drawEditOverlay : function(overlay,symbolizer){
-		this.editRenderer.clearRect();
+		this.editRenderer.clearRect(0,0,this.editCanvas.width,this.editCanvas.height);
 		this.editRenderer.setSymbolizer(symbolizer);
 		var ret = this.editRenderer.drawOverlay(overlay, symbolizer, this.map.getViewer());
 		// this.map.drawLayersAll();
@@ -542,7 +542,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				console.log("draging");
 				return;
 			}
-			layer.clickRenderer.clearRect();
+			layer.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
 			layer.map.drawLayersAll();
 			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);

@@ -118,18 +118,19 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 					var delta = angle_e - angle_b;
 					that._map.drawBackground();
 					that._map.baseLayerRenderer.save();
-					that._map.baseLayerRenderer.context.translate(width/2,height/2);
-					that._map.baseLayerRenderer.context.rotate(delta* Math.PI/180);
-					that._map.baseLayerRenderer.context.translate(-width/2,-height/2);
-					that._map.baseLayerRenderer.context.drawImage(baseLayerCanvas_bk,0,0);
+					that._map.baseLayerRenderer.translate(width/2,height/2);
+					that._map.baseLayerRenderer.rotate(delta* Math.PI/180);
+					that._map.baseLayerRenderer.translate(-width/2,-height/2);
+					that._map.baseLayerRenderer.drawImage(baseLayerCanvas_bk,0,0,
+						baseLayerCanvas_bk.width,baseLayerCanvas_bk.height);
 					that._map.baseLayerRenderer.restore();
 
 
 					that._map.renderer.save();
-					that._map.renderer.context.translate(width/2,height/2);
-					that._map.renderer.context.rotate(delta* Math.PI/180);
-					that._map.renderer.context.translate(-width/2,-height/2);
-					that._map.renderer.context.drawImage(canvas_bk,0,0);
+					that._map.renderer.translate(width/2,height/2);
+					that._map.renderer.rotate(delta* Math.PI/180);
+					that._map.renderer.translate(-width/2,-height/2);
+					that._map.renderer.drawImage(canvas_bk,0,0,canvas_bk.width,canvas_bk.height);
 					that._map.renderer.restore();
 				};
 				var onmouseup = function(evt){

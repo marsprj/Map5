@@ -198,12 +198,12 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var minLevel = this.getMinLevel();
 		if(level > maxLevel || level < minLevel){
 			this.tiles = [];
-			this.renderer.clearRect();
+			this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 			this.snap = null;
 			return;
 		}
 
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		var tbound = this.computeTileBound();
 		this.updateTileCache(tbound);
 

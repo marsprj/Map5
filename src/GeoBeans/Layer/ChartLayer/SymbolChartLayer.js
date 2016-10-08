@@ -32,7 +32,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 
 	load : function(){
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.drawLayer();
 		if(this.visible){
 			this.removeLegend();
@@ -496,7 +496,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				console.log("draging");
 				return;
 			}
-			layer.clickRenderer.clearRect();
+			layer.clickRenderer.clearRect(0,0,layer.clickCanvas.width,layer.clickCanvas.height);
 			layer.map.drawLayersAll();
 			var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);
@@ -558,7 +558,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	},
 
 	drawClickLayer : function(){
-		this.clickRenderer.clearRect();
+		this.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
 		if(this.clickFeature == null){
 			return;
 		}

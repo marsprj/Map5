@@ -28,13 +28,13 @@ GeoBeans.Maplex = GeoBeans.Class({
 	},
 
 	cleanup : function(){
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.labelSets = [];
 	},
 
 
 	draw : function(){
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		for(var i = 0; i < this.labelSets.length;++i){
 			var labelSet = this.labelSets[i];
 			this.drawLabelSet(labelSet);

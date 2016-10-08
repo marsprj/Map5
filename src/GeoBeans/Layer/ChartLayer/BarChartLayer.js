@@ -24,7 +24,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		}else{
 			this.hideLegend();
 		}
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.drawLayer();
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 	},

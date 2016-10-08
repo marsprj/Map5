@@ -35,7 +35,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		this.viewer = new GeoBeans.Envelope(mapViewer.xmin,mapViewer.ymin,
 			mapViewer.xmax,mapViewer.ymax);
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.cluster();
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 	},

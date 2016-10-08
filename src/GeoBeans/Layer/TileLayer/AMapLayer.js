@@ -194,7 +194,7 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		var minZoom = this.getMinZoom();
 		if(zoom > maxZoom || zoom < minZoom){
 			this.tiles = [];
-			this.renderer.clearRect();
+			this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 			this.snap = null;
 			return;
 		}

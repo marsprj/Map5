@@ -105,7 +105,7 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 
 	preDraw : function(){
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		var tbound = this.computeTileBound();
 		this.updateTileCache(tbound);
 

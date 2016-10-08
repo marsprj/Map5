@@ -23,11 +23,11 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 
 	save : function(){
-		this.canvas.save();
+		this.context.save();
 	},
-
+	
 	restore : function(){
-		this.canvas.restore();
+		this.context.restore();
 	},
 
 	getGlobalAlpha : function(){
@@ -36,6 +36,25 @@ GeoBeans.Renderer = GeoBeans.Class({
 
 	setGlobalAlpha : function(alpha){
 		this.context.globalAlpha = alpha;
+	},
+
+	getImageData : function(x,y,width,height){
+		var snap = this.context.getImageData(x,y,width,height);
+		return snap;
+	},
+
+	putImageData : function(snap,x,y){
+		this.context.putImageData(snap,x,y);
+	},
+
+	// 平移
+	translate : function(x,y){
+		this.context.translate(x,y);
+	},
+
+	// 旋转
+	rotate : function(angle){
+		this.context.rotate(angle);
 	},
 	
 	/************************************************************/
@@ -372,9 +391,9 @@ GeoBeans.Renderer = GeoBeans.Class({
 			var center_x = px + symbol.icon_offset_x;
 			var center_y = py - symbol.icon_offset_y;
 			this.save();
-			this.context.translate(center_x,center_y);
-			this.context.rotate(symbol.rotate *Math.PI/180);
-			this.context.translate(-center_x,-center_y);
+			this.translate(center_x,center_y);
+			this.rotate(symbol.rotate *Math.PI/180);
+			this.translate(-center_x,-center_y);
 		}
 		
 
@@ -747,18 +766,12 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}
 	},
 	
-	save : function(){
-		this.context.save();
-	},
-	
-	restore : function(){
-		this.context.restore();
-	},
+
 
 	//清空图层
-	clearRect : function(){
-		this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-	},
+	clearRect : function(x,y,width,height){
+		this.context.clearRect(x,y,width,height);
+	},	
 
 	//绘制overlay
 	drawOverlay : function(overlay,symbolizer,viewer){

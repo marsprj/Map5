@@ -161,7 +161,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		
 		this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
 			extent.xmax,extent.ymax);
-		this.renderer.clearRect();
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
 		var features = this.selectFeaturesByFilter(bboxFilter,this.features);
 		console.log("count:" + features.length);
@@ -1362,7 +1362,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				console.log("draging");
 				return;
 			}
-			layer.clickRenderer.clearRect();
+			layer.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
 			layer.map.drawLayersAll();
 
 			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
@@ -1457,14 +1457,14 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.map.closeInfoWindow();
 		this.map.canvas.removeEventListener('mouseup', this.clickEvent);
 		this.clickEvent = null;
-		this.clickRenderer.clearRect();
+		this.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
 		this.clickFeature = null;
 		this.map.drawLayersAll();
 	},
 
 
 	drawClickLayer : function(){
-		this.clickRenderer.clearRect();
+		this.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
 		if(this.clickFeature == null){
 			return;
 		}

@@ -84,33 +84,34 @@ GeoBeans.Tile = GeoBeans.Class({
 					var width = this.map.width;
 					var height = this.map.height;
 					
-					this.layer.renderer.context.translate(width/2,height/2);
-					this.layer.renderer.context.rotate(rotation* Math.PI/180);
-					this.layer.renderer.context.translate(-width/2,-height/2);
+					this.layer.renderer.translate(width/2,height/2);
+					this.layer.renderer.rotate(rotation* Math.PI/180);
+					this.layer.renderer.translate(-width/2,-height/2);
 				}
 
 				// x = Math.floor(x+0.5);
 				// y = Math.floor(y+0.5);
-				this.layer.renderer.context.clearRect(x,y,img_width,img_height);
+				this.layer.renderer.clearRect(x,y,img_width,img_height);
 				this.layer.renderer.drawImage(this.image, x, y, img_width, img_height);
 				this.layer.renderer.restore();
 				if(rotation != 0){
 					var rotateCanvas = this.layer.getRotateCanvas();
 					if(rotateCanvas != null){
-						var context = rotateCanvas.getContext("2d");
-						context.clearRect(0,0,rotateCanvas.width,rotateCanvas.height);
-						context.save();
+						var rotateCanvasRenderer = new GeoBeans.Renderer(rotateCanvas);
+						// var context = rotateCanvas.getContext("2d");
+						rotateCanvasRenderer.clearRect(0,0,rotateCanvas.width,rotateCanvas.height);
+						rotateCanvasRenderer.save();
 						var width = rotateCanvas.width;
 						var height = rotateCanvas.height;
-						context.translate(width/2,height/2);
-						context.rotate(-rotation* Math.PI/180);
-						context.translate(-width/2,-height/2);
+						rotateCanvasRenderer.translate(width/2,height/2);
+						rotateCanvasRenderer.rotate(-rotation* Math.PI/180);
+						rotateCanvasRenderer.translate(-width/2,-height/2);
 
 						var x_2 = width/2 - this.layer.canvas.width/2;
 						var y_2 = height/2 - this.layer.canvas.height/2;
-						context.drawImage(this.layer.canvas,0,0,this.layer.canvas.width,this.layer.canvas.height,
+						rotateCanvasRenderer.drawImageParms(this.layer.canvas,0,0,this.layer.canvas.width,this.layer.canvas.height,
 							x_2,y_2,this.layer.canvas.width,this.layer.canvas.height);
-						context.restore();
+						rotateCanvasRenderer.restore();
 					}
 				}
 
