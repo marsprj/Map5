@@ -88,7 +88,7 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 	// },
 
 	load : function(){
-		if(this.features == null){
+		if(this.features != null && this.features.length == 0){
 			this.getFeatures();
 		}else{
 			GeoBeans.Layer.FeatureLayer.prototype.load.apply(this, arguments);
@@ -98,7 +98,7 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 	
 	// 先获取featuretype,然后获取fields,最后获取所有的元素，都改为异步调用
 	getFeatures : function(){
-		if(this.features != null){
+		if(this.features.length !=  0 ){
 			this.load();
 		}
 
