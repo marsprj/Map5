@@ -898,40 +898,6 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 
-	// 拉框放大
-	// @deprecated
-	zoomIn : function(){
-		var i = this.controls.find(GeoBeans.Control.Type.ZOOM);
-		if(i < 0){
-			return;
-		}
-		var zoomControl = this.controls.get(i);
-		zoomControl.setMode("in");
-		zoomControl.trackRect();
-	},
-
-	// 拉框缩小
-	// @deprecated
-	zoomOut : function(){
-		var i = this.controls.find(GeoBeans.Control.Type.ZOOM);
-		if(i < 0){
-			return;
-		}
-		var zoomControl = this.controls.get(i);
-		zoomControl.setMode("out");
-		zoomControl.trackRect();
-	},
-
-	// 停止拉框
-	// @deprecated
-	endZoom : function(){
-		var i = this.controls.find(GeoBeans.Control.Type.ZOOM);
-		if(i < 0){
-			return;
-		}
-		var zoomControl = this.controls.get(i);	
-		zoomControl.end();	
-	},
 
 	// 创建一个featureLayer
 	// @deprecated
@@ -1995,4 +1961,24 @@ GeoBeans.Map.prototype.drawNavControl = function(){
 	var mapNavControl = this.controls.get(index);
 	var zoom = this.getViewer().getZoom();
 	mapNavControl.setZoomSlider(zoom);
+};
+
+/**
+ * 按照control的类型返回control
+ * @public
+ * @param  {GeoBeans.Control.Type} type 
+ * @return {GeoBeans.Control}      [description]
+ */
+GeoBeans.Map.prototype.getControl = function(type){
+	if(type == null){
+		return null;
+	}
+
+	var i = this.controls.find(type);
+	if(i < 0){
+		return null;
+	}
+
+	var control = this.controls.get(i);
+	return control;
 };

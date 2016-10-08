@@ -17,10 +17,10 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 		this.end();
 	},
 
-	end : function(){
-		this.cleanup();
-		this.map.enableDrag(true);
-	},
+	// end : function(){
+	// 	this.cleanup();
+	// 	this.map.enableDrag(true);
+	// },
 
 	setMode : function(mode){
 		this.mode = mode;
@@ -211,4 +211,30 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 		viewer.setExtent(nextent);
 	},
 });
-	
+
+/**
+ * 拉框放大
+ * @public
+ */
+GeoBeans.Control.ZoomControl.prototype.zoomIn = function(){
+	this.setMode("in");
+	this.trackRect();
+};
+
+/**
+ * 拉框缩小
+ * @public
+ */
+GeoBeans.Control.ZoomControl.prototype.zoomOut = function(){
+	this.setMode("out");
+	this.trackRect();
+};
+
+/**
+ * 停止拉框缩放
+ * @public
+ */
+GeoBeans.Control.ZoomControl.prototype.end = function(){
+	this.cleanup();
+	this.map.enableDrag(true);
+};

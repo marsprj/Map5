@@ -15,7 +15,7 @@ var g_catalog = [
 				"name" : "(*)滚轮缩放",
 				"link" : "map/map_scroll.html"
 			},{
-				"name" : "(*)拉框缩放",
+				"name" : "拉框缩放",
 				"link" : "map/map_zoom.html"
 			}
 		]
