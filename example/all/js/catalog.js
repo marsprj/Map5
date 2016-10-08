@@ -293,7 +293,7 @@ var g_catalog = [
 				"name" : "(*)热力图",
 				"link" : "theme/theme_heatmap.html"
 			},{
-				"name" : "(*)点聚合图-示例1",
+				"name" : "点聚合图-示例1",
 				"link" : "theme/theme_cluster_1.html"
 			},{
 				"name" : "(*)点聚合图-示例2",

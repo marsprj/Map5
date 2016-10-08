@@ -50,7 +50,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				continue;
 			}
 
-			fieldIndex = this.featureType.getFieldIndex(chartField);
+			fieldIndex = this.featureType.findField(chartField);
 			if(fieldIndex == -1){
 				continue;
 			}
@@ -301,7 +301,8 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				+	"</div>";
 		}
 		html += "</div>";
-		this.map.mapDiv.append(html);
+		//var mapContainer = this.map.getContainer();
+		//this.map.mapDiv.append(html);
 	},
 
 });

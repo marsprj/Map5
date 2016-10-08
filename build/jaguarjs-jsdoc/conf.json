@@ -2,6 +2,15 @@
 	"tags": {
 		"allowUnknownTags" : true
 	},
+	"source": {
+		"includePattern": ".+\\.js(doc)?$",
+		"excludePattern": "(^|\\/|\\\\)_",
+		"include": [
+		    "../src/GeoBeans"
+		    /*"externs/oli.js",
+		    "externs/olx.js"*/
+		]
+	},
 	"plugins": ["plugins/markdown"],
 	"templates": {
 		"cleverLinks": true,
@@ -30,5 +39,13 @@
 		"parser": "gfm",
 		"hardwrap": true,
 		"tags": ["examples"]
+	},
+	"opts": {
+		"template" : "jaguarjs-jsdoc",
+		"encoding": "utf8",
+		"recurse": true,
+		/*"tutorials": "../tutorials",*/
+		"destination": "../api",
+		"configure" : "./jaguarjs-jsdoc/conf.json"
 	}
 }
