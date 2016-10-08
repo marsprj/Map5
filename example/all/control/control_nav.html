@@ -123,7 +123,11 @@
 		// 两个参数分别为left和top
 		// left>=0,参考线为地图的左侧，left<0 ,参考线为右侧
 		// top>=0,参考线为地图的顶部，top<0,参考线为底部
-		mapObj.setNavControlPosition(10,-10);
+		var navControl = mapObj.getControl(GeoBeans.Control.Type.NAV);
+		if(navControl == null){
+			return;
+		}
+		navControl.setPosition(10,-10);
 	}
 </script>
 <title>控件:导航条</title>

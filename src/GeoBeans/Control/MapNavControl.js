@@ -310,19 +310,25 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		levelDiv.html(zoom);
 	},
 
-
-	// 设置位置
-	setPosition : function(left,top){
-		if(left >= 0){
-			this.controlDiv.css("left",left + "px");
-		}else{
-			this.controlDiv.css("right",left + "px");
-		}
-
-		if(top >= 0){
-			this.controlDiv.css("top", top + "px");
-		}else{
-			this.controlDiv.css("bottom",top + "px");
-		}
-	},
 });
+
+
+/**
+ * 设置导航条的位置,默认位置是右下角
+ * @public
+ * @param {int} left  left>=0,参考线为地图的左侧，left<0 ,参考线为右侧
+ * @param {int} top   top>=0,参考线为地图的顶部，top<0,参考线为底部
+ */
+GeoBeans.Control.MapNavControl.prototype.setPosition = function(left,top){
+	if(left >= 0){
+		this.controlDiv.css("left",left + "px");
+	}else{
+		this.controlDiv.css("right",left + "px");
+	}
+
+	if(top >= 0){
+		this.controlDiv.css("top", top + "px");
+	}else{
+		this.controlDiv.css("bottom",top + "px");
+	}
+};

@@ -198,7 +198,7 @@ GeoBeans.Map = GeoBeans.Class({
 		$(this._container).find(".chart-legend ").remove();
 		$(this._container).find("canvas").remove();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-		this.setNavControl(false);
+		this.enableNavControl(false);
 		this.controls.cleanup();
 		this.unRegisterMapRippleHitEvent();
 		this.controls.cleanup();
@@ -1510,18 +1510,6 @@ GeoBeans.Map.prototype.enableNavControl = function(flag){
 	var index = this.controls.find(GeoBeans.Control.Type.NAV);
 	var mapNavControl = this.controls.get(index);
 	mapNavControl.enable(flag);
-},
-
-/**
- * 设置导航控件的左上角位置
- * @public
- * @param {int} x  x坐标
- * @param {int} y  y坐标
- */
-GeoBeans.Map.prototype.setNavControlPosition = function(x, y){
-	var index = this.controls.find(GeoBeans.Control.Type.NAV);
-	var mapNavControl = this.controls.get(index);
-	mapNavControl.setPosition(x, y);
 },
 
 
