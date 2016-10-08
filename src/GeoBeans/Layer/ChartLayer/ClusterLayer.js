@@ -27,15 +27,18 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			return;
 		}
 
-		var mapViewer = this.map.getViewer();
-		if(mapViewer != null && this.viewer != null &&
-			this.flag == GeoBeans.Layer.Flag.LOADED && mapViewer.equal(this.viewer)){
+		var viewer = this.map.getViewer();
+		var viewExtent = viewer.getExtent();
+		//？？这行代码做什么？
+		if(this.flag == GeoBeans.Layer.Flag.LOADED && viewExtent.equal(this.viewer)){
 			return;
 		}
 
-		this.viewer = new GeoBeans.Envelope(mapViewer.xmin,mapViewer.ymin,
-			mapViewer.xmax,mapViewer.ymax);
-		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+		//？？这行代码做什么？
+		this.viewer = new GeoBeans.Envelope(viewExtent.xmin,viewExtent.ymin,
+			viewExtent.xmax,viewExtent.ymax);
+		
+		this.renderer.clearRect();
 		this.cluster();
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 	},
@@ -93,8 +96,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	// 是否可以聚类进去
 	shouldCluster : function(cluster,geometry){
 		var cg = cluster.geometry;
-		var cg_s = this.map.getMapViewer().toScreenPoint(cg.x,cg.y);
-		var geometry_s = this.map.getMapViewer().toScreenPoint(geometry.x,geometry.y);
+		var cg_s = this.map.getViewer().toScreenPoint(cg.x,cg.y);
+		var geometry_s = this.map.getViewer().toScreenPoint(geometry.x,geometry.y);
 		var distance = Math.sqrt(Math.pow((cg_s.x - geometry_s.x),2) + Math.pow((cg_s.y - geometry_s.y),2));
 		return(distance < this.distance);
 	},
@@ -205,13 +208,13 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		for(var i = 0; i < clustersArray.length;++i){
 			var clustersItem = clustersArray[i];
 			this.renderer.setSymbolizer(this.symbolizers[i]);
-			this.renderer.drawIcons(clustersItem,this.symbolizers[i],this.map.getMapViewer());
+			this.renderer.drawIcons(clustersItem,this.symbolizers[i],this.map.getViewer());
 		}
 
 		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
 		textSymbolizer.font.family = "Microsoft Yahei";
 		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
-		textSymbolizer.fill.color.setByHex("#000000",1);
+		textSymbolizer.fill.color.setHex("#000000",1);
 
 		this.renderer.setSymbolizer(textSymbolizer);
 		for(var i = 0; i < this.clusters.length;++i){
@@ -219,7 +222,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			if(text == 1){
 				continue;
 			}
-			var point_s = this.map.getMapViewer().toScreenPoint(this.clusters[i].geometry.x,this.clusters[i].geometry.y);
+			var point_s = this.map.getViewer().toScreenPoint(this.clusters[i].geometry.x,this.clusters[i].geometry.y);
 			var textWidth = this.renderer.context.measureText(text).width;
 			this.renderer.context.fillText(text, point_s.x-textWidth/2, point_s.y+6);
 			
@@ -368,7 +371,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 		};
 
-		map.mapDiv[0].addEventListener('mousemove', this.hitEvent);
+		var mapContainer = map.getContainer();
+		mapContainer.addEventListener('mousemove', this.hitEvent);
 
 		var clickEvent = function(evt){
 			evt.preventDefault();
@@ -384,7 +388,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 			that.zoomToCluster(that.hitCluster);
 		};
-		map.mapDiv[0].addEventListener("mouseup",clickEvent);
+		var mapContainer = this.map.getContainer();
+		mapContainer.addEventListener("mouseup",clickEvent);
 		this.clickEvent = clickEvent;
 	},
 
@@ -397,7 +402,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		for(var i = 0; i < this.clusters.length;++i){
 			cluster = this.clusters[i];
 			geometry = cluster.geometry;
-			pt = this.map.getMapViewer().toScreenPoint(geometry.x,geometry.y);
+			var viewer = this.map.getViewer();
+			pt = viewer.toScreenPoint(geometry.x,geometry.y);
 			radius = cluster.radius;
 			distance = GeoBeans.Utility.getDistance(pt.x,pt.y,x,y);
 			if(distance < radius){
@@ -416,7 +422,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var extent = this.getClusterExtent(cluster);
 		extent.scale(1.2);
 		if(this.map.baseLayer != null){
-			var level = this.map.getMapViewer().getLevel(extent);
+			var level = this.map.getViewer().getLevel(extent);
 			var center = extent.getCenter();
 			this.map.setCenter(center);
 			// this.map.saveSnap();
@@ -468,8 +474,9 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	},
 
 	unRegisterClickEvent : function(){
-		this.map.mapDiv[0].removeEventListener("mouseup",this.clickEvent);
-		this.map.mapDiv[0].removeEventListener("mousemove",this.hitEvent);
+		var mapContainer = this.map.getContainer();
+		mapContainer.removeEventListener("mouseup",this.clickEvent);
+		mapContainer.removeEventListener("mousemove",this.hitEvent);
 		this.clickEvent = null;
 		this.hitEvent = null;
 	},
