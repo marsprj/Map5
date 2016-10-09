@@ -222,21 +222,21 @@ GeoBeans.Format.GML.Reader = GeoBeans.Class({
 		
 		var type = gml.tagName;
 		switch(type){
-		case GeoBeans.Format.GML.Type.Point:
+		case "gml:Point":
 			geometry = this.readPoint(gml);
 		break;
-		case GeoBeans.Format.GML.Type.LineString:
+		case "gml:LineString":
 			geometry = this.readLineString(gml);
 		break;
-		case GeoBeans.Format.GML.Type.Polygon:
+		case "gml:Polygon":
 			geometry = this.readPolygon(gml);
 		break;
-		case GeoBeans.Format.GML.Type.MultiPoint:
+		case "gml:MultiPoint":
 		break;
-		case GeoBeans.Format.GML.Type.MultiLineString:
+		case "gml:MultiLineString":
 			geometry = this.readMultiLineString(gml);
 		break;
-		case GeoBeans.Format.GML.Type.MultiPolygon:
+		case "gml:MultiPolygon":
 			geometry = this.readMultiPolygon(gml);
 		break;
 		}
