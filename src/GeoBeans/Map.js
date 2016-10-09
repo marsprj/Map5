@@ -231,7 +231,7 @@ GeoBeans.Map = GeoBeans.Class({
 	 * 删除底图，如果还有其他tileLayer则设置为底图
 	 * @deprecated 这个函数没有意义
 	 */
-	 removeBaseLayer : function(){
+	 resetBaseLayer : function(){
 	 	var baseLayerName = this.baseLayer.name;
 
 	 	var layer = null;
@@ -1062,37 +1062,34 @@ GeoBeans.Map.prototype.addLayers = function(layers){
 	}
 }
 
+
 /**
  * 删除图层
- * @public
- * @param  {string}   name     图层名
+ * @param  {string} name 图层名
+ * @return {string}      返回值，成功返回success，失败则返回错误信息
  */
-GeoBeans.Map.prototype.removeLayer = function(name,callback){
+GeoBeans.Map.prototype.removeLayer = function(name){
 	if(name == null){
-		return;
+		return "layer name is null";
 	}
 
-	var layer = this.getLayer(name);
-	if(layer == null){
-		return;
-	}
-	
+
 	var layers = this.layers;
 	for(var i = 0; i < layers.length;++i){
-		if(layer.name == layers[i].name){
-			if(layer== this.baseLayer){
-				this.removeBaseLayer();
-				// this.setBaseLayer(null);
+		if(name == layers[i].name){
+			if(name== this.baseLayer.name){
+				this.resetBaseLayer();
 			}
+			var layer = layers[i];
 			this.layers.splice(i,1);
 			layer.destroy();
 			layer = null;
-			if(callback != undefined){
-				callback("success");
-			}
-			break;
+			this.refresh();
+			return "success";
 		}
 	}
+
+	return "no layer on the map ";
 }
 
 /**
