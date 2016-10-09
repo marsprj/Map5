@@ -257,7 +257,7 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 			y += img_size;
 		}
 	},
-	loadingTiles : function(drawBaseLayerCallback){
+	loadingTiles : function(){
 
 		for(var i = 0; i < this.tiles.length; ++i){
 			var tile = this.tiles[i].tile;
@@ -266,7 +266,7 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 			}
 			
 			if(tile.state != GeoBeans.TileState.LOADED){
-				tile.loading(drawBaseLayerCallback,this.loadTileCallback,this.tiles,i);
+				tile.loading(this.loadTileCallback,this.tiles,i);
 				this.state = GeoBeans.TileLayerState.LOADING;
 			}else if(tile.state == GeoBeans.TileState.LOADED){
 				var tileObj = this.tiles[i];
@@ -275,31 +275,15 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 				var y = tileObj.y;
 				tile.draw(x, y, img_size, img_size);				
 			}
-		}
-		// //如果都在内存里面，判断是否都在可以绘制完
-		// for(var i = 0; i < this.tiles.length;++i){
-		// 	var tile_obj = this.tiles[i];
-		// 	if(tile_obj.tile.state != GeoBeans.TileState.LOADED){
-		// 		return;
-		// 	}
-		// }
-		// drawBaseLayerCallback(this.map);		
+		}	
 	},
 
-	loadTileCallback:function(tile,drawBaseLayerCallback,tiles,index){
+	loadTileCallback:function(tile,tiles,index){
 		var tileObj = tiles[index];
 		var img_size = tileObj.img_size;
 		var x = tileObj.x;
 		var y = tileObj.y;
 		tile.draw(x, y, img_size, img_size);
-		// // 判断是否可以回调了
-		// for(var i = 0; i < tiles.length;++i){
-		// 	var tile_obj = tiles[i];
-		// 	if(tile_obj.tile.state != GeoBeans.TileState.LOADED){
-		// 		return;
-		// 	}
-		// }
-		// drawBaseLayerCallback(tile.map);
 	},		
 
 	getTileID : function(row, col, zoom){

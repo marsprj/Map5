@@ -191,7 +191,7 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 
 	},
 
-	loadingTiles : function(drawBaseLayerCallback){
+	loadingTiles : function(){
 
 		for(var i = 0; i < this.tiles.length; ++i){
 			var tile = this.tiles[i].tile;
@@ -200,7 +200,7 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 			}
 			
 			if(tile.state != GeoBeans.TileState.LOADED){
-				tile.loading(drawBaseLayerCallback,this.loadTileCallback,this.tiles,i);
+				tile.loading(this.loadTileCallback,this.tiles,i);
 				this.state = GeoBeans.TileLayerState.LOADING;
 			}else if(tile.state == GeoBeans.TileState.LOADED){
 				var tileObj = this.tiles[i];
@@ -212,7 +212,7 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		}
 	},
 
-	loadTileCallback:function(tile,drawBaseLayerCallback,tiles,index){
+	loadTileCallback:function(tile,tiles,index){
 		var tileObj = tiles[index];
 		var img_size = tileObj.img_size;
 		var x = tileObj.x;

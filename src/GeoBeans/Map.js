@@ -311,9 +311,6 @@ GeoBeans.Map = GeoBeans.Class({
 
 	// },
 
-	drawBaseLayerCallback:function(map){
-		
-	},
 
 	// 更新瓦片
 	// @deprecated
@@ -1617,7 +1614,7 @@ GeoBeans.Map.prototype.drawBaseLayer = function(){
 			if(layer.visible){
 				tileLayerCount++;
 				layer.preDraw();
-				layer.loadingTiles(this.drawBaseLayerCallback);
+				layer.loadingTiles();
 			}
 		}
 	}

@@ -24,7 +24,7 @@ GeoBeans.Tile = GeoBeans.Class({
 		this.layer = layer;
 	},
 
-	loading : function(drawBaseLayerCallback,loadTileCallback,tiles,index){
+	loading : function(loadTileCallback,tiles,index){
 		if(this.image==null){
 			this.image = new Image();
 			this.image.crossOrigin = "anonymous";
@@ -33,14 +33,14 @@ GeoBeans.Tile = GeoBeans.Class({
 
 		if(this.image.complete && this.image.height != 0 && this.width != 0 ){
 			this.state = GeoBeans.TileState.LOADED;
-			loadTileCallback(this,drawBaseLayerCallback,tiles,index);
+			loadTileCallback(this,tiles,index);
 			return;
 		}
 		var tile = this;
 		this.image.onload = function(){
 			if(tile.layer.flag !=  GeoBeans.Layer.Flag.LOADED){
 				tile.state = GeoBeans.TileState.LOADED;
-				loadTileCallback(tile,drawBaseLayerCallback,tiles,index);
+				loadTileCallback(tile,tiles,index);
 			}
 		}
 

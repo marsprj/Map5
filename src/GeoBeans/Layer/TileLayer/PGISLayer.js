@@ -187,7 +187,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 	load : function(){
 		this.preDraw();
-		this.loadingTiles(this.map.drawBaseLayerCallback);
+		this.loadingTiles();
 	},
 
 
@@ -365,7 +365,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	},
 
 
-	loadingTiles : function(drawBaseLayerCallback){
+	loadingTiles : function(){
 		for(var i = 0; i < this.tiles.length; ++i){
 			var tile = this.tiles[i].tile;
 			if(tile == null){
@@ -373,7 +373,7 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 			}
 			
 			if(tile.state != GeoBeans.TileState.LOADED){
-				tile.loading(drawBaseLayerCallback,this.loadTileCallback,this.tiles,i);
+				tile.loading(this.loadTileCallback,this.tiles,i);
 				this.state = GeoBeans.TileLayerState.LOADING;
 				this.flag = GeoBeans.Layer.Flag.READY;
 			}else if(tile.state == GeoBeans.TileState.LOADED){
@@ -384,33 +384,16 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 				tile.draw(x, y, img_size, img_size);				
 			}
 		}
-		//如果都在内存里面，判断是否都在可以绘制完
-		for(var i = 0; i < this.tiles.length;++i){
-			var tile_obj = this.tiles[i];
-			if(tile_obj.tile.state != GeoBeans.TileState.LOADED){
-				return;
-			}
-		}
-		this.flag = GeoBeans.Layer.Flag.LOADED;
-		drawBaseLayerCallback(this.map);
+
 		
 	},
 
 	// 获得每一个
-	loadTileCallback:function(tile,drawBaseLayerCallback,tiles,index){
+	loadTileCallback:function(tile,tiles,index){
 		var tileObj = tiles[index];
 		var img_size = tileObj.img_size;
 		var x = tileObj.x;
 		var y = tileObj.y;
 		tile.draw(x, y, img_size, img_size);
-		// 判断是否可以回调了
-		for(var i = 0; i < tiles.length;++i){
-			var tile_obj = tiles[i];
-			if(tile_obj.tile.state != GeoBeans.TileState.LOADED){
-				return;
-			}
-		}
-		tile.layer.flag = GeoBeans.Layer.Flag.LOADED;
-		drawBaseLayerCallback(tile.map);
 	}
 });
