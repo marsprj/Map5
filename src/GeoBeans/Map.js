@@ -1795,8 +1795,9 @@ GeoBeans.Map.prototype.restoreSnap = function(){
  * @private
  */
 GeoBeans.Map.prototype.putSnap = function(x, y){
-	if(x=='undefined')	x =0;
-	if(y=='undefined')	y =0;
+	if(!isValid(x) || !isValid(y)){
+		return;
+	}
 	if(this.snap!=null){
 		this.renderer.putImageData(this.snap, x, y);
 	}
