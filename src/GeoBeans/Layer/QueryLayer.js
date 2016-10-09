@@ -74,11 +74,11 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 		if(geomType == null){
 			return null;
 		}
-		geomType = geomType.toUpperCase();
+		
 		var style = null;
 		switch(geomType){
-			case "POINT":
-			case "MULTIPOINT":{
+			case GeoBeans.Geometry.Type.POINT:
+			case GeoBeans.Geometry.Type.MULTIPOINT:{
 				style = new GeoBeans.Style.FeatureStyle();
 				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
@@ -88,8 +88,8 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 				style.addRule(rule);
 				break;
 			}
-			case "LINESTRING":
-			case "MULTILINESTRING":{
+			case GeoBeans.Geometry.Type.LINESTRING:
+			case GeoBeans.Geometry.Type.MULTILINESTRING:{
 				style = new GeoBeans.Style.FeatureStyle();
 				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
@@ -100,8 +100,8 @@ GeoBeans.Layer.FeatureLayer.QueryLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLa
 				break;
 				break;
 			}
-			case "POLYGON":
-			case "MULTIPOLYGON":{
+			case GeoBeans.Geometry.Type.POLYGON:
+			case GeoBeans.Geometry.Type.MULTIPOLYGON:{
 				style = new GeoBeans.Style.FeatureStyle();
 				var rule = new GeoBeans.Style.Rule();
 				var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer(); 
