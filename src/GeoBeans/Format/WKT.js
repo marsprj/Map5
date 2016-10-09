@@ -27,17 +27,17 @@ GeoBeans.Format.WKT.prototype.read = function(wkt){
 
 	var geometry = null;
 	if(wkt.slice(0,5) == "POINT"){
-		geometry = this.getWKTPoint(wkt);
+		geometry = this.parseWKTPoint(wkt);
 	}else if(wkt.slice(0,10) == "LINESTRING"){
-		geometry = this.getWKTLineString(wkt);
+		geometry = this.parseWKTLineString(wkt);
 	}else if(wkt.slice(0,7) == "POLYGON"){
-		geometry = this.getWKTPolygon(wkt);
+		geometry = this.parseWKTPolygon(wkt);
 	}else if(wkt.slice(0,10) == "MULTIPOINT"){
-		geometry = this.getWKTMultiPoint(wkt);		
+		geometry = this.parseWKTMultiPoint(wkt);		
 	}else if(wkt.slice(0,15) == "MULTILINESTRING"){
-		geometry = this.getWKTMultiLineString(wkt);
+		geometry = this.parseWKTMultiLineString(wkt);
 	}else if(wkt.slice(0,12) == "MULTIPOLYGON"){
-		geometry = this.getWKTMultiPolygon(wkt);
+		geometry = this.parseWKTMultiPolygon(wkt);
 	}
 	return geometry;
 }
@@ -48,7 +48,7 @@ GeoBeans.Format.WKT.prototype.read = function(wkt){
  * @param  {string} wkt 字符串
  * @return {Geometry}     
  */
-GeoBeans.Format.WKT.prototype.getWKTPoint = function(wkt){
+GeoBeans.Format.WKT.prototype.parseWKTPoint = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -65,7 +65,7 @@ GeoBeans.Format.WKT.prototype.getWKTPoint = function(wkt){
  * @param  {string} wkt 字符串
  * @return {Geometry}     [description]
  */
-GeoBeans.Format.WKT.prototype.getWKTLineString = function(wkt){
+GeoBeans.Format.WKT.prototype.parseWKTLineString = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -89,7 +89,7 @@ GeoBeans.Format.WKT.prototype.getWKTLineString = function(wkt){
  * @param  {string} wkt 字符串
  * @return {Geometry}     
  */
-GeoBeans.Format.WKT.prototype.getWKTPolygon = function(wkt){
+GeoBeans.Format.WKT.prototype.parseWKTPolygon = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -126,7 +126,7 @@ GeoBeans.Format.WKT.prototype.getWKTPolygon = function(wkt){
  * @param  {string} wkt 字符串
  * @return {Geometry}     
  */
-GeoBeans.Format.WKT.prototype.getWKTMultiPoint = function(wkt){
+GeoBeans.Format.WKT.prototype.parseWKTMultiPoint = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -150,7 +150,7 @@ GeoBeans.Format.WKT.prototype.getWKTMultiPoint = function(wkt){
  * @param  {type} wkt [description]
  * @return {type}     [description]
  */
-GeoBeans.Format.WKT.prototype.getWKTMultiLineString = function(wkt){
+GeoBeans.Format.WKT.prototype.parseWKTMultiLineString = function(wkt){
 	if(wkt == null){
 		return null;
 	}
@@ -190,7 +190,7 @@ GeoBeans.Format.WKT.prototype.getWKTMultiLineString = function(wkt){
  * @param  {type} wkt [description]
  * @return {type}     [description]
  */
-GeoBeans.Format.WKT.prototype.getWKTMultiPolygon = function(wkt){
+GeoBeans.Format.WKT.prototype.parseWKTMultiPolygon = function(wkt){
 	if(wkt == null){
 		return null;
 	}
