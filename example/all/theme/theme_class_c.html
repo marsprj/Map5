@@ -50,6 +50,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl/TrackOverlayControl.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/FeatureHitControl.js"></script>
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
@@ -154,7 +155,20 @@
 		layer.setStyle(style);
 
 		mapObj.addLayer(layer);
+
+		//启用hit
+		layer.onhit = onhit;
+		layer.enableHit(true);
+
 		mapObj.getViewer().setExtent(layer.getExtent());		
+	}
+
+	function onhit(layer, features){
+		if(features.length>0){
+			var f = features[0];
+			var v = f.getValue("fname");
+			console.log(v);
+		}
 	}
 
 	function createFeatureLayer(name, featureType){

@@ -23,6 +23,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 		this.type = "FeatureHitControl";
 		this.layer = layer;
 		this.map = layer.map;
+		this.callback = callback;
 		this.ptsymbol = this.createPointSymbolizer();
 		this.lnsymbol = this.createLineSymbolizer();
 		this.rnsymbol = this.createPolygonSymbolizer();
@@ -57,7 +58,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 						console.log(dis);
 						x_o = e.layerX;
 						y_o = e.layerY;					
-						var mp = that.map.getMapViewer().toMapPoint(e.layerX, e.layerY);
+						var mp = that.map.getViewer().toMapPoint(e.layerX, e.layerY);
 						that.hit(mp.x, mp.y, that.callback);
 					}
 				}
@@ -115,17 +116,17 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 				case GeoBeans.Geometry.Type.POINT:
 				case GeoBeans.Geometry.Type.MULTIPOINT:
 					renderer.setSymbolizer(this.ptsymbol);
-					renderer.drawGeometry(g,this.ptsymbol,this.map.getMapViewer());
+					renderer.drawGeometry(g,this.ptsymbol,this.map.getViewer());
 					break;
 				case GeoBeans.Geometry.Type.LINESTRING:
 				case GeoBeans.Geometry.Type.MULTILINESTRING:
 					renderer.setSymbolizer(this.lnsymbol);
-					renderer.drawGeometry(g,this.lnsymbol,this.map.getMapViewer());
+					renderer.drawGeometry(g,this.lnsymbol,this.map.getViewer());
 					break;
 				case GeoBeans.Geometry.Type.POLYGON:
 				case GeoBeans.Geometry.Type.MULTIPOLYGON:
 					renderer.setSymbolizer(this.rnsymbol);
-					renderer.drawGeometry(g,this.rnsymbol,this.map.getMapViewer());
+					renderer.drawGeometry(g,this.rnsymbol,this.map.getViewer());
 					break;
 			}
 		}
@@ -133,36 +134,36 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 
 	createPointSymbolizer : function(){
 		var symbolizer;
-		symbolizer = new GeoBeans.Style.PointSymbolizer();
+		symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.size = 5;
 		symbolizer.fillColor = "rgba(255,0,0,0.25)";
 		symbolizer.outLineWidth = 1.0;
 		symbolizer.outLineColor = "rgba(255,255,0,0.55)";
-		symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-		symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+		symbolizer.outLineCap	= GeoBeans.Style.Stroke.LineCapType.ROUND;
+		symbolizer.outLineJoin  = GeoBeans.Style.Stroke.LineJoinType.ROUND;
 		symbolizer.showOutline = true;
 		return symbolizer
 	},
 
 	createLineSymbolizer : function(){
 		var symbolizer;
-		symbolizer = new GeoBeans.Style.LineSymbolizer();
+		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 		symbolizer.width = 1;
 		symbolizer.color = "Red";
-		symbolizer.lineCap	= GeoBeans.Style.LineCap.ROUND;
-		symbolizer.lineJoin  = GeoBeans.Style.LineJoin.ROUND;
+		symbolizer.lineCap	= GeoBeans.Style.Stroke.LineCapType.ROUND;
+		symbolizer.lineJoin  = GeoBeans.Style.Stroke.LineJoinType.ROUND;
 		return symbolizer;
 	},
 	
 	createPolygonSymbolizer : function(){
 		var symbolizer;
-		symbolizer = new GeoBeans.Style.PolygonSymbolizer();
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		symbolizer.size = 5;
 		symbolizer.fillColor = "rgba(255,0,0,0.25)";
 		symbolizer.outLineWidth = 1.0;
 		symbolizer.outLineColor = "rgba(255,255,0,0.55)";
-		symbolizer.outLineCap	= GeoBeans.Style.LineCap.ROUND;
-		symbolizer.outLineJoin  = GeoBeans.Style.LineJoin.ROUND;
+		symbolizer.outLineCap	= GeoBeans.Style.Stroke.LineCapType.ROUND;
+		symbolizer.outLineJoin  = GeoBeans.Style.Stroke.LineJoinType.ROUND;
 		symbolizer.showOutline = true;
 		return symbolizer
 	},

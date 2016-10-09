@@ -15,10 +15,12 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	featureType : null,
 	
 	enableHit : false,
-	selection : null,
-	unselection : null,			//有什么用？
+	selection : null,			//@deprecated
+	unselection : null,			//@deprecated
 
 	hitControl : null,
+	onhit : null,				//function onhit(layer, features)
+
 	hitEvent : null,
 	hitTooltipEvent : null,
 
@@ -1115,9 +1117,13 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	init : function(){
 	},
 	
-	enableHit : function(enable){
-		this.enableHit = enable;
-	},
+	/**
+	 * enableHit
+	 * @deprecated 
+	 */
+	// enableHit : function(enable){
+	// 	this.enableHit = enable;
+	// },
 	
 	// ？？？已经setHitControl了，为什么还要保留hit函数？？？
 	hit : function(x, y, callback){
@@ -1292,7 +1298,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 
-/***********************插入更新*******************************************/
+	/***********************插入更新*******************************************/
 	//插入
 	//？？？这个函数是要干什么？为什么要调用track
 	beginTransaction : function(callback){
@@ -1669,6 +1675,11 @@ GeoBeans.Layer.FeatureLayer.prototype.getFeatureType = function(){
 	return this.featureType;
 }
 
+/**
+ * 获得给定字段的最大最小值
+ * @public
+ * @return  {Object} 最大最小值
+ */
 GeoBeans.Layer.FeatureLayer.prototype.getMinMaxValue = function(fname){
 	var minmax = {
 		min : 0,
@@ -1709,4 +1720,24 @@ GeoBeans.Layer.FeatureLayer.prototype.getMinMaxValue = function(fname){
 		min : min,
 		max : max
 	};
+}
+
+/**
+ * 启用Feature拾取功能
+ * @param  {boolean} enable 是否启用拾取功能
+ */
+GeoBeans.Layer.FeatureLayer.prototype.enableHit = function(enable){
+	this.enableHit = enable;
+	if(enable){
+		if(!isValid(this.hitControl)){
+			this.hitControl = new GeoBeans.Control.FeatureHitControl(this, this.onhit);
+			this.hitControl.enable(enable);
+		}
+	}
+	else{
+		if(isValid(this.hitControl)){
+			this.hitControl.enable(false);
+		}
+		this.hitControl = null;
+	}
 }

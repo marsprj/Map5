@@ -43,7 +43,10 @@ GeoBeans.Event = {
 	/** @type {string} 手势终止*/
 	TOUCH_END 	: 'touchend',
 	/** @type {string} 手势旋转*/
-	TOUCH_WHEEL	: 'touchwheel'
+	TOUCH_WHEEL	: 'touchwheel',
+
+	/** @type {string} Feature选中事件*/
+	FEATURE_HIT	: 'hit'
 };
 
 /**

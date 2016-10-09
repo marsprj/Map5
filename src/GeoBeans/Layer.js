@@ -192,7 +192,14 @@ GeoBeans.Layer.prototype.on = function(event, handler){
  * @param  {GeoBeans.Event} event   事件
  */
 GeoBeans.Layer.prototype.un = function(event){
-
+	var e = this.events.getEvent(event);
+	if(e == null){
+		return;
+	}
+	var listener = e.listener;
+	var mapContainer = this.getContainer();
+	mapContainer.removeEventListener(event,listener);
+	this.events.removeEvent(event);
 }
 
 GeoBeans.Layer.Flag = {
