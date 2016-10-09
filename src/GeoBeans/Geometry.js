@@ -36,7 +36,7 @@ GeoBeans.Geometry.Type = {
 	MULTILINESTRING: 'MultiLineString',
 	MULTIPOLYGON: 'MultiPolygon',
 	CIRCLE : 'Circle',
-	COLLECTION : "Collection"
+	COLLECTION : "GeometryCollection"
 };
 
 

@@ -102,12 +102,12 @@ GeoBeans.Format.GeoJson.prototype.readGeometryType = function(geoJson){
 			var feature = features[0];
 			if(feature != null){
 				var geometryJson = feature.geometry;
-				geomType = this.readGeometryTypeByGeometry(geometryJson);
+				geomType = geometryJson.type;
 			}
 		}
 	}else if(type == "Feature"){
 		var geometryJson = geoJson.geometry;
-		geomType = this.readGeometryTypeByGeometry(geometryJson);
+		geomType = geometryJson.type;
 	}
 	return geomType;
 };
@@ -237,7 +237,7 @@ GeoBeans.Format.GeoJson.prototype.addFields = function(featureType,fieldsArray){
 	for(var i = 0; i < fieldsArray.length;++i){
 		var fieldObj = fieldsArray[i];
 		var name = fieldObj.name;
-		var index = featureType.getFieldIndex(name);
+		var index = featureType.findField(name);
 		if(index == -1){
 			var field = new GeoBeans.Field(name,fieldObj.type,featureType,null);
 			featureType.fields.push(field);
