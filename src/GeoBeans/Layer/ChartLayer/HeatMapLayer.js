@@ -1,3 +1,6 @@
+/**
+ * @deprecated [description]
+ */
 GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	
 	initialize : function(name,baseLayerName,baseLayerField,option){
