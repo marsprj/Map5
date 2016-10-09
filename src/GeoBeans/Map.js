@@ -1010,7 +1010,7 @@ GeoBeans.Map.prototype.getLayer = function(name){
  */
 GeoBeans.Map.prototype.addLayer = function(layer){
 	if(!isValid(layer)){
-		return "";
+		return "layer is invalid";
 	}
 
 	var l = this.getLayer(layer.name);
