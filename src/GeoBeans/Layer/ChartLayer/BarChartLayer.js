@@ -154,7 +154,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				if(chartField == null){
 					continue;
 				}
-				var chartFieldIndex = this.featureType.getFieldIndex(chartField);
+				var chartFieldIndex = this.featureType.findField(chartField);
 				if(chartFieldIndex != -1){
 					chartValue = parseFloat(chartValues[chartFieldIndex]);
 					var serieObj = new Object();
