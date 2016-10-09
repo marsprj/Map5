@@ -1230,7 +1230,7 @@ GeoBeans.Map.prototype.getInfoWindow = function(){
  * Map事件绑定
  * @public
  * @param  {GeoBeans.Event} event   事件
- * @param  {function} handler 回调函数
+ * @param  {function} handler 		事件响应函数
  */
 GeoBeans.Map.prototype.on = function(event, handler){
 

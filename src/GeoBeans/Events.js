@@ -34,6 +34,7 @@ GeoBeans.Event = {
 	MOUSE_OUT 	: "mouseout",
 	// RESIZE		: "resize",
 	MOUSE_WHEEL : "mousewheel",
+	
 	/* touch Event */
 	/** @type {string} 手势按下*/
 	TOUCH_START	: 'touchstart',
@@ -137,4 +138,5 @@ GeoBeans.Events.prototype.getEvent = function(event){
 			return e;
 		}
 	}
+	return null;
 };

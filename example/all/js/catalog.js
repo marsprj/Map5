@@ -290,7 +290,7 @@ var g_catalog = [
 				"name" : "(*)分级图(后端)",
 				"link" : "theme/theme_class_s.html"
 			},{
-				"name" : "(*)热力图",
+				"name" : "热力图",
 				"link" : "theme/theme_heatmap.html"
 			},{
 				"name" : "点聚合图-示例1",
@@ -302,17 +302,14 @@ var g_catalog = [
 				"name" : "(*)点聚合图-示例3",
 				"link" : "theme/theme_cluster_2.html"
 			},{
-				"name" : "(*)分级图",
-				"link" : "rangeChart.html"
-			},{
 				"name" : "(*)柱状图",
-				"link" : "chart_bar.html"
+				"link" : "theme/chart_bar.html"
 			},{
 				"name" : "(*)饼状图",
-				"link" : "chart_pie.html"
+				"link" : "theme/chart_pie.html"
 			},{
 				"name" : "(*)等级符号图",
-				"link" : "chart_symbol.html"
+				"link" : "theme/chart_symbol.html"
 			}
 		]
 	},{

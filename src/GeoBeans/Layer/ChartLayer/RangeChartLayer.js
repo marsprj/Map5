@@ -1,3 +1,7 @@
+/**
+ * RangeChartLayer
+ * @deprecated
+ */
 GeoBeans.Layer.RangeChartLayer  = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 

@@ -148,6 +148,52 @@ GeoBeans.Layer.prototype.refresh = function() {
 	this.draw();
 };
 
+/**
+ * 注册Layer事件
+ * @public
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler	    事件响应函数
+ */
+GeoBeans.Layer.prototype.on = function(event, handler){
+	
+	var target = this.events.getEvent(event);
+	if(target!=null){
+		//如果event已经注册，则先注销event。一个event只能注册一次。
+		this.un(event);
+	}
+
+	//注册新的event
+	var that = this;
+	var listener = function(evt){
+		evt.preventDefault();
+		var x = evt.layerX;
+		var y = evt.layerY;
+		
+		var viewer = that.map.getViewer();
+		var mp = viewer.toMapPoint(x, y);
+		var args = new GeoBeans.Event.MouseArgs();
+		args.buttn = null;
+		args.X = x;
+		args.Y = y;
+		args.mapX = mp.x;
+		args.mapY = mp.y;
+		args.zoom = viewer.getZoom();
+		handler(args);
+	};	
+
+	var mapContainer = this.map.getContainer();
+	mapContainer.addEventListener(event,listener);
+	this.events.addEvent(event,handler,listener);
+}
+
+/**
+ * 注销Layer事件
+ * @public
+ * @param  {GeoBeans.Event} event   事件
+ */
+GeoBeans.Layer.prototype.un = function(event){
+
+}
 
 GeoBeans.Layer.Flag = {
 	READY : "ready",
