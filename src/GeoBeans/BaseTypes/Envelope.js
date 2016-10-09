@@ -62,11 +62,11 @@ GeoBeans.Envelope = GeoBeans.Class({
 			&&(this.ymin < other.ymin) && (this.ymax > other.ymax);
 	},
 	
-	scale : function(rate){
+	scale : function(scale){
 		var cx = (this.xmin + this.xmax) / 2;
 		var cy = (this.ymin + this.ymax) / 2;
-		var nw_2 = (this.xmax - this.xmin) * rate / 2;
-		var nh_2 = (this.ymax - this.ymin) * rate / 2;
+		var nw_2 = (this.xmax - this.xmin) * scale / 2;
+		var nh_2 = (this.ymax - this.ymin) * scale / 2;
 		
 		this.xmin = cx - nw_2;
 		this.xmax = cx + nw_2;
@@ -88,11 +88,10 @@ GeoBeans.Envelope = GeoBeans.Class({
 			return false;
 		}
 
-		var tolerance = 0.0001;
-		if(Math.abs(this.xmin - viewer.xmin) < tolerance 
-			&& Math.abs(this.xmax - viewer.xmax) < tolerance 
-			&& Math.abs(this.ymin - viewer.ymin) < tolerance 
-			&& Math.abs(this.ymax - viewer.ymax) < tolerance){
+		if(Math.abs(this.xmin - viewer.xmin) < Number.EPSILON 
+			&& Math.abs(this.xmax - viewer.xmax) < Number.EPSILON 
+			&& Math.abs(this.ymin - viewer.ymin) < Number.EPSILON 
+			&& Math.abs(this.ymax - viewer.ymax) < Number.EPSILON){
 			return true;
 		}else{
 			return false;
