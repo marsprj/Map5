@@ -1581,19 +1581,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.flag = GeoBeans.Layer.Flag.READY;
 	},
 
-	/**
-	 * 查询
-	 * @deprecated
-	 */
-	getFeatureFilter : function(filter,maxFeatures,offset,fields,callback){
-		var time = new Date();
-		var features = this.selectFeaturesByFilter(filter,this.features,maxFeatures,offset);
-		var delta = new Date() - time;
-		console.log("select feature:" + delta);
-		this.map.queryLayer.setFeatures(features);
-		this.map.drawLayersAll();
-		callback(features);
-	}
 });
 
 /**

@@ -57,7 +57,6 @@ GeoBeans.Map = GeoBeans.Class({
 	layers : [],	
 	baseLayer : null,
 	overlayLayer : null,
-	queryLayer : null,
 	panoramaLayer : null,		// 全景图
 	imageLayer : null,			// 图片图层
 	hitRippleLayers : null,		// rippleLayer hit layers
@@ -481,29 +480,6 @@ GeoBeans.Map = GeoBeans.Class({
 		this.overlayLayer.unRegisterOverlayClickEvent();
 	},
 
-	// // 获取查询结果
-	// getQuerySelection : function(){
-	// 	return this.queryLayer.features;
-	// },
-
-	// //闪烁
-	// setFeatureBlink : function(feature,count){
-	// 	if(feature == null || count == null){
-	// 		return;
-	// 	}
-	// 	this.queryLayer.setFeatureBlink(feature,count);
-	// },
-
-
-	// // 停止查询
-	// endQuery : function(){
-	// 	this.tracker.end();
-	// 	this.queryLayer.clearFeatures();
-	// 	// this.infoWindow.popover("hide");
-	// 	var infoWindow = this.getInfoWindow();
-	// 	infoWindow.show(false);
-	// },
-
 
 	openInfoWindow : function(option,point){
 		var infoWindowWidget = this.getInfoWindow();
@@ -578,19 +554,6 @@ GeoBeans.Map = GeoBeans.Class({
 	// 	this.draw();
 	// },
 
-
-	// // @deprecated
-	// getFeatureFilter : function(layerName,filter,maxFeatures,fields,style,callback){
-	// 	var layer = this.getLayer(layerName);
-	// 	if(layer == null){
-	// 		if(callback != null){
-	// 			callback("this is not layer named " + layername);
-	// 		}
-	// 		return;
-	// 	}
-	// 	this.queryLayer.setLayer(layer,style);
-	// 	layer.getFeatureFilter(filter,maxFeatures,null,fields,callback);
-	// },
 
 	// 增加全景图
 	addPanorama : function(point,name,htmlPath,icon){
@@ -1141,8 +1104,6 @@ GeoBeans.Map.prototype.initLayers = function(){
 
 	this.hitRippleLayers = [];
 
-	this.queryLayer = new GeoBeans.Layer.FeatureLayer.QueryLayer("query");
-	this.queryLayer.setMap(this);
 }
 
 /**
@@ -1254,11 +1215,6 @@ GeoBeans.Map.prototype.initResize = function(){
 				overlayLayerCanvas.width = width;
 			}
 
-			var queryLayerCanvas = that.queryLayer.canvas;
-			if(queryLayerCanvas != null){
-				queryLayerCanvas.height = height;
-				queryLayerCanvas.width = width;
-			}
 
 			var panoramaLayerCanvas = that.panoramaLayer.canvas;
 			if(panoramaLayerCanvas != null){
@@ -1595,8 +1551,6 @@ GeoBeans.Map.prototype.drawLayersAll = function(){
 	}
 	this.overlayLayer.load();
 
-	this.queryLayer.load();
-
 	this.panoramaLayer.load();
 
 	this.imageLayer.load();
@@ -1615,9 +1569,6 @@ GeoBeans.Map.prototype.drawLayersAll = function(){
 		return;
 	}
 
-	if(this.queryLayer.flag != GeoBeans.Layer.Flag.LOADED){
-		return;
-	}
 
 	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
 	if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
@@ -1662,12 +1613,6 @@ GeoBeans.Map.prototype.drawLayersAll = function(){
 
 	var canvas = this.overlayLayer.canvas;
 	this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-
-	//queryLayer
-	var queryLayerCanvas = this.queryLayer.canvas;
-	if(queryLayerCanvas != null){
-		this.renderer.drawImage(queryLayerCanvas,0,0,queryLayerCanvas.width,queryLayerCanvas.height);
-	}
 
 
 	// 全景图

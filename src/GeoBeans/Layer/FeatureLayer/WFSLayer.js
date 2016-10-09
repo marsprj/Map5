@@ -138,25 +138,6 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 	},
 
 
-	getFeatureFilter : function(filter,maxFeatures,offset,fields,callback){
-		var featureType = this.getFeatureType();
-		this.getFeatureFilter_callback_u = callback;
-		if(featureType != null){
-			featureType.getFeaturesFilterAsync2(null,null,filter,maxFeatures,offset,fields,null,this,
-				this.getFeatureFilter_callback);
-		}
-	},
-
-	getFeatureFilter_callback : function(layer,features){
-		if(layer != null){
-			layer.map.queryLayer.setFeatures(features);
-			layer.map.drawLayersAll();
-			layer.getFeatureFilter_callback_u(features);
-			layer.getFeatureFilter_callback_u = null;
-		}
-	},
-
-
 	CLASS_NAME : "GeoBeans.Layer.FeatureLayer.WFSLayer"
 });
 
