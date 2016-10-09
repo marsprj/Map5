@@ -246,7 +246,10 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
 	var mw = cx - extent.xmin;
 	var mh = cy - extent.ymin;
 
-	var resolution = mw*2/vw;
+	var resolution_w = mw*2/vw;
+	var resolution_h = mh*2/vh;
+
+	var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
 
 	if(map.baseLayer == null){
 		return null;
