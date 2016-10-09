@@ -84,8 +84,15 @@ GeoBeans.Envelope = GeoBeans.Class({
 	},
 
 	equal : function(viewer){
-		if(this.xmin == viewer.xmin && this.xmax == viewer.xmax 
-			&& this.ymin == viewer.ymin && this.ymax == viewer.ymax){
+		if(viewer == null){
+			return false;
+		}
+
+		var tolerance = 0.0001;
+		if(Math.abs(this.xmin - viewer.xmin) < tolerance 
+			&& Math.abs(this.xmax - viewer.xmax) < tolerance 
+			&& Math.abs(this.ymin - viewer.ymin) < tolerance 
+			&& Math.abs(this.ymax - viewer.ymax) < tolerance){
 			return true;
 		}else{
 			return false;
