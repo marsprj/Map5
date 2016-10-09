@@ -896,51 +896,6 @@ GeoBeans.Map = GeoBeans.Class({
 
 
 
-	// 创建一个featureLayer
-	// @deprecated
-	// createFeatureLayer : function(layerName,fields,geomType){
-	// 	if(layerName == null || (!$.isArray(fields)) || geomType == null){
-	// 		return null;
-	// 	}
-	// 	var featureType = new GeoBeans.FeatureType(null,layerName);
-	// 	var fieldsArray = [];
-	// 	for(var i = 0; i < fields.length;++i){
-	// 		var f = fields[i];
-	// 		var type = f.type;
-	// 		var name = f.name;
-	// 		var field = new GeoBeans.Field(name, type, featureType,null);
-	// 		if(type == "geometry"){
-	// 			featureType.geomFieldName = name;
-	// 			field.setGeomType(geomType);
-	// 		}
-	// 		fieldsArray.push(field); 
-	// 	}
-
-	// 	featureType.fields = fieldsArray;
-
-	// 	var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
-	// 	featureLayer.featureType = featureType;
-	// 	featureLayer.features = [];
-	// 	return featureLayer;
-	// },
-
-	// // KML文件创建featureLayer
-	// // @deprecated
-	// createFeatureLayerByKML : function(name,url){
-	// 	var kmlReader = new GeoBeans.KMLReader();
-	// 	var layer = kmlReader.read(name,url);
-	// 	return layer;
-	// },
-
-
-	// // GeoJson文件创建featureLayer
-	// // @deprecated
-	// createFeatureLayerByGeoJson : function(name,url){
-	// 	var geoJsonReader = new GeoBeans.GeoJsonReader();
-	// 	var layer = geoJsonReader.read(name,url);
-	// 	return layer;
-	// },
-
 	// 动画
 	addMoveObject : function(moveObject){
 		var layer = this._getAnimationLayer();
