@@ -108,7 +108,7 @@ GeoBeans.Map = GeoBeans.Class({
 		if(mapContainer == null){
 			return null;
 		}
-		mapContainer.innerHTML = '';
+		
 
 		var option = {
 			extent : extent,
@@ -1101,6 +1101,8 @@ GeoBeans.Map.prototype.removeLayer = function(name,callback){
  */
 GeoBeans.Map.prototype.createMapContainer = function(){
 	this._container = $("#" + this.id)[0];
+
+	this._container.innerHTML = '';
 
 	this.width = $("#" + this.id).width();
 	this.height = $("#" + this.id).height();
