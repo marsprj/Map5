@@ -167,47 +167,8 @@ GeoBeans.FilterReader = GeoBeans.Class({
 	parseComparisionOperator : function(oper){
 		var operator = null;		
 		oper = oper.toLowerCase();
-		switch(oper){
-			case "propertyisequal":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
-				break;
-			}
-			case "propertyisnotequal":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual;
-				break;
-			}
-			case "propertyislessthan":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan;
-				break;
-			}
-			case "propertyisgreaterthan":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan;
-				break;
-			}
-			case "propertyislessthanorequalto":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual;
-				break;
-			}
-			case "propertyisgreaterthanorequalto":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual;
-				break;
-			}
-			case "propertyisislike":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike;
-				break;
-			}
-			case "propertyisisnull":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull;
-				break;
-			}
-			case "propertyisbetween":{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsBetween;
-				break;
-			}
-			default:{
-				operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
-			}	break;
-		}
+		var preString = "propertyis";
+		operator = oper.slice(preString.length,oper.length);
 		return operator;
 	},
 
