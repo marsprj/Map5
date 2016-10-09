@@ -21,14 +21,15 @@ GeoBeans.Viewer = GeoBeans.Class({
 	
 	initialize : function(map, options){
 		this._map = map;
-
-		this._extent = options.extent;
-		// this._viewer = options.viewer;
-		// if(this._viewer == null){
-		// 	this._viewer = this._extent;
-		// }
-		// this.setViewer(this._viewer);
-		this.setExtent(this._extent);
+		if(isValid(options)){
+			this._extent = options.extent;
+			// this._viewer = options.viewer;
+			// if(this._viewer == null){
+			// 	this._viewer = this._extent;
+			// }
+			// this.setViewer(this._viewer);
+			this.setExtent(this._extent);	
+		}
 	}
 });
 
@@ -180,15 +181,6 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 	var map = this._map;
 	this._zoom = zoom;
 
-	//set zoom
-	if(map.baseLayer != null){
-		map.baseLayer.imageScale = 1.0;
-		var resolution = map.baseLayer.getResolutionByZoom(zoom);
-		this.setResolution(resolution);
-		this.updateMapExtent(this._resolution);
-		this.update();
-	}
-
 	// set center
 	if(this._extent != null){
 		var offset_x = center.x - this._center.x;
@@ -198,6 +190,15 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 		this.update();
 	}else{
 		this._center = center;
+	}
+
+	//set zoom
+	if(map.baseLayer != null){
+		map.baseLayer.imageScale = 1.0;
+		var resolution = map.baseLayer.getResolutionByZoom(zoom);
+		this.setResolution(resolution);
+		this.updateMapExtent(this._resolution);
+		this.update();
 	}
 
 	this._map.refresh();

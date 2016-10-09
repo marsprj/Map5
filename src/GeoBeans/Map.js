@@ -8,6 +8,7 @@ GeoBeans.Map = GeoBeans.Class({
 	// TOLERANCE : 10,
 	TOLERANCE : 20,
 	
+	_id : null,
 	_container : null,
 
 	canvas : null,
@@ -57,8 +58,6 @@ GeoBeans.Map = GeoBeans.Class({
 	layers : [],	
 	baseLayer : null,
 	overlayLayer : null,
-	panoramaLayer : null,		// 全景图
-	imageLayer : null,			// 图片图层
 	hitRippleLayers : null,		// rippleLayer hit layers
 	animationLayer : null,		// 动画图层
 	
@@ -77,14 +76,9 @@ GeoBeans.Map = GeoBeans.Class({
 	snap : null,
 	baseLayerSnap : null,
 
-	tracker : null,
-	//拉框查询
-	queryTrackLayer : null,
-	// 鼠标track的查询空间数据
-	queryGeometry : null,
-
-
 	_infoWindowWidget : null,
+	// copyright
+	_copyRightWidget : null,
 
 	//图例列表
 	legendList : null,
@@ -99,33 +93,17 @@ GeoBeans.Map = GeoBeans.Class({
 	// resize的标识符
 	_resizeId : null,
 
-	// copyright
-	_copyRightWidget : null,
-
-	initialize: function (id,name,extent,srid,viewer) {	
-		var mapContainer = document.getElementById(id);
-		if(mapContainer == null){
-			return null;
-		}
-		
-
-		var option = {
-			extent : extent,
-			viewer : viewer,
-		};
-		this.viewer = new GeoBeans.Viewer(this,option);
-		
-
-		if(srid != null){
-			this.srid = srid;
-		}
-
-		this.id = id;
-		this.name = name;
-		
-		
+	CLASS_NAME : "GeoBeans.Map",
+	
+	initialize: function (options) {	
+				
+		//测试否有存在的必要？？？
 		this.legendList = [];
-		
+
+		/**************************************************************************************/
+		/* 初始化地图参数
+		/**************************************************************************************/
+		this.apply(options);
 
 		/**************************************************************************************/
 		/* mapContainer Begin
@@ -177,19 +155,20 @@ GeoBeans.Map = GeoBeans.Class({
 		/* Layers End
 		/**************************************************************************************/
 
+		/**************************************************************************************/
+		/* 初始选择集
+		/**************************************************************************************/	
 		this.initSelection();
+
+		/**************************************************************************************/
+		/* 启用Window的Resize事件
+		/**************************************************************************************/	
+		this.enableWindowResize();
 	
 		this.maplex = new GeoBeans.Maplex(this);
 
-
 		// 授权时间
 		this.authTime = new Date("2016-07-26 00:00:00");
-
-		/**************************************************************************************/
-		/* window.onresize单独写一个函数
-		/**************************************************************************************/	
-		
-		this.initResize();
 	},
 	
 	destroy : function(){
@@ -556,7 +535,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 
 	// 增加全景图
-	addPanorama : function(point,name,htmlPath,icon){
+/*	addPanorama : function(point,name,htmlPath,icon){
 		this.panoramaLayer.addMarker(point,name,htmlPath,icon);
 	},
 
@@ -566,12 +545,7 @@ GeoBeans.Map = GeoBeans.Class({
 
 	clearPanoramas : function(){
 		this.panoramaLayer.clearMarkers();
-	},
-
-	// 绘制图片
-	drawImage : function(url,extent){
-		this.imageLayer.addImage(url,extent);
-	},
+	},*/
 
 
 	//图例列表
@@ -1096,14 +1070,10 @@ GeoBeans.Map.prototype.initLayers = function(){
 	this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
 	this.overlayLayer.setMap(this);
 
-	this.panoramaLayer = new GeoBeans.Layer.PanoramaLayer("panorama");
-	this.panoramaLayer.setMap(this);
-
-	this.imageLayer = new GeoBeans.Layer.ImageLayer("imageLayer");
-	this.imageLayer.setMap(this);
+/*	this.panoramaLayer = new GeoBeans.Layer.PanoramaLayer("panorama");
+	this.panoramaLayer.setMap(this);*/
 
 	this.hitRippleLayers = [];
-
 }
 
 /**
@@ -1126,7 +1096,7 @@ GeoBeans.Map.prototype.getSelection = function(){
 /**
  * 初始化地图大小改变
  */
-GeoBeans.Map.prototype.initResize = function(){
+GeoBeans.Map.prototype.enableWindowResize = function(){
 	var that = this;
 	window.onresize = function(){
 		clearTimeout(that._resizeId);
@@ -1216,17 +1186,11 @@ GeoBeans.Map.prototype.initResize = function(){
 			}
 
 
-			var panoramaLayerCanvas = that.panoramaLayer.canvas;
+/*			var panoramaLayerCanvas = that.panoramaLayer.canvas;
 			if(panoramaLayerCanvas != null){
 				panoramaLayerCanvas.height = height;
 				panoramaLayerCanvas.width = width;
-			}
-			
-			var imageLayerCanvas = that.imageLayer.canvas;
-			if(imageLayerCanvas != null){
-				imageLayerCanvas.height = height;
-				imageLayerCanvas.width = width;
-			}
+			}*/
 
 			that.draw();
 		},250);
@@ -1551,9 +1515,7 @@ GeoBeans.Map.prototype.drawLayersAll = function(){
 	}
 	this.overlayLayer.load();
 
-	this.panoramaLayer.load();
-
-	this.imageLayer.load();
+	/*this.panoramaLayer.load();*/
 
 	for(var i = 0; i < this.layers.length; ++i){
 		var layer = this.layers[i];
@@ -1570,15 +1532,10 @@ GeoBeans.Map.prototype.drawLayersAll = function(){
 	}
 
 
-	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
+/*	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
 	if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
 		return;
-	}
-
-	var imageLayerFlag = this.imageLayer.getLoadFlag();
-	if(imageLayerFlag != GeoBeans.Layer.Flag.LOADED){
-		return;
-	}
+	}*/
 
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 
@@ -1615,17 +1572,12 @@ GeoBeans.Map.prototype.drawLayersAll = function(){
 	this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
 
 
-	// 全景图
+/*	// 全景图
 	var panoramaLayerCanvas = this.panoramaLayer.canvas;
 	if(panoramaLayerCanvas != null){
 		this.renderer.drawImage(panoramaLayerCanvas,0,0,panoramaLayerCanvas.width,panoramaLayerCanvas.height);
 	}
-
-	// 图片图层
-	var imageLayerCanvas = this.imageLayer.canvas;
-	if(imageLayerCanvas != null){
-		this.renderer.drawImage(imageLayerCanvas,0,0,imageLayerCanvas.width,imageLayerCanvas.height);	
-	}
+*/
 
 	var infoWindow = this.getInfoWindow();
 	infoWindow.refresh();
@@ -1867,3 +1819,44 @@ GeoBeans.Map.prototype.getControl = function(type){
 	var control = this.controls.get(i);
 	return control;
 };
+
+/**
+ * 应用Map对象的options参数
+ * @param  {Object} options 参数
+ */
+GeoBeans.Map.prototype.apply = function(options){
+
+	//1）container id	
+	if(isValid(options.id)){
+		this.id = options.id;
+	}
+
+	//2) name
+	if(isValid(options.name)){
+		this.name = options.name;
+	}
+	else{
+		this.name = options.name;	
+	}
+
+	//3) srid
+	if(isValid(options.srid)){
+		this.srid = options.srid;
+	}
+	else{
+		this.srid = 4326;
+	}
+
+	//4）viewer
+	if(isValid(options.viewer)){
+		this.viewer = new GeoBeans.Viewer(this,options.viewer);
+	}
+	else{
+		this.viewer = new GeoBeans.Viewer(this);
+	}
+
+	//5) extent
+	if(isValid(options.extent)){
+		this.extent = options.extent;
+	}
+}
