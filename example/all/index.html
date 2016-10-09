@@ -147,28 +147,45 @@
 
 	#code_div{
 		float: left;
-		width: 540px;
+		/*width: 540px;*/
 		height: 100%;
 		border-right: 1px solid #cfcfcf;
-		
+		width: 0px;
 	}
-
+	#coll_bar{
+		float: left;
+		width: 40px;
+		height: 20px;
+		position: absolute;
+		top: 0px;
+		left: 261px;
+		border: 1px solid #ddd;
+		cursor: pointer;
+		background-color: #44deee;
+	    text-align: center;
+	    color: white;
+	    font-size: 15px;
+	    font-weight: bold;
+	}
 	#api_tab{
 		display: block;
 
 	}
 	#apiID{
 		height: 100%;
-		width: calc(100% - 541px);
+		/*width: calc(100% - 541px);*/
+		width: calc(100% - 1px);
 		float: right;
 	}
 
 	#code_bar{
 		height: 30px;
-		width: 540px;
+		/*width: 540px;*/
 		background-color: rgba(252,252,252,0.6);
 		position: fixed;
 		top: 60px;
+		width: 0px;
+		display: none;
 	}
 
 	#code_bar a{
@@ -253,6 +270,23 @@
 			}
 		});
 
+		$("#coll_bar").click(function(){
+			$(this).hide();
+			$("#apiID").css("width","calc(100% - 541px)");
+			$("#code_div").animate({
+	            width: "540px"
+	        }, 300,function(){
+	        	var link = $("#apiID").attr("src");
+   				setResource(link);
+	        });
+
+	        $("#code_bar").css("display","block").animate({
+	        	width : "540px",
+	        },300);
+			
+		});
+
+
 		var link = "map/map_init.html";
 		setResource(link);
 
@@ -309,6 +343,21 @@
    		setResource(link);
    		run();
    }
+
+   	function collapse(){
+   		$("#coll_bar").show();
+   		// $("#code_div").hide();
+   		$("#apiID").css("width","calc(100% - 1px)");
+
+   		$("#code_div").animate({
+            width: "0px"
+        }, 300,function(){
+        });
+
+        $("#code_bar").css("display","none").animate({
+        	width : "0px",
+        },300);
+   	}
 </script>
 <title>Map5开发示例</title>
 <body onload="init()">
@@ -325,6 +374,7 @@
 			<div class="right_tab" id="api_tab">
 				<div id="code_div">
 					<div id="code_bar">
+						<a href="javascript:void(0)" onclick="collapse()" title="收回"><<</a>
 						<a href="javascript:void(0)" onclick="run()">运行</a>
 						<a href="javascript:void(0)" onclick="refresh()">刷新</a>
 					</div>
@@ -333,7 +383,9 @@
 	 					</textarea>
 	 				</div>
 				</div>
-				<iframe src="map/map_init.html" frameborder="no" id="apiID" ></iframe>
+				<iframe src="map/map_init.html" frameborder="no" id="apiID" >
+				</iframe>
+				<div id="coll_bar" title="展开">>></div>
 			</div>
 			
 			<div class="right_tab" id="version_tab">
