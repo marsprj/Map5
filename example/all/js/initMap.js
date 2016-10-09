@@ -5,12 +5,11 @@ function loadMap(){
 	
 	// 2、初始化地图变量，参数分别为:
 	// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
-	// mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 	mapObj = new GeoBeans.Map({
-		id : "mapDiv",
-		name : "map",
-		srid : 4326
-	});
+			id : "mapDiv",
+			name : "map",
+			srid : 4326
+		});
 	if(mapObj == null){
 		return;
 	}
@@ -43,12 +42,11 @@ function loadTileMap(){
 	
 	// 2、初始化地图变量，参数分别为:
 	// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
-	// mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
 	mapObj = new GeoBeans.Map({
 		id : "mapDiv",
 		name : "map",
 		srid : 4326
-	});	
+	});
 	if(mapObj == null){
 		return;
 	}
@@ -74,7 +72,11 @@ function loadCities(){
 	
 	// 2、初始化地图变量，参数分别为:
 	// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
-	mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+	mapObj = new GeoBeans.Map({
+		id : "mapDiv",
+		name : "map",
+		srid : 4326
+	});
 	if(mapObj == null){
 		return;
 	}
@@ -107,7 +109,11 @@ function loadRivers(){
 	
 	// 2、初始化地图变量，参数分别为:
 	// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
-	mapObj = new GeoBeans.Map("mapDiv","map",extent,4326);
+	mapObj = new GeoBeans.Map({
+			id : "mapDiv",
+			name : "map",
+			srid : 4326
+		});
 	if(mapObj == null){
 		return;
 	}

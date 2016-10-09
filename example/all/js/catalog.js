@@ -69,7 +69,7 @@ var g_catalog = [
 				"name" : "WMS图层",
 				"link" : "layer/layer_add_wms.html"
 			},{
-				"name" : "(*)WMTS图层",
+				"name" : "WMTS图层",
 				"link" : "layer/layer_add_wmts.html"
 			},{
 				"name" : "QuadServer图层",
@@ -81,7 +81,7 @@ var g_catalog = [
 				"name" : "(*)PGIS图层",
 				"link" : "layer/layer_add_pgis.html"
 			},{
-				"name" : "(*)高德图层",
+				"name" : "高德图层",
 				"link" : "layer/layer_add_amap.html"
 			},{
 				"name" : "(*)百度图层",
