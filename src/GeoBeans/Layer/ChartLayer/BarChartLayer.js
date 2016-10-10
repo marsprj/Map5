@@ -3,7 +3,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	baseLayerFields : null,
 
 	initialize : function(name,baseLayerName,baseLayerFields,option){
-		// GeoBeans.Layer.ChartLayer.prototype.initialize.apply(this, arguments);
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		this.name = name;
 		this.baseLayerName = baseLayerName;
 		this.baseLayerFields = baseLayerFields;
@@ -111,6 +111,9 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var gid = null;
 		var geomtry = null;
 		var center = null;
+
+		// map容器
+		var mapContainer = this.map.getContainer();
 
 		// echarts元素
 		var option = null;
@@ -239,7 +242,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 			var div = "<div class='chart-div' style='height: " + h +  "px; width:" + w 
 			+ "px' id='" + chartId +　"'></div>";
-			this.map.mapDiv.append(div);
+			$(mapContainer).append(div);
 			var chart = echarts.init(document.getElementById(chartId));
 			chart.setOption(option); 
 			
@@ -250,7 +253,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 			var x = center.x;
 			var y = center.y;
-			var sp = this.map.getMapViewer().toScreenPoint(x,y);
+			var sp = this.map.getViewer().toScreenPoint(x,y);
 			var spx = sp.x - width/2 + this.option.offsetX;
 			var spy = sp.y - h + padding.bottom - this.option.offsetY;
 
@@ -267,12 +270,14 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		if(this.option == null){
 			return;
 		}
+		var mapContainer = this.map.getContainer();
+
 		var left = 0;
 		if(this.legendIndex == 0){
 			left = 10;
 		}else{
 			var lastIndex = this.legendIndex - 1;
-			var last = this.map.mapDiv.find(".chart-legend[lindex='" +  lastIndex + "']");
+			var last = $(mapContainer).find(".chart-legend[lindex='" +  lastIndex + "']");
 			if(last.length != 0){
 				var l = last.css("left");
 				var w = last.css("width");
@@ -301,8 +306,8 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				+	"</div>";
 		}
 		html += "</div>";
-		//var mapContainer = this.map.getContainer();
-		//this.map.mapDiv.append(html);
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).append(html);
 	},
 
 });

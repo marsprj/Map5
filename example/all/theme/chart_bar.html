@@ -259,8 +259,8 @@
 		var geometry = format.read(pairs.shape);
 		var fid = "id_" + i;
 		var values = [pairs.name,
+					  pairs.gdp,
 					  pairs.populat,
-					  pairs.capital,
 					  geometry];
 
 		var feature = new GeoBeans.Feature(featureType,
