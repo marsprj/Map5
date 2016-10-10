@@ -72,7 +72,15 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var extent = this.FULL_EXTENT;
 	},
 	
-	draw : null,
+	draw : function(){
+		if(this.visible){
+			this.preDraw();
+			this.loadingTiles();
+		}else{
+			this.drawBackground();
+		}
+	},
+
 	drawCache : null,
 	preDraw : null,
 	loadingTiles : null,

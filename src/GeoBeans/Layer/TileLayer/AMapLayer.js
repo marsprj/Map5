@@ -119,41 +119,6 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 			
 	},
 	
-	draw : function(){
-		var tbound = this.computeTileBound();
-		this.updateTileCache(tbound);
-		
-		var row_min = tbound.rmin;
-		var row_max = tbound.rmax;
-		var col_min = tbound.cmin;
-		var col_max = tbound.cmax;
-		
-		var viewer = this.map.getViewer();
-		var llpt = this.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
-		llpt.x = Math.floor(llpt.x+0.5);
-		llpt.y = Math.floor(llpt.y+0.5);
-		var img_size = this.IMG_WIDTH * this.scale;
-		var x, y;
-		
-		var row, col, tile;
-		var level = this.map.getViewer().getZoom();;
-		y = llpt.y + row_min * img_size;
-		for(row=row_min; row<row_max; row++){
-			x = llpt.x + col_min * img_size;
-			for(col=col_min; col<col_max; col++){
-				tid = this.getTileID(row, col, level);
-				turl = this.AMP_URL + "&" + tid;
-				
-				tile = this.cache.getTile(turl);
-				if(tile!=null){
-					tile.draw(x, y, img_size, img_size);
-				}
-				x += img_size;
-			}
-			y += img_size;
-		}
-	},
-	
 	drawCache : function(){
 		var tbound = this.computeTileBound();
 		
@@ -317,9 +282,5 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	// 	return false;
 	// }
 
-	draw : function(){
-		this.preDraw();
-		this.loadingTiles();
-	},
 	
 });
