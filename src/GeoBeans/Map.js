@@ -1190,34 +1190,23 @@ GeoBeans.Map.prototype.getInfoWindow = function(){
  */
 GeoBeans.Map.prototype.on = function(event, handler){
 
-	if(event == GeoBeans.Event.CLICK || event == GeoBeans.Event.DBCLICK
-		|| event == GeoBeans.Event.MOUSE_DOWN || event == GeoBeans.Event.MOUSE_UP 
-		|| event == GeoBeans.Event.MOUSE_MOVE || event == GeoBeans.Event.MOUSE_OVER
-		|| event == GeoBeans.Event.MOUSE_OUT){
-		var map = this;
-		var eventHandler = function(evt){
-			evt.preventDefault();
-			var x = evt.layerX;
-			var y = evt.layerY;
-			
-			var viewer = map.getViewer();
-			var mp = viewer.toMapPoint(x, y);
-			var args = new GeoBeans.Event.MouseArgs();
-			args.buttn = null;
-			args.X = x;
-			args.Y = y;
-			args.mapX = mp.x;
-			args.mapY = mp.y;
-			args.zoom = viewer.getZoom();
-			handler(args);
-		};	
-
-		var mapContainer = this.getContainer();
-		mapContainer.addEventListener(event,eventHandler);
-		this.events.addEvent(event,handler,eventHandler);
-	}else{
-		this.events.addEvent(event,handler,null);
+	var ret = true;
+	switch(event){
+		case GeoBeans.Event.CLICK:
+		case GeoBeans.Event.DBCLICK:
+			this.onMapEvent(event, handler);
+			break;
+		case GeoBeans.Event.MOUSE_DOWN:
+		case GeoBeans.Event.MOUSE_UP:
+		case GeoBeans.Event.MOUSE_MOVE:
+		case GeoBeans.Event.MOUSE_OVER:
+		case GeoBeans.Event.MOUSE_OUT:
+			onMouseEvent(event, handler);
+			break;
+		default:
+			ret = false;
 	}
+	return ret;
 }
 
 /**
@@ -1234,6 +1223,77 @@ GeoBeans.Map.prototype.un = function(event){
 	mapContainer.removeEventListener(event,eventHandler);
 	this.events.removeEvent(event);
 }
+
+/**
+ * 注册Map事件
+ * @private
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 		事件响应函数
+ */
+GeoBeans.Map.prototype.onMapEvent = function(event, handler){
+	var map = this;
+	var eventHandler = function(evt){
+		evt.preventDefault();
+		var x = evt.layerX;
+		var y = evt.layerY;
+		
+		var viewer = map.getViewer();
+		var mp = viewer.toMapPoint(x, y);
+
+		var args = new GeoBeans.Event.MouseArgs();
+		args.buttn = null;
+		args.X = x;
+		args.Y = y;
+		args.mapX = mp.x;
+		args.mapY = mp.y;
+		args.zoom = viewer.getZoom();
+		handler(args);
+	};
+	var mapContainer = this.getContainer();
+	mapContainer.addEventListener(event,eventHandler);
+	this.events.addEvent(event,handler,eventHandler);
+}
+
+/**
+ * 注册Mouse事件
+ * @private
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 		事件响应函数
+ */
+GeoBeans.Map.prototype.onMouseEvent = function(event, handler){
+	var map = this;
+	var eventHandler = function(evt){
+		evt.preventDefault();
+		var x = evt.layerX;
+		var y = evt.layerY;
+		
+		var viewer = map.getViewer();
+		var mp = viewer.toMapPoint(x, y);
+		
+		var args = new GeoBeans.Event.MouseArgs();
+		args.buttn = null;
+		args.X = x;
+		args.Y = y;
+		args.mapX = mp.x;
+		args.mapY = mp.y;
+		args.zoom = viewer.getZoom();
+		handler(args);
+	};
+	var mapContainer = this.getContainer();
+	mapContainer.addEventListener(event,eventHandler);
+	this.events.addEvent(event,handler,eventHandler);
+}
+
+/**
+ * 注册Mouse事件
+ * @private
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 		事件响应函数
+ */
+GeoBeans.Map.prototype.onTouchEvent = function(event, handler){
+	var map = this;
+}
+
 
 /**
  * 设置Map的底图

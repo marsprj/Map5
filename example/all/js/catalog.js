@@ -302,13 +302,13 @@ var g_catalog = [
 				"name" : "(*)点聚合图-示例3",
 				"link" : "theme/theme_cluster_2.html"
 			},{
-				"name" : "(*)柱状图",
+				"name" : "[#]柱状图",
 				"link" : "theme/chart_bar.html"
 			},{
-				"name" : "(*)饼状图",
+				"name" : "[#]饼状图",
 				"link" : "theme/chart_pie.html"
 			},{
-				"name" : "(*)等级符号图",
+				"name" : "[#]等级符号图",
 				"link" : "theme/chart_symbol.html"
 			}
 		]
@@ -402,10 +402,10 @@ var g_catalog = [
 		"name" : "地图事件",
 		"items":[
 			{
-				"name" : "(*)单击事件",
+				"name" : "单击事件",
 				"link" : "event/map_click.html"
 			},{
-				"name" : "(*)双击事件",
+				"name" : "双击事件",
 				"link" : "event/map_dbclick.html"
 			},{
 				"name" : "(*)鼠标按下事件",
