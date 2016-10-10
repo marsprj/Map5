@@ -115,7 +115,7 @@ GeoBeans.Tile = GeoBeans.Class({
 					}
 				}
 
-				this.map._updateTile(this.layer,x,y,img_width,img_height);
+				// this.map._updateTile(this.layer,x,y,img_width,img_height);
 			}
 		}		
 	}

@@ -221,17 +221,8 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	},
 
 	draw : function(){
-		for(var i = 0;i < this.tilesLoaded.length;++i){
-			var tileObj = this.tilesLoaded[i];
-			var tile = tileObj.tile;
-			var img_size = tileObj.img_size;
-			var x = tileObj.x;
-			var y = tileObj.y;
-			if(tile != null){
-				tile.draw(x, y, img_size, img_size);
-			}
-		}
-		
+		this.preDraw();
+		this.loadingTiles();
 	},
 	
 	

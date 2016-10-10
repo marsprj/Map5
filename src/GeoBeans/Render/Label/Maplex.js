@@ -39,6 +39,8 @@ GeoBeans.Maplex = GeoBeans.Class({
 			var labelSet = this.labelSets[i];
 			this.drawLabelSet(labelSet);
 		}
+
+		this.map.renderer.drawImage(this.canvas,0,0,this.canvas.width,this.canvas.height);
 	},
 
 

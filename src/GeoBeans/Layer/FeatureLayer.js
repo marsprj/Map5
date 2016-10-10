@@ -65,7 +65,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.geometryType = null;
 		
 		this.featureType = null;
-		this.unRegisterClickEvent();
 		
 		GeoBeans.Layer.prototype.destroy.apply(this, arguments);
 	},
@@ -143,7 +142,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	/* Draw Layer                                                     */
 	/******************************************************************/
 
-	load : function(){
+	draw : function(){
 		var viewer = this.map.getViewer();
 		var extent = viewer.getExtent();
 		var rotation = viewer.getRotation();

@@ -33,12 +33,16 @@ GeoBeans.Layer = GeoBeans.Class({
 		this.events = new GeoBeans.Events();
 
 		this.flag = GeoBeans.Layer.Flag.READY;
+
+		this.canvas = document.createElement("canvas");
 	},
 	
 	destroy : function(){
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).find(".map5-canvas[id='" + this.name + "']").remove();
+		
 		this.name = null;
 		this.events = null;
-		
 	},
 	
 	setName : function(newName){
@@ -47,18 +51,19 @@ GeoBeans.Layer = GeoBeans.Class({
 	
 	setMap : function(map){
 		this.map = map;
-		var mapCanvas = this.map.canvas;
-		if(mapCanvas == null){
-			return;
-		}
-		var mapCanvasHeight = mapCanvas.height;
-		var mapCanvasWidth = mapCanvas.width;
+		
+		var mapCanvasHeight = map.height;
+		var mapCanvasWidth = map.width;
 
-		this.canvas = document.createElement("canvas");
+		
 		this.canvas.height = mapCanvasHeight;
 		this.canvas.width = mapCanvasWidth;
 
+		this.canvas.id = this.name;
+		this.canvas.className = "map5-canvas";
 
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).append(this.canvas);
 		this.renderer = new GeoBeans.Renderer(this.canvas);
 	},
 	
@@ -201,6 +206,48 @@ GeoBeans.Layer.prototype.un = function(event){
 	mapContainer.removeEventListener(event,listener);
 	this.events.removeEvent(event);
 }
+
+GeoBeans.Layer.prototype.saveSnap = function(){
+	this.snap = this.renderer.getImageData(0,0,this.canvas.width,this.canvas.height);
+};
+
+GeoBeans.Layer.prototype.restoreSnap = function(){
+	if(this.snap != null){
+		this.renderer.putImageData(this.snap,0,0);
+	}
+};
+
+GeoBeans.Layer.prototype.putSnap = function(x,y){
+	if(!isValid(x) || !isValid(y)){
+		return;
+	}
+	if(this.snap!=null){
+		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+		this.renderer.putImageData(this.snap, x, y);
+	}
+};
+
+GeoBeans.Layer.prototype.drawLayerSnap = function(x,y,width,height){
+	if(this.snap == null){
+		return;
+	}
+	var canvas = $("<canvas>")
+	    .attr("width", this.snap.width)
+	    .attr("height", this.snap.height)[0];
+	canvas.getContext("2d").putImageData(this.snap, 0, 0);
+	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+	this.renderer.drawImage(canvas,x,y,width,height);
+
+};
+
+/**
+ * 清除snap
+ * @private
+ */
+GeoBeans.Layer.prototype.cleanupSnap = function(){
+	this.snap = null;
+}
+
 
 GeoBeans.Layer.Flag = {
 	READY : "ready",
