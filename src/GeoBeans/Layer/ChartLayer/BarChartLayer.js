@@ -16,7 +16,7 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		this.minMax = this.getMinMaxValue();
 	},
 
-	load : function(){
+	draw : function(){
 		this.removeLegend();
 		this.addLegend();
 		if(this.visible){

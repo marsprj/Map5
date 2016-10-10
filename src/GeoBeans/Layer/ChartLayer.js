@@ -10,6 +10,7 @@ GeoBeans.Layer.ChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 	baseLayer : null,
 
 	initialize : function(name,baseLayerName,baseLayerField,option){
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		this.name = name;
 		this.baseLayerName = baseLayerName;
 		this.baseLayerField = baseLayerField;

@@ -3,7 +3,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	baseLayerFields : null,
 
 	initialize : function(name,baseLayerName,baseLayerFields,option){
-		// GeoBeans.Layer.ChartLayer.prototype.initialize.apply(this, arguments);
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		this.name = name;
 		this.baseLayerName = baseLayerName;
 		this.baseLayerFields = baseLayerFields;
@@ -15,7 +15,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		map._addLegend(this);
 	},
 
-	load : function(){
+	draw : function(){
 		this.removeLegend();
 		this.addLegend();
 		if(this.visible){
