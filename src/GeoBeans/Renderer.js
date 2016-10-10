@@ -366,47 +366,6 @@ GeoBeans.Renderer = GeoBeans.Class({
 			};
 		}
 	},
-	
-	drawIcon : function(icon, px, py, symbolizer){
-		var w, h;
-		var symbol = symbolizer.symbol;
-		
-		w = (symbol.icon_width>0)  ? symbol.icon_width  : icon.width;
-		h = (symbol.icon_height>0) ? symbol.icon_height : icon.height;
-
-		var scale = symbol.scale;
-		if(scale != null){
-			w = icon.width * scale;
-			h = icon.height * scale;
-		}
-
-		// anchor x,y
-		// var ax = Math.ceil(px - w / 2) + symbolizer.icon_offset_x;
-		// var ay = Math.ceil(py - h / 2) + symbolizer.icon_offset_y;
-
-		var ax = Math.ceil(px - w / 2) + symbol.icon_offset_x;
-		var ay = Math.ceil(py - h / 2) - symbol.icon_offset_y;
-
-		if(symbol.rotate != null){
-			var center_x = px + symbol.icon_offset_x;
-			var center_y = py - symbol.icon_offset_y;
-			this.save();
-			this.translate(center_x,center_y);
-			this.rotate(symbol.rotate *Math.PI/180);
-			this.translate(-center_x,-center_y);
-		}
-		
-
-		try{
-			this.context.drawImage(icon, ax, ay, w, h);	
-		}
-		catch (e) {
-            console.log("drawImage failed: " + e);                
-        }
-
-        this.restore();
-	},
-	
 
 	drawRing : function(point,radiusInnter,radiusOuter,color,opacityInner,opacityOuter,viewer){
 		var spt = null;
@@ -975,3 +934,94 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 	
 });
+
+GeoBeans.Renderer.prototype.drawIcon2 = function(feature, symbolizer, viewer) {
+	if(symbolizer.icon==null){
+		symbolizer.icon = new Image();
+		symbolizer.icon.crossOrigin="anonymous";
+		symbolizer.icon.src = symbolizer.symbol.icon;			
+	}
+	else{
+		if(symbolizer.icon.src!=symbolizer.symbol.icon){
+			symbolizer.icon = null;
+			symbolizer.icon = new Image();
+			symbolizer.icon.crossOrigin="anonymous"	
+			symbolizer.icon.src = symbolizer.symbol.icon;
+		}
+	}
+	
+	if(symbolizer.icon.complete){
+		var pt = feature.geometry;
+		var type = pt.type;
+		if(type == GeoBeans.Geometry.Type.POINT){
+			var sp = viewer.toScreenPoint(pt.x, pt.y);
+			this.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
+		}else if(type == GeoBeans.Geometry.Type.MULTIPOINT){
+			var points = pt.points;
+			for(var j = 0; j < points.length;++j){
+				var point = points[j];
+				var sp = viewer.toScreenPoint(point.x, point.y);
+				this.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
+			}
+		}
+	}
+	else{
+		var that = this;
+		symbolizer.icon.onload = function(){
+			var pt = feature.geometry;
+			var type = pt.type;
+			if(type == GeoBeans.Geometry.Type.POINT){
+				var sp = viewer.toScreenPoint(pt.x, pt.y);
+				that.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
+			}else if(type == GeoBeans.Geometry.Type.MULTIPOINT){
+				var points = pt.points;
+				for(var j = 0; j < points.length;++j){
+					var point = points[j];
+					var sp = viewer.toScreenPoint(point.x, point.y);
+					that.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
+				}
+			}
+			viewer.getMap().drawLayersAll();
+		};
+	}
+};
+
+GeoBeans.Renderer.prototype.drawIcon = function(icon, px, py, symbolizer){
+	var w, h;
+	var symbol = symbolizer.symbol;
+	
+	w = (symbol.icon_width>0)  ? symbol.icon_width  : icon.width;
+	h = (symbol.icon_height>0) ? symbol.icon_height : icon.height;
+
+	var scale = symbol.scale;
+	if(scale != null){
+		w = icon.width * scale;
+		h = icon.height * scale;
+	}
+
+	// anchor x,y
+	// var ax = Math.ceil(px - w / 2) + symbolizer.icon_offset_x;
+	// var ay = Math.ceil(py - h / 2) + symbolizer.icon_offset_y;
+
+	var ax = Math.ceil(px - w / 2) + symbol.icon_offset_x;
+	var ay = Math.ceil(py - h / 2) - symbol.icon_offset_y;
+
+	if(isValid(symbol.rotation)){
+		var center_x = px + symbol.icon_offset_x;
+		var center_y = py - symbol.icon_offset_y;
+		this.save();
+		this.translate(center_x,center_y);
+		this.rotate(symbol.rotation *Math.PI/180);
+		this.translate(-center_x,-center_y);
+	}
+	
+
+	try{
+		this.context.drawImage(icon, ax, ay, w, h);	
+	}
+	catch (e) {
+        console.log("drawImage failed: " + e);                
+    }
+
+    this.restore();
+}

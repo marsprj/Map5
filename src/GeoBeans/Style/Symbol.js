@@ -10,7 +10,7 @@
  * @param {double} offsetX x方向偏移量
  * @param {double} offsetY y方向偏移量
  * @param {double} scale   缩放比例
- * @param {double} rotate  旋转角度
+ * @param {double} rotation  旋转角度
  */
 GeoBeans.Style.Symbol = GeoBeans.Class({
 	
@@ -33,7 +33,7 @@ GeoBeans.Style.Symbol = GeoBeans.Class({
 
 	scale : null,
 
-	rotate : null,
+	rotation : null,
 
 	initialize : function(name,icon){
 		this.name = name;
@@ -69,8 +69,8 @@ GeoBeans.Style.Symbol = GeoBeans.Class({
 			clone.scale = this.scale;
 		}
 
-		if(this.rotate != null){
-			clone.rotate = this.rotate;
+		if(this.rotation != null){
+			clone.rotation = this.rotation;
 		}
 		return clone;
 	}

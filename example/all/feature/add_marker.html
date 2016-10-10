@@ -30,6 +30,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
@@ -115,7 +116,7 @@
 		addFeatureLayer();		
 	}
 
-	function onAddPoint(){
+	function onAddMarker(){
 		var x = parseFloat(document.getElementById("x").value);
 		var y = parseFloat(document.getElementById("y").value);
 
@@ -123,7 +124,7 @@
 		var point = new GeoBeans.Geometry.Point(x,y);
 		var feature = new GeoBeans.Feature(featureType,1,point);
 
-		var symbolizer = createPointSymbolizer();
+		var symbolizer = createMarkerSymbolizer();
 		feature.symbolizer = symbolizer;
 
 		featureLayer.addFeature(feature);
@@ -134,13 +135,15 @@
 	/**
 	 * 创建点图层样式
 	 */
-	function createPointSymbolizer(){
+	function createMarkerSymbolizer(){
 		
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/pin.png";
+		symbol.rotation = 45;
+		symbol.scale = 1.0;
+
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 60;
-		symbolizer.fill.color.setHex('#ddb926',1);
-		symbolizer.stroke = null;
-		
+		symbolizer.symbol = symbol;
 		return symbolizer;
 	}
 
@@ -203,11 +206,11 @@
 	}
 
 </script>
-<title>图层：添加点</title>
+<title>图层：添加Marker</title>
 <body onload="init()">
 	<span>x:</span><input type='text' id='x' value="0">
 	<span>y:</span><input type='text' id='y' value="0">
-	<button onclick="onAddPoint()">添加点</button>
+	<button onclick="onAddMarker()">添加Marker</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>

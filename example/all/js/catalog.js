@@ -388,11 +388,31 @@ var g_catalog = [
 			}
 		]
 	},{
+		"name" : "添加要素",
+		"items":[
+			{
+				"name" : "点",
+				"link" : "feature/add_point.html"
+			},{
+				"name" : "Marker",
+				"link" : "feature/add_marker.html"
+			},{
+				"name" : "(*)点线面标绘",
+				"link" : "drawOverlay.html"
+			},{
+				"name" : "(*)标绘&标注点击事件",
+				"link" : "overlayClick.html"
+			}
+		]
+	},{
 		"name" : "标绘",
 		"items":[
 			{
-				"name" : "(*)点",
+				"name" : "点",
 				"link" : "feature/add_point.html"
+			},{
+				"name" : "Marker",
+				"link" : "feature/add_marker.html"
 			},{
 				"name" : "(*)点线面标绘",
 				"link" : "drawOverlay.html"

@@ -316,19 +316,39 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			return;
 		}
 
+		var viewer = this.map.getViewer();
 		this.renderer.save();		
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
+			
+			var s = symbolizer;
 			if(isValid(feature.symbolizer)){
-				this.renderer.setSymbolizer(feature.symbolizer);
-				this.renderer.draw(feature, feature.symbolizer, this.map.getViewer());
+				//如果feature本身带symbolizer,则使用feature自带的symbolizer；否则使用Layer定义的symbolizer
+				s = feature.symbolizer;
 			}
-			else{
-				if(isValid(symbolizer)){
-					this.renderer.setSymbolizer(symbolizer);
-					this.renderer.draw(feature, symbolizer, this.map.getViewer());
-				}	
+
+			if(isValid(s)){
+				this.renderer.setSymbolizer(s);
+				if(isValid(s.symbol)){
+					//如果定义了符号，则使用符号渲染
+					this.renderer.drawIcon2(feature, s, viewer);
+				}
+				else{
+					//否则，使用简单方式渲染
+					this.renderer.draw(feature, s, viewer);
+				}
 			}
+
+			// if(isValid(feature.symbolizer)){
+			// 	this.renderer.setSymbolizer(feature.symbolizer);
+			// 	this.renderer.draw(feature, feature.symbolizer, this.map.getViewer());
+			// }
+			// else{
+			// 	if(isValid(symbolizer)){
+			// 		this.renderer.setSymbolizer(symbolizer);
+			// 		this.renderer.draw(feature, symbolizer, this.map.getViewer());
+			// 	}	
+			// }
 		}
 		this.renderer.restore();
 	},
