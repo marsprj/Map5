@@ -99,32 +99,39 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 				var angle_b = GeoBeans.Utility.getAngle(center.x,center.y,point_b.x,point_b.y);
 				var width = that._map.getWidth();
 				var height = that._map.getHeight();
-				var baseLayerCanvas_bk = document.createElement("canvas");
-				baseLayerCanvas_bk.width = width;
-				baseLayerCanvas_bk.height = height;
-				var baseLayercontext_bk = baseLayerCanvas_bk.getContext('2d');
-				baseLayercontext_bk.drawImage(that._map.baseLayerCanvas,0,0);
-
-
+				for(var i = 0; i < that._map.layers.length;++i){
+					var layer = that._map.layers[i];
+					var canvas_bk = document.createElement("canvas");
+					canvas_bk.width = width;
+					canvas_bk.height = height;
+					var context_bk = canvas_bk.getContext('2d');
+					context_bk.drawImage(layer.canvas,0,0);
+					layer.canvas_bk = canvas_bk;
+				}
 				var canvas_bk = document.createElement("canvas");
 				canvas_bk.width = width;
 				canvas_bk.height = height;
 				var context_bk = canvas_bk.getContext("2d");
 				context_bk.drawImage(that._map.canvas,0,0);
+
+
 				var onmousemove = function(evt){
 					var point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
 					var angle_e = GeoBeans.Utility.getAngle(center.x,center.y,point_e.x,point_e.y);
 
 					var delta = angle_e - angle_b;
 					that._map.drawBackground();
-					that._map.baseLayerRenderer.save();
-					that._map.baseLayerRenderer.translate(width/2,height/2);
-					that._map.baseLayerRenderer.rotate(delta* Math.PI/180);
-					that._map.baseLayerRenderer.translate(-width/2,-height/2);
-					that._map.baseLayerRenderer.drawImage(baseLayerCanvas_bk,0,0,
-						baseLayerCanvas_bk.width,baseLayerCanvas_bk.height);
-					that._map.baseLayerRenderer.restore();
 
+					for(var i = 0; i < that._map.layers.length;++i){
+						var layer = that._map.layers[i];
+						var canvas_bk = layer.canvas_bk;
+						layer.renderer.save();
+						layer.renderer.translate(width/2,height/2);
+						layer.renderer.rotate(delta* Math.PI/180);
+						layer.renderer.translate(-width/2,-height/2);
+						layer.renderer.drawImage(canvas_bk,0,0,canvas_bk.width,canvas_bk.height);
+						layer.renderer.restore();
+					}
 
 					that._map.renderer.save();
 					that._map.renderer.translate(width/2,height/2);

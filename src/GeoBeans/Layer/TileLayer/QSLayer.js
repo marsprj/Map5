@@ -220,11 +220,6 @@ GeoBeans.Layer.QSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 		tile.draw(x, y, img_size, img_size);
 	},
 
-	draw : function(){
-		this.preDraw();
-		this.loadingTiles();
-	},
-	
 	
 	getRows : function(){
 		

@@ -255,4 +255,5 @@ GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 	},
 
+
 });

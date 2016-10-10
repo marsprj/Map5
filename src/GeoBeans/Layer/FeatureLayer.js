@@ -143,6 +143,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	/******************************************************************/
 
 	draw : function(){
+		if(!this.isVisible()){
+			this.drawBackground();
+			return;
+		}
+		
 		var viewer = this.map.getViewer();
 		var extent = viewer.getExtent();
 		var rotation = viewer.getRotation();

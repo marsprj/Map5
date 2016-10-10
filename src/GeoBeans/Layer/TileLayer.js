@@ -29,8 +29,6 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// 图片缩放比例
 	imageScale : null,
 
-	// 旋转后的图片
-	rotateCanvas : null,
 	
 	initialize : function(name, url){
 		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
@@ -74,7 +72,15 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var extent = this.FULL_EXTENT;
 	},
 	
-	draw : null,
+	draw : function(){
+		if(this.visible){
+			this.preDraw();
+			this.loadingTiles();
+		}else{
+			this.drawBackground();
+		}
+	},
+
 	drawCache : null,
 	preDraw : null,
 	loadingTiles : null,
@@ -180,17 +186,6 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 		return this.MIN_ZOOM_LEVEL;
 	},
 
-
-	getRotateCanvas : function(){
-		if(this.rotateCanvas != null){
-			return this.rotateCanvas;
-		}
-
-		this.rotateCanvas = document.createElement("canvas");
-		this.rotateCanvas.width = this.canvas.width*2;
-		this.rotateCanvas.height = this.canvas.height*2;
-		return this.rotateCanvas;
-	},
 
 	/**
 	 * 转换到屏幕坐标，不加旋转角度的
