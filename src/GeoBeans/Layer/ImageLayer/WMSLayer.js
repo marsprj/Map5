@@ -54,6 +54,10 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 
 	draw : function(){
+		if(!this.isVisible()){
+			this.drawBackground();
+			return;
+		}
 		var w = this.map.canvas.width;
 		var h = this.map.canvas.height;
 		
@@ -110,7 +114,7 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 			  "&format=" + this.format +
 			  "&transparent=" + this.transparent;
 		
-		this.renderer.clearRect(0,0,w,h);
+		
 		if(layerUrl == ""){
 			this.flag =  GeoBeans.Layer.Flag.LOADED;
 			return;
@@ -126,6 +130,7 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(this.image.complete){
 			this.updateFlag = false;
 			this.flag = GeoBeans.Layer.Flag.LOADED;
+			this.renderer.clearRect(0,0,w,h);
 			this.renderer.drawImage(this.image, 0, 0, w, h);	
 			var index = this.image.src.lastIndexOf("&t=");
 			if(index != -1){
@@ -137,6 +142,7 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 			this.image.onload = function(){
 				if(that.flag != GeoBeans.Layer.Flag.LOADED){
 					that.flag = GeoBeans.Layer.Flag.LOADED;
+					that.renderer.clearRect(0,0,w,h);
 					that.renderer.drawImage(that.image, 0, 0, w, h);
 				}
 			};

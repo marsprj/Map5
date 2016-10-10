@@ -67,9 +67,6 @@ GeoBeans.Layer = GeoBeans.Class({
 		this.renderer = new GeoBeans.Renderer(this.canvas);
 	},
 	
-	setVisiable : function(visible){
-		this.visible = visible;
-	},
 	
 	getExtent : function(){
 		return this.extent;
