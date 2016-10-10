@@ -155,21 +155,22 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			this.flag = GeoBeans.Layer.Flag.READY;
 		}
 		this.rotation = rotation;
-		if(extent != null && this.viewer != null && extent.equal(this.viewer)
-			&& this.flag == GeoBeans.Layer.Flag.LOADED){
-			this.flag = GeoBeans.Layer.Flag.LOADED;
-			var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
-			var features = this.selectFeaturesByFilter(bboxFilter,this.features);
-			this.drawLabelFeatures(features);
-			this.drawClickLayer();
-			return;
-		}
+		// if(extent != null && this.viewer != null && extent.equal(this.viewer)
+		// 	&& this.flag == GeoBeans.Layer.Flag.LOADED){
+		// 	this.flag = GeoBeans.Layer.Flag.LOADED;
+		// 	var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
+		// 	var features = this.selectFeaturesByFilter(bboxFilter,this.features);
+		// 	this.drawLabelFeatures(features);
+		// 	this.drawClickLayer();
+		// 	return;
+		// }
 		
 		this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
 			extent.xmax,extent.ymax);
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
 		var features = this.selectFeaturesByFilter(bboxFilter,this.features);
+
 		console.log("count:" + features.length);
 		this.drawLayerFeatures(features);
 		this.drawClickLayer();
@@ -273,7 +274,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	//获取点线面的样式
 	getDefaultStyle : function(){
-		var geomType = this.getGeomType();
+		var geomType = this.featureType.getGeometryType();
 		var style = null; 
 		switch(geomType){
 			case GeoBeans.Geometry.Type.POINT:
@@ -315,12 +316,18 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			return;
 		}
 
-		this.renderer.save();
-		this.renderer.setSymbolizer(symbolizer);
+		this.renderer.save();		
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
-			if((symbolizer!=null) && (symbolizer!='undefined')){
-				this.renderer.draw(feature, symbolizer, this.map.getViewer());
+			if(isValid(feature.symbolizer)){
+				this.renderer.setSymbolizer(feature.symbolizer);
+				this.renderer.draw(feature, feature.symbolizer, this.map.getViewer());
+			}
+			else{
+				if(isValid(symbolizer)){
+					this.renderer.setSymbolizer(symbolizer);
+					this.renderer.draw(feature, symbolizer, this.map.getViewer());
+				}	
 			}
 		}
 		this.renderer.restore();

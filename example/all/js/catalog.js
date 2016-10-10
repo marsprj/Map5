@@ -391,6 +391,9 @@ var g_catalog = [
 		"name" : "标绘",
 		"items":[
 			{
+				"name" : "(*)点",
+				"link" : "feature/add_point.html"
+			},{
 				"name" : "(*)点线面标绘",
 				"link" : "drawOverlay.html"
 			},{
@@ -411,8 +414,8 @@ var g_catalog = [
 				"name" : "鼠标按下事件",
 				"link" : "event/map_mouse_down.html"
 			},{
-				"name" : "鼠标按下事件",
-				"link" : "event/map_mouse_down.html"
+				"name" : "鼠标抬起事件",
+				"link" : "event/map_mouse_up.html"
 			},{
 				"name" : "鼠标移动事件",
 				"link" : "event/map_mouse_move.html"
@@ -420,10 +423,10 @@ var g_catalog = [
 				"name" : "鼠标抬起事件",
 				"link" : "event/map_mouse_up.html"
 			},{
-				"name" : "(*)鼠标滚动事件",
+				"name" : "鼠标滚动事件",
 				"link" : "event/map_mouse_wheel.html"
 			},{
-				"name" : "(*)地图拖拽事件",
+				"name" : "地图拖拽事件",
 				"link" : "event/map_drag.html"
 			}
 		]

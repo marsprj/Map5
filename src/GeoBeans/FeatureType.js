@@ -1210,6 +1210,32 @@ GeoBeans.FeatureType.prototype.writeOrderby = function(orderby, xmlDoc){
 }
 
 /**
+ * 获得FeatureType上的几何字段
+ * @public
+ * @return {GeoBeans.Field} 几何字段
+ */
+GeoBeans.FeatureType.prototype.getGeometryField = function(){
+	var length = this.fields.length;
+	for(var i=0; i<length; i++){
+		var f = this.fields[i];
+		if(f.type == GeoBeans.Field.Type.GEOMETRY){
+			return f;
+		}
+	}
+	return null;
+}
+
+/**
+ * 获得FeatureType上的几何类型
+ * @public
+ * @return {string} 几何类型
+ */
+GeoBeans.FeatureType.prototype.getGeometryType = function(){
+	var f = this.getGeometryField();
+	return f == null ? "unknown" : f.geomType;
+}
+
+/**
  * 生成Orderby的XML格式--  测试不可用
  * @param  {GeoBeans.Query.Order} orderby  排序对象
  * @param  {object} xmlDoc  xml对象
