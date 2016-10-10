@@ -1113,8 +1113,8 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 			that.canvas.height = height;
 			that.canvas.width = width;
 
-			that.baseLayerCanvas.height = height;
-			that.baseLayerCanvas.width = width;
+			// that.baseLayerCanvas.height = height;
+			// that.baseLayerCanvas.width = width;
 
 			that.height = height;
 			that.width = width;
