@@ -316,5 +316,10 @@ GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 	// 	}
 	// 	return false;
 	// }
+
+	draw : function(){
+		this.preDraw();
+		this.loadingTiles();
+	},
 	
 });

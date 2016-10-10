@@ -288,5 +288,10 @@ GeoBeans.Layer.BaiduLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
 
 	getTileID : function(row, col, zoom){
 		return ("x=" + col + "&y=" + row + "&z=" + zoom);
-	}
+	},
+
+	draw : function(){
+		this.preDraw();
+		this.loadingTiles();
+	},
 });
