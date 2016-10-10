@@ -1036,6 +1036,7 @@ GeoBeans.Map.prototype.getSelection = function(){
 		
 /**
  * 初始化地图大小改变
+ * @private
  */
 GeoBeans.Map.prototype.enableWindowResize = function(){
 	var that = this;
@@ -1058,6 +1059,11 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 			that.height = height;
 			that.width = width;
 
+			for(var i = 0; i < that.layers.length;++i){
+				var layer = that.layers[i];
+				layer.resize(width,height);
+			}
+
 			var viewer = that.getViewer();
 			var extent = viewer.getExtent();
 
@@ -1075,54 +1081,18 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 				}
 			}
 
-			console.log(extent);
 			if(that.baseLayer != null){
-				var baseLayerCanvas = that.baseLayer.canvas;
-				baseLayerCanvas.width = width;
-				baseLayerCanvas.height = height;
 				var zoom = viewer.getZoom();
 				viewer.setZoom(zoom);
-
 			}else{
 				viewer.setExtent(extent);
 			}	
 
-			console.log(viewer.getExtent());
-			var layers = that.layers;
-			for(var i = 0; i < layers.length;++i){
-				var layer = layers[i];
-				if(layer == null){
-					continue;
-				}
-				var canvas = layer.canvas;
-				if(canvas != null){
-					canvas.height = height;
-					canvas.width = width;
-				}
-
-				var clickCanvas = layer.clickCanvas;
-				if(clickCanvas != null){
-					clickCanvas.width = width;
-					clickCanvas.height = height;
-				}
-
-				var hitCanvas = layer.hitCanvas;
-				if(hitCanvas != null){
-					hitCanvas.width = width;
-					hitCanvas.height = height;
-				}
-
-				var rotateCanvas = layer.rotateCanvas;
-				if(rotateCanvas != null){
-					rotateCanvas.height = height*2;
-					rotateCanvas.width = width*2;
-				}
-			}
-			var overlayLayerCanvas = that.overlayLayer.canvas;
-			if(overlayLayerCanvas != null){
-				overlayLayerCanvas.height = height;
-				overlayLayerCanvas.width = width;
-			}
+			// var overlayLayerCanvas = that.overlayLayer.canvas;
+			// if(overlayLayerCanvas != null){
+			// 	overlayLayerCanvas.height = height;
+			// 	overlayLayerCanvas.width = width;
+			// }
 
 
 /*			var panoramaLayerCanvas = that.panoramaLayer.canvas;

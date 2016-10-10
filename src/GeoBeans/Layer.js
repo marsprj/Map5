@@ -273,10 +273,24 @@ GeoBeans.Layer.prototype.cleanupSnap = function(){
 	this.snap = null;
 }
 
+/**
+ * 清空
+ * @private
+ */
 GeoBeans.Layer.prototype.drawBackground = function(){
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 };
 
+/**
+ * 重新调整大小
+ * @private
+ * @param  {int} width  宽度
+ * @param  {int} height 高度
+ */
+GeoBeans.Layer.prototype.resize = function(width,height){
+	this.canvas.width = width;
+	this.canvas.height = height;
+};
 
 GeoBeans.Layer.Flag = {
 	READY : "ready",
