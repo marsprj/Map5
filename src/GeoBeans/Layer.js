@@ -273,6 +273,10 @@ GeoBeans.Layer.prototype.cleanupSnap = function(){
 	this.snap = null;
 }
 
+GeoBeans.Layer.prototype.drawBackground = function(){
+	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+};
+
 
 GeoBeans.Layer.Flag = {
 	READY : "ready",
