@@ -290,50 +290,6 @@ GeoBeans.Map = GeoBeans.Class({
 	// },
 
 
-	// 更新瓦片
-	// @deprecated
-	_updateTile : function(layer,x,y,img_width,img_height){
-		// if(layer == null){
-		// 	return;
-		// }
-		// this.baseLayerRenderer.save();
-		// var width = this.width;
-		// var height = this.height;
-
-		// var viewer = this.getViewer();
-		// var rotation = viewer.getRotation();
-
-		// if(rotation != 0){
-		// 	this.baseLayerRenderer.translate(width/2,height/2);
-		// 	this.baseLayerRenderer.rotate(rotation* Math.PI/180);
-		// 	this.baseLayerRenderer.translate(-width/2,-height/2);
-		// 	this.baseLayerRenderer.clearRect(x,y,img_width,img_height);
-		// }else{
-		// 	this.baseLayerRenderer.clearRect(x,y,img_width,img_height);
-		// }
-		// if(this.layers == null){
-		// 	return;
-		// }
-		// for(var i = 0; i < this.layers.length;++i){
-		// 	var l = this.layers[i];
-		// 	if(l instanceof GeoBeans.Layer.TileLayer && l.visible){
-		// 		if(rotation != 0){
-		// 			var rotateCanvas = l.getRotateCanvas();
-		// 			if(rotateCanvas != null){
-		// 				var x_2 = rotateCanvas.width/4 + x;
-		// 				var y_2 = rotateCanvas.height/4 + y;
-		// 				x_2 = Math.floor(x_2 + 0.5);
-		// 				y_2 = Math.floor(y_2 + 0.5);
-		// 				this.baseLayerRenderer.drawImageParms(rotateCanvas,x_2,y_2,img_width,img_height,x,y,img_width,img_height);
-		// 			}
-		// 		}else{
-		// 			this.baseLayerRenderer.drawImageParms(l.canvas,x,y,img_width,img_height,x,y,img_width,img_height);
-		// 		}
-		// 	}
-		// }
-		// this.baseLayerRenderer.restore();
-	},
-
 	//覆盖物操作
 	addOverlay:function(overlay){
 		this.overlayLayer.addOverlay(overlay);

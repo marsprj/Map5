@@ -207,16 +207,33 @@ GeoBeans.Layer.prototype.un = function(event){
 	this.events.removeEvent(event);
 }
 
+
+/**
+ * 保存缩略图
+ * @private
+ */
 GeoBeans.Layer.prototype.saveSnap = function(){
 	this.snap = this.renderer.getImageData(0,0,this.canvas.width,this.canvas.height);
 };
 
+
+/**
+ * 绘制缩略图
+ * @private
+ */
 GeoBeans.Layer.prototype.restoreSnap = function(){
 	if(this.snap != null){
 		this.renderer.putImageData(this.snap,0,0);
 	}
 };
 
+
+/**
+ * 放置缩略图
+ * @private
+ * @param  {int} x x向坐标
+ * @param  {int} y y向坐标
+ */
 GeoBeans.Layer.prototype.putSnap = function(x,y){
 	if(!isValid(x) || !isValid(y)){
 		return;
@@ -227,6 +244,14 @@ GeoBeans.Layer.prototype.putSnap = function(x,y){
 	}
 };
 
+/**
+ * 指定位置和大小放置缩略图
+ * @private
+ * @param  {int]} x     x坐标
+ * @param  {int} y      y坐标
+ * @param  {int} width  放置后的宽度
+ * @param  {int} height 放置后的高度
+ */
 GeoBeans.Layer.prototype.drawLayerSnap = function(x,y,width,height){
 	if(this.snap == null){
 		return;
