@@ -8,7 +8,7 @@ GeoBeans.Event = {
 	/** @type {String} 单击地图*/
 	CLICK 		: "click",			
 	/** @type {string} 双击地图*/
-	DBCLICK		: "dbclick",
+	DBCLICK		: "dblclick",
 	/** @type {string} 地图大小变化*/
 	RESIZE		: "resize",
 

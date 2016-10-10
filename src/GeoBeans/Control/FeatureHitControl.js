@@ -55,7 +55,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 				else{
 					var dis = Math.abs(e.layerX-x_o) + Math.abs(e.layerY-y_o);
 					if(dis > that.tolerance){
-						console.log(dis);
+						//console.log(dis);
 						x_o = e.layerX;
 						y_o = e.layerY;					
 						var mp = that.map.getViewer().toMapPoint(e.layerX, e.layerY);
@@ -85,7 +85,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 		
 		
 		this.selection = [];
-		console.log(x + "," + y);
+		//console.log(x + "," + y);
 		var i=0, j=0;
 		var f=null, g=null;
 		var len = features.length;
@@ -99,7 +99,7 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 		}
 		
-		//this.map.restoreSnap();
+		this.map.restoreSnap();
 		this.highlight(this.selection);
 		if(callback!=undefined){
 			callback(this.layer, this.selection);
