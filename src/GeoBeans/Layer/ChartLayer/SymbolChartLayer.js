@@ -50,7 +50,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		var color = this.option.color;
 		if(color != null){
-			symbolizer.fill.color.setByHex(color,1);
+			symbolizer.fill.color.setHex(color,1);
 		}
 		var opacity = this.option.opacity;
 		if(opacity != null){
@@ -66,7 +66,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		}else{
 			color = new GeoBeans.Color();
 			if(this.option.border != null){
-				color.setByHex(this.option.border,1);
+				color.setHex(this.option.border,1);
 			}
 			if(this.option.borderOpacity != null){
 				color.setOpacity(this.option.borderOpacity);
@@ -112,7 +112,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		var chartField = this.baseLayerField;
 		var featureType = this.featureType;
-		var chartFieldIndex = featureType.getFieldIndex(this.baseLayerField);				
+		var chartFieldIndex = featureType.findField(this.baseLayerField);				
 
 		var symbolizer = this.getSymbolizer();
 		this.renderer.setSymbolizer(symbolizer);
@@ -150,13 +150,13 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				continue;
 			}
 			radius = this.getRadiusByLevelMap(parseFloat(value),levelMap);
-			var center_s = this.map.getMapViewer().toScreenPoint(center.x,center.y);
+			var center_s = this.map.getViewer().toScreenPoint(center.x,center.y);
 			var center_r_s = new GeoBeans.Geometry.Point(center_s.x+radius,center_s.y);
-			var center_r = this.map.getMapViewer().toMapPoint(center_r_s.x,center_r_s.y);
+			var center_r = this.map.getViewer().toMapPoint(center_r_s.x,center_r_s.y);
 			radius_m = center_r.x - center.x;	
 			circle = new GeoBeans.Geometry.Circle(center,radius_m);
 			chartFeature.circle = circle;	
-			this.renderer.drawGeometry(circle,symbolizer,this.map.getMapViewer);
+			this.renderer.drawGeometry(circle,symbolizer,this.map.getViewer());
 		}			
 
 	},	
@@ -169,7 +169,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		var chartField = this.baseLayerField;
 		var featureType = this.featureType;
-		var chartFieldIndex = featureType.getFieldIndex(this.baseLayerField);	
+		var chartFieldIndex = featureType.findField(this.baseLayerField);	
 
 		var symbolizer = this.getSymbolizer();
 		this.renderer.setSymbolizer(symbolizer);
@@ -203,13 +203,13 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 
 			radius = parseFloat(value)/max * this.option.maxsize;
-			var center_s = this.map.getMapViewer().toScreenPoint(center.x,center.y);
+			var center_s = this.map.getViewer().toScreenPoint(center.x,center.y);
 			var center_r_s = new GeoBeans.Geometry.Point(center_s.x+radius,center_s.y);
-			var center_r = this.map.getMapViewer().toMapPoint(center_r_s.x,center_r_s.y);
+			var center_r = this.map.getViewer().toMapPoint(center_r_s.x,center_r_s.y);
 			radius_m = center_r.x - center.x;	
 			circle = new GeoBeans.Geometry.Circle(center,radius_m);
 			chartFeature.circle = circle;	
-			this.renderer.drawGeometry(circle,symbolizer,this.map.getMapViewer());
+			this.renderer.drawGeometry(circle,symbolizer,this.map.getViewer());
 		}			
 	},
 
@@ -282,14 +282,15 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			return;
 		}
 
-		var legends = this.map.mapDiv.find(".chart-legend");
+		var mapContainer = this.map.getContainer();
+		var legends = $(mapContainer).find(".chart-legend");
 		var left = 0;
 
 		if(this.legendIndex == 0){
 			left = 10;
 		}else{
 			var lastIndex = this.legendIndex - 1;
-			var last = this.map.mapDiv.find(".chart-legend[lindex='" +  lastIndex + "']");
+			var last = $(mapContainer).find(".chart-legend[lindex='" +  lastIndex + "']");
 			var l = last.css("left");
 			var w = last.css("width");
 			l = parseInt(l.replace("px",""));
@@ -302,11 +303,11 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		html += "<div class='chart-legend-canvas'><canvas width='" + canvasWidth + "' height='" + canvasHeight + "'></canvas></div>";
 		html += "<div class='chart-legend-value' style='font-size:12px;ling-height:12px'></div>";
 		html += "</div>";
-		this.map.mapDiv.append(html);
+		$(mapContainer).append(html);
 
 
 		var labelHtml = "";
-		var canvas = this.map.mapDiv.find("#" + this.name + " canvas");
+		var canvas = $(mapContainer).find("#" + this.name + " canvas");
 		var renderer = new GeoBeans.Renderer(canvas[0]);
 		var symbolizer = this.getSymbolizer();
 		renderer.setSymbolizer(symbolizer);
@@ -354,7 +355,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			context.closePath();
 		}
 
-		this.map.mapDiv.find("#" + this.name + ".chart-legend .chart-legend-value").html(labelHtml);
+		$(mapContainer).find("#" + this.name + ".chart-legend .chart-legend-value").html(labelHtml);
 
 	},
 
@@ -389,6 +390,9 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		if(minMax == null){
 			return;
 		}
+
+		var mapContainer = this.map.getContainer();
+
 		var min = minMax.min;
 		var max = minMax.max;
 		var maxsize =  this.option.maxsize;
@@ -403,7 +407,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var canvasWidth = this.maxSymbolRadius *2 + 4;
 		var canvasHeight = (this.maxSymbolRadius + minHeight)*2 + this.legendPadding + 4;
 
-		var legends = this.map.mapDiv.find(".chart-legend");
+		var legends = $(mapContainer).find(".chart-legend");
 		var left = 0;
 		// if(legends.length > 0){
 		// 	var last = legends.last();
@@ -423,7 +427,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			left = 10;
 		}else{
 			var lastIndex = this.legendIndex - 1;
-			var last = this.map.mapDiv.find(".chart-legend[lindex='" +  lastIndex + "']");
+			var last = $(mapContainer).find(".chart-legend[lindex='" +  lastIndex + "']");
 			var l = last.css("left");
 			var w = last.css("width");
 			l = parseInt(l.replace("px",""));
@@ -437,9 +441,9 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		html += "<div class='chart-legend-canvas'><canvas width='" + canvasWidth + "' height='" + canvasHeight + "'></canvas></div>";
 		html += "<div class='chart-legend-value' style='font-size:12px;ling-height:12px'></div>";
 		html += "</div>";
-		this.map.mapDiv.append(html);
+		$(mapContainer).append(html);
 
-		var canvas = this.map.mapDiv.find("#" + this.name + " canvas");
+		var canvas = $(mapContainer).find("#" + this.name + " canvas");
 		var renderer = new GeoBeans.Renderer(canvas[0]);
 		var symbolizer = this.getSymbolizer();
 		renderer.setSymbolizer(symbolizer);
@@ -475,7 +479,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		console.log(maxLabelPadding);
 		labelHtml += "<div class='chart-legend-label' style='padding-top:" + minLabelPadding + "px'>" + min + "</div>";
 		labelHtml += "<div class='chart-legend-label' style='padding-top:" + maxLabelPadding + "px'>" + max + "</div>";
-		this.map.mapDiv.find("#" + this.name + ".chart-legend .chart-legend-value").html(labelHtml);
+		$(mapContainer).find("#" + this.name + ".chart-legend .chart-legend-value").html(labelHtml);
 	},
 
 	// 点击事件
@@ -498,7 +502,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			}
 			layer.clickRenderer.clearRect(0,0,layer.clickCanvas.width,layer.clickCanvas.height);
 			layer.map.drawLayersAll();
-			var mp = map.getMapViewer().toMapPoint(evt.layerX, evt.layerY);
+			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);
 			
 		};
@@ -597,7 +601,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
 			if((symbolizer!=null) && (symbolizer!='undefined')){
-				this.clickRenderer.drawGeometry(feature.circle, symbolizer, this.map.getMapViewer());
+				this.clickRenderer.drawGeometry(feature.circle, symbolizer, this.map.getViewer());
 			}
 		}
 		this.clickRenderer.restore();
