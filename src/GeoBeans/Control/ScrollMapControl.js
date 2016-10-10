@@ -128,13 +128,10 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 
 					var viewer = that.map.getViewer();
 					if(wheelHandler != null){
-						var args = new GeoBeans.Event.MouseArgs();
-						args.buttn = null;
-						args.X = null;
-						args.Y = null;
-						args.mapX = null;
-						args.mapY = null;
-						args.zoom = viewer.getZoom();
+						var args = {
+							delta: e.wheelDelta >0 ? 1 : -1,
+							zoom : viewer.getZoom()
+						}
 						wheelHandler(args);
 					}
 				}

@@ -1243,9 +1243,17 @@ GeoBeans.Map.prototype.on = function(event, handler){
 		case GeoBeans.Event.MOUSE_DOWN:
 		case GeoBeans.Event.MOUSE_UP:
 		case GeoBeans.Event.MOUSE_MOVE:
-		case GeoBeans.Event.MOUSE_OVER:
-		case GeoBeans.Event.MOUSE_OUT:
-			onMouseEvent(event, handler);
+		//case GeoBeans.Event.MOUSE_OVER:
+		//case GeoBeans.Event.MOUSE_OUT:
+			this.onMouseEvent(event, handler);
+			break;
+		case GeoBeans.Event.MOUSE_WHEEL:
+			this.onWheelEvent(event, handler);
+			break;
+		case GeoBeans.Event.DRAG_BEGIN:
+		case GeoBeans.Event.DRAGING:
+		case GeoBeans.Event.DRAG_END:
+			this.onMapDragEvent(event, handler);
 			break;
 		default:
 			ret = false;
@@ -1310,23 +1318,103 @@ GeoBeans.Map.prototype.onMouseEvent = function(event, handler){
 		evt.preventDefault();
 		var x = evt.layerX;
 		var y = evt.layerY;
+
+		var button;
+		switch(evt.button){
+			case 0:
+				button = GeoBeans.Event.MouseButton.LEFT;
+				break;
+			case 1:
+				button = GeoBeans.Event.MouseButton.MID;
+				break;
+			case 2:
+				button = GeoBeans.Event.MouseButton.RIGHT;
+				break;
+		}
 		
 		var viewer = map.getViewer();
 		var mp = viewer.toMapPoint(x, y);
 		
-		var args = new GeoBeans.Event.MouseArgs();
-		args.buttn = null;
-		args.X = x;
-		args.Y = y;
-		args.mapX = mp.x;
-		args.mapY = mp.y;
-		args.zoom = viewer.getZoom();
+		var args = {
+			button : button,
+			X : x,
+			Y : y,
+			mapX : mp.x,
+			mapY : mp.y,
+			zoom : viewer.getZoom()
+		};
+		
 		handler(args);
 	};
 	var mapContainer = this.getContainer();
 	mapContainer.addEventListener(event,eventHandler);
 	this.events.addEvent(event,handler,eventHandler);
 }
+
+/**
+ * 注册Mouse滚轮事件
+ * @private
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 		事件响应函数
+ */
+GeoBeans.Map.prototype.onWheelEvent = function(event, handler){
+	var map = this;
+	var eventHandler = function(evt){
+		evt.preventDefault();
+		//console.log(evt.eventPhase);
+		//console.log(evt.wheelDelta);
+		console.log(evt.eventPhase + "," + evt.wheelDelta + "," + evt.detail + "," + evt.which);
+		// var x = evt.layerX;
+		// var y = evt.layerY;
+
+		// var button;
+		// switch(evt.button){
+		// 	case 0:
+		// 		button = GeoBeans.Event.MouseButton.LEFT;
+		// 		break;
+		// 	case 1:
+		// 		button = GeoBeans.Event.MouseButton.MID;
+		// 		break;
+		// 	case 2:
+		// 		button = GeoBeans.Event.MouseButton.RIGHT;
+		// 		break;
+		// }
+		
+		// var viewer = map.getViewer();
+		// var mp = viewer.toMapPoint(x, y);
+		
+		// var args = {
+		// 	button : button,
+		// 	X : x,
+		// 	Y : y,
+		// 	mapX : mp.x,
+		// 	mapY : mp.y,
+		// 	zoom : viewer.getZoom()
+		// };
+		
+		// handler(args);
+	};
+	var mapContainer = this.getContainer();
+	mapContainer.addEventListener(event,eventHandler);
+	this.events.addEvent(event,handler,eventHandler);
+}
+
+/**
+ * 注册拖拽事件
+ * @private
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 		事件响应函数
+ */
+GeoBeans.Map.prototype.onMapDragEvent = function(event, handler){
+	var map = this;
+	var eventHandler = function(evt){
+		evt.preventDefault();
+	};
+	var mapContainer = this.getContainer();
+	mapContainer.addEventListener(event,eventHandler);
+	this.events.addEvent(event,handler,eventHandler);
+}
+
 
 /**
  * 注册Mouse事件

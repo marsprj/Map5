@@ -408,16 +408,16 @@ var g_catalog = [
 				"name" : "双击事件",
 				"link" : "event/map_dbclick.html"
 			},{
-				"name" : "(*)鼠标按下事件",
+				"name" : "鼠标按下事件",
 				"link" : "event/map_mouse_down.html"
 			},{
-				"name" : "(*)鼠标按下事件",
+				"name" : "鼠标按下事件",
 				"link" : "event/map_mouse_down.html"
 			},{
-				"name" : "(*)鼠标移动事件",
+				"name" : "鼠标移动事件",
 				"link" : "event/map_mouse_move.html"
 			},{
-				"name" : "(*)鼠标抬起事件",
+				"name" : "鼠标抬起事件",
 				"link" : "event/map_mouse_up.html"
 			},{
 				"name" : "(*)鼠标滚动事件",

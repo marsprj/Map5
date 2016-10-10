@@ -64,7 +64,7 @@ GeoBeans.Event.MouseButton = {
 };
 
 /*
- * 
+ * @deprecated
  */
 GeoBeans.Event.MouseArgs = function(){
 	buttn : null;
@@ -74,6 +74,31 @@ GeoBeans.Event.MouseArgs = function(){
 	mapY : null;
 	zoom : null;
 };
+
+/**
+ * @classdesc
+ * 鼠标事件
+ * @class 
+ */
+GeoBeans.Event.MouseEvent = {
+	button : GeoBeans.Event.MouseButton.LEFT,
+	X : 0,
+	Y : 0,
+	mapX : 0,
+	mapY : 0,
+	zoom : 0	
+}
+
+/**
+ * @classdesc
+ * 滚轮事件
+ * @class 
+ */
+GeoBeans.Event.WhellEvent = {
+	delta : 1,
+	zoom  : 0	
+}
+
 
 /**
  * @classdesc
@@ -118,7 +143,6 @@ GeoBeans.Events.prototype.addEvent = function(event,handler,listener){
 /**
  * 注销事件
  * @param  {GeoBeans.Event} event 事件类型
- * @return {[type]}       [description]
  */
 GeoBeans.Events.prototype.removeEvent = function(event){
 	for(var i = 0; i < this.events.length;++i){
