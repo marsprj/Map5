@@ -53,7 +53,7 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 		GeoBeans.Layer.prototype.destory.apply(this, arguments);
 	},
 
-	load : function(){
+	draw : function(){
 		var w = this.map.canvas.width;
 		var h = this.map.canvas.height;
 		
@@ -138,7 +138,6 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 				if(that.flag != GeoBeans.Layer.Flag.LOADED){
 					that.flag = GeoBeans.Layer.Flag.LOADED;
 					that.renderer.drawImage(that.image, 0, 0, w, h);
-					that.map.drawLayersAll();	
 				}
 			};
 		}
