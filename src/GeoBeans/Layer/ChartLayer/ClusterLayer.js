@@ -4,6 +4,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	distance : 90,
 
 	initialize : function(name,baseLayerName){
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		this.name = name;
 		this.baseLayerName = baseLayerName;
 		this.createSymbolizer();
@@ -21,7 +22,11 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		this.registerClickEvent();
 	},
 
-	load : function(){
+	draw : function(){
+		if(!this.isVisible()){
+			this.drawBackground();
+			return;
+		}
 		if(this.features == null){
 			this.flag = GeoBeans.Layer.Flag.LOADED;
 			return;
@@ -325,7 +330,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		if(this.loadIconFlag){
 			console.log("draw cluster")
 			this.drawClusterLayer();
-			this.map.drawLayersAll();
+			// this.map.drawLayersAll();
 		}
 	},
 

@@ -161,7 +161,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
 			var features = this.selectFeaturesByFilter(bboxFilter,this.features);
 			this.drawLabelFeatures(features);
-			this.drawClickLayer();
+			// this.drawClickLayer();
 			return;
 		}
 		
@@ -172,7 +172,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var features = this.selectFeaturesByFilter(bboxFilter,this.features);
 		console.log("count:" + features.length);
 		this.drawLayerFeatures(features);
-		this.drawClickLayer();
+		// this.drawClickLayer();
 
 		var hitCanvas = this.hitCanvas;
 		if(hitCanvas != null){

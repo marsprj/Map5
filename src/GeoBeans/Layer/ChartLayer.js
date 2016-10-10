@@ -17,6 +17,7 @@ GeoBeans.Layer.ChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 	},
 
 	destroy : function(){
+		GeoBeans.Layer.prototype.destroy.apply(this, arguments);
 		this.baseLayerName = null;
 		this.baseLayerField = null;
 		this.option = null;
