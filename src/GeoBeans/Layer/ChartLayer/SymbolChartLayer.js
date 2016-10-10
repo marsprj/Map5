@@ -31,7 +31,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 	},
 
 
-	load : function(){
+	draw : function(){
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.drawLayer();
 		if(this.visible){

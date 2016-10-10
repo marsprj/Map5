@@ -851,35 +851,14 @@ GeoBeans.Map.prototype.getLayer = function(name){
  */
 GeoBeans.Map.prototype.addLayer = function(layer){
 	if(!isValid(layer)){
-		return "layer is invalid";
+		return false;
 	}
 
 	var l = this.getLayer(layer.name);
 	if(l != null){
-          // console.log("this map has [" + layer.name + "] layer")
-        return "this map has [" + layer.name + "] layer";
+        return false;
 	}
-	if(layer instanceof GeoBeans.Layer.ChartLayer ){
-		var l = this.getLayer(layer.baseLayerName);
-		if(l == null){
-			//console.log("this map does not has [" + layer.baseLayerName + "] layer");
-			return "this map does not has [" + layer.baseLayerName + "] layer";
-		}
-		if(layer instanceof GeoBeans.Layer.RangeChartLayer){
-			var index = l.featureType.findField(layer.baseLayerField);
-			if(index == -1){
-				//console.log("layer does not has this field[" +　layer.baseLayerField + "]");
-				return "layer does not has this field[" +　layer.baseLayerField + "]";	
-			}
-		}
-		if(layer instanceof GeoBeans.Layer.HeatMapLayer){
-			var geomType = l.getGeomType();
-			if(geomType != GeoBeans.Geometry.Type.POINT){
-				//console.log("base layer is not point layer");
-				return "base layer is not point layer";
-			}
-		}
-	}
+	
 	this.layers.push(layer);
 	if(layer instanceof GeoBeans.Layer.TileLayer){
 		if(this.baseLayer == null){
@@ -887,6 +866,7 @@ GeoBeans.Map.prototype.addLayer = function(layer){
 		}
 	}
 	layer.setMap(this);
+	return true;
 }
 
 /**

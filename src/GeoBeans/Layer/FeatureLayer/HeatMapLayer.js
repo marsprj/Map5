@@ -20,7 +20,7 @@ GeoBeans.Layer.HeatMapLayer2 = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 
 	initialize : function(options){
 		//GeoBeans.Layer.FeatureLayer.prototype.initialize.apply(this, arguments);
-		
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		this.apply(options);
 		//this.initHeatMap();
 	},
@@ -36,7 +36,7 @@ GeoBeans.Layer.HeatMapLayer2 = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
  * 刷新图层
  * @deprecated
  */
-GeoBeans.Layer.HeatMapLayer2.prototype.load = function(){
+GeoBeans.Layer.HeatMapLayer2.prototype.draw = function(){
 	this.drawHeatMap();
 	if(this.showGeometry){
 		this.drawLayerFeatures(this.features);
@@ -125,7 +125,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){
 
 
 	this.heatmap.setData(data);
-	this.canvas = this.div.children[0];
+
 }
 
 /**
@@ -173,6 +173,21 @@ GeoBeans.Layer.HeatMapLayer2.prototype.setMap = function(map){
 	  	container: this.div,
 	  	radius : this.radius
 	});	
+
+
+	// 将heatmap控件生成的canvas替换原本的图层canvas
+	var heatMapCanvas = this.div.children[0];
+	var mapContainer = this.map.getContainer();
+	var canvas = $(mapContainer).find(".map5-canvas[id='" + this.name + "']");
+	if(canvas.length == 1){
+		var prev = canvas.prev();
+		canvas.remove();
+		prev.after(heatMapCanvas);
+		this.canvas = heatMapCanvas;
+		this.canvas.className = "map5-canvas";
+		this.canvas.id = this.name;
+		this.renderer = new GeoBeans.Renderer(this.canvas);
+	}
 }
 
 GeoBeans.Layer.HeatMapLayer2.prototype.showGeometry = function(visible){

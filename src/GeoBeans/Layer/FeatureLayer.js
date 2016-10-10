@@ -173,7 +173,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 		console.log("count:" + features.length);
 		this.drawLayerFeatures(features);
-		this.drawClickLayer();
+		// this.drawClickLayer();
 
 		var hitCanvas = this.hitCanvas;
 		if(hitCanvas != null){
