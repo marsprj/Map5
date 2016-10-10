@@ -46,6 +46,8 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var geomtry = null;
 		var center = null;
 
+		var mapContainer = this.map.getContainer();
+
 		// echarts元素
 		var option = null;
 		var radius = 80;
@@ -115,7 +117,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				if(chartField == null){
 					continue;
 				}
-				var chartFieldIndex = this.featureType.getFieldIndex(chartField);
+				var chartFieldIndex = this.featureType.findField(chartField);
 				if(chartFieldIndex != -1){
 					chartValue = chartValues[chartFieldIndex];
 					var obj = new Object();
@@ -167,7 +169,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			var div = "<div class='chart-div' style='height: " + h 
 			+  "px; width:" + w + "px' id='" 
 			+ chartId +　"'></div>";
-			this.map.mapDiv.append(div);
+			$(mapContainer).append(div);
 
 			var chart = echarts.init(document.getElementById(chartId));
 			chart.setOption(option); 
@@ -179,7 +181,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 			var x = center.x;
 			var y = center.y;
-			var sp = this.map.getMapViewer().toScreenPoint(x,y);
+			var sp = this.map.getViewer().toScreenPoint(x,y);
 			var spx = sp.x - w/2 + offsetX;
 			var spy = sp.y - h/2 - offsetY;
 
@@ -206,12 +208,14 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			return;
 		}
 
+		var mapContainer = this.map.getContainer();
+
 		var left = 0;
 		if(this.legendIndex == 0){
 			left = 10;
 		}else{
 			var lastIndex = this.legendIndex - 1;
-			var last = this.map.mapDiv.find(".chart-legend[lindex='" +  lastIndex + "']");
+			var last = $(mapContainer).find(".chart-legend[lindex='" +  lastIndex + "']");
 			if(last != null){
 				var l = last.css("left");
 				var w = last.css("width");
@@ -240,6 +244,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				+	"</div>";
 		}
 		html += "</div>";
-		this.map.mapDiv.append(html);
+		var mapContainer = this.map.getContainer();
+		$(mapContainer).append(html);
 	},
 });
