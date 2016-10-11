@@ -34,100 +34,13 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-		this.cluster();
+		if(this.cluster == null){
+			this.cluster =  new GeoBeans.Cluster(this.features,this.map);
+		}
+		
+		this.drawCluster(this.cluster);
 		this.flag = GeoBeans.Layer.Flag.LOADED;
 	},
-
-	cluster : function(){
-		if(this.features == null){
-			return;
-		}
-		var date = new Date();
-		var f = null,geometry = null,cluster = null;
-		var clustered = false,clusters = [];
-
-		var extent = this.map.getViewer().getExtent();
-		for(var i = 0; i < this.features.length;++i){
-			f = this.features[i];
-			if(f == null){
-				continue;
-			}
-			geometry = f.geometry;
-			
-			if(geometry == null){
-				continue;
-			}
-			if(!extent.contain(geometry.x,geometry.y)){
-				continue;
-			}
-			clustered = false;
-			for(var j = 0; j < clusters.length;++j){
-				cluster = clusters[j];
-				if(this.shouldCluster(cluster,geometry)){
-					this.addToCluster(cluster,f);
-					clustered = true;
-					break;
-				}
-			}
-			if(!clustered){
-				clusters.push(this.createCluster(f));
-			}
-
-		}
-
-		this.clusters = clusters;
-		this.drawClusters();
-	},
-
-	// 创建一个聚类
-	createCluster : function(feature){
-		var cluster = {
-			features : []
-		};
-		cluster.features.push(feature);
-		var geometry = feature.geometry;
-		cluster.geometry = geometry;
-		return cluster;
-	},
-
-	// 是否可以聚类进去
-	shouldCluster : function(cluster,geometry){
-		var cg = cluster.geometry;
-		var cg_s = this.map.getViewer().toScreenPoint(cg.x,cg.y);
-		var geometry_s = this.map.getViewer().toScreenPoint(geometry.x,geometry.y);
-		var distance = Math.sqrt(Math.pow((cg_s.x - geometry_s.x),2) + Math.pow((cg_s.y - geometry_s.y),2));
-		return(distance < this.distance);
-	},
-
-	// 添加到聚类
-	addToCluster : function(cluster,feature){
-		cluster.features.push(feature);
-		// var geometry = cluster.geometry;
-		// var fg = cluster.geometry;
-		// var x = (geometry.x + fg.x)/2;
-		// var y = (geometry.y + fg.y)/2;
-		// cluster.geometry = new GeoBeans.Geometry.Point(x,y);
-	},
-
-	getClusterCenter : function(cluster){
-		var features = cluster.features;
-		var feature = null,geometry = null;
-		var sum_x = 0,sum_y = 0;
-		for(var i = 0; i < features.length;++i){
-			feature = features[i];
-			if(feature == null){
-				continue;
-			}
-			geometry = feature.geometry;
-			if(geometry == null){
-				continue;
-			}
-			sum_x += geometry.x;
-			sum_y += geometry.y;
-		}
-
-		return new GeoBeans.Geometry.Point(sum_x/features.length,sum_y/features.length);
-	},	
 
 	// 创建图片样式
 	createSymbolizer : function(){
@@ -174,57 +87,6 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		this.symbolizers = symbolizers;
 	},
 
-
-	drawClusters : function(){
-		// 看图片是否已经加载了。
-		var flag = this.getIconLoaded();
-		if(flag){
-			this.drawClusterLayer();
-		}else{
-			this.loadIcon();
-		}
-	},
-
-	// 加载完图片,进行绘制
-	drawClusterLayer : function(){
-		var cluster = null;
-		var clustersArray = [[],[],[],[],[],[]];
-		for(var i = 0;i < this.clusters.length;++i){
-			cluster = this.clusters[i];
-			if(cluster == null){
-				continue;
-			}
-			cluster.geometry = this.getClusterCenter(cluster);
-			var count = cluster.features.length;
-			var number = this.getSymbolizerNumber(count);
-			var radius = this.getIconWidth(number);
-			cluster.radius = radius;
-			clustersArray[number].push(cluster);
-		}
-
-		for(var i = 0; i < clustersArray.length;++i){
-			var clustersItem = clustersArray[i];
-			this.renderer.setSymbolizer(this.symbolizers[i]);
-			this.renderer.drawIcons(clustersItem,this.symbolizers[i],this.map.getViewer());
-		}
-
-		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
-		textSymbolizer.font.family = "Microsoft Yahei";
-		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
-		textSymbolizer.fill.color.setHex("#000000",1);
-
-		this.renderer.setSymbolizer(textSymbolizer);
-		for(var i = 0; i < this.clusters.length;++i){
-			var text = this.clusters[i].features.length;
-			if(text == 1){
-				continue;
-			}
-			var point_s = this.map.getViewer().toScreenPoint(this.clusters[i].geometry.x,this.clusters[i].geometry.y);
-			var textWidth = this.renderer.context.measureText(text).width;
-			this.renderer.context.fillText(text, point_s.x-textWidth/2, point_s.y+6);
-			
-		}
-	},
 
 	getSymbolizerNumber : function(count){
 		if(count == 1){
@@ -476,3 +338,72 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		this.hitEvent = null;
 	},
 });
+
+/**
+ * 绘制聚类
+ * @private
+ */
+GeoBeans.Layer.ClusterLayer.prototype.drawCluster = function(){
+	if(this.cluster == null){
+		return;
+	}
+	
+	var flag = this.getIconLoaded();
+	if(flag){
+		this.drawClusterLayer();
+	}else{
+		this.loadIcon();
+	}
+};
+
+
+/**
+ * 加载完图片后，绘制图
+ * @private
+ */
+GeoBeans.Layer.ClusterLayer.prototype.drawClusterLayer = function(){
+	if(this.cluster == null){
+		return;
+	}
+
+	// 绘制图标
+	var clusters = this.cluster.getClusters();
+	var cluster = null;
+	var clustersArray = [[],[],[],[],[],[]];
+	for(var i = 0;i < clusters.length;++i){
+		cluster = clusters[i];
+		if(cluster == null){
+			continue;
+		}
+		cluster.geometry = this.cluster.getClusterCenter(cluster);
+		var count = cluster.features.length;
+		var number = this.getSymbolizerNumber(count);
+		var radius = this.getIconWidth(number);
+		cluster.radius = radius;
+		clustersArray[number].push(cluster);
+	}
+
+	for(var i = 0; i < clustersArray.length;++i){
+		var clustersItem = clustersArray[i];
+		this.renderer.setSymbolizer(this.symbolizers[i]);
+		this.renderer.drawIcons(clustersItem,this.symbolizers[i],this.map.getViewer());
+	}
+
+
+	// 写文字
+	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+	textSymbolizer.font.family = "Microsoft Yahei";
+	textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+	textSymbolizer.fill.color.setHex("#000000",1);
+
+	this.renderer.setSymbolizer(textSymbolizer);
+	for(var i = 0; i < clusters.length;++i){
+		var text = clusters[i].features.length;
+		if(text == 1){
+			continue;
+		}
+		var point_s = this.map.getViewer().toScreenPoint(clusters[i].geometry.x,clusters[i].geometry.y);
+		var textWidth = this.renderer.context.measureText(text).width;
+		this.renderer.context.fillText(text, point_s.x-textWidth/2, point_s.y+6);
+	}
+};
