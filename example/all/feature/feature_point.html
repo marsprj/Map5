@@ -50,6 +50,7 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
@@ -107,7 +108,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
-
+<script type="text/javascript" src="../js/citiesValue.js"></script>
 <style type="text/css">
 	body{
 		margin: 0px;
@@ -116,44 +117,44 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
-	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
 		loadTileMap();
-		addFeatureLayer();
+		loadFeatureLayer();
 	}
 
-	function addFeatureLayer(){
-		var featureType = createFeatureType();
-		var name = featureType.getName();
-		var featureLayer= createFeatureLayer(name, featureType);
+	function loadFeatureLayer(){
+		var name = "cities";
+		var featureType = createFeatureType(name);
+		var features = loadFeatures(featureType);
 
-		addFeatures(featureLayer);
+		var layer = createFeatureLayer(name, featureType);
+		layer.setFeatures(features);
 
-		mapObj.addLayer(featureLayer);
-		mapObj.refresh();
+
+		var style = createSimplePointStyle();
+		layer.setStyle(style);
+		mapObj.addLayer(layer);
 	}
 
-	/**
-	 * ?????这个函数在FeatureType和Field的构造函数重构后，需要修改。?????
-	 * @return {[type]} [description]
-	 */
-	function createFeatureType(){
 
+	function createFeatureType(name){
 		var fields = [
 			{
-				name : "fname",  // 字段名称
-				type : "string"  // 字段类型，为字符串类型
+				name : "name",  // 字段名称
+				type : "string"  // 字段类型
 			},{
-				name : "shape",  
-				type : "geometry"// 字段类型为空间类型
+				name : "populat",
+				type : "int"
 			},{
-				name : "status",
+				name : "capital",
 				type : "string"
+			},{
+				name : "shape",
+				type : "geometry"
 			}
 		];
-
-		var name = "points"
+		var geomType  = GeoBeans.Geometry.Type.POINT;
 		var featureType = new GeoBeans.FeatureType(null,name);
 		var fieldsArray = [];
 		for(var i = 0; i < fields.length;++i){
@@ -170,92 +171,71 @@
 
 		featureType.fields = fieldsArray;
 		return featureType;
-
 	}
 
-	/**
-	 * [createFeatureLayer description]
-	 * @param  {[type]} layerName   [description]
-	 * @param  {[type]} featureType [description]
-	 * @return {[type]}             [description]
-	 */
-	function createFeatureLayer(layerName, featureType){
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
-		featureLayer.featureType = featureType;
-		featureLayer.features = [];
+	function loadFeatures(featureType){
+		var features = [];		
+		var length = g_citiesValue.length;
 
-		var style = createPointStyle();
-		featureLayer.setStyle(style);
+		for(var i = 0; i < length;++i){
+			var pairs = g_citiesValue[i];	
+			var feature = createFeature(i, featureType, pairs);
+			features.push(feature);
+		}
+
+		return features;
+	}
+
+	function createFeature(i, featureType, pairs){
+		// 使用wkt转换为geometry
+		var format = new GeoBeans.Format.WKT();
+		var geometry = format.read(pairs.shape);
+		var fid = "id_" + i;
+		var values = [pairs.name,
+					  pairs.populat,
+					  pairs.capital,
+					  geometry];
+
+		var feature = new GeoBeans.Feature(featureType,
+										   fid,
+										   geometry,
+										   values);
+		return feature;
+	}
+
+	function createFeatureLayer(name, featureType){
+		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
+		featureLayer.featureType = featureType;
 
 		return featureLayer;
 	}
 
-	/**
-	 * [addFeatures description]
-	 * @param {[type]} featureLayer [description]
-	 */
-	function addFeatures(featureLayer){
-		for(var i = 0; i < 10000; ++i){
-			var x = Math.random() * 360 - 180;
-			var y = Math.random() * 180 - 90;
-			var point = new GeoBeans.Geometry.Point(x,y);
-			var id = "id_" + i;
-			var status = Math.random() > 0.5 ?"on":"off";
-			var name = "name" + i;
-			// 每个字段对应的值
-			var values = [name,point,status];
-
-			// 添加要素
-			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
-			featureLayer.addFeatureObj(id,point,values); 
-		}
-	}
-
-	/**
-	 * 创建点图层样式
-	 * @description feature包含status字段。status字段值为on绘制为紫色。status字段值为off绘制为黄色。
-	 * @return {[type]} [description]
-	 */
-	function createPointStyle(){
+	function createSimplePointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 
-		// 状态为on的要素，标记为紫色
-		var rule = new GeoBeans.Style.Rule();
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		//设置点大小
 		symbolizer.size = 6;
-		symbolizer.fill.color.setHex('#800080',1);
-		symbolizer.stroke = null;
-		rule.symbolizer = symbolizer;
-		
-		var prop = new GeoBeans.Expression.PropertyName();
-		prop.setName("status");
-		var literal = new GeoBeans.Expression.Literal();
-		literal.setValue("on");
-		var filter = new GeoBeans.Filter.BinaryComparisionFilter(	GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual,
-															prop,
-															literal);
-		rule.filter = filter;
-		style.addRule(rule);
+		//设置点的填充颜色
+		var fill   = symbolizer.fill;
+		fill.color.setHex('#800080',1);
 
-		// 状态为off的要素，标记为黄色
+		//设置点的边界样式
+		var stroke = symbolizer.stroke;
+		// 边框的颜色
+		stroke.color.set(0,255, 0,1);
+		// 边框的颜色
+		stroke.width = 1.0; 
+
 		var rule = new GeoBeans.Style.Rule();
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 6;
-		symbolizer.fill.color.setHex('#ddb926',1);
-		symbolizer.stroke = null;
 		rule.symbolizer = symbolizer;
-		var prop = new GeoBeans.Expression.PropertyName();
-		prop.setName("status");
-		var literal = new GeoBeans.Expression.Literal();
-		literal.setValue("off");
-		var filter = new GeoBeans.Filter.BinaryComparisionFilter(GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual,
-														  prop,
-														  literal);
-		rule.filter = filter;
+		rule.filter = null;
+		
 		style.addRule(rule);		
 
 		return style;
 	}
+
 
 </script>
 <title>要素图层：点素图</title>
