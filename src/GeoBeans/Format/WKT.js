@@ -43,6 +43,52 @@ GeoBeans.Format.WKT.prototype.read = function(wkt){
 }
 
 /**
+ * 将Geometry对象转换为WKT字符串
+ * @public
+ * @param  {GeoBeans.Geometry} geometry geometry对象
+ * @return {string}          wkt字符串
+ */
+GeoBeans.Format.WKT.prototype.write = function(geometry){
+	if(geometry == null){
+		return null;
+	}
+
+	var type = geometry.type;
+	var wkt = null;
+	switch(type){
+		case GeoBeans.Geometry.Type.POINT:{
+			wkt = this.writePoint(geometry);
+			break;
+		}
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			wkt = this.writeLineString(geometry);
+			break;
+		}
+
+		case GeoBeans.Geometry.Type.POLYGON:{
+			wkt = this.writePolygon(geometry);
+			break;
+		}
+
+		case GeoBeans.Geometry.Type.MULTIPOINT:{
+			wkt = this.writeMultiPoint(geometry);
+			break;
+		}
+		case GeoBeans.Geometry.Type.MULTILINESTRING:{
+			wkt = this.writeMultiLineString(geometry);
+			break;
+		}
+		case GeoBeans.Geometry.Type.MULTIPOLYGON:{
+			wkt = this.writeMultiPolygon(geometry);
+			break;
+		}
+		default:
+			break;
+	}
+	return wkt;
+}
+
+/**
  * 将wkt字符串转换为点对象
  * @private
  * @param  {string} wkt 字符串
@@ -282,51 +328,7 @@ GeoBeans.Format.WKT.prototype.prasePointsByCoordinates = function(string){
 	return points;
 }
 
-/**
- * 将Geometry对象转换为WKT字符串
- * @public
- * @param  {GeoBeans.Geometry} geometry geometry对象
- * @return {string}          wkt字符串
- */
-GeoBeans.Format.WKT.prototype.write = function(geometry){
-	if(geometry == null){
-		return null;
-	}
 
-	var type = geometry.type;
-	var wkt = null;
-	switch(type){
-		case GeoBeans.Geometry.Type.POINT:{
-			wkt = this.writePoint(geometry);
-			break;
-		}
-		case GeoBeans.Geometry.Type.LINESTRING:{
-			wkt = this.writeLineString(geometry);
-			break;
-		}
-
-		case GeoBeans.Geometry.Type.POLYGON:{
-			wkt = this.writePolygon(geometry);
-			break;
-		}
-
-		case GeoBeans.Geometry.Type.MULTIPOINT:{
-			wkt = this.writeMultiPoint(geometry);
-			break;
-		}
-		case GeoBeans.Geometry.Type.MULTILINESTRING:{
-			wkt = this.writeMultiLineString(geometry);
-			break;
-		}
-		case GeoBeans.Geometry.Type.MULTIPOLYGON:{
-			wkt = this.writeMultiPolygon(geometry);
-			break;
-		}
-		default:
-			break;
-	}
-	return wkt;
-}
 
 /**
  * 将点对象转换为WKT对象

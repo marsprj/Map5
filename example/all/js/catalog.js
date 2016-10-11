@@ -394,11 +394,14 @@ var g_catalog = [
 				"name" : "点",
 				"link" : "feature/add_point.html"
 			},{
+				"name" : "(*)线",
+				"link" : "feature/add_line.html"
+			},{
+				"name" : "(*)面",
+				"link" : "feature/add_polygon.html"
+			},{
 				"name" : "Marker",
 				"link" : "feature/add_marker.html"
-			},{
-				"name" : "(*)点线面标绘",
-				"link" : "drawOverlay.html"
 			},{
 				"name" : "(*)标绘&标注点击事件",
 				"link" : "overlayClick.html"

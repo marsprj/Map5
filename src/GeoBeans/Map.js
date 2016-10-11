@@ -1430,13 +1430,13 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 	var interaction = null;
 	var count = this._interactions.count();
 
-	for(var i=count-1; i>=0; i--){
-		interaction = this._interactions.get(i);
-		if(isDefined(interaction.draw)){
-			interaction.draw();
-			this.renderer.drawImage(interaction._canvas,0,0,interaction._canvas.width,interaction._canvas.height);
-		}
-	}
+	// for(var i=count-1; i>=0; i--){
+	// 	interaction = this._interactions.get(i);
+	// 	if(isDefined(interaction.draw)){
+	// 		interaction.draw();
+	// 		this.renderer.drawImage(interaction._canvas,0,0,interaction._canvas.width,interaction._canvas.height);
+	// 	}
+	// }
 }
 
 /**
