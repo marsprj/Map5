@@ -77,20 +77,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.clickRenderer  = new GeoBeans.Renderer(this.clickCanvas);
 	},
 	
-	/**
-	 * [addFeatureObj description]
-	 * @deprecated [description]
-	 * @param {integer} fid      fid
-	 * @param {GeoBeans.Geometry} geometry 几何对象
-	 * @param {Array} values   字段及对应的值
-	 */
-	addFeatureObj : function(fid,geometry,values){
-		if(fid == null || values == null || geometry == null){
-			return;
-		}
-		var feature = new GeoBeans.Feature(this.featureType,fid,geometry,values);
-		this.addFeature(feature);
-	},
 
 	getFeatures : function(){
 		return this.features;
