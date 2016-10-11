@@ -17,8 +17,6 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
  	IMG_WIDTH 		: 256,
  	IMG_HEIGHT 		: 256,
 
- 	// IMG_WIDTH 		: 180,
- 	// IMG_HEIGHT 		: 180,
 
  	MIN_ZOOM_LEVEL: 2,
 	MAX_ZOOM_LEVEL: 14,	
@@ -55,108 +53,9 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 
 
-	// RESOLUTIONS : [			
-	// 		/*2,*/
-	// 		1,
-	// 		0.5,
-	// 		0.25,
-	// 		0.125,
-	// 		0.0625,
-	// 		0.03125,
-	// 		0.015625,
-	// 		0.0078125,
-	// 		0.00390625,
-	// 		0.001953125,
-	// 		0.000976563,
-	// 		0.000488281,
-	// 		0.000244141,
-	// 		0.00012207,
-	// 		0.00006103515625,
-	// 		0.000030517578125,
-	// 		0.0000152587890625,
-	// 		0.00000762939453125,
-	// 		0.000003814697265625,
-	// 		0.0000019073486328125],
-
-	// RESOLUTIONS :[
-	// 	new Number("5.916587109091312E8"),
-	// 	new Number("2.958293554545656E8"),
-	// 	new Number("1.479146777272828E8"),
-	// 	new Number("7.39573388636414E7"),
-	// 	new Number("3.69786694318207E7"),
-	// 	new Number("1.848933471591035E7"),
-	// 	9244667.357955175,
-	// 	4622333.678977587,
-	// 	2311166.8394887936,
-	// 	1155583.4197443968,
-	// 	577791.7098721984,
-	// 	288895.8549360992,
-	// 	144447.9274680496,
-	// 	72223.9637340248,
-	// 	36111.9818670124,
-	// 	18055.9909335062,
-	// 	9027.9954667531,
-	// 	4513.99773337655,
-	// 	2256.998866688275,
-	// 	1128.4994333441375,
-	// 	564.2497166720688
-	// ],
-
-
-
-	// initialize : function(name,server,typeName,extent,tms,format,sourceName){
-	// 	GeoBeans.Layer.TileLayer.prototype.initialize.apply(this, arguments);
-
-	// 	// this.server = server;
-	// 	// this.name = name;
-	// 	this.typeName = typeName;
-	// 	this.extent = extent;
-	// 	this.tms = tms;
-	// 	this.format = format;
-	// 	// this.FULL_EXTENT = {
-	// 	// 	xmin : this.extent.xmin,
-	// 	// 	ymin : this.extent.ymin,
-	// 	// 	xmax : this.extent.xmax,
-	// 	// 	ymax : this.extent.ymax
-	// 	// }
-	// 	// 固定
-	// 	this.FULL_EXTENT = {
-	// 		xmin : -180,
-	// 		ymin : -90,
-	// 		xmax : 180,
-	// 		ymax : 90
-	// 	}
-	// 	this.scale = 1.0;
-	// 	this.sourceName = sourceName;
-	// 	this.type = GeoBeans.Layer.TileLayer.Type.PGIS;
-	// 	// this.scale = (this.extent.ymax - this.extent.ymin)/this.IMG_HEIGHT;
-	// },
-
-
 	initialize : function(name,url,extent){
 		GeoBeans.Layer.TileLayer.prototype.initialize.apply(this, arguments);
 
-		// if(extent != null){
-		// 	this.FULL_EXTENT = {
-		// 		xmin : extent.xmin,
-		// 		ymin : extent.ymin,
-		// 		xmax : extent.xmax,
-		// 		ymax : extent.ymax
-		// 	}			
-		// }else{
-		// 	this.FULL_EXTENT = {
-		// 		xmin : -180,
-		// 		ymin : -90,
-		// 		xmax : 180,
-		// 		ymax : 90
-		// 	}
-		// }
-		// this.FULL_EXTENT = {
-		// 	xmin : -180,
-		// 	ymin : -90,
-		// 	xmax : 180,
-		// 	ymax : 90
-		// }
 		if(extent != null){
 			this.validExtent = extent;
 		}
@@ -193,17 +92,17 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 	preDraw : function(){
 
-		var level = this.map.level;
-		var maxLevel = this.getMaxLevel();
-		var minLevel = this.getMinLevel();
-		if(level > maxLevel || level < minLevel){
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
+		var maxZoom = this.getMaxZoom();
+		var minZoom = this.getMinZoom();
+		if(zoom > maxZoom || zoom < minZoom){
 			this.tiles = [];
 			this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 			this.snap = null;
 			return;
 		}
 
-		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		var tbound = this.computeTileBound();
 		this.updateTileCache(tbound);
 
@@ -211,38 +110,32 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var row_max = tbound.rmax;
 		var col_min = tbound.cmin;
 		var col_max = tbound.cmax;
-		// console.log('row:' + row_min + "," + row_max 
-		// 	+ ";col:" + col_min + "," + col_max);
 
 		// 计算位置
 
-		var llpt = this.map.getMapViewer()
-			.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
+		var llpt = viewer.toScreenPoint(this.FULL_EXTENT.xmin, this.FULL_EXTENT.ymax);
 		llpt.x = Math.floor(llpt.x+0.5);
 		llpt.y = Math.floor(llpt.y+0.5);
-		// var img_size = this.IMG_WIDTH * this.scale;
 
 		var img_size = this.IMG_WIDTH * (this.imageScale);
-		var resolution = this.map.getMapViewer().getResolution();
-		var re = this.computeResolution(this.map.level);
-		if(resolution != re){
-			img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
+		if(this != this.map.baseLayer){
+			var resolution = this.map.getViewer().getResolution();
+			var re = this.getResolutionByZoom(zoom);
+			if(resolution != re){
+				img_size = this.IMG_WIDTH * (this.imageScale) * re/resolution;
+			}
 		}
-		// var img_size = this.IMG_WIDTH * (this.imageScale);
 
 
 		var x, y;
-		var lspt = this.map.getMapViewer().toMapPoint(llpt.x,llpt.y);
+		var lspt = viewer.toMapPoint(llpt.x,llpt.y);
 		var row, col, tile;
 		this.tiles = [];
-		var level = this.map.level;
-		// y = llpt.y - (row_min+1) * img_size;
-		// y = llpt.y - row_min * img_size;
 		y = llpt.y + row_min * img_size;
 		for(row=row_min; row<=row_max; row++){
 			x = llpt.x + col_min * img_size;
 			for(col=col_min; col<=col_max; col++){
-				tid = this.getTileID(row, col, level);
+				tid = this.getTileID(row, col, zoom);
 				turl = this.url + tid;
 				
 				tile = this.cache.getTile(turl);
@@ -252,7 +145,6 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 				tileObj.img_size = img_size;
 				tileObj.x = x;
 				tileObj.y = y;
-				// console.log(tile.tid + ";x:" + x  +　";y:" + y);
 				this.tiles.push(tileObj);
 				x += img_size;
 			}
@@ -266,17 +158,20 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	getValidView : function(){
 		
 		var viewer = this.map.getViewer();
+		var extent = viewer.getExtent();
+
 		var xmin = null, ymin = null, xmax = null, ymax = null;
+
 		if(this.validExtent != null){
-			xmin = Math.max(viewer.xmin, this.validExtent.xmin);
-			ymin = Math.max(viewer.ymin, this.validExtent.ymin);
-			xmax = Math.min(viewer.xmax, this.validExtent.xmax);
-			ymax = Math.min(viewer.ymax, this.validExtent.ymax);
+			xmin = Math.max(extent.xmin, this.validExtent.xmin);
+			ymin = Math.max(extent.ymin, this.validExtent.ymin);
+			xmax = Math.min(extent.xmax, this.validExtent.xmax);
+			ymax = Math.min(extent.ymax, this.validExtent.ymax);
 		}else{
-			xmin = Math.max(viewer.xmin, this.FULL_EXTENT.xmin);
-			ymin = Math.max(viewer.ymin, this.FULL_EXTENT.ymin);
-			xmax = Math.min(viewer.xmax, this.FULL_EXTENT.xmax);
-			ymax = Math.min(viewer.ymax, this.FULL_EXTENT.ymax);
+			xmin = Math.max(extent.xmin, this.FULL_EXTENT.xmin);
+			ymin = Math.max(extent.ymin, this.FULL_EXTENT.ymin);
+			xmax = Math.min(extent.xmax, this.FULL_EXTENT.xmax);
+			ymax = Math.min(extent.ymax, this.FULL_EXTENT.ymax);
 		}	
 		return (new GeoBeans.Envelope(xmin, ymin, xmax, ymax));
 		
@@ -284,22 +179,18 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 
 	computeTileBound : function(){
 		var map = this.map;
-		var level = map.level;
-		// var resolution = map.resolution;
-		var resolution = this.computeResolution(level)
+		var viewer = map.getViewer();
+		var zoom = viewer.getZoom();
+
+		var resolution = this.getResolutionByZoom(zoom);
 		var tile_map_size = resolution * this.IMG_WIDTH;
-		console.log(tile_map_size);
 		var ve = this.getValidView();
-		console.log(ve);
 		
 		var col_min = Math.floor((ve.xmin - this.FULL_EXTENT.xmin) / tile_map_size);
 		var col_max = Math.ceil ((ve.xmax - this.FULL_EXTENT.xmin) / tile_map_size);
 		var row_min = Math.floor ((this.FULL_EXTENT.ymax - ve.ymax) / tile_map_size);
 		var row_max = Math.ceil((this.FULL_EXTENT.ymax - ve.ymin) / tile_map_size);
 
-		// console.log(col_min + "," + col_max + "," + row_min + "," + row_max);
-		
-		
 		return {
 			rmin:row_min,
 			rmax:row_max,
@@ -317,51 +208,26 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 		var tile = null;
 		var tid, turl;
 		var row, col, r, c;
-		var level = this.map.level;
+		var viewer = this.map.getViewer();
+		var zoom = viewer.getZoom();
 		for(row=row_min; row<=row_max; row++){
 			for(col=col_min; col<=col_max; col++){
-				tid = this.getTileID(row,col,level);
+				tid = this.getTileID(row,col,zoom);
 				turl = this.url  + tid;
-				// console.log(turl);
+				
 				if(this.cache.getTile(turl)==null){
-					tile = new GeoBeans.Tile(this.map,turl, this, row, col, level, 0, 0);
+					tile = new GeoBeans.Tile(this.map,turl, this, row, col, zoom, 0, 0);
 					this.cache.putTile(tile);
 				}
 			}
 		}	
 	},
 
-	// getTileID : function(row, col, level){
-	// 	var str = "?SERVICE=dbs&REQUEST=GetTile&VERSION=1.0.0&LAYER="
-	// 			+ this.typeName + "&STYLE=Default&FORMAT=" + this.format
-	// 			+ "&TILEMATRIXSET=" + this.tms + "&TILEMATRIX=" + this.tms 
-	// 			+ ":" + level + "&TILEROW=" + row + "&TILECOL=" + col
-	// 			+ "&sourceName=" + this.sourceName;				
-	// 	return str;
-	// },
 
-	getTileID : function(row,col,level){
+	getTileID : function(row,col,zoom){
 		var str = "?Service=getImage&Type=RGB&ZoomOffset=0&Col="
-		+ col + "&Row=" + row + "&Zoom=" + level + "&V=1.0.0";
+		+ col + "&Row=" + row + "&Zoom=" + zoom + "&V=1.0.0";
 		return str;
-	},
-
-	// getUrl : function(){
-	// 	return "SERVICE=dbs&REQUEST=GetTile&VERSION=1.0.0&LAYER="
-	// 			+ this.typeName + "&STYLE=Default&FORMAT=" + this.format
-	// 			+ "&TILEMATRIXSET=" + this.tms + "&TILEMATRIX=" 
-	// 			+ this.tms +"&extent=" + this.extent.toString();
-	// },
-
-	getUrl : function(){
-		return "typeName:" + this.typeName 
-			 + ";format:" + this.format 
-			 + ";tms:" + this.tms
-			 + ";extent:" + this.extent.toString() 
-			 + ";sourceName:" + this.sourceName
-			 + ";url:" + this.url 
-			 + ";startLevel:" + this.MIN_ZOOM_LEVEL 
-			 + ";endLevel:" + this.MAX_ZOOM_LEVEL;
 	},
 
 
@@ -384,8 +250,6 @@ GeoBeans.Layer.PGISLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 				tile.draw(x, y, img_size, img_size);				
 			}
 		}
-
-		
 	},
 
 	// 获得每一个

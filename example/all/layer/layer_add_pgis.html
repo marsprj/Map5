@@ -76,7 +76,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/AMapLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/PGISLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
@@ -123,22 +123,29 @@
 			name : "map",
 			srid : 4326
 		});
-		// 3、定义AMapLayer
-		var layer = new GeoBeans.Layer.AMapLayer("amap", //图层名称
-												  null);
+		
+		// 3、定义PGIS图层的范围，定义一个矩形，通过该范围，确定获取瓦片的范围
+		var layerExtent = new GeoBeans.Envelope(113.9414,38.10546,119.01953,42.16015);
 
-		// 4、添加图层 
+		// 4、定义PGIS图层，参数分别为：
+		// 地图名称，PGIS图层地址，图层范围
+		var layer = new GeoBeans.Layer.PGISLayer("pgis","/PGIS_S_TileMapServerTDT/Maps/vec_tj_tdt/EzMap",layerExtent);
+
+		// 5、添加图层 
 		mapObj.addLayer(layer);
 		
-		// 5、设置中心点和显示级别
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
+		// 6、设置中心点和显示级别
+		var zoom = 9;
+		var center = new GeoBeans.Geometry.Point(117.38,39.35);
 		var viewer = mapObj.getViewer();	
 		viewer.setZoomCenter(zoom,center);
+
+		viewer.setMaxZoom(14);
+		viewer.setMinZoom(9);
 	}
 
 </script>
-<title>图层：添加高德图层</title>
+<title>图层：添加PGIS图层</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
