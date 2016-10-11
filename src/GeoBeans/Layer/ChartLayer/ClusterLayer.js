@@ -19,7 +19,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 	setMap : function(map){
 		GeoBeans.Layer.ChartLayer.prototype.setMap.apply(this, arguments);
-		this.registerClickEvent();
+		// this.registerClickEvent();
 	},
 
 	draw : function(){
@@ -32,17 +32,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			return;
 		}
 
-		var viewer = this.map.getViewer();
-		var viewExtent = viewer.getExtent();
-		//？？这行代码做什么？
-		if(this.flag == GeoBeans.Layer.Flag.LOADED && viewExtent.equal(this.viewer)){
-			return;
-		}
 
-		//？？这行代码做什么？
-		this.viewer = new GeoBeans.Envelope(viewExtent.xmin,viewExtent.ymin,
-			viewExtent.xmax,viewExtent.ymax);
-		
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.cluster();
 		this.flag = GeoBeans.Layer.Flag.LOADED;
@@ -55,6 +45,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 		var date = new Date();
 		var f = null,geometry = null,cluster = null;
 		var clustered = false,clusters = [];
+
+		var extent = this.map.getViewer().getExtent();
 		for(var i = 0; i < this.features.length;++i){
 			f = this.features[i];
 			if(f == null){
@@ -65,7 +57,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			if(geometry == null){
 				continue;
 			}
-			if(!this.viewer.contain(geometry.x,geometry.y)){
+			if(!extent.contain(geometry.x,geometry.y)){
 				continue;
 			}
 			clustered = false;
@@ -425,20 +417,18 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			return;
 		}
 		var extent = this.getClusterExtent(cluster);
+		var viewer = this.map.getViewer();
 		extent.scale(1.2);
 		if(this.map.baseLayer != null){
-			var level = this.map.getViewer().getLevel(extent);
+			var zoom = viewer.getZoomByExtent(extent);
 			var center = extent.getCenter();
-			this.map.setCenter(center);
-			// this.map.saveSnap();
-			// this.map.drawBaseLayerSnap(level);
-			this.map.setLevel(level);
+			viewer.setZoomCenter(zoom,center);
 			this.map.drawBackground();
 		}else{
-			this.map.setViewer(extent);
+			viewer.setExtent(extent);
 		}
-		// 
-		this.map.draw();
+		
+		this.map.refresh();
 	},
 
 	getClusterExtent : function(cluster){
