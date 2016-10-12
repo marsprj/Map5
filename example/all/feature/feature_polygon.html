@@ -49,8 +49,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
@@ -109,7 +109,7 @@
 
 <script type="text/javascript" src="../js/initMap.js"></script>
 
-<script type="text/javascript" src="../js/tianjinPolygonValue.js"></script>
+<script type="text/javascript" src="../js/countryValue.js"></script>
 
 <style type="text/css">
 	body{
@@ -119,42 +119,41 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
-	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
 		loadTileMap();
-		addFeatureLayer();
+		loadFeatureLayer();
 	}
 
-	function addFeatureLayer(){
-		var featureType = createFeatureType();
-		var name = featureType.getName();
-		var featureLayer= createFeatureLayer(name, featureType);
+	function loadFeatureLayer(){
+		var name = "country";
+		var featureType = createFeatureType(name);
+		var features = loadFeatures(featureType);
 
-		addFeatures(featureLayer);
+		var layer = createFeatureLayer(name, featureType);
+		layer.setFeatures(features);
 
-		mapObj.addLayer(featureLayer);
-		mapObj.refresh();
+
+		var style = createSimplePolygonStyle();
+		layer.setStyle(style);
+		mapObj.addLayer(layer);
 	}
 
-	/**
-	 * ?????这个函数在FeatureType和Field的构造函数重构后，需要修改。?????
-	 * @return {[type]} [description]
-	 */
-	function createFeatureType(){
 
-		// 1、定义字段数组
+	function createFeatureType(name){
 		var fields = [
 			{
-				name : "fname",  // 字段名称
+				name : "name",  // 字段名称
 				type : "string"  // 字段类型
+			},{
+				name : "continent",
+				type : "string"
 			},{
 				name : "shape",
 				type : "geometry"
 			}
-		]
-
-		var name = "lines"
+		];
+		var geomType  = GeoBeans.Geometry.Type.POINT;
 		var featureType = new GeoBeans.FeatureType(null,name);
 		var fieldsArray = [];
 		for(var i = 0; i < fields.length;++i){
@@ -162,7 +161,7 @@
 			var type = f.type;
 			var name = f.name;
 			var field = new GeoBeans.Field(name, type, featureType,null);
-			if(type == GeoBeans.FeatureType.GEOMETRY){
+			if(type == GeoBeans.Field.Type.GEOMETRY){
 				featureType.geomFieldName = name;
 				field.setGeomType(geomType);
 			}
@@ -171,58 +170,48 @@
 
 		featureType.fields = fieldsArray;
 		return featureType;
-
 	}
 
-	/**
-	 * [createFeatureLayer description]
-	 * @param  {[type]} layerName   [description]
-	 * @param  {[type]} featureType [description]
-	 * @return {[type]}             [description]
-	 */
-	function createFeatureLayer(layerName, featureType){
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
-		featureLayer.featureType = featureType;
-		featureLayer.features = [];
+	function loadFeatures(featureType){
+		var features = [];		
+		var length = g_countryValue.length;
 
-		var style = createPolygonStyle();
-		featureLayer.setStyle(style);
+		for(var i = 0; i < length;++i){
+			var pairs = g_countryValue[i];	
+			var feature = createFeature(i, featureType, pairs);
+			features.push(feature);
+		}
+
+		return features;
+	}
+
+	function createFeature(i, featureType, pairs){
+		// 使用wkt转换为geometry
+		var format = new GeoBeans.Format.WKT();
+		var geometry = format.read(pairs.shape);
+		var fid = "id_" + i;
+		var values = {
+			name :pairs.name,
+			continent : pairs.continent,
+			shape :geometry
+		};
+
+		var feature = new GeoBeans.Feature(featureType,
+										   fid,
+										   geometry,
+										   values);
+		return feature;
+	}
+
+	function createFeatureLayer(name, featureType){
+		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
+		featureLayer.featureType = featureType;
 
 		return featureLayer;
 	}
 
-	/**
-	 * [addFeatures description]
-	 * @param {[type]} featureLayer [description]
-	 */
-	function addFeatures(featureLayer){
-				// 6、为图层添加要素
-		var length = g_tianjinPolygonValues.length;
-		for(var i = 0; i < length;++i){
-			var v = g_tianjinPolygonValues[i];
-			var name = v.name;
-			var wkt = v.shape;
 
-			// 使用wkt转换为geometry
-			var format = new GeoBeans.Format.WKT();
-			var geometry = format.read(wkt);
-			var id = "id_" + i;
-
-			// 每个字段对应的值
-			var values = [name,geometry];
-
-			// 添加要素
-			// 第一个参数要素的ID值，第二个参数要素的geometry，第三个参数要素字段值，与字段顺序一致
-			featureLayer.addFeatureObj(id,geometry,values); 
-		}
-	}
-
-	/**
-	 * 创建点图层样式
-	 * @description feature包含status字段。status字段值为on绘制为紫色。status字段值为off绘制为黄色。
-	 * @return {[type]} [description]
-	 */
-	function createPolygonStyle(){
+	function createSimplePolygonStyle(){
 		// 定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 
@@ -250,8 +239,9 @@
 		return style;
 	}
 
+
 </script>
-<title>要素图层：面要素图层</title>
+<title>要素图层：面素图</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
