@@ -162,7 +162,7 @@
 			var type = f.type;
 			var name = f.name;
 			var field = new GeoBeans.Field(name, type, featureType,null);
-			if(type == GeoBeans.FeatureType.GEOMETRY){
+			if(type == GeoBeans.Field.Type.GEOMETRY){
 				featureType.geomFieldName = name;
 				field.setGeomType(geomType);
 			}

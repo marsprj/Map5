@@ -155,10 +155,25 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			extent.xmax,extent.ymax);
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
-		var features = this.selectFeaturesByFilter(bboxFilter,this.features);
+		var query = new GeoBeans.Query({
+			typeName : this.name,
+			fields : null,		// 字段
+			maxFeatures : null, //返回结果数
+			offset : null,		//偏移量
+			orderby : null,		//排序类
+			filter : bboxFilter 	//查询过滤条件
+		});
+		var handler = {
+			target: this,
+			execute : function(features){
+				console.log("count:" + features.length);
+				this.target.drawLayerFeatures(features);
+			}
+		}
+		this.query(query,handler);
 
-		console.log("count:" + features.length);
-		this.drawLayerFeatures(features);
+		// console.log("count:" + features.length);
+		// this.drawLayerFeatures(features);
 		// this.drawClickLayer();
 
 		var hitCanvas = this.hitCanvas;
@@ -202,37 +217,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 		}
 		
-	},
-
-	drawLayer : function(){
-		var style = this.style;
-		if(style==null){
-			style = this.getDefaultStyle();
-			if(style == null){
-				return;
-			}
-			this.style = style;
-		}
-		rules = style.rules;
-		if(rules.length==0){
-			return;
-		}
-		for(var i=0; i<rules.length; i++){
-			var rule = rules[i];
-			var features = this.selectFeaturesByFilter(rule.filter,this.features);
-			if(rule.symbolizer != null){
-				if(rule.symbolizer.symbol != null){
-					this.renderer.drawIcons(features, rule.symbolizer, this.map.getViewer());
-				}else{
-					this.drawFeatures(features, rule.symbolizer);
-				}	
-			}
-
-			if(rule.textSymbolizer != null){
-				this.labelFeatures(features,rule.textSymbolizer);
-			}
-		}
-		this.drawClickLayer();
 	},
 
 
@@ -298,7 +282,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 	
 	drawFeatures : function(features, symbolizer){		
-		if(features.length==0){
+		if(features == null ||features.length==0){
 			return;
 		}
 
@@ -339,35 +323,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.renderer.restore();
 	},
 
-	// 单独绘制文本
-	// ？？ 这个features内所有的feature的symbolizer都一样，否则和Layer的draw有什么区别？
-	drawLabelFeatures : function(features){
-		var style = this.style;
-		if(style==null){
-			style = this.getDefaultStyle();
-			if(style == null){
-				return;
-			}
-			this.style = style;
-		}
-		rules = style.rules;
-		if(rules.length==0){
-			return;
-		}
-		for(var i=0; i<rules.length; i++){
-			var rule = rules[i];
-			// var features = this.selectFeatures(rule.filter);
-			var selection = this.selectFeaturesByFilter(rule.filter,features);
-
-			if(rule.textSymbolizer != null){
-				this.labelFeatures(selection,rule.textSymbolizer);
-			}
-		}
-	},
 
 	// 加上碰撞检测的文字样式
 	// ？？？这里不做碰撞检测
 	// ？？？即便是做碰检测，Maplex类已经实现了，这里又何必再实现一次？
+	// 解释： 这个是参考Auge.GIS里面写的，每个图层进行判断，然后添加到maplex里面。
 	labelFeatures : function(features,symbolizer){
 		if(features == null || features.length == 0){
 			return;
@@ -453,55 +413,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// },
 	
 	// ？？？下面几个selectXXX全都归到query函数里面
-	selectFeatures : function(filter){
-		if(filter == null){
-			return this.features;
-		}
-		var type = filter.type;
-		if(type == GeoBeans.Filter.Type.FilterComparsion){
-			var field = null;
-			var value = null;
-			var expression1 = filter.expression1;
-			if(expression1 != null){
-				if(expression1.type == 
-					GeoBeans.Expression.Type.PropertyName){
-					field = expression1.name;
-				}else if(expression1.type == 
-					GeoBeans.Expression.Type.Literal){
-					value = expression1.value;
-				}
-			}
-			
-			var expression2 = filter.expression2;
-			if(expression2 != null){
-				if(expression2.type == 
-					GeoBeans.Expression.Type.PropertyName){
-					field = expression2.name;
-				}else if(expression2.type == 
-					GeoBeans.Expression.Type.Literal){
-					value = expression2.value;
-				}
-			}
-		}
-		if(field == null || value == null){
-			return this.features;
-		}
-		var selection = [];
-		var findex = this.featureType.findField(field);
-		if(findex >= 0){
-			var feature = null;
-			var length = this.features.length;
-			for(var i = 0; i < length; ++i){
-				feature = this.features[i];
-				fvalue = feature.values[findex];
-				if(fvalue == value){
-					selection.push(feature);
-				}
-			}
-		}
-		return selection;
-	},
-
 	selectFeaturesByFilter : function(filter,features,maxFeatures,offset){
 		if(filter == null){
 			return features;
@@ -1083,7 +994,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -1102,11 +1013,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 		}
 		var result = null;
-		if(maxFeatures != null && offset != null){
+		if(maxFeatures != null && offset != null && offset != 0){
 			result = selection.slice(offset,total);
-		}else if(maxFeatures != null && offset == null){
+		}else if(maxFeatures != null && (offset == null || offset == 0)){
 			result = selection.slice(0,maxFeatures);
-		}else if(maxFeatures == null && offset != null){
+		}else if(maxFeatures == null && offset != null && offset != 0){
 			result = selection.slice(offset);
 		}else{
 			result = selection;
@@ -1613,7 +1524,24 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
  * @return {GeoBeans.Feature}        目标要素集合
  */
 GeoBeans.Layer.FeatureLayer.prototype.query = function(query, handler){
+	if(!isValid(query)){
+		if(isValid(handler)){
+			handler.execute(null);
+		}
+		return;
+	}
+	// 缺少orderby
+	var filter = query.getFilter();
+	var maxFeatures = query.getMaxFeatures();
+	var offset = query.getOffset();
+	var orderby = query.getOrderby();
 
+	var features = this.features;
+
+	var result = this.selectFeaturesByFilter(filter,features,maxFeatures,offset);
+	if(isValid(handler)){
+		handler.execute(result);
+	}
 }
 
 /**
