@@ -263,11 +263,12 @@
 			"populat" : pairs.populat,
 			"shape" : geometry
 		};
-
-		var feature = new GeoBeans.Feature(featureType,
-										   fid,
-										   geometry,
-										   values);
+		
+		var feature = new GeoBeans.Feature({
+			"geometry" : geometry,
+			"values" : values
+		});
+		
 		return feature;
 	}
 

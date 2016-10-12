@@ -5,24 +5,38 @@
  */
 GeoBeans.Feature = GeoBeans.Class({
 	
-	featureType : null,
-	
 	fid 	 : -1,
 	geometry : null,
+	featureType : null,
+	_fields  : [],
 	_values	 : {},
 	symbolizer: null,
 	
-	initialize : function(featureType, fid, geometry, values){
-		this.featureType = featureType;
-		this.fid = fid;
-		this.geometry = geometry;	
-		this._values = values;
-	},
+	// initialize : function(featureType, fid, geometry, values){
+	// 	this.featureType = featureType;
+	// 	this.fid = fid;
+	// 	this.geometry = geometry;	
+	// 	this._values = values;
+	// },
 	
+	initialize : function(options){
+		this.geometry = options.geometry;
+		this.fid = isValid(options.fid) ? options.fid : "0";		
+		this._values = isValid(options.values) ? options.values : {};
+
+		this.featureType = options.featureType;
+		if(isValid(this.featureType)){
+			this._fields = this.featureType.getFields();
+		}else{
+			this._fields = isValid(options.fields) ? options.fields : [];
+		}
+	},
+
 	destroy : function(){
 		this.featureType = null;
 		this.geometry = null;
 		this._values = null;
+		this._fields = null;
 	},
 });
 
@@ -82,10 +96,10 @@ GeoBeans.Feature.prototype.getValue = function(field){
  * @param  {string} index 字段名称
  * @return {object}       属性值
  */
-GeoBeans.Feature.prototype.getValueByIndex = function(index){
-	var fields = this.featureType.getFields();
-	if(index>=0 && index<fields.length){
-		return this._values[index];
-	}
-	return null;
-}
+// GeoBeans.Feature.prototype.getValueByIndex = function(index){
+// 	var fields = ;
+// 	if(index>=0 && index<this._fields.length){
+// 		return this._values[index];
+// 	}
+// 	return null;
+// }
