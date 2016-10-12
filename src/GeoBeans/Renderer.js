@@ -134,16 +134,6 @@ GeoBeans.Renderer = GeoBeans.Class({
 	
 	drawPolygon : function(polygon, symbolizer, viewer){
 
-		// // 先设定一下样式
-		// if(symbolizer.icon != null){
-		// 	if(!symbolizer.icon.complete){
-		// 		symbolizer.icon.onload = function(){
-		// 			viewer.map.drawLayersAll();
-		// 		};
-		// 		return;
-		// 	}
-		// }
-
 		var pt = null;
 		var ring = null;
 		var numRing = 0;
@@ -362,7 +352,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 						}
 					}
 				}
-				viewer.getMap().drawLayersAll();
+				// viewer.getMap().drawLayersAll();
 			};
 		}
 	},
@@ -981,7 +971,7 @@ GeoBeans.Renderer.prototype.drawIcon2 = function(feature, symbolizer, viewer) {
 					that.drawIcon(symbolizer.icon, sp.x, sp.y, symbolizer);
 				}
 			}
-			viewer.getMap().drawLayersAll();
+			// viewer.getMap().drawLayersAll();
 		};
 	}
 };

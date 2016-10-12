@@ -501,7 +501,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				return;
 			}
 			layer.clickRenderer.clearRect(0,0,layer.clickCanvas.width,layer.clickCanvas.height);
-			layer.map.drawLayersAll();
+			// layer.map.drawLayersAll();
 			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
 			layer.clickHit(mp.x, mp.y, callback);
 			
@@ -556,7 +556,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		if(callback != null){
 			this.clickFeature = feature;
-			this.map.drawLayersAll();
+			// this.map.drawLayersAll();
 			callback(feature,x,y);
 		}
 	},

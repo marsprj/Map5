@@ -1495,10 +1495,6 @@ GeoBeans.Map.prototype.draw = function(){
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 	this.drawLayers();
 
-	// this.drawBaseLayer();
-
-	// this.drawLayersAll();
-
 	// Draw Interactions
 	this.drawInteractions();
 
@@ -1530,92 +1526,92 @@ GeoBeans.Map.prototype.drawLayers = function(){
  * 绘制所有图层，较为通用，包括hitCanvas和bufferCanvas
  * @deprecated 
  */
-GeoBeans.Map.prototype.drawLayersAll = function(){
+// GeoBeans.Map.prototype.drawLayersAll = function(){
 	
-	this.maplex.cleanup();
+// 	this.maplex.cleanup();
 	
-	for(var i = 0; i < this.layers.length; ++i){
-		var layer = this.layers[i];
-		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
-			layer.load();
-		}
-	}
-	this.overlayLayer.load();
+// 	for(var i = 0; i < this.layers.length; ++i){
+// 		var layer = this.layers[i];
+// 		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
+// 			layer.load();
+// 		}
+// 	}
+// 	this.overlayLayer.load();
 
-	/*this.panoramaLayer.load();*/
+// 	/*this.panoramaLayer.load();*/
 
-	for(var i = 0; i < this.layers.length; ++i){
-		var layer = this.layers[i];
-		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
-			if(layer.flag != GeoBeans.Layer.Flag.LOADED){
-				return;
-			}				
-		}
-	}
+// 	for(var i = 0; i < this.layers.length; ++i){
+// 		var layer = this.layers[i];
+// 		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
+// 			if(layer.flag != GeoBeans.Layer.Flag.LOADED){
+// 				return;
+// 			}				
+// 		}
+// 	}
 
-	var overlayLayerFlag = this.overlayLayer.getLoadFlag();
-	if(overlayLayerFlag != GeoBeans.Layer.Flag.LOADED){
-		return;
-	}
-
-
-/*	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
-	if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
-		return;
-	}*/
-
-	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-
-	for(var i = 0; i < this.layers.length; ++i){
-		var layer = this.layers[i];
-		if(layer instanceof GeoBeans.Layer.RippleLayer){
-			continue;
-		}
-		if(!layer.visible || (layer instanceof GeoBeans.Layer.TileLayer)){
-			if(layer instanceof GeoBeans.Layer.ChartLayer){
-				layer.hideLegend();
-			}
-			continue;
-		}
-		var canvas = layer.canvas;
-		if(canvas != null){
-			this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-		}
-		// var hitCanvas = layer.hitCanvas;
-		// if(hitCanvas != null){
-		// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
-		// }
-
-		// var clickCanvas = layer.clickCanvas;
-		// if(clickCanvas != null){
-		// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
-		// }
-		if(layer instanceof GeoBeans.Layer.ChartLayer){
-			layer.showLegend();
-		}
-	}
-
-	var canvas = this.overlayLayer.canvas;
-	this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
+// 	var overlayLayerFlag = this.overlayLayer.getLoadFlag();
+// 	if(overlayLayerFlag != GeoBeans.Layer.Flag.LOADED){
+// 		return;
+// 	}
 
 
-/*	// 全景图
-	var panoramaLayerCanvas = this.panoramaLayer.canvas;
-	if(panoramaLayerCanvas != null){
-		this.renderer.drawImage(panoramaLayerCanvas,0,0,panoramaLayerCanvas.width,panoramaLayerCanvas.height);
-	}
-*/
+// /*	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
+// 	if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
+// 		return;
+// 	}*/
 
-	var infoWindow = this.getInfoWindow();
-	infoWindow.refresh();
+// 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+
+// 	for(var i = 0; i < this.layers.length; ++i){
+// 		var layer = this.layers[i];
+// 		if(layer instanceof GeoBeans.Layer.RippleLayer){
+// 			continue;
+// 		}
+// 		if(!layer.visible || (layer instanceof GeoBeans.Layer.TileLayer)){
+// 			if(layer instanceof GeoBeans.Layer.ChartLayer){
+// 				layer.hideLegend();
+// 			}
+// 			continue;
+// 		}
+// 		var canvas = layer.canvas;
+// 		if(canvas != null){
+// 			this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
+// 		}
+// 		// var hitCanvas = layer.hitCanvas;
+// 		// if(hitCanvas != null){
+// 		// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
+// 		// }
+
+// 		// var clickCanvas = layer.clickCanvas;
+// 		// if(clickCanvas != null){
+// 		// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
+// 		// }
+// 		if(layer instanceof GeoBeans.Layer.ChartLayer){
+// 			layer.showLegend();
+// 		}
+// 	}
+
+// 	var canvas = this.overlayLayer.canvas;
+// 	this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
 
 
-	this.maplex.draw();
-	var maplexCanvas = this.maplex.canvas;
-	if(maplexCanvas != null){
-		this.renderer.drawImage(maplexCanvas,0,0,maplexCanvas.width,maplexCanvas.height);
-	}
-}
+// /*	// 全景图
+// 	var panoramaLayerCanvas = this.panoramaLayer.canvas;
+// 	if(panoramaLayerCanvas != null){
+// 		this.renderer.drawImage(panoramaLayerCanvas,0,0,panoramaLayerCanvas.width,panoramaLayerCanvas.height);
+// 	}
+// */
+
+// 	var infoWindow = this.getInfoWindow();
+// 	infoWindow.refresh();
+
+
+// 	this.maplex.draw();
+// 	var maplexCanvas = this.maplex.canvas;
+// 	if(maplexCanvas != null){
+// 		this.renderer.drawImage(maplexCanvas,0,0,maplexCanvas.width,maplexCanvas.height);
+// 	}
+// }
 
 /**
  * 清空所有图层
