@@ -9,20 +9,20 @@ GeoBeans.Feature = GeoBeans.Class({
 	
 	fid 	 : -1,
 	geometry : null,
-	values	 : null,
+	_values	 : {},
 	symbolizer: null,
 	
 	initialize : function(featureType, fid, geometry, values){
 		this.featureType = featureType;
 		this.fid = fid;
 		this.geometry = geometry;	
-		this.values = values;
+		this._values = values;
 	},
 	
 	destroy : function(){
 		this.featureType = null;
 		this.geometry = null;
-		this.values = null;
+		this._values = null;
 	},
 });
 
@@ -42,15 +42,21 @@ GeoBeans.Feature.prototype.getFeatureType = function(){
  * @param {object} value  属性值
  */
 GeoBeans.Feature.prototype.setValue = function(field,value){
-	var fields = this.featureType.getFields();
-	for(var i = 0; i < fields.length; ++i){
-		var f = fields[i];
-		if(f.name == field){
-			this.values[i] = value;
-			return;
-		}
+	if(isValid(field) && (isValid(value))){
+		this._values[field] = value;
 	}
 }
+
+// GeoBeans.Feature.prototype.setValue = function(field,value){
+// 	var fields = this.featureType.getFields();
+// 	for(var i = 0; i < fields.length; ++i){
+// 		var f = fields[i];
+// 		if(f.name == field){
+// 			this._values[i] = value;
+// 			return;
+// 		}
+// 	}
+// }
 
 /**
  * 根据字段名称获得属性值
@@ -59,14 +65,17 @@ GeoBeans.Feature.prototype.setValue = function(field,value){
  * @return {object}       属性值
  */
 GeoBeans.Feature.prototype.getValue = function(field){
-	var fields = this.featureType.getFields();
-	for(var i = 0; i < fields.length; ++i){
-		var f = fields[i];
-		if(f.name == field){
-			return this.values[i];
-		}
-	}
+	return this._values[field];
 }
+// GeoBeans.Feature.prototype.getValue = function(field){
+// 	var fields = this.featureType.getFields();
+// 	for(var i = 0; i < fields.length; ++i){
+// 		var f = fields[i];
+// 		if(f.name == field){
+// 			return this._values[i];
+// 		}
+// 	}
+// }
 
 /**
  * 根据字段名称获得属性值
@@ -76,7 +85,7 @@ GeoBeans.Feature.prototype.getValue = function(field){
 GeoBeans.Feature.prototype.getValueByIndex = function(index){
 	var fields = this.featureType.getFields();
 	if(index>=0 && index<fields.length){
-		return this.values[index];
+		return this._values[index];
 	}
 	return null;
 }
