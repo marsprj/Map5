@@ -139,7 +139,7 @@ var g_catalog = [
 				"name" : "(*)查询(多边形)",
 				"link" : "interaction/interaction_select_by_polygon.html"
 			},{
-				"name" : "(*)绘制图元",
+				"name" : "绘制图元",
 				"link" : "interaction/interaction_draw.html"
 			},{
 				"name" : "地图旋转",

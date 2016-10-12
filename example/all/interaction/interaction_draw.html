@@ -107,6 +107,8 @@
 
 <title>Interaction:绘制类</title>
 <body onload="init()">
+	<button onclick="onEnable()" id="status">启用</button>
+	<span></span>
 	<button onclick="onDrawPoint()">绘制点</button>
 	<button onclick="onDrawLine()">绘制线</button>
 	<button onclick="onDrawPolygon()">绘制面</button>
@@ -123,11 +125,14 @@
 	
 	var mapObj = null;
 	var drawer = null;
+	var pointLayer = null;
+	var enabled = true;
 
 	function  init(){
 		
 		loadTileMap();
 		addDrawInteraction();
+		pointLayer = addFeatureLayer("vector");
 	}
 
 	function addDrawInteraction(){
@@ -162,5 +167,87 @@
 		var format = new GeoBeans.Format.WKT();
 		var wkt = format.write(geometry);
 		document.getElementById("geometry").value = wkt;
+
+		var layer = pointLayer;
+		var feature = new GeoBeans.Feature(layer.featureType,
+										   "1",
+										   geometry,
+										   []);
+		pointLayer.addFeature(feature);
+		mapObj.refresh();
 	}
+
+	function addFeatureLayer(name){
+		var fields = [
+			{
+				name : "name",  // 字段名称
+				type : "string"  // 字段类型
+			},{
+				name : "shape",
+				type : "geometry"
+			}
+		];
+		var geomType  = GeoBeans.Geometry.Type.POINT;
+		var featureType = new GeoBeans.FeatureType(null,name);
+		var fieldsArray = [];
+		for(var i = 0; i < fields.length;++i){
+			var f = fields[i];
+			var type = f.type;
+			var name = f.name;
+			var field = new GeoBeans.Field(name, type, featureType,null);
+			if(type == GeoBeans.Field.Type.GEOMETRY){
+				featureType.geomFieldName = name;
+				field.setGeomType(geomType);
+			}
+			fieldsArray.push(field); 
+		}
+
+		featureType.fields = fieldsArray;
+
+		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
+		featureLayer.featureType = featureType;
+
+		mapObj.addLayer(featureLayer);
+
+		return featureLayer;
+	}
+
+	function createSimplePointStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		//设置点大小
+		symbolizer.size = 6;
+		//设置点的填充颜色
+		var fill   = symbolizer.fill;
+		fill.color.setHex('#800080',1);
+
+		//设置点的边界样式
+		var stroke = symbolizer.stroke;
+		// 边框的颜色
+		stroke.color.set(0,255, 0,1);
+		// 边框的颜色
+		stroke.width = 1.0; 
+
+		var rule = new GeoBeans.Style.Rule();
+		rule.symbolizer = symbolizer;
+		rule.filter = null;
+		
+		style.addRule(rule);		
+
+		return style;
+	}
+
+	function onEnable(){
+		var enabled = drawer.isEnabled();
+		if(enabled){
+			document.getElementById("status").value = "禁用";
+			drawer.enable(!enabled);
+		}
+		else{
+			document.getElementById("status").value = "启用";
+			drawer.enable(!enabled);
+		}
+	}
+
 </script>

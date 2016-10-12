@@ -71,19 +71,23 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(){
 
 	var _mapContainer = this._map.getContainer();
 	var onmousedown = function(evt){
-		that.drawPoint(evt.layerX,evt.layerY);
+		if(that._enabled){
+			that.draw_point(evt.layerX,evt.layerY);
 		
-		if(isValid(that.onComplete)){
-			var viewer = that._map.getViewer();
-			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
+			if(isValid(that.onComplete)){
+				var viewer = that._map.getViewer();
+				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
-			that.onComplete(pt);
+				that.onComplete(pt);
+			}
 		}
 	};
 	
 	var onmousemove = function(evt){
-		that._map.restoreSnap();
-		that.drawPoint(evt.layerX,evt.layerY);
+		if(that._enabled){
+			that._map.restoreSnap();
+			that.draw_point(evt.layerX,evt.layerY);	
+		}
 	};
 	
 	this.onMouseDown = onmousedown;

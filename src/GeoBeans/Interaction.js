@@ -32,6 +32,15 @@ GeoBeans.Interaction = GeoBeans.Class({
 });
 
 /**
+ * 获取Interaction是否处于活动状态
+ * @public
+ * @return {Boolean} 活动状态
+ */
+GeoBeans.Interaction.prototype.isEnabled = function(){
+	return this._enabled;
+}
+
+/**
  * Interaction类型
  * @type {string}
  */
