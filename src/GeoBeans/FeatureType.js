@@ -314,69 +314,6 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	},
 
 	//@deprecated
-	getFeatureBBoxGet : function(mapName,sourceName,
-			viewer,maxFeatures,offset){
-		var that = this;
-		var url = this.workspace.server; 
-		
-		var params = "service=" + this.workspace.service 
-			+ "&version=" + this.workspace.version 
-			+ "&request=getFeature" + "&typeName=" 
-			+ this.name;
-
-		if(mapName != null){
-			params += "&mapName=" + mapName;
-		}
-		if(sourceName != null){
-			params += "&sourceName=" + sourceName;
-		}
-		if(viewer != null){
-			var xmin = viewer.xmin;
-			var xmax = viewer.xmax;
-			var ymin = viewer.ymin;
-			var ymax = viewer.ymax;
-			var viewerStr = "";
-			if(xmax - xmin < 0.01){
-				viewerStr = viewer.toString();
-			}else{
-				viewerStr = xmin.toFixed(6) + "," + ymin.toFixed(6) + ","
-							+ xmax.toFixed(6) + "," + ymax.toFixed(6);
-			}
-
-			params += "&bbox=" + viewerStr; 				
-		}
-		if(maxFeatures != null){
-			params += "&maxFeatures=" + maxFeatures;
-		}
-		if(offset != null){
-			params += "&offset=" + offset;
-		}
-
-		//解析需要fields
-		that.fields = that.getFields(mapName,sourceName);
-
-		$.ajax({
-			type	:"get",
-			url		: url,
-			data	: encodeURI(params),
-			dataType: "xml",
-			async	: false,
-			beforeSend: function(XMLHttpRequest){
-			},
-			success	: function(xml, textStatus){
-
-				var features = that.parseFeatures(xml);
-				that.features = features;
-			},
-			complete: function(XMLHttpRequest, textStatus){
-			},
-			error	: function(){
-			}
-		});
-		return that.features;
-	},
-
-	//@deprecated
 	getFeaturesBBox : function(callback,viewer,filter){
 		var xmin = viewer.xmin;
 		var xmax = viewer.xmax;

@@ -15,45 +15,16 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	featureType : null,
 	
 	enableHit : false,
-	selection : null,			//@deprecated
-	unselection : null,			//@deprecated
 
 	hitControl : null,
 	onhit : null,				//function onhit(layer, features)
 
-	hitEvent : null,
-	hitTooltipEvent : null,
-
-	//选中的绘制图层
-	hitCanvas : null,
-	hitRenderer : null,
-
-	//缓冲区图层
-	bufferCanvas : null,
-	bufferRenderer : null,
-	bufferFeatures : null,
-	bufferSymbolizer : null,
-
-
-	// click
-	clickStyle : null,
-	clickFeature : null,
-	clickCanvas : null,
-	clickRenderer : null,
-
-
-	//绘制辅助元素
-	bufferTracker : null,
 	
 	initialize : function(name){
 		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		
 		this.featureType = null;
 		this.features = [];
-
-		this.selection = [];
-		this.unselection = [];
-
 	},
 	
 	CLASS_NAME : "GeoBeans.Layer.FeatureLayer",
@@ -71,10 +42,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	setMap : function(map){
 		GeoBeans.Layer.prototype.setMap.apply(this, arguments);	
-		this.clickCanvas = document.createElement("canvas");
-		this.clickCanvas.width = this.canvas.width;
-		this.clickCanvas.height = this.canvas.height;
-		this.clickRenderer  = new GeoBeans.Renderer(this.clickCanvas);
 	},
 	
 
@@ -109,25 +76,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		return this.features.length;
 	},
 	
-	// draw : function(){
-	// 	var style = this.style;
-	// 	if(style==null){
-	// 		return;
-	// 	}
-	// 	rules = style.rules;
-	// 	if(rules.length==0){
-	// 		return;
-	// 	}
-	// 	for(var i=0; i<rules.length; i++){
-	// 		var rule = rules[i];
-	// 		var features = this.selectFeatures(rule.filter);						
-	// 		this.drawFeatures(features, rule.symbolizer);
-	// 	}
-	// },
-	/******************************************************************/
-	/* Draw Layer                                                     */
-	/******************************************************************/
-
 	draw : function(){
 		if(!this.isVisible()){
 			this.drawBackground();
@@ -171,10 +119,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 		}
 		this.query(query,handler);
-
-		// console.log("count:" + features.length);
-		// this.drawLayerFeatures(features);
-		// this.drawClickLayer();
 
 		var hitCanvas = this.hitCanvas;
 		if(hitCanvas != null){
@@ -376,43 +320,8 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	},
 	
-	// drawFeature : function(feature, symbolizer){
-	// 	var rules = this.selectRules(feature);
-	// 	var len = rules.length;
-	// 	for(var i=0; i<len; i++){
-	// 		var r = rules[i];
-	// 		if( (symbolizer==null) || (symbolizer=='undefined')){
-	// 			symbolizer = r.symbolizer;
-	// 		}
-	// 		this.map.renderer.save();
-	// 		this.map.renderer.setSymbolizer(symbolizer);
-	// 		if(symbolizer instanceof GeoBeans.Symbolizer.TextSymbolizer){
-	// 			var findex = feature.featureType.findField(symbolizer.field);
-	// 			this.map.renderer.label(feature.geometry, feature.values[findex], symbolizer, this.map.transformation);
-	// 		}
-	// 		else{
-	// 			this.map.renderer.draw(feature, symbolizer, this.map.transformation);
-	// 		}
-	// 		this.map.renderer.restore();
-	// 	}
-	// 	rules = null;
-	// },
-	
-	// clearFeature : function(feature){
-	// 	switch(feature.geometry.type){
-	// 		case GeoBeans.Geometry.Type.POINT:
-	// 		case GeoBeans.Geometry.Type.MULTIPOINT:{
-	// 				var s = this.getSymbolizer(feature);
-	// 				this.map.renderer.clear(feature.geometry, this.map.bgColor, s.size, this.map.transformation);	
-	// 			}
-	// 			break;
-	// 		default:{
-	// 			this.map.renderer.clear(feature.geometry, this.map.bgColor, 0, this.map.transformation);
-	// 		}
-	// 	}
-	// },
-	
 	// ？？？下面几个selectXXX全都归到query函数里面
+	// 已经修改为query读取的方式了
 	selectFeaturesByFilter : function(filter,features,maxFeatures,offset){
 		if(filter == null){
 			return features;
@@ -924,44 +833,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	},
 	
-	selectRules : function(f){
-		var rules = [];
-		
-		if(this.style!=null){
-			var len = this.style.rules.length;
-			for(var i=0; i<len; i++){
-				var r = this.style.rules[i];
-				if(r.filter!=null){
-					var fname = r.filter.field;
-					var value = null;
-					var findex = this.featureType.findField(fname);
-					value = f.values[findex];
-					if(value==r.filter.value){
-						rules.push(r);
-					}	
-				}
-				else{
-					rules.push(r);
-				}
-			}
-		}
-		return rules;
-	},
-	
-	getSymbolizer : function(feature){
-		var rules = this.selectRules(feature);
-		var len = rules.length;
-		for(var i=0; i<len; i++){
-			var r = rules[i];
-			var s = r.symbolizer;
-			if(!(s instanceof GeoBeans.Symbolizer.TextSymbolizer)){
-				return s;
-			}
-		}
-		return null;
-	},
-
-
 	selectFeaturesBySpatial : function(filter,features,maxFeatures,offset){
 		if(filter == null){
 			return features;
@@ -1025,137 +896,10 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		return result;
 	},
 
-	// ？？？这个函数是什么意思
-	getFeatureBBoxGet : function(bbox,maxFeatures,offset){
-		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,bbox);
-		return this.selectFeaturesByFilter(bboxFilter,this.features,maxFeatures,offset);
-	},
-	/******************************************************************/
-	/* Draw Layer End                                                 */
-	/******************************************************************/
-
-	setHitControl : function(control){
-		if((control==null) || (control=='undefined')){
-			return;
-		}
-		this.hitControl = null;
-		this.hitControl = control;
-	},
 	
 	init : function(){
 	},
 	
-	/**
-	 * enableHit
-	 * @deprecated 
-	 */
-	// enableHit : function(enable){
-	// 	this.enableHit = enable;
-	// },
-	
-	// ？？？已经setHitControl了，为什么还要保留hit函数？？？
-	hit : function(x, y, callback){
-		if(this.features==null){
-			return;
-		}
-		
-		var render = this.map.renderer;
-		
-		// this.unselection = this.selection;
-		this.selection = [];
-		
-		var i=0, j=0;
-		var f=null, g=null;
-		var len = this.features.length;
-		for(i=0; i<len; i++){
-			f = this.features[i];
-			g = f.geometry;
-			if(g!=null){
-				if(g.hit(x, y, this.map.tolerance)){
-					this.selection.push(f);
-				}
-			}
-		}
-		
-		this.hitRenderer.clearRect(0,0,this.hitCanvas.height,this.hitCanvas.width);
-		this.map.drawLayersAll();
-		if(callback!=undefined){
-			var point = new GeoBeans.Geometry.Point(x,y);
-			callback(this, this.selection,point);
-		}
-	},
-	
-	registerHitEvent : function(callback){
-		var map = this.map;
-		var layer = this;
-		var x_o = null;
-		var y_o = null;
-		var tolerance = 10;
-
-		this.hitCanvas = document.createElement("canvas");
-		this.hitCanvas.width = this.canvas.width;
-		this.hitCanvas.height = this.canvas.height;
-
-		this.hitRenderer  = new GeoBeans.Renderer(this.hitCanvas);
-
-
-		this.hitEvent = function(evt){
-			if(x_o==null){
-				x_o = evt.layerX;
-				y_o = evt.layerY;
-			}
-			else{
-				var dis = Math.abs(evt.layerX-x_o) + Math.abs(evt.layerY-y_o);
-				if(dis > tolerance){
-					
-					x_o = evt.layerX;
-					y_o = evt.layerY;
-				
-					var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
-					
-					layer.hit(mp.x, mp.y, callback);
-				}
-			}
-			
-		};
-		map.mapDiv[0].addEventListener('mousemove', this.hitEvent);
-		this.events.addEvent('mousemove', this.hitEvent);
-	},
-
-	unRegisterHitEvent : function(){
-		this.map.mapDiv[0].removeEventListener('mousemove',this.hitEvent);
-		this.hitRenderer.clearRect(0,0,this.hitCanvas.height,this.hitCanvas.width);
-		this.map.drawLayersAll();
-		this.hitEvent = null;
-	},
-
-	//绘制选中的图层
-	//？？？drawHitFeature与drawFeature有啥区别？
-	drawHitFeature : function(feature, symbolizer){
-
-		var rules = this.selectRules(feature);
-		var len = rules.length;
-		for(var i=0; i<len; i++){
-			var r = rules[i];
-			if( (symbolizer==null) || (symbolizer=='undefined')){
-				symbolizer = r.symbolizer;
-			}
-			this.hitRenderer.save();
-			this.hitRenderer.setSymbolizer(symbolizer);
-			if(symbolizer instanceof GeoBeans.Symbolizer.TextSymbolizer){
-				var findex = feature.featureType.findField(symbolizer.field);
-				this.hitRenderer.label(feature.geometry, feature.values[findex], symbolizer, this.map.getViewer());
-			}
-			else{
-				this.hitRenderer.draw(feature, symbolizer, this.map.getViewer());
-			}
-			this.hitRenderer.restore();
-		}
-		rules = null;
-
-		// this.map.drawHitLayer();
-		this.map.drawLayersAll();
-	},	
 
 	cleanup : function(){
 		this.enableHit = false;
@@ -1164,71 +908,10 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	},
 	
 
-	registerHitTooltipEvent : function(callback){
-		var map = this.map;
-		var layer = this;
-		var x_o = null;
-		var y_o = null;
-		var tolerance = 10;
-
-		this.hitTooltipEvent = function(evt){
-			if(x_o==null){
-				x_o = evt.layerX;
-				y_o = evt.layerY;
-			}
-			else{
-				var dis = Math.abs(evt.layerX-x_o) + Math.abs(evt.layerY-y_o);
-				if(dis > tolerance){
-					x_o = evt.layerX;
-					y_o = evt.layerY;
-					layer.hitTooltip(evt.layerX, evt.layerY, callback);
-				}
-			}
-			
-		};
-
-		map.canvas.addEventListener("mousemove", this.hitTooltipEvent);
-	},
-
-	unregisterHitTooltipEvent : function(){
-		this.map.canvas.removeEventListener("mousemove",this.hitTooltipEvent);
-		this.hitTooltipEvent = null;
-	},
-
-	hitTooltip : function(x, y, callback){
-		if(this.features==null || callback == null){
-			return;
-		}
-		var map = this.map;
-		var mp = map.getViewer().toMapPoint(x, y);
-
-		var layerX = mp.x;
-		var layerY = mp.y;
-
-		var render = this.map.renderer;
-
-		var i=0, j=0;
-		var f=null, g=null;
-		var len = this.features.length;
-		for(i=0; i<len; i++){
-			f = this.features[i];
-			g = f.geometry;
-			if(g!=null){
-				if(g.hit(layerX, layerY, this.map.tolerance)){
-					// callback(this,x,y,f);
-					callback(this,layerX,layerY,f);
-					return;
-				}
-			}
-		}
-		// callback(this,x,y,null);
-		callback(this,layerX,layerY,null);		
-	},
-
-
 	/***********************插入更新*******************************************/
 	//插入
 	//？？？这个函数是要干什么？为什么要调用track
+	// 在图上采集图元进行插入更新，好像最后版本里没有用到
 	beginTransaction : function(callback){
 		var geomFieldIndex = this.featureType.findField(this.featureType.geomFieldName);
 		var geomField = this.featureType.fields[geomFieldIndex];
@@ -1277,226 +960,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 		return tracker;
 	},
-
-/***********************点击事件*******************************************/	
-	registerClickEvent : function(style,callback){
-		var map = this.map;
-		var x_o = null;
-		var y_o = null;
-		var tolerance = 10;
-		var layer = this;
-		if(style != null){
-			this.clickStyle = style;
-		}
-		this.clickEvent = function(evt){
-			console.log("click up");
-			var index = layer.map.controls.find(GeoBeans.Control.Type.DRAG_MAP)
-			var dragControl = layer.map.controls.get(index);
-			if(dragControl.draging){
-				console.log("draging");
-				return;
-			}
-			layer.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
-			layer.map.drawLayersAll();
-
-			var mp = map.getViewer().toMapPoint(evt.layerX, evt.layerY);
-			layer.clickHit(mp.x, mp.y, callback);
-			
-		};
-		map.canvas.addEventListener('mouseup', this.clickEvent);
-	},
-
-	clickHit : function(x,y,callback){
-		this.map.closeInfoWindow();
-		if(this.features == null){
-			if(callback != null){
-				callback(null);
-			}
-			return;
-		}
-
-		var selection = [];
-		
-		var i=0, j=0;
-		var f=null, g=null;
-		var len = this.features.length;
-		for(i=0; i<len; i++){
-			f = this.features[i];
-			g = f.geometry;
-			if(g!=null){
-				if(g.hit(x, y, this.map.tolerance)){
-					selection.push(f);
-				}
-			}
-		}
-
-		if(selection.length == 0){
-			this.clickFeature = null;
-			if(callback != null){
-				callback(null);	
-			}
-			return;
-		}
-
-		var feature = selection[0];
-		var geometry = feature.geometry;
-		var distance = this.getDistance(x,y,geometry);
-		for(var i = 1; i <  selection.length;++i){
-			var f = selection[i];
-			var g = f.geometry;
-			var d = this.getDistance(x,y,g);
-			if(d < distance){
-				feature = f;
-			}
-		}
-
-
-		if(callback != null){
-			this.clickFeature = feature;
-			this.map.drawLayersAll();
-			callback(feature,x,y);
-		}
-
-	},
-
-	getDistance : function(x,y,geometry){
-		var geomType = this.getGeomType();
-		var distance = null;
-		switch(geomType){
-			case GeoBeans.Geometry.Type.POINT:
-			case GeoBeans.Geometry.Type.MULTIPOINT:{
-				var center = geometry.getCentroid();
-				distance = GeoBeans.Utility.getDistance(x,y,geometry.x,geometry.y);
-				break;
-			}
-			case GeoBeans.Geometry.Type.LINESTRING:
-			case GeoBeans.Geometry.Type.MULTILINESTRING:{
-				distance = geometry.distance(x,y);
-				break;
-			}
-			case GeoBeans.Geometry.Type.POLYGON:
-			case GeoBeans.Geometry.Type.MULTIPOLYGON:{
-				var center = geometry.getCentroid();
-				distance = GeoBeans.Utility.getDistance(x,y,geometry.x,geometry.y);
-				break;
-			}
-			default :
-				break;
-		}
-
-		return distance;
-	},
-
-	unRegisterClickEvent : function(){
-		this.map.closeInfoWindow();
-		this.map.canvas.removeEventListener('mouseup', this.clickEvent);
-		this.clickEvent = null;
-		this.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
-		this.clickFeature = null;
-		this.map.drawLayersAll();
-	},
-
-
-	drawClickLayer : function(){
-		this.clickRenderer.clearRect(0,0,this.clickCanvas.width,this.clickCanvas.height);
-		if(this.clickFeature == null){
-			return;
-		}
-		var style = this.clickStyle;
-		if(style == null){
-			style = this.getDefaultStyle();
-		}
-		if(style == null){
-			return;
-		}
-
-		var rules = style.rules;
-		if(rules.length == 0){
-			return;
-		}
-
-		for(var i=0; i<rules.length; i++){
-			var rule = rules[i];
-			var features = this.selectFeaturesByFilter(rule.filter,[this.clickFeature]);
-			if(rule.symbolizer != null){
-				// if(rule.symbolizer.icon_url!=null){
-				if(rule.symbolizer.symbol != null){
-					this.clickRenderer.drawIcons(features, rule.symbolizer, this.map.getViewer());
-				}else{
-					this.drawClickFeatures(features, rule.symbolizer);
-				}	
-			}
-
-			if(rule.textSymbolizer != null){
-				this.labelClickFeatures(features,rule.textSymbolizer);
-			}
-		}
-
-		this.renderer.drawImage(this.clickCanvas,0,0,this.clickCanvas.width,this.clickCanvas.height);
-	},
-
-
-	drawClickFeatures : function(features,symbolizer){
-		if(features == null){
-			return;
-		}
-		this.clickRenderer.save();
-		this.clickRenderer.setSymbolizer(symbolizer);
-		for(var i=0,len=features.length; i<len; i++){
-			feature = features[i];
-			if((symbolizer!=null) && (symbolizer!='undefined')){
-				this.clickRenderer.draw(feature, symbolizer, this.map.getViewer());
-			}
-		}
-		this.clickRenderer.restore();
-	},
-
-	labelClickFeatures : function(features, symbolizer){
-		var len = features.length;
-		if(len == 0){
-			return;
-		}
-		
-		this.clickRenderer.save();
-		this.clickRenderer.setSymbolizer(symbolizer);
-		
-		var feature = features[0];
-		var text = null;
-		var labelText = symbolizer.labelText;
-		if(labelText == null || labelText.length == 0){
-			var labelProp = symbolizer.labelProp;
-			if(labelProp != null){
-				var findex = feature.featureType
-					.findField(labelProp);
-			}
-		}else{
-			text = labelText;
-		}
-		
-		var value = null;
-		var geometry = null;
-		var label = null;
-		for(var i=0,len=features.length; i<len; i++){
-			feature = features[i];
-			geometry = feature.geometry;
-			if(geometry == null){
-				continue;
-			}
-			label = new GeoBeans.PointLabel();
-			label.geometry = geometry;
-			label.textSymbolizer = symbolizer;
-			if(text == null){
-				value = feature.values[findex];
-			}else{
-				value = text;
-			}
-			label.text = value;
-			label.computePosition(this.clickRenderer,this.map.getViewer());
-			this.clickRenderer.drawLabel(label);
-		}
-		this.clickRenderer.restore();
-	},	
-
 
 
 	// 获取字段值
