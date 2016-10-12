@@ -453,7 +453,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -470,11 +470,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 		
 		var result = null;
-		if(maxFeatures != null && offset != null){
+		if(maxFeatures != null && offset != null && offset != 0){
 			result = selection.slice(offset,total);
-		}else if(maxFeatures != null && offset == null){
+		}else if(maxFeatures != null && (offset == null || offset == 0)){
 			result = selection.slice(0,maxFeatures);
-		}else if(maxFeatures == null && offset != null){
+		}else if(maxFeatures == null && offset != null && offset != 0){
 			result = selection.slice(offset);
 		}else{
 			result = selection;
@@ -491,7 +491,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -755,11 +755,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 		}
 		var result = null;
-		if(maxFeatures != null && offset != null){
+		if(maxFeatures != null && offset != null && offset != 0){
 			result = selection.slice(offset,total);
-		}else if(maxFeatures != null && offset == null){
+		}else if(maxFeatures != null && (offset == null || offset == 0)){
 			result = selection.slice(0,maxFeatures);
-		}else if(maxFeatures == null && offset != null){
+		}else if(maxFeatures == null && offset != null && offset != 0){
 			result = selection.slice(offset);
 		}else{
 			result = selection;
@@ -777,7 +777,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -813,7 +813,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -825,11 +825,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 
 		var result = null;
-		if(maxFeatures != null && offset != null){
+		if(maxFeatures != null && offset != null && offset != 0){
 			result = selection.slice(offset,total);
-		}else if(maxFeatures != null && offset == null){
+		}else if(maxFeatures != null && (offset == null || offset == 0)){
 			result = selection.slice(0,maxFeatures);
-		}else if(maxFeatures == null && offset != null){
+		}else if(maxFeatures == null && offset != null && offset != 0){
 			result = selection.slice(offset);
 		}else{
 			result = selection;
@@ -846,7 +846,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -862,11 +862,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		}
 
 		var result = null;
-		if(maxFeatures != null && offset != null){
+		if(maxFeatures != null && offset != null && offset != 0){
 			result = selection.slice(offset,total);
-		}else if(maxFeatures != null && offset == null){
+		}else if(maxFeatures != null && (offset == null || offset == 0)){
 			result = selection.slice(0,maxFeatures);
-		}else if(maxFeatures == null && offset != null){
+		}else if(maxFeatures == null && offset != null && offset != 0){
 			result = selection.slice(offset);
 		}else{
 			result = selection;
@@ -895,7 +895,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		if(maxFeatures != null){
 			total = maxFeatures;
 		}
-		if(offset != null){
+		if(offset != null && offset != 0){
 			total += offset;
 		}
 
@@ -911,14 +911,14 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 		}
 		var result = null;
-		if(maxFeatures != null && offset != null){
-			result = s.slice(offset,total);
-		}else if(maxFeatures != null && offset == null){
-			result = s.slice(0,maxFeatures);
-		}else if(maxFeatures == null && offset != null){
-			result = s.slice(offset);
+		if(maxFeatures != null && offset != null && offset != 0){
+			result = selection.slice(offset,total);
+		}else if(maxFeatures != null && (offset == null || offset == 0)){
+			result = selection.slice(0,maxFeatures);
+		}else if(maxFeatures == null && offset != null && offset != 0){
+			result = selection.slice(offset);
 		}else{
-			result = s;
+			result = selection;
 		}
 		return result;
 
