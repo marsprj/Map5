@@ -50,25 +50,38 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 			this.drawBackground();
 			return;
 		}
-		if(this.features != null && this.features.length == 0){
-			this.getFeatures();
-		}else{
-			GeoBeans.Layer.FeatureLayer.prototype.draw.apply(this, arguments);
-		}
-		
-	},
-	
-	// 先获取featuretype,然后获取fields,最后获取所有的元素，都改为异步调用
-	getFeatures : function(){
-		if(this.features.length !=  0 ){
-			this.draw();
-		}
 
 		if(this.featureType == null){
 			this.workspace.getFeatureType(this.typeName,this,this.getFeatureType_callback);
-			return;
+		}else{
+			this.loadFeatures();
 		}
-		this.getFields();
+	},
+	
+	loadFeatures : function(){
+		var viewer = this.map.getViewer();
+		var extent = viewer.getExtent();
+		this.viewer = new GeoBeans.Envelope(extent.xmin,extent.ymin,
+			extent.xmax,extent.ymax);
+		var bboxFilter = new GeoBeans.Filter.BBoxFilter(this.featureType.geomFieldName,this.viewer);
+		var query = new GeoBeans.Query({
+			typeName : this.name,
+			fields : null,		// 字段
+			maxFeatures : null, //返回结果数
+			offset : null,		//偏移量
+			orderby : null,		//排序类
+			filter : bboxFilter 	//查询过滤条件
+		});
+		var handler = {
+			target: this,
+			execute : function(features){
+				this.target.features = features;
+				console.log("count:" + features.length);
+				this.target.renderer.clearRect(0,0,this.target.canvas.width,this.target.canvas.height);
+				this.target.drawLayerFeatures(features);
+			}
+		}
+		this.query(query,handler);
 	},
 
 	getFeatureType_callback : function(layer,featureType){
@@ -87,34 +100,14 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 
 	getFields_callback : function(layer,fields){
 		if(fields != null && layer != null){
-			layer.getAllFeatures();	
+			layer.loadFeatures();	
 		}
 	},
 
-	getAllFeatures : function(){
-		if(this.featureType == null){
-			return;
-		}
-		// 避免重复请求
-		if(this.xhr == null){
-			this.xhr = this.featureType.getFeaturesAsync(null,null,null,this,this.getAllFeatures_callback);	
-		}else{
-			// 失败处理
-		}
-		
-	},
-
-	getAllFeatures_callback : function(layer,features){
-		if(layer != null && features != null){
-			layer.features = features;
-			layer.draw();
-		}
-	},
-
-	setFilter: function(filter){
-		this.filter = filter;
-		this.features = null;
-	},
+	// setFilter: function(filter){
+	// 	this.filter = filter;
+	// 	this.features = null;
+	// },
 
 	getFeatureType : function(){
 		if(this.featureType==null){
@@ -151,3 +144,4 @@ GeoBeans.Layer.WFSLayer.prototype.queryByRect = function(query, handler){
 	var featureType = this.getFeatureType();
 	featureType.query(query, handler);
 }
+
