@@ -73,13 +73,15 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(){
 	var onmousedown = function(evt){
 		if(that._enabled){
 			that.draw_point(evt.layerX,evt.layerY);
-		
+			
 			if(isValid(that.onComplete)){
 				var viewer = that._map.getViewer();
 				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
 				that.onComplete(pt);
 			}
+			
+			that._map.saveSnap();
 		}
 	};
 	
