@@ -51,14 +51,12 @@ GeoBeans.Layer.ChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		var max = null;
 		var feature = null;
 
-		var fieldIndex = this.featureType.findField(this.baseLayerField);
 		for(var i = 0; i < this.features.length; ++i){
 			feature = this.features[i];
 			if(feature == null){
 				continue;
 			}
-			var values = feature.values;
-			var value = values[fieldIndex];
+			var value = feature.getValue(this.baseLayerField);
 			if(value == null){
 				continue;
 			}

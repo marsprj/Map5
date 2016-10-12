@@ -374,6 +374,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 				
 		var fields = this.getFields();
 		var values = new Array();
+		var values = {};
 		
 		var g = null;
 		var f = null;
@@ -383,16 +384,16 @@ GeoBeans.FeatureType = GeoBeans.Class({
 			if(f.type==GeoBeans.Field.Type.GEOMETRY){
 				var gml = $(xml).find(f.name + ":first").children()[0];
 				if(gml==null){
-					values.push(null);			
+					values[f.name] = null;	
 				}
 				else{
 					g = reader.read(gml);
-					values.push(g);		
+					values[f.name] = g;
 				}
 			}
 			else{
 				var val = $(xml).find(f.name + ":first");
-				values.push( (val==null||val.length == 0) ? null :  val.text());
+				values[f.name] = (val==null||val.length == 0) ? null :  val.text();
 			}
 		}
 

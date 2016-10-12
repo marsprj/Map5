@@ -116,7 +116,7 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		var symbolizer = this.getSymbolizer();
 		this.renderer.setSymbolizer(symbolizer);
-		var chartFeature = null,values = null,value = null;
+		var chartFeature = null,value = null;
 		var geometry = null, radius = null,circle = null,center = null;
 
 		var levelMap = this.getLevelMap(size,level,min,max);
@@ -127,11 +127,8 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			if(chartFeature == null){
 				continue;
 			}
-			values = chartFeature.values;
-			if(values == null){
-				continue;
-			}
-			value = values[chartFieldIndex];
+			
+			value = chartFeature.getValue(this.baseLayerField);
 			if(value == null){
 				continue;
 			}
@@ -173,18 +170,14 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 		var symbolizer = this.getSymbolizer();
 		this.renderer.setSymbolizer(symbolizer);
-		var chartFeature = null,values = null,value = null;
+		var chartFeature = null,value = null;
 		var geometry = null, radius = null,circle = null,center = null;
 		for(var i = 0; i <this.features.length; ++i){
 			chartFeature = this.features[i];
 			if(chartFeature == null){
 				continue;
 			}
-			values = chartFeature.values;
-			if(values == null){
-				continue;
-			}
-			value = values[chartFieldIndex];
+			value = chartFeature.getValue(this.baseLayerField);
 			if(value == null){
 				continue;
 			}

@@ -254,10 +254,12 @@
 		var format = new GeoBeans.Format.WKT();
 		var geometry = format.read(pairs.shape);
 		var fid = "id_" + i;
-		var values = [pairs.name,
-					  pairs.gdp,
-					  pairs.populat,
-					  geometry];
+		var values = {
+			"fname" : pairs.name,
+			"gdp" 	: pairs.gdp,
+			"populat" : pairs.populat,
+			"shape" : geometry
+		};
 
 		var feature = new GeoBeans.Feature(featureType,
 										   fid,

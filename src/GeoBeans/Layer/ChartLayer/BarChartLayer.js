@@ -338,7 +338,7 @@ GeoBeans.Layer.BarChartLayer.prototype.getMinMaxValue = function(){
 			if(feature == null){
 				continue;
 			}
-			var v = feature.getValue(chartField)
+			var v = feature.getValue(chartField);
 			if(isValid(v)){
 				value = parseFloat(v);
 				if(fieldMax == null){

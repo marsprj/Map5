@@ -191,10 +191,12 @@
 		var format = new GeoBeans.Format.WKT();
 		var geometry = format.read(pairs.shape);
 		var fid = "id_" + i;
-		var values = [pairs.name,
-					  pairs.populat,
-					  pairs.capital,
-					  geometry];
+		var values = {
+			name : pairs.name,
+			populat : pairs.populat,
+			capital : pairs.capital,
+			shape : geometry
+		};
 
 		var feature = new GeoBeans.Feature(featureType,
 										   fid,

@@ -78,6 +78,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){
 	var point_s = null,point = null;
 	var f = null, geometry = null;
 	var max = null,min = null,points = [];
+	var that = this;
 
 	this.features.forEach(function(f){
 		geometry = f.geometry;
@@ -89,8 +90,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){
 					min = value;
 					max = value;
 				}else{
-					values = f.values;
-					value = values[findex];
+					value = f.getValue(that.field);
 					if(min == null){
 						min = value;
 					}else{

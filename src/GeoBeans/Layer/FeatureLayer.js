@@ -284,9 +284,9 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var labelText = symbolizer.labelText;
 		if(labelText == null || labelText.length == 0){
 			var labelProp = symbolizer.labelProp;
-			if(labelProp != null){
-				var findex = feature.featureType.findField(labelProp);
-			}
+			// if(labelProp != null){
+			// 	var findex = feature.featureType.findField(labelProp);
+			// }
 		}else{
 			text = labelText;
 		}
@@ -304,7 +304,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			label.geometry = geometry;
 			label.textSymbolizer = symbolizer;
 			if(text == null){
-				value = feature.values[findex];
+				value = feature.getValue(labelProp);
 			}else{
 				value = text;
 			}
@@ -443,7 +443,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue == value){
 						selection.push(feature);
 					}
@@ -468,7 +468,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue != value){
 						selection.push(feature);
 					}
@@ -493,7 +493,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue < value){
 						selection.push(feature);
 					}
@@ -518,7 +518,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue > value){
 						selection.push(feature);
 					}
@@ -543,7 +543,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue <= value){
 						selection.push(feature);
 					}
@@ -568,7 +568,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue >= value){
 						selection.push(feature);
 					}
@@ -593,7 +593,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue.like(value)){
 						selection.push(feature);
 					}
@@ -619,7 +619,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue == null){
 						selection.push(feature);
 					}
@@ -650,7 +650,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 				var feature = null,fvalue = null;
 				for(var i = 0; i < features.length;++i){
 					feature = features[i];
-					fvalue = feature.values[findex];
+					fvalue = feature.getValue(field);
 					if(fvalue >= lowerValue && fvalue <= upperValue){
 						selection.push(feature);
 					}
@@ -1100,14 +1100,12 @@ GeoBeans.Layer.FeatureLayer.prototype.getMinMaxValue = function(fname){
 	var max = null;
 	var feature = null;
 
-	var findex = this.featureType.findField(fname);
 	for(var i = 0; i < this.features.length; ++i){
 		feature = this.features[i];
 		if(feature == null){
 			continue;
 		}
-		var values = feature.values;
-		var value = values[findex];
+		var value = feature.getValue(fname);
 		if(value == null){
 			continue;
 		}

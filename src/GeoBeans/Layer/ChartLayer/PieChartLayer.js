@@ -101,10 +101,10 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			if(center == null){
 				continue;
 			}
-			chartValues = chartFeature.values;
-			if(chartValues == null){
-				continue;
-			}
+			// chartValues = chartFeature.values;
+			// if(chartValues == null){
+			// 	continue;
+			// }
 			var dataArray = [];
 
 			var fontCanvas = document.createElement("canvas");
@@ -119,7 +119,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 				}
 				var chartFieldIndex = this.featureType.findField(chartField);
 				if(chartFieldIndex != -1){
-					chartValue = chartValues[chartFieldIndex];
+					chartValue = chartFeature.getValue(chartField);
 					var obj = new Object();
 					obj.name = chartValue;
 					obj.value = [parseFloat(chartValue)];

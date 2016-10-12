@@ -119,7 +119,9 @@
 		var x = parseFloat(document.getElementById("x").value);
 		var y = parseFloat(document.getElementById("y").value);
 
-		var values = ['v'];
+		var values = {
+			fname : 'v'
+		};
 		var point = new GeoBeans.Geometry.Point(x,y);
 		var feature = new GeoBeans.Feature(featureType,1,point);
 

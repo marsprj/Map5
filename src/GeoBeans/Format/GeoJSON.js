@@ -612,14 +612,14 @@ GeoBeans.Format.GeoJson.prototype.readProperties = function(geoJson,fields){
 		return null;
 	}
 
-	var values = [];
+	var values = {};
 	for(var i = 0; i < fields.length;++i){
 		var field = fields[i];
 		var fieldName = field.name;
 		if(geoJson[fieldName] != null){
-			values.push(geoJson[fieldName]);
+			values[fieldName] = geoJson[fieldName];
 		}else{
-			values.push(null);
+			values[fieldName] = null;
 		}
 	}
 	return values;

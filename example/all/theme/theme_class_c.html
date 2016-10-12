@@ -195,10 +195,12 @@
 		var format = new GeoBeans.Format.WKT();
 		var geometry = format.read(pairs.shape);
 		var fid = "id_" + i;
-		var values = [pairs.name,
-					  pairs.gdp,
-					  pairs.populat,
-					  geometry];
+		var values = {
+			"fname" : pairs.name,
+			"gdp" 	: pairs.gdp,
+			"populat" : pairs.populat,
+			"shape" : geometry
+		};
 
 		var feature = new GeoBeans.Feature(featureType,
 										   fid,
@@ -269,7 +271,7 @@
 		var features = layer.getFeatures();
 		features.forEach(function(f){
 			//5. 读取指定字段的值
-			var v = parseFloat(f.getValueByIndex(findex));
+			var v = parseFloat(f.getValue(fieldName));
 			//6. 在颜色铺上读取对应的颜色值
 			var color = colorMap.getValue(v);
 			color.setOpacity(0.7);
