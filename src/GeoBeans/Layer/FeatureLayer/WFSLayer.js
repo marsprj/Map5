@@ -127,20 +127,6 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 		return this.featureType;
 	},
 
-	CLASS_NAME : "GeoBeans.Layer.WFSLayer",
-
-
-	getFeatureBBoxGet :function(bbox,maxFeatures,offset){
-		var featureType = this.getFeatureType();
-		var features = null;
-		if(featureType != null){
-			features = featureType.getFeatureBBoxGet(this.map.name,
-				null,bbox,maxFeatures,offset);
-		}
-		return features;
-	},
-
-
 	CLASS_NAME : "GeoBeans.Layer.FeatureLayer.WFSLayer"
 });
 
