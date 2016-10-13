@@ -45,15 +45,6 @@ GeoBeans.Envelope = GeoBeans.Class({
 		this.ymax = this.ymax > other.ymax ? this.ymax : other.ymax;
 	},
 	
-	// 包含
-	contain : function(x, y){
-		if((x > this.xmin) && (x < this.xmax) && 
-   		   (y > this.ymin) && (y < this.ymax)){
-		   return true;
-		}
-		return false;
-	},
-
 	containOther : function(other){
 		if(other == null){
 			return false;
@@ -96,18 +87,8 @@ GeoBeans.Envelope = GeoBeans.Class({
 		}else{
 			return false;
 		}
-	},
+	}
 
-	//相交
-	intersects : function(other){
-		var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
-		var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
-
-		var ymin = this.ymin > other.ymin ? this.ymin : other.ymin;
-		var ymax = this.ymax < other.ymax ? this.ymax : other.ymax;
-
-		return (xmin < xmax) && (ymin < ymax) ;
-	},
 });
 
 GeoBeans.Envelope.prototype.clone = function(){
@@ -128,3 +109,34 @@ GeoBeans.Envelope.prototype.moveTo = function(x, y){
 	var oy = y - c.y;
 	this.offset(ox,oy);
 }
+
+/**
+ * 判断Envelope是否包含点
+ * @param  {double} x x坐标
+ * @param  {double} y x坐标
+ * @return {Boolean} true  包含
+ *                   false 不包含
+ */
+GeoBeans.Envelope.prototype.contains = function(x, y){
+	if((x > this.xmin) && (x < this.xmax) && 
+		   (y > this.ymin) && (y < this.ymax)){
+	   return true;
+	}
+	return false;
+}
+
+/**
+ * 判断Envelope是否与另一个Envelope相交
+ * @param  {GeoBeans.Envelope} other 另一个Envelope
+ * @return {Boolean} true  相交
+ *                   false 不相交
+ */
+GeoBeans.Envelope.prototype.intersects : function(other){
+		var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
+		var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
+
+		var ymin = this.ymin > other.ymin ? this.ymin : other.ymin;
+		var ymax = this.ymax < other.ymax ? this.ymax : other.ymax;
+
+		return (xmin < xmax) && (ymin < ymax) ;
+	},
