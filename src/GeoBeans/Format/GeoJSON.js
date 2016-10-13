@@ -5,8 +5,12 @@
  */
 GeoBeans.Format.GeoJson = GeoBeans.Class(GeoBeans.Format,{
 	
-	initialize : function(){
+	geometryName : "geometry",
 
+	initialize : function(options){
+		if(isValid(options.geometryName)){
+			this.geometryName = options.geometryName;
+		}
 	},
 });
 
@@ -259,7 +263,8 @@ GeoBeans.Format.GeoJson.prototype.addFields = function(featureType,fieldsArray){
  *		]
  *	} 
  * }
- * @private
+ * @public
+ * @deprecated 
  * @param  {string} 			geoJson [geoJson字符串]
  * @param  {Array.<Field>} 	fields  [字段数组]
  * @return {Feautre}        			[返回要素]
@@ -624,3 +629,74 @@ GeoBeans.Format.GeoJson.prototype.readProperties = function(geoJson,fields){
 	}
 	return values;
 }
+
+
+/**
+ * 读取Features
+ * @param  {tetxt} text geojson字符串
+ * @return {Array.<GeoBeans.Feature>}      Feature数组
+ */
+GeoBeans.Format.GeoJson.prototype.readFeatures = function(text){
+
+	if(!isValid(text)){
+		return [];
+	}
+
+	var features = [];
+	try{
+		var json = eval('(' + text + ')')
+		if(isValid(json.features)){
+			var that = this;
+			json.features.forEach(function(f){
+				var feature = that.readFeature2(f);
+				if(isValid(feature)){
+					features.push(feature);
+				}
+			});
+		}
+	}
+	catch (e){
+		console.log(e.message);
+	}
+	finally{
+		return features;
+	}	
+}
+
+/**
+ * 解析GeoJSON的Feature节点，生成GeoBeans.Feature对象。
+ * { 
+ *      "type": "Feature", 
+ *      "properties": { 
+ *		"name": "Saguenay (Arrondissement Latterière)" 
+ *	 }, 
+ *	"geometry": { 
+ *		"type": "Point", 
+ *		"coordinates": [ 
+ *			-75.849253579389796, 47.6434349837781 
+ *		]
+ *	} 
+ * }
+ * @public
+ * @param  {Object} 			json json对象
+ * @return {GeoBeans.Feautre}   返回要素
+ */
+GeoBeans.Format.GeoJson.prototype.readFeature2 = function(json){
+	if(json.type != "Feature"){
+		return null;
+	}
+
+	var geometry = this.readGeometry(json[this.geometryName]);
+	if(!isValid(geometry)){
+		return null;
+	}
+
+	var fid = this.readID(json);
+	var properties = json.properties;
+
+	return (new GeoBeans.Feature({
+		"fid" : fid,
+	  	"geometry"   : geometry,
+	  	"propertis"  : properties
+	}))
+};
