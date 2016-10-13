@@ -20,7 +20,7 @@ GeoBeans.Geometry.MultiPolygon = GeoBeans.Class(GeoBeans.Geometry,{
 	},
 	
 	hit : function(x, y, t){
-		if(!this.extent.contain(x, y)){
+		if(!this.extent.contains(x, y)){
 			return false;
 		}
 		var p = null;

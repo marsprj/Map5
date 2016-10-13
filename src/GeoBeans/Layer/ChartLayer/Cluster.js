@@ -40,7 +40,7 @@ GeoBeans.Cluster.prototype.getClusters = function(){
 		if(geometry == null){
 			continue;
 		}
-		if(!extent.contain(geometry.x,geometry.y)){
+		if(!extent.contains(geometry.x,geometry.y)){
 			continue;
 		}
 		clustered = false;

@@ -16,7 +16,7 @@ GeoBeans.Geometry.GeometryCollection = GeoBeans.Class(GeoBeans.Geometry,{
 			return false;
 		}
 
-		if(!this.extent.contain(x,y)){
+		if(!this.extent.contains(x,y)){
 			return false;
 		}
 		for(var i = 0; i < this.components.length;++i){

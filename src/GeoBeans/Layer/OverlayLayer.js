@@ -569,7 +569,7 @@ GeoBeans.Layer.OverlayLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				if(label != null){
 					var extent = label.extent;
 					var pt = this.map.getViewer().toScreenPoint(x,y);
-					if(extent != null && pt != null && extent.contain(pt.x,pt.y)){
+					if(extent != null && pt != null && extent.contains(pt.x,pt.y)){
 						selection.push(o);
 					}
 				}

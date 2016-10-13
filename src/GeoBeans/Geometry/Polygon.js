@@ -16,7 +16,7 @@ GeoBeans.Geometry.Polygon = GeoBeans.Class(GeoBeans.Geometry,{
 	},
 	
 	hit : function(x, y, t){
-		if(!this.extent.contain(x, y)){
+		if(!this.extent.contains(x, y)){
 			return false;
 		}
 		
@@ -144,7 +144,7 @@ GeoBeans.Geometry.Polygon = GeoBeans.Class(GeoBeans.Geometry,{
 				continue;
 			}
 			var extent = ring.extent;
-			if(extent.contain(out.extent)){
+			if(extent.contains(out.extent)){
 				out = ring;
 			}
 		}
