@@ -27,20 +27,6 @@ GeoBeans.Source.Feature.prototype.getFeatures = function(filter, success, failur
 	
 }
 
-
-/**
- * 过滤features
- * @param  {GeoBeans.Filter} filter  查询过滤器
- * @return {Array.<GeoBeans.Feature>}  目标Feature集合
- */
-GeoBeans.Source.Feature.prototype.select = function(filter, features){
-
-	var target = [];
-
-	return target;
-}
-
-
 /**
  * 获得指定范围的的Feature
  * @param  {GeoBeans.Envelope} extent 空间范围
@@ -50,6 +36,16 @@ GeoBeans.Source.Feature.prototype.select = function(filter, features){
  */
 GeoBeans.Source.Feature.prototype.getFeaturesByExtent = function(extent, success, failure){
 	var target = this.selectByExtent(extent, this._features)
+}
+
+/**
+ * 过滤features
+ * @param  {GeoBeans.Filter} filter  查询过滤器
+ * @return {Array.<GeoBeans.Feature>}  目标Feature集合
+ */
+GeoBeans.Source.Feature.prototype.select = function(filter, features){
+
+	return this.selectByFilter(filter, this._features, null, null);
 }
 
 /**
@@ -102,7 +98,7 @@ GeoBeans.Source.Feature.prototype.query = function(query, handler){
 
 	var features = this.features;
 
-	var result = this.selectFeaturesByFilter(filter,features,maxFeatures,offset);
+	var result = this.selectByFilter(filter,features,maxFeatures,offset);
 	if(isValid(handler)){
 		handler.execute(result);
 	}
@@ -110,34 +106,34 @@ GeoBeans.Source.Feature.prototype.query = function(query, handler){
 
 // ？？？下面几个selectXXX全都归到query函数里面
 	// 已经修改为query读取的方式了
-GeoBeans.Source.Feature.prototype.selectFeaturesByFilter = function(filter,features,maxFeatures,offset){
+GeoBeans.Source.Feature.prototype.selectByFilter = function(filter,features,maxFeatures,offset){
 	if(filter == null){
 		return features;
 	}
 	var type = filter.type;
-	var selection = features; 
+	var target = features; 
 	switch(type){
 		case GeoBeans.Filter.Type.FilterID:{
-			selection = this.selectFeaturesByIDFilter(filter,features,maxFeatures,offset);
+			target = this.selectByIDFilter(filter,features,maxFeatures,offset);
 			break;
 		}
 		case GeoBeans.Filter.Type.FilterComparsion:{
-			selection = this.selectFeaturesByComparsion(filter,features,maxFeatures,offset);
+			target = this.selectByComparsion(filter,features,maxFeatures,offset);
 			break;
 		}
 		case GeoBeans.Filter.Type.FilterLogic:{
-			selection = this.selectFeatureByLogic(filter,features,maxFeatures,offset);
+			target = this.selectFeatureByLogic(filter,features,maxFeatures,offset);
 			break;
 		}
 		case GeoBeans.Filter.Type.FilterSpatial:{
-			selection = this.selectFeaturesBySpatial(filter,features,maxFeatures,offset);
+			target = this.selectBySpatial(filter,features,maxFeatures,offset);
 			break;
 		}
 	}
-	return selection;
+	return target;
 }
 
-GeoBeans.Source.Feature.prototype.selectFeaturesByIDFilter = function(filter,features,maxFeatures,offset){
+GeoBeans.Source.Feature.prototype.selectByIDFilter = function(filter,features,maxFeatures,offset){
 	if(filter == null){
 		return features;
 	}
@@ -154,13 +150,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByIDFilter = function(filter,fea
 		total += offset;
 	}
 
-	var selection = [];
+	var target = [];
 	for(var i = 0; i < features.length; ++i){
 		var feature = features[i];
 		var fid = feature.fid;
 		if(ids.indexOf(fid) != -1){
-			selection.push(feature);
-			if(total != null && selection.length == total){
+			target.push(feature);
+			if(total != null && target.length == total){
 				break;
 			}
 		}
@@ -168,18 +164,18 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByIDFilter = function(filter,fea
 	
 	var result = null;
 	if(maxFeatures != null && offset != null && offset != 0){
-		result = selection.slice(offset,total);
+		result = target.slice(offset,total);
 	}else if(maxFeatures != null && (offset == null || offset == 0)){
-		result = selection.slice(0,maxFeatures);
+		result = target.slice(0,maxFeatures);
 	}else if(maxFeatures == null && offset != null && offset != 0){
-		result = selection.slice(offset);
+		result = target.slice(offset);
 	}else{
-		result = selection;
+		result = target;
 	}
 	return result;
 }
 
-GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,features,maxFeatures,offset){
+GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,maxFeatures,offset){
 	if(filter == null){
 		return features;
 	}
@@ -193,7 +189,7 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 	}
 
 	var oper = filter.operator;
-	var selection = [];
+	var target = [];
 
 	var field = null;
 	var value = null;
@@ -218,13 +214,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 	switch(oper){
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -233,9 +229,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue == value){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -243,13 +239,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprNotEqual:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -258,9 +254,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue != value){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -268,13 +264,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThan:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -283,9 +279,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue < value){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}				
@@ -293,13 +289,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThan:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -308,9 +304,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue > value){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -318,13 +314,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprLessThanOrEqual:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -333,9 +329,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue <= value){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -343,13 +339,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprGreaterThanOrEqual:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -358,9 +354,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue >= value){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -368,13 +364,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike:{
 			if(field == null || value == null){
-				selection = features;
+				target = features;
 				break;
 			}
 
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -383,9 +379,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue.like(value)){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -393,14 +389,14 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 		}
 		case GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsNull:{
 			// if(field == null || value == null){
-			// 	selection = features;
+			// 	target = features;
 			// 	break;
 			// }
 			var properyName = filter.properyName;
 			var field = properyName.name;
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -409,9 +405,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue == null){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 			}
@@ -426,12 +422,12 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 			var lowerValue = lowerBound.value;
 			var upperValue = upperBound.value;
 			if(field == null || lowerValue == null || upperValue == null){
-				selection = features;
+				target = features;
 				break;
 			}
 			var findex = this.featureType.findField(field);
 			if(findex == -1){
-				selection = features;
+				target = features;
 				break;
 			}
 
@@ -440,9 +436,9 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 				feature = features[i];
 				fvalue = feature.getValue(field);
 				if(fvalue >= lowerValue && fvalue <= upperValue){
-					selection.push(feature);
+					target.push(feature);
 				}
-				if(total != null && selection.length == total){
+				if(total != null && target.length == total){
 					break;
 				}
 
@@ -453,13 +449,13 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByComparsion = function(filter,f
 	}
 	var result = null;
 	if(maxFeatures != null && offset != null && offset != 0){
-		result = selection.slice(offset,total);
+		result = target.slice(offset,total);
 	}else if(maxFeatures != null && (offset == null || offset == 0)){
-		result = selection.slice(0,maxFeatures);
+		result = target.slice(0,maxFeatures);
 	}else if(maxFeatures == null && offset != null && offset != 0){
-		result = selection.slice(offset);
+		result = target.slice(offset);
 	}else{
-		result = selection;
+		result = target;
 	}
 	return result;
 }
@@ -478,27 +474,27 @@ GeoBeans.Source.Feature.prototype.selectFeatureByLogic = function(filter,feature
 		total += offset;
 	}
 
-	var selection = features;
+	var target = features;
 
 	var oper = filter.operator;
 	switch(oper){
 		case GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd:{
-			selection = this.selectFeatureByLogicAnd(filter,features,maxFeatures,offset); 
+			target = this.selectFeatureByLogicAnd(filter,features,maxFeatures,offset); 
 			break;
 		}
 		case GeoBeans.Filter.LogicFilter.OperatorType.LogicOprOr:{
-			selection = this.selectFeatureByLogicOr(filter,features,maxFeatures,offset);
+			target = this.selectFeatureByLogicOr(filter,features,maxFeatures,offset);
 			break;
 		}
 		case GeoBeans.Filter.LogicFilter.OperatorType.LogicOprNot:{
-			selection = this.selectFeatureByLogicNot(filter,features,maxFeatures,offset);
+			target = this.selectFeatureByLogicNot(filter,features,maxFeatures,offset);
 			break;
 		}
 		default:
 			break;
 	}
 
-	return selection;
+	return target;
 }
 
 GeoBeans.Source.Feature.prototype.selectFeatureByLogicAnd = function(filter,features,maxFeatures,offset){
@@ -514,22 +510,22 @@ GeoBeans.Source.Feature.prototype.selectFeatureByLogicAnd = function(filter,feat
 		total += offset;
 	}
 
-	var selection = features;
+	var target = features;
 	var filters = filter.filters;
 	for(var i = 0; i < filters.length;++i){
 		var f = filters[i];
-		selection = this.selectFeaturesByFilter(f,selection,null,null);
+		target = this.selectByFilter(f,target,null,null);
 	}
 
 	var result = null;
 	if(maxFeatures != null && offset != null && offset != 0){
-		result = selection.slice(offset,total);
+		result = target.slice(offset,total);
 	}else if(maxFeatures != null && (offset == null || offset == 0)){
-		result = selection.slice(0,maxFeatures);
+		result = target.slice(0,maxFeatures);
 	}else if(maxFeatures == null && offset != null && offset != 0){
-		result = selection.slice(offset);
+		result = target.slice(offset);
 	}else{
-		result = selection;
+		result = target;
 	}
 	return result;
 }
@@ -547,26 +543,26 @@ GeoBeans.Source.Feature.prototype.selectFeatureByLogicOr = function(filter,featu
 		total += offset;
 	}
 
-	var selection = [];
+	var target = [];
 	var filters = filter.filters;
 	for(var i = 0; i < filters.length;++i){
 		var f = filters[i];
-		var selected = this.selectFeaturesByFilter(f,features,null,null);
-		selection = this.concatArray(selection,selected);
-		if(total != null && selection.length >= total){
+		var selected = this.selectByFilter(f,features,null,null);
+		target = this.concatArray(target,selected);
+		if(total != null && target.length >= total){
 			break;
 		}
 	}
 
 	var result = null;
 	if(maxFeatures != null && offset != null && offset != 0){
-		result = selection.slice(offset,total);
+		result = target.slice(offset,total);
 	}else if(maxFeatures != null && (offset == null || offset == 0)){
-		result = selection.slice(0,maxFeatures);
+		result = target.slice(0,maxFeatures);
 	}else if(maxFeatures == null && offset != null && offset != 0){
-		result = selection.slice(offset);
+		result = target.slice(offset);
 	}else{
-		result = selection;
+		result = target;
 	}
 	return result;
 }
@@ -597,48 +593,48 @@ GeoBeans.Source.Feature.prototype.selectFeatureByLogicNot = function(filter,feat
 	}
 
 	var f = filter.filters[0];
-	var selection = this.selectFeaturesByFilter(f,features,maxFeatures,offset);
+	var target = this.selectByFilter(f,features,maxFeatures,offset);
 	var s = [];
 	for(var i = 0; i < features.length; ++i){
-		if($.inArray(features[i],selection) == -1){
+		if($.inArray(features[i],target) == -1){
 			s.push(features[i]);
 		}
-		if(total != null && selection.length >= total){
+		if(total != null && target.length >= total){
 			break;
 		}
 	}
 	var result = null;
 	if(maxFeatures != null && offset != null && offset != 0){
-		result = selection.slice(offset,total);
+		result = target.slice(offset,total);
 	}else if(maxFeatures != null && (offset == null || offset == 0)){
-		result = selection.slice(0,maxFeatures);
+		result = target.slice(0,maxFeatures);
 	}else if(maxFeatures == null && offset != null && offset != 0){
-		result = selection.slice(offset);
+		result = target.slice(offset);
 	}else{
-		result = selection;
+		result = target;
 	}
 	return result;
 
 }
 	
-GeoBeans.Source.Feature.prototype.selectFeaturesBySpatial = function(filter,features,maxFeatures,offset){
+GeoBeans.Source.Feature.prototype.selectBySpatial = function(filter,features,maxFeatures,offset){
 	if(filter == null){
 		return features;
 	}
 	var oper = filter.operator;
-	var selection = features;
+	var target = features;
 	switch(oper){
 		case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprBBox:{
-			selection = this.selectFeaturesByBBoxFilter(filter,features,maxFeatures,offset);
+			target = this.selectByBBoxFilter(filter,features,maxFeatures,offset);
 			break;
 		}
 		default:
 			break;
 	}
-	return selection;
+	return target;
 }
 
-GeoBeans.Source.Feature.prototype.selectFeaturesByBBoxFilter = function(filter,features,maxFeatures,offset){
+GeoBeans.Source.Feature.prototype.selectByBBoxFilter = function(filter,features,maxFeatures,offset){
 	if(filter == null){
 		return features;
 	}
@@ -647,7 +643,7 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByBBoxFilter = function(filter,f
 
 	var geomType = this.getGeomType();
 
-	var selection = [];
+	var target = [];
 
 	var total =null;
 	if(maxFeatures != null){
@@ -665,21 +661,21 @@ GeoBeans.Source.Feature.prototype.selectFeaturesByBBoxFilter = function(filter,f
 		}
 		var g_extent = g.extent;
 		if(extent.intersects(g_extent)){
-			selection.push(f);
+			target.push(f);
 		}
-		if(total != null && selection.length == total){
+		if(total != null && target.length == total){
 			break;
 		}
 	}
 	var result = null;
 	if(maxFeatures != null && offset != null && offset != 0){
-		result = selection.slice(offset,total);
+		result = target.slice(offset,total);
 	}else if(maxFeatures != null && (offset == null || offset == 0)){
-		result = selection.slice(0,maxFeatures);
+		result = target.slice(0,maxFeatures);
 	}else if(maxFeatures == null && offset != null && offset != 0){
-		result = selection.slice(offset);
+		result = target.slice(offset);
 	}else{
-		result = selection;
+		result = target;
 	}
 	return result;
 }
