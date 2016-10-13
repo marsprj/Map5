@@ -130,7 +130,7 @@ GeoBeans.Envelope.prototype.contains = function(x, y){
  * @return {Boolean} true  相交
  *                   false 不相交
  */
-GeoBeans.Envelope.prototype.intersects : function(other){
+GeoBeans.Envelope.prototype.intersects = function(other){
 	var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
 	var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
 
