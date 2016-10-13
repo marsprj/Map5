@@ -37,6 +37,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/TextSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
 <!--Control-->
@@ -142,23 +143,62 @@
 	}
 
 	function onDrawPoint(){
-		drawer.draw(GeoBeans.Geometry.Type.POINT);
+		// symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.size = 6;
+		// var fill   = symbolizer.fill;
+		// fill.color.setHex('#800080',1);
+
+		// var stroke = symbolizer.stroke;
+		// stroke.color.set(0,255, 0,1);
+		// stroke.width = 1.0; 
+
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/pin.png";
+		symbol.rotation = 45;
+		symbol.scale = 1.0;
+
+		symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.symbol = symbol;
+
+		drawer.draw(GeoBeans.Geometry.Type.POINT,symbolizer);
 	}
 
 	function onDrawLine(){
-		drawer.draw(GeoBeans.Geometry.Type.LINESTRING);
+		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+
+		drawer.draw(GeoBeans.Geometry.Type.LINESTRING,symbolizer);
 	}
 
 	function onDrawPolygon(){
-		drawer.draw(GeoBeans.Geometry.Type.POLYGON);
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw(GeoBeans.Geometry.Type.POLYGON,symbolizer);
 	}
 
 	function onDrawCircle(){
-		drawer.draw(GeoBeans.Geometry.Type.CIRCLE);
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw(GeoBeans.Geometry.Type.CIRCLE,symbolizer);
 	}
 
 	function onDrawRect(){
-		drawer.draw("Rect");
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw("Rect",symbolizer);
 	}	
 
 	function onComplete(geometry){
@@ -172,6 +212,7 @@
 			geometry : geometry,
 			value : {}
 		});
+		feature.symbolizer = symbolizer;
 		pointLayer.addFeature(feature);
 		mapObj.refresh();
 	}

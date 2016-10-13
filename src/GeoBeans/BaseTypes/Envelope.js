@@ -100,6 +100,9 @@ GeoBeans.Envelope = GeoBeans.Class({
 
 	//相交
 	intersects : function(other){
+		if(!isValid(other)){
+			return false;
+		}
 		var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
 		var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
 

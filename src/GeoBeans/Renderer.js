@@ -92,7 +92,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 		};
 	},
 	
-	drawPoint : function(point, symbolizer, viewer){
+	drawPoint_circle : function(point, symbolizer, viewer){
 		var spt;
 		var r = symbolizer.size;
 		
@@ -108,6 +108,39 @@ GeoBeans.Renderer = GeoBeans.Class({
 		if(symbolizer.stroke != null){
 			this.context.stroke();
 		}	
+	},
+
+	drawPoint : function(point,symbolizer,viewer){
+		if(isValid(symbolizer.symbol)){
+			// 符号渲染
+			if(!isValid(symbolizer.icon)){
+				symbolizer.icon = new Image();
+				symbolizer.icon.crossOrigin="anonymous";
+				symbolizer.icon.src = symbolizer.symbol.icon;			
+			}
+			else{
+				if(symbolizer.icon.src!=symbolizer.symbol.icon){
+					symbolizer.icon = null;
+					symbolizer.icon = new Image();
+					symbolizer.icon.crossOrigin="anonymous"	
+					symbolizer.icon.src = symbolizer.symbol.icon;
+				}
+			}
+
+			if(symbolizer.icon.complete){
+				var sp = viewer.toScreenPoint(point.x, point.y);
+				this.drawIcon(symbolizer.icon,sp.x,sp.y,symbolizer);
+			}
+			else{
+				var that = this;
+				symbolizer.icon.onload = function(){
+					var sp = viewer.toScreenPoint(point.x, point.y);
+					that.drawIcon(symbolizer.icon,sp.x,sp.y,symbolizer);
+				};
+			}
+		}else{
+			this.drawPoint_circle(point,symbolizer,viewer);
+		}
 	},
 	
 	drawLineString : function(line, symbolizer, viewer){
