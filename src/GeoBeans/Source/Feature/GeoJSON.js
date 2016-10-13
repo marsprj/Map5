@@ -6,7 +6,6 @@
 GeoBeans.Source.Feature.GeoJSON = GeoBeans.Class(GeoBeans.Source.Feature, {
 
 	_url : "",
-	_features : [],
 	_format : null,
 
 	_loaded : false,
@@ -110,11 +109,8 @@ GeoBeans.Source.Feature.GeoJSON.prototype.getFeaturesByExtent = function(extent,
 					success.execute(target);
 				}
 			},
-			complete: function(XMLHttpRequest, textStatus){
-
-			},
 			error	: function(e){
-				failure.execute("sss");
+				failure.execute(e.message);
 			}
 		});
 	}
