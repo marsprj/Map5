@@ -540,6 +540,14 @@ var g_catalog = [
 			}
 		]
 	},{
+		"name" : "数据源(source)",
+		"items":[
+			{
+				"name" : "GeoJSON",
+				"link" : "source/geojson.html"
+			}
+		]
+	},{
 		"name" : "动画",
 		"items":[
 			{

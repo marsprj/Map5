@@ -9,20 +9,27 @@ GeoBeans.Feature = GeoBeans.Class({
 	geometry : null,
 	featureType : null,
 	_fields  : [],
-	_values	 : {},
+	_properties	 : {},
 	symbolizer: null,
 	
-	// initialize : function(featureType, fid, geometry, values){
-	// 	this.featureType = featureType;
-	// 	this.fid = fid;
-	// 	this.geometry = geometry;	
-	// 	this._values = values;
-	// },
-	
+
+	/**
+	 * new GeoBeans.Feature({
+	 * 	"fid" : fid,
+	 * 	"featureType": featureType,
+	 * 	"fields"	 : fields,
+	 * 	"geometry"   : geometry,
+	 * 	"propertis"  : {
+	 * 			"name"   : name,
+	 *    	  	"value1" : value1,
+	 *    	  	"value2" : value2
+	 * 	}
+	 * })
+	 */
 	initialize : function(options){
 		this.geometry = options.geometry;
-		this.fid = isValid(options.fid) ? options.fid : "0";		
-		this._values = isValid(options.values) ? options.values : {};
+		this.fid = isValid(options.fid) ? options.fid : GeoBeans.Utility.uuid();	
+		this._properties = isValid(options.properties) ? options.properties : {};
 
 		this.featureType = options.featureType;
 		if(isValid(this.featureType)){
@@ -35,7 +42,7 @@ GeoBeans.Feature = GeoBeans.Class({
 	destroy : function(){
 		this.featureType = null;
 		this.geometry = null;
-		this._values = null;
+		this._properties = null;
 		this._fields = null;
 	},
 });
@@ -57,7 +64,7 @@ GeoBeans.Feature.prototype.getFeatureType = function(){
  */
 GeoBeans.Feature.prototype.setValue = function(field,value){
 	if(isValid(field) && (isValid(value))){
-		this._values[field] = value;
+		this._properties[field] = value;
 	}
 }
 
@@ -66,7 +73,7 @@ GeoBeans.Feature.prototype.setValue = function(field,value){
 // 	for(var i = 0; i < fields.length; ++i){
 // 		var f = fields[i];
 // 		if(f.name == field){
-// 			this._values[i] = value;
+// 			this._properties[i] = value;
 // 			return;
 // 		}
 // 	}
@@ -79,14 +86,14 @@ GeoBeans.Feature.prototype.setValue = function(field,value){
  * @return {object}       属性值
  */
 GeoBeans.Feature.prototype.getValue = function(field){
-	return this._values[field];
+	return this._properties[field];
 }
 // GeoBeans.Feature.prototype.getValue = function(field){
 // 	var fields = this.featureType.getFields();
 // 	for(var i = 0; i < fields.length; ++i){
 // 		var f = fields[i];
 // 		if(f.name == field){
-// 			return this._values[i];
+// 			return this._properties[i];
 // 		}
 // 	}
 // }
@@ -99,7 +106,7 @@ GeoBeans.Feature.prototype.getValue = function(field){
 // GeoBeans.Feature.prototype.getValueByIndex = function(index){
 // 	var fields = ;
 // 	if(index>=0 && index<this._fields.length){
-// 		return this._values[index];
+// 		return this._properties[index];
 // 	}
 // 	return null;
 // }

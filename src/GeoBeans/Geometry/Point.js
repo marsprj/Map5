@@ -12,8 +12,8 @@ GeoBeans.Geometry.Point = GeoBeans.Class(GeoBeans.Geometry,{
 	 * @type {double}
 	 * @private
 	*/
-	x : null,
-	y : null,
+	x : 0.0,
+	y : 0.0,
 	
 	type : GeoBeans.Geometry.Type.POINT,
 	
