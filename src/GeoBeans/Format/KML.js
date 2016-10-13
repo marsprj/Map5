@@ -576,7 +576,11 @@ GeoBeans.Format.KML.prototype.readPlacemark = function(kml,style,fields){
 		name : name,
 		geometry : geometry
 	};
-	var feature = new GeoBeans.Feature(featureType,fid,geometry,values);
+	var feature = {
+		values : values,
+		geometry : geometry,
+		fid : fid
+	};
 
 	// 备注，不考虑MultiGeometry的情况
 	// 设定了样式
