@@ -88,7 +88,6 @@ GeoBeans.Envelope = GeoBeans.Class({
 			return false;
 		}
 	}
-
 });
 
 GeoBeans.Envelope.prototype.clone = function(){
@@ -132,11 +131,11 @@ GeoBeans.Envelope.prototype.contains = function(x, y){
  *                   false 不相交
  */
 GeoBeans.Envelope.prototype.intersects : function(other){
-		var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
-		var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
+	var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
+	var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
 
-		var ymin = this.ymin > other.ymin ? this.ymin : other.ymin;
-		var ymax = this.ymax < other.ymax ? this.ymax : other.ymax;
+	var ymin = this.ymin > other.ymin ? this.ymin : other.ymin;
+	var ymax = this.ymax < other.ymax ? this.ymax : other.ymax;
 
-		return (xmin < xmax) && (ymin < ymax) ;
-	},
+	return (xmin < xmax) && (ymin < ymax) ;
+}

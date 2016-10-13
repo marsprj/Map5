@@ -40,22 +40,22 @@ GeoBeans.Interaction.Draw = GeoBeans.Class(GeoBeans.Interaction, {
 /**
  * 绘制要素
  */
-GeoBeans.Interaction.Draw.prototype.draw = function(type){
+GeoBeans.Interaction.Draw.prototype.draw = function(type,symbolizer){
 	switch(type){
 		case "Point":
-			this.drawPoint();
+			this.drawPoint(symbolizer);
 			break;
 		case "LineString":
-			this.drawLine();
+			this.drawLine(symbolizer);
 			break;
 		case "Polygon":
-			this.drawPolygon();
+			this.drawPolygon(symbolizer);
 			break;
 		case "Circle":
-			this.drawCircle();
+			this.drawCircle(symbolizer);
 			break;
 		case "Rect":
-			this.drawRect();
+			this.drawRect(symbolizer);
 			break;
 	}
 }
@@ -63,7 +63,7 @@ GeoBeans.Interaction.Draw.prototype.draw = function(type){
 /**
  * 绘制点
  */
-GeoBeans.Interaction.Draw.prototype.drawPoint = function(){
+GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var that = this;
 	this._map.saveSnap();
 	this._map.enableDrag(false);
@@ -76,11 +76,11 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(){
 			
 			if(isValid(that.onComplete)){
 				var viewer = that._map.getViewer();
-				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
+				var pt = viewer.toMapPoint(evt.layerX,evt.layerY,symbolizer);
 
 				that.onComplete(pt);
 			}
-			
+
 			that._map.saveSnap();
 		}
 	};
@@ -88,7 +88,7 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(){
 	var onmousemove = function(evt){
 		if(that._enabled){
 			that._map.restoreSnap();
-			that.draw_point(evt.layerX,evt.layerY);	
+			that.draw_point(evt.layerX,evt.layerY,symbolizer);	
 		}
 	};
 	
@@ -102,7 +102,7 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(){
 /**
  * 绘制线
  */
-GeoBeans.Interaction.Draw.prototype.drawLine = function(){
+GeoBeans.Interaction.Draw.prototype.drawLine = function(symbolizer){
 	var that = this;
 	var points = [];
 	var db_points = [];
@@ -136,12 +136,12 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(){
 		var onmousemove = function(evt){
 			that._map.restoreSnap();
 			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
-			that.draw_line(points,pt.x,pt.y);
-			that.draw_points(points,pt.x,pt.y);
+			that.draw_line(points,pt.x,pt.y,symbolizer);
+			that.draw_points(points,pt.x,pt.y,symbolizer);
 			that.drawingEvent = function(){
 				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 				that.draw_line(points,pt.x,pt.y);
-				that.drawdraw_pointsPoints(points,pt.x,pt.y);
+				that.draw_points(points,pt.x,pt.y);
 			};
 		};
 
@@ -200,7 +200,7 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(){
 /**
  * 绘制面
  */
-GeoBeans.Interaction.Draw.prototype.drawPolygon = function(){
+GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 	var that = this;
 	var points = [];
 	var db_points = [];
@@ -239,12 +239,12 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(){
 			that._map.restoreSnap();
 			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 			if(points.length>1){
-				that.draw_polygon(points,pt.x,pt.y);
-				that.draw_points(points,pt.x,pt.y);
+				that.draw_polygon(points,pt.x,pt.y,symbolizer);
+				that.draw_points(points,pt.x,pt.y,symbolizer);
 			}
 			else{
-				that.draw_line(points, pt.x,pt.y);
-				that.draw_points(points,pt.x,pt.y);
+				that.draw_line(points, pt.x,pt.y,symbolizer);
+				that.draw_points(points,pt.x,pt.y,symbolizer);
 			}
 			that.drawingEvent = function(){
 				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
@@ -304,7 +304,7 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(){
  * 绘制圆
  * @public
  */
-GeoBeans.Interaction.Draw.prototype.drawCircle = function(){
+GeoBeans.Interaction.Draw.prototype.drawCircle = function(symbolizer){
 	var that = this;
 
 	var point_r = null;
@@ -333,8 +333,8 @@ GeoBeans.Interaction.Draw.prototype.drawCircle = function(){
 			evt.preventDefault();
 			point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
 			that._map.restoreSnap();
-			that.draw_points([],point_e.x,point_e.y);
-			that.draw_circle(point_r,point_e);
+			that.draw_points([],point_e.x,point_e.y,symbolizer);
+			that.draw_circle(point_r,point_e,symbolizer);
 			that.drawingEvent = function(){
 				console.log(point_r);
 				console.log(point_e);
@@ -375,7 +375,7 @@ GeoBeans.Interaction.Draw.prototype.drawCircle = function(){
 	this.onMouseDown = onmousedown;
 }
 
-GeoBeans.Interaction.Draw.prototype.drawRect = function(){
+GeoBeans.Interaction.Draw.prototype.drawRect = function(symbolizer){
 	var that = this;
 
 	this._map.saveSnap();
@@ -393,7 +393,7 @@ GeoBeans.Interaction.Draw.prototype.drawRect = function(){
 		that._map.saveSnap();
 		evt.preventDefault();
 		point_b = {x:evt.layerX,y:evt.layerY};
-		that.draw_points([],point_b.x,point_b.y);
+		that.draw_points([],point_b.x,point_b.y,symbolizer);
 
 		that.drawing = true;
 
@@ -415,7 +415,7 @@ GeoBeans.Interaction.Draw.prototype.drawRect = function(){
 			points.push({x:evt.layerX,y:point_b.y,mapX:point_e.x,mapY:point_b_m.y});
 			points.push({x:evt.layerX,y:evt.layerY,mapX:point_e.x,mapY:point_e.y});
 			points.push({x:point_b.x,y:evt.layerY,mapX:point_b_m.x,mapY:point_e.y});
-			that.draw_polygon(points,point_b_m.x,point_b_m.y);
+			that.draw_polygon(points,point_b_m.x,point_b_m.y,symbolizer);
 
 			that.drawingEvent = function(){
 				point_b_m = viewer.toMapPoint(point_b.x,point_b.y);
@@ -425,7 +425,7 @@ GeoBeans.Interaction.Draw.prototype.drawRect = function(){
 				points.push({x:evt.layerX,y:point_b.y,mapX:point_e.x,mapY:point_b_m.y});
 				points.push({x:evt.layerX,y:evt.layerY,mapX:point_e.x,mapY:point_e.y});
 				points.push({x:point_b.x,y:evt.layerY,mapX:point_b_m.x,mapY:point_e.y});
-				that.draw_polygon(points,point_b_m.x,point_b_m.y);
+				that.draw_polygon(points,point_b_m.x,point_b_m.y,symbolizer);
 			};
 		};
 
@@ -487,34 +487,52 @@ GeoBeans.Interaction.Draw.prototype.cleanup = function(){
  * 在地图上绘制点图元
  * @private
  */
-GeoBeans.Interaction.Draw.prototype.draw_point = function(x, y){
-	var context = this._map.renderer.context;
-	
-	var r = 5;
-	context.save();
-	context.fillStyle = 'rgba(255,0,0,0.25)';
-	context.strokeStyle = 'rgba(0,0,0,0.75)';
-	context.lineWidth = 1.0;
+GeoBeans.Interaction.Draw.prototype.draw_point = function(x, y,symbolizer){
+	if(!isValid(symbolizer)){
+		symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.fill.color.set(255,0,0,0.25);
+		symbolizer.stroke.color.set(0,0,0,0.75);
+		symbolizer.stroke.lineWidth = 1.0;
+	}
 
-	context.beginPath();
-	context.arc(x, y, r, 0, 2 * Math.PI, false);  
-	context.closePath();
-	
-	context.fill();
-	context.stroke();
-	context.restore();
+	var renderer = this._map.renderer;
+	renderer.setSymbolizer(symbolizer);
+
+	var viewer = this._map.getViewer();
+	var pt = viewer.toMapPoint(x,y);
+	renderer.drawPoint(pt,symbolizer,viewer);
+
 }
 
-GeoBeans.Interaction.Draw.prototype.draw_points = function(points, x, y){
-	var context = this._map.renderer.context;
+/**
+ * 在地图上绘制多点
+ * @private
+ */
+GeoBeans.Interaction.Draw.prototype.draw_points = function(points, x, y,symbolizer){
+	var lineColor = null;
+	if(isValid(symbolizer)){
+		var stroke = symbolizer.stroke;
+		if(isValid(stroke)){
+			lineColor = stroke.color;
+		}
+	}
+	var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+	if(isValid(lineColor)){
+		pointSymbolizer.fill.color = lineColor.clone();
+	}else{
+		pointSymbolizer.fill.color.set(255,0,0,0.75);
+	}
+	pointSymbolizer.stroke.color.set(255,255,255,0.75);
+	pointSymbolizer.stroke.lineWidth = 1.0;
+	
+
+	var renderer = this._map.renderer;
+	var context = renderer.context;
 	var viewer = this._map.getViewer();
 	context.save();
-	
+	renderer.setSymbolizer(pointSymbolizer);
+
 	var r = 5;
-	context.fillStyle = 'rgba(255,0,0,0.25)';
-	context.strokeStyle = 'rgba(255,0,0,0.25)';
-	context.lineWidth = 0.5;
-	
 	context.beginPath();
 	var spt = viewer.toScreenPoint(x,y);
 	context.arc(spt.x, spt.y, r, 0, 2 * Math.PI, false);  
@@ -535,13 +553,23 @@ GeoBeans.Interaction.Draw.prototype.draw_points = function(points, x, y){
 	context.restore();
 }
 
-GeoBeans.Interaction.Draw.prototype.draw_line = function(points, x, y){
-	var context = this._map.renderer.context;
+/**
+ * 在地图上绘制线
+ * @private
+ */
+GeoBeans.Interaction.Draw.prototype.draw_line = function(points, x, y, symbolizer){
+	var renderer = this._map.renderer;
+	if(!isValid(symbolizer)){
+		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		symbolizer.stroke.color.set(255,0,0,0.75);
+		symbolizer.stroke.lineWidth = 3.0;
+	}
+
+	var context = renderer.context;
 	var viewer = this._map.getViewer();
 	context.save();
 	
-	context.strokeStyle = 'rgba(255,0,0,0.25)';
-	context.lineWidth = 3.0;
+	renderer.setSymbolizer(symbolizer);
 	
 	context.beginPath();
 	var spt = viewer.toScreenPoint(x,y);
@@ -552,19 +580,30 @@ GeoBeans.Interaction.Draw.prototype.draw_line = function(points, x, y){
 		context.lineTo(spt.x, spt.y);
 	}
 	context.stroke();
-	context.restore();
+	context.restore();	
+
 }
 
-GeoBeans.Interaction.Draw.prototype.draw_polygon = function(points, x, y){
-	var context = this._map.renderer.context;	
+/**
+ * 在地图上绘制面
+ * @private
+ */
+GeoBeans.Interaction.Draw.prototype.draw_polygon = function(points, x, y,symbolizer){
+	if(!isValid(symbolizer)){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.stroke.color.set(0,0,0,1);
+		symbolizer.stroke.lineWidth = 0.5;
+		symbolizer.fill.color.set(255,255,255,0.25);
+	}
+
+	var renderer = this._map.renderer;
+	var context = renderer.context;	
 	var viewer = this._map.getViewer();
 
+
 	context.save();
-	
-	context.fillStyle = 'rgba(255,255,255,0.25)';
-	context.strokeStyle = 'rgba(0,0,0,1)';
-	context.lineWidth = 0.5;
-	
+	renderer.setSymbolizer(symbolizer);
+
 	var len = points.length;
 	context.beginPath();
 	var spt = viewer.toScreenPoint(x,y);
@@ -579,26 +618,42 @@ GeoBeans.Interaction.Draw.prototype.draw_polygon = function(points, x, y){
 	context.restore();
 }
 
-GeoBeans.Interaction.Draw.prototype.draw_circle = function(point_r,point_e){
+
+/**
+ * 在地图上绘制圆
+ * @private
+ */
+GeoBeans.Interaction.Draw.prototype.draw_circle = function(point_r,point_e,symbolizer){
+	if(!isValid(symbolizer)){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.stroke.color.set(0,0,0,1);
+		symbolizer.stroke.lineWidth = 0.5;
+		symbolizer.fill.color.set(255,255,255,0.25);
+	}
+
+	var renderer = this._map.renderer;
+	var context = renderer.context;
 	var viewer = this._map.getViewer();
 	var point_r_s = viewer.toScreenPoint(point_r.x,point_r.y);
 	var point_e_s = viewer.toScreenPoint(point_e.x,point_e.y);
 
 	var radius = GeoBeans.Utility.getDistance(point_r_s.x,point_r_s.y,point_e_s.x,point_e_s.y);
 
-	var context = this._map.renderer.context;
+	renderer.setSymbolizer(symbolizer);
+
 	context.save();
-
-	context.strokeStyle = "#08c";
-	context.lineWidth = 1.0;
-
 	context.beginPath();
 	context.arc(point_r_s.x,point_r_s.y,radius,0,Math.PI*2,true);
 	context.stroke();
+	context.fill();
 	context.closePath();
-
 }
 
+
+/**
+ * 组合线
+ * @private
+ */
 GeoBeans.Interaction.Draw.prototype.buildLineString = function(dots){
 	var pt = null;
 	var points = [];
@@ -611,6 +666,10 @@ GeoBeans.Interaction.Draw.prototype.buildLineString = function(dots){
 	return (new GeoBeans.Geometry.LineString(points));
 }
 
+/**
+ * 组合面
+ * @private
+ */
 GeoBeans.Interaction.Draw.prototype.buildPolygon = function(dots){
 	var pt = null;
 	var points = [];
@@ -625,6 +684,10 @@ GeoBeans.Interaction.Draw.prototype.buildPolygon = function(dots){
 	return (new GeoBeans.Geometry.Polygon([r]));
 }
 
+/**
+ * 组合矩形
+ * @private
+ */
 GeoBeans.Interaction.Draw.prototype.buildRect = function(point_b,point_e){
 	var xmin = (point_b.x > point_e.x) ? point_e.x : point_b.x;
 	var xmax = (point_b.x > point_e.x) ? point_b.x : point_e.x;

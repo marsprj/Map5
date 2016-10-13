@@ -198,10 +198,11 @@
 			geometry :geometry
 		};
 
-		var feature = new GeoBeans.Feature(featureType,
-										   fid,
-										   geometry,
-										   values);
+		var feature = new GeoBeans.Feature({
+			fid : fid,
+			values : values,
+			geometry : geometry
+		});
 		return feature;
 	}
 

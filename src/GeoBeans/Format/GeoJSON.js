@@ -296,7 +296,11 @@ GeoBeans.Format.GeoJson.prototype.readFeature = function(geoJson,fields){
 	var values = this.readProperties(geoJson.properties,fields);
 
 	if(geometry != null && values != null && fid != null && featureType != null){
-		return new GeoBeans.Feature(featureType,fid,geometry,values);
+		return new GeoBeans.Feature({
+			fid: fid,
+			geometry : geometry,
+			values : values
+		});
 	}else{
 		return null;
 	}

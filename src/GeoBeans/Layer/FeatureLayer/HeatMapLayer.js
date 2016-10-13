@@ -67,65 +67,27 @@ GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){
 		return;
 	}
 	
-	
-	var finidex = -1
-	if(isValid(this.field)){
-		findex = this.featureType.findField(this.field);
-	}	
-
 	var viewer = this.map.getViewer();
-	// console.log(features.length);
-	var point_s = null,point = null;
-	var f = null, geometry = null;
-	var max = null,min = null,points = [];
-	var that = this;
-
-	this.features.forEach(function(f){
-		geometry = f.geometry;
-		if(geometry != null){
-
-			if(geometry.type == GeoBeans.Geometry.Type.POINT){
-				if(findex == -1){
-					value = 1;
-					min = value;
-					max = value;
-				}else{
-					value = f.getValue(that.field);
-					if(min == null){
-						min = value;
-					}else{
-						min = Math.min(min,value);
-					}
-
-					if(max == null){
-						max = value;
-					}else{
-						max = Math.max(max,value);	
-					}
-					
-				}
-				point_s = viewer.toScreenPoint(geometry.x,geometry.y);
-
-				point = {
-					x : point_s.x,
-					y : point_s.y,
-					value : value
-					// radius : 16
-				};
-				points.push(point);
-			}
-		}
+	var extent = viewer.getExtent();
+	var filter = new GeoBeans.Filter.BBoxFilter(null,extent);
+	var query = new GeoBeans.Query({
+		typeName : this.name,
+		fields : null,		// 字段
+		maxFeatures : null, //返回结果数
+		offset : null,		//偏移量
+		orderby : null,		//排序类
+		filter : filter 	//查询过滤条件
 	});
 
-	var data = {
-		max : max,
-		min : min,
-		data : points
-	};
-
-
-	this.heatmap.setData(data);
-
+	var handler = {
+		target: this,
+		execute : function(features){
+			console.log("count:" + features.length);
+			this.target.setData(features);
+		}
+	}
+	
+	this.query(query,handler);
 }
 
 /**
@@ -194,3 +156,63 @@ GeoBeans.Layer.HeatMapLayer2.prototype.showGeometry = function(visible){
 	this.showGeometry = visible;
 	this.refresh();
 }
+
+GeoBeans.Layer.HeatMapLayer2.prototype.setData = function(features){
+
+	var viewer = this.map.getViewer();
+
+	var point_s = null,point = null;
+	var f = null, geometry = null;
+	var max = null,min = null,points = [];
+	var that = this;
+
+	var finidex = -1
+	if(isValid(this.field)){
+		findex = this.featureType.findField(this.field);
+	}	
+
+	features.forEach(function(f){
+		geometry = f.geometry;
+		if(geometry != null){
+
+			if(geometry.type == GeoBeans.Geometry.Type.POINT){
+				if(findex == -1){
+					value = 1;
+					min = value;
+					max = value;
+				}else{
+					value = f.getValue(that.field);
+					if(min == null){
+						min = value;
+					}else{
+						min = Math.min(min,value);
+					}
+
+					if(max == null){
+						max = value;
+					}else{
+						max = Math.max(max,value);	
+					}
+					
+				}
+				point_s = viewer.toScreenPoint(geometry.x,geometry.y);
+
+				point = {
+					x : point_s.x,
+					y : point_s.y,
+					value : value
+					// radius : 16
+				};
+				points.push(point);
+			}
+		}
+	});
+
+	var data = {
+		max : max,
+		min : min,
+		data : points
+	};
+
+	this.heatmap.setData(data);
+};

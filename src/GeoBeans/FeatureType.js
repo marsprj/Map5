@@ -397,7 +397,12 @@ GeoBeans.FeatureType = GeoBeans.Class({
 			}
 		}
 
-		return (new GeoBeans.Feature(this, fid, g, values));
+		var feature = new GeoBeans.Feature({
+			geometry : g,
+			values : values,
+			fid : fid
+		});
+		return feature;
 	},
 	
 	parseFID : function(strfid){
