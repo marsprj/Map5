@@ -57,6 +57,14 @@ GeoBeans.Feature.prototype.getFeatureType = function(){
 }
 
 /**
+ * 获取Feature的geometry对象
+ * @return {GeoBeans.Geometry} geometry对象
+ */
+GeoBeans.Feature.prototype.getGeometry = function(){
+	return this.geometry;
+}
+
+/**
  * 设置属性值
  * @public
  * @param {string} field 字段名称

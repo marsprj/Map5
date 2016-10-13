@@ -87,7 +87,7 @@ GeoBeans.Source.Feature.GeoJSON.prototype.getFeaturesByExtent = function(extent,
 		if(isValid(extent)){
 			success.execute(this._features);
 		}else{
-			var target = filterByExtent(filter,this._features);
+			var target = selectByExtent(filter,this._features);
 			success.execute(target);
 		}
 	}
@@ -103,10 +103,10 @@ GeoBeans.Source.Feature.GeoJSON.prototype.getFeaturesByExtent = function(extent,
 			success	: function(text, textStatus){
 				that._loaded = true;
 				that._features = that._format.readFeatures(text);
-				if(!isValid(filter)){
+				if(!isValid(extent)){
 					success.execute(that._features);
 				}else{
-					var target = that.filterByExtent(extent,that._features);
+					var target = that.selectByExtent(extent,that._features);
 					success.execute(target);
 				}
 			},

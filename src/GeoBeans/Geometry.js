@@ -27,6 +27,14 @@ GeoBeans.Geometry = GeoBeans.Class({
 	hit : null,
 });
 
+/**
+ * 返回Geometr空间范围
+ * @return {GeoBeans.Envelope} Geometr空间范围
+ */
+GeoBeans.Geometry.prototype.getExtent = function(){
+	return this.extent;
+}
+
 GeoBeans.Geometry.Type = {
 
 	POINT: 'Point',
@@ -38,7 +46,6 @@ GeoBeans.Geometry.Type = {
 	CIRCLE : 'Circle',
 	COLLECTION : "GeometryCollection"
 };
-
 
 // /**
 //  * Method: 
