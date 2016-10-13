@@ -163,7 +163,7 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/	
 		this.enableWindowResize();
 	
-		this.maplex = new GeoBeans.Maplex(this);
+		// this.maplex = new GeoBeans.Maplex(this);
 
 		// 授权时间
 		this.authTime = new Date("2016-07-26 00:00:00");
@@ -1511,14 +1511,14 @@ GeoBeans.Map.prototype.draw = function(){
  */
 GeoBeans.Map.prototype.drawLayers = function(){
 	
-	this.maplex.cleanup();
+	// this.maplex.cleanup();
 
 	for(var i = 0; i < this.layers.length;++i){
 		var layer = this.layers[i];
 		layer.draw();
 	}
 
-	this.maplex.draw();
+	// this.maplex.draw();
 };
 
 
