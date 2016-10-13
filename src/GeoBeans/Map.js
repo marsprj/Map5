@@ -80,6 +80,8 @@ GeoBeans.Map = GeoBeans.Class({
 	// copyright
 	_copyRightWidget : null,
 
+	_layerWidget : null,
+
 	//图例列表
 	legendList : null,
 	
@@ -963,6 +965,10 @@ GeoBeans.Map.prototype.initWidgets = function(){
 
 	var infoWindowWidget = new GeoBeans.Widget.InfoWindowWidget(this);
 	this._infoWindowWidget = infoWindowWidget;
+
+
+	var layerWidget = new GeoBeans.Widget.LayerWidget(this);
+	this._layerWidget = layerWidget;
 };
 
 /**
@@ -1502,6 +1508,8 @@ GeoBeans.Map.prototype.draw = function(){
 
 	//设置地图控件
 	this.drawNavControl();
+
+	this._layerWidget.refresh();
 	
 }
 
