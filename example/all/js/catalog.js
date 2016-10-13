@@ -37,6 +37,9 @@ var g_catalog = [
 			},{
 				"name" : "版权（待补充）",
 				"link" : "control/control_copyright.html"
+			},{
+				"name" : "图层面板",
+				"link" : "control/control_layerpanel.html"	
 			}
 		]
 	},{

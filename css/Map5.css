@@ -438,3 +438,107 @@
 	top: 0px;
 	left: 0px;
 }
+
+
+.map5-layer-widget{
+	width: 240px;
+    border: 1px solid;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 10001;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3),0 4px 15px -5px transparent;
+    font-family: "Microsoft Yahei";
+}
+
+.map5-layer-widget .layer-widget-title{
+	height: 26px;
+	border-bottom: 1px solid #cdcdcd;
+	padding: 0px 10px;
+}
+.map5-layer-widget .layer-widget-title div{
+	float: left;
+}
+
+.map5-layer-widget .checkdown{
+	width: 20px;
+	right: 36px;
+    position: absolute;
+	height: 26px;
+	background-image: url(../images/down.png);
+	 background-position: center;
+    background-repeat: no-repeat;
+	cursor: pointer;
+}
+.map5-layer-widget .close{
+	width: 20px;
+	right: 10px;
+    position: absolute;
+	height: 26px;
+	background-image: url(../images/close.png);
+	 background-position: center;
+    background-repeat: no-repeat;
+	cursor: pointer;
+}
+.map5-layer-widget .layer-item{
+	height: 26px;
+	line-height: 26px;
+}
+
+.map5-layer-widget .layer-item:hover{
+	background-color: #DFF1F8;
+}
+.map5-layer-widget .layer-item div{
+	float: left;
+}
+
+.map5-layer-widget .layer-type{
+	left: 5px;
+	width: 40px;
+    height: 26px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.map5-layer-widget .layer-type-custom{
+	background-image: url(../images/palette_16_1.png);
+}
+.map5-layer-widget .layer-type-tile{
+	background-image: url(../images/tile.png);
+}
+.map5-layer-widget .layer-type-point{
+	background-image: url(../images/marker_16.png);
+}
+.map5-layer-widget .layer-type-line{
+	background-image: url(../images/polyline_16.png);
+}
+.map5-layer-widget .layer-type-polygon{
+	background-image: url(../images/polygon_16.png);
+}
+.map5-layer-widget .layer-type-image{
+	background-image: url(../images/map.png);
+}
+
+.map5-layer-widget .layer-name{
+	width: 165px;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.map5-layer-widget .layer-visible{
+	width: 30px;
+	height: 26px;
+    background-position: center;
+    background-repeat: no-repeat;	
+    background-image: url(../images/ok.png);
+    cursor: pointer;
+}
+
+.map5-layer-widget .layer-visible.hide{
+	background-image: url(../images/ok_2.png);
+}
+
+
+
