@@ -457,30 +457,31 @@
 	height: 26px;
 	border-bottom: 1px solid #cdcdcd;
 	padding: 0px 10px;
+	line-height: 26px;
 }
 .map5-layer-widget .layer-widget-title div{
 	float: left;
 }
 
-.map5-layer-widget .checkdown{
+.map5-layer-widget .checkdown, .map5-layer-widget .close{
 	width: 20px;
-	right: 36px;
     position: absolute;
-	height: 26px;
-	background-image: url(../images/down.png);
-	 background-position: center;
+    height: 26px;
+    background-position: center;
     background-repeat: no-repeat;
-	cursor: pointer;
+    cursor: pointer;
+    opacity: 0.2;
+}
+.map5-layer-widget .checkdown:hover, .map5-layer-widget .close:hover{
+	opacity: 0.5;
+}
+.map5-layer-widget .checkdown{
+	right: 36px;
+	background-image: url(../images/down.png);
 }
 .map5-layer-widget .close{
-	width: 20px;
 	right: 10px;
-    position: absolute;
-	height: 26px;
 	background-image: url(../images/close.png);
-	 background-position: center;
-    background-repeat: no-repeat;
-	cursor: pointer;
 }
 .map5-layer-widget .layer-item{
 	height: 26px;
@@ -536,8 +537,13 @@
     cursor: pointer;
 }
 
-.map5-layer-widget .layer-visible.hide{
-	background-image: url(../images/ok_2.png);
+.map5-layer-widget .layer-invisible {
+	width: 30px;
+	height: 26px;
+    background-position: center;
+    background-repeat: no-repeat;	
+    background-image: url(../images/ok_2.png);
+    cursor: pointer;
 }
 
 

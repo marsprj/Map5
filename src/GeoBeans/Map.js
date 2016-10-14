@@ -80,7 +80,7 @@ GeoBeans.Map = GeoBeans.Class({
 	// copyright
 	_copyRightWidget : null,
 
-	_layerWidget : null,
+	_layersWidget : null,
 
 	//图例列表
 	legendList : null,
@@ -966,9 +966,6 @@ GeoBeans.Map.prototype.initWidgets = function(){
 	var infoWindowWidget = new GeoBeans.Widget.InfoWindowWidget(this);
 	this._infoWindowWidget = infoWindowWidget;
 
-
-	var layerWidget = new GeoBeans.Widget.LayerWidget(this);
-	this._layerWidget = layerWidget;
 };
 
 /**
@@ -1509,7 +1506,9 @@ GeoBeans.Map.prototype.draw = function(){
 	//设置地图控件
 	this.drawNavControl();
 
-	this._layerWidget.refresh();
+	if(this._layersWidget != null){
+		this._layersWidget.refresh();
+	}
 	
 }
 
@@ -1838,3 +1837,27 @@ GeoBeans.Map.prototype.apply = function(options){
 		this.extent = options.extent;
 	}
 }
+
+/**
+ * 添加图层面板
+ * @public
+ * @param {GeoBeans.Widget.LayersWidget} layersWidget 图层面板
+ */
+GeoBeans.Map.prototype.addLayersWidget = function(layersWidget){
+	if(!isValid(layersWidget)){
+		return;
+	}
+	this._layersWidget = layersWidget;
+	this._layersWidget.refresh();
+};
+
+/**
+ * 删除图层面板
+ * @public
+ */
+GeoBeans.Map.prototype.removeLayersWidget = function(){
+	if(isValid(this._layersWidget)){
+		this._layersWidget.destory();
+		this._layersWidget = null;
+	}
+};

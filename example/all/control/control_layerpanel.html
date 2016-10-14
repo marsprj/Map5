@@ -3,8 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<!-- <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css"> -->
-<link rel="stylesheet" type="text/css" href="../../../css/Map5.css">
+<link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
@@ -102,7 +101,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Widget/LayerWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/LayersWidget.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
@@ -122,6 +121,8 @@
 		loadTileMap();
 		addWfsLayer();
 		addWmsLayer();
+
+		addLayersWidget();
 	}
 
 	function addWfsLayer(){
@@ -160,6 +161,11 @@
 		mapObj.refresh();
 	}
 
+
+	function addLayersWidget(){
+		var layersWidget = new GeoBeans.Widget.LayersWidget(mapObj);
+		mapObj.addLayersWidget(layersWidget);
+	}
 </script>
 <title>控件：图层面板</title>
 <body onload="init()">

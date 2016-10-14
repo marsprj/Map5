@@ -5,7 +5,7 @@
  * @class
  * @extends {GeoBeans.Widget}
  */
-GeoBeans.Widget.LayerWidget = GeoBeans.Class(GeoBeans.Widget,{
+GeoBeans.Widget.LayersWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 	initialize : function(map){
 		this.attach(map);
@@ -15,21 +15,33 @@ GeoBeans.Widget.LayerWidget = GeoBeans.Class(GeoBeans.Widget,{
 });
 
 
-GeoBeans.Widget.LayerWidget.prototype.createContainer = function(){
+GeoBeans.Widget.LayersWidget.prototype.destory = function(){
+	$(this._container).remove();
+};
+
+
+/**
+ * 创建容器
+ * @private
+ */
+GeoBeans.Widget.LayersWidget.prototype.createContainer = function(){
 
 	var mapContainer = this._map.getContainer();
 
 	$(mapContainer).find(".map5-layer-widget").remove();
 
-	var html = "<div class='map5-layer-widget'>aa</div>";
+	var html = "<div class='map5-layer-widget'></div>";
 
 	$(mapContainer).append(html);
 
 	this._container = $(mapContainer).find(".map5-layer-widget")[0];
 };
 
-
-GeoBeans.Widget.LayerWidget.prototype.refresh = function(){
+/**
+ * 面板刷新
+ * @private
+ */
+GeoBeans.Widget.LayersWidget.prototype.refresh = function(){
 	var layers = this._map.layers;
 	var html = "";
 		
@@ -75,7 +87,7 @@ GeoBeans.Widget.LayerWidget.prototype.refresh = function(){
 			layerIcon = "layer-type-image";
 		}
 
-		var layerVisible = layer.isVisible() ? "layer-visible" : "layer-visible hide";
+		var layerVisible = layer.isVisible() ? "layer-visible" : "layer-invisible";
 		html += "<div class='layer-item' style='display:" + (collepsed? "none" :"block") + "'>"
 			+ "<div class='layer-type "+ layerIcon + "'></div>"
 			+ "<div class='layer-name' title='"+ layer.name +"'>" + layer.name +　"</div>"
@@ -86,14 +98,16 @@ GeoBeans.Widget.LayerWidget.prototype.refresh = function(){
 	this._container.innerHTML = html;
 
 	var that = this;
-	$(this._container).find(".layer-visible").click(function(){
+	$(this._container).find(".layer-visible,.layer-invisible").click(function(){
 		var visible = null;
-		if($(this).hasClass("hide")){
-			$(this).removeClass("hide");
-			visible = true;
-		}else{
-			$(this).addClass("hide");
+		if($(this).hasClass("layer-visible")){
+			$(this).removeClass("layer-visible");
+			$(this).addClass("layer-invisible");
 			visible = false;
+		}else{
+			$(this).addClass("layer-visible");
+			$(this).removeClass("layer-invisible");
+			visible = true;
 		}
 		var layerName = $(this).prev().html();
 		var layer = that._map.getLayer(layerName);
@@ -121,9 +135,10 @@ GeoBeans.Widget.LayerWidget.prototype.refresh = function(){
 
 /**
  * 设置是否显示
+ * @public
  * @param  {boolean} v 是否显示
  */
-GeoBeans.Widget.LayerWidget.prototype.show = function(v){
+GeoBeans.Widget.LayersWidget.prototype.show = function(v){
 	this._visible = v;
 	if(this._visible){
 		$(this._container).show();
