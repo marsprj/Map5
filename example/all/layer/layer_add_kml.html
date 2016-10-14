@@ -56,7 +56,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Format/KML2.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/KML.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
@@ -83,7 +83,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/KML.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
+<!-- <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script> -->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
@@ -141,47 +141,51 @@
 <script type="text/javascript">
 
 	var mapObj = null;
-	var kmlLayer = null;
-
 	function  init(){
 		
 		loadTileMap();
-		addKMLLayer();
+
+		addPointKMLLayer();
+		addLineKMLLayer();
+		addPolygonKMLLayer();
 	}
 
-	// function addGeoJSONLayer(){
-	// 	jsonLayer = new GeoBeans.Layer.FeatureLayer2({			
-	// 		"name" : "layername",
-	// 		"geometryType" : GeoBeans.Geometry.Type.POINT,
-	// 		"source" : new GeoBeans.Source.Feature.GeoJSON({
-	// 			"url" : "/Map5/example/all/data/geojson/countries.geojson",
-	// 			"geometryName" : "geometry",
-	// 		}),		
-	// 		"style" : createSimplePolygonStyle()
-	// 	});
-	// 	mapObj.addLayer(jsonLayer);
-	// 	mapObj.refresh();
-	// }
 
-	function addKMLLayer(){
-		kmlLayer = new GeoBeans.Layer.FeatureLayer2({
-			name : "kml",
-			// geometryType : GeoBeans.Geometry.Type.POINT,
-			// geometryType : GeoBeans.Geometry.Type.LINESTRING,
-			geometryType : GeoBeans.Geometry.Type.POLYGON,
+	function addPointKMLLayer(){
+		var layer = new GeoBeans.Layer.FeatureLayer({
+			name : "point",
+			geometryType : GeoBeans.Geometry.Type.POINT,
 			source : new GeoBeans.Source.Feature.KML({
-				// url : "/Map5/example/all/data/kml/point.kml"
-				url : "/Map5/example/all/data/kml/polygon.kml"
-				// url : "/Map5/example/all/data/kml/line.kml"
-				// url : "/Map5/example/all/data/kml/2012_Earthquakes_Mag5.kml"
-				
+				url : "/Map5/example/all/data/kml/point.kml"
 			})
 		});
-
-		mapObj.addLayer(kmlLayer);
+		mapObj.addLayer(layer);
 		mapObj.refresh();
-	}	
-
+	}
 	
+
+	function addLineKMLLayer(){
+		var layer = new GeoBeans.Layer.FeatureLayer({
+			name : "line",
+			geometryType : GeoBeans.Geometry.Type.LINESTRING,
+			source : new GeoBeans.Source.Feature.KML({
+				url : "/Map5/example/all/data/kml/line.kml"
+			})
+		});
+		mapObj.addLayer(layer);
+		mapObj.refresh();		
+	}
+
+	function addPolygonKMLLayer(){
+		var layer = new GeoBeans.Layer.FeatureLayer({
+			name : "polygon",
+			geometryType : GeoBeans.Geometry.Type.POLYGON,
+			source : new GeoBeans.Source.Feature.KML({
+				url : "/Map5/example/all/data/kml/polygon.kml"
+			})
+		});
+		mapObj.addLayer(layer);
+		mapObj.refresh();			
+	}
 </script>
 	

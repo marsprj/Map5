@@ -15,38 +15,6 @@ GeoBeans.Format.KML = GeoBeans.Class(GeoBeans.Format,{
 });
 
 
-GeoBeans.Format.KML.prototype.read = function(kml,style,fields){
-	if(kml == null || fields == null){
-		return null;
-	}
-
-
-	var features = [];
-	var documentKML = $(kml).find("Document");
-
-	this.createDefaultRules(documentKML);
-
-	var that = this;
-	documentKML.children().each(function(){
-		var tagName = this.tagName;
-
-		switch(tagName){
-			case "Folder":{
-				break;
-			}
-			case "Placemark":{
-				var feature = that.readPlacemark(this,style,fields);
-				if(feature != null){
-					features.push(feature);
-				}
-			}
-		}
-	});
-
-	return features;
-};
-
-
 /**
  * 读取Features
  * @param  {tetxt} text geojson字符串
@@ -59,7 +27,29 @@ GeoBeans.Format.KML.prototype.readFeatures = function(kml){
 
 	var features = [];	
 	try{
+		var styles = this.readStyle(kml);
+		this.styles = styles;
 
+		var documentKML = $(kml).find("Document");
+
+		var that = this;
+		documentKML.children().each(function(){
+			var tagName = this.tagName;
+
+			switch(tagName){
+				case "Folder":{
+					var folderFeatures = that.readFolder(this);
+					features = features.concat(folderFeatures);
+					break;
+				}
+				case "Placemark":{
+					var feature = that.readPlacemark(this);
+					if(isValid(feature)){
+						features.push(feature);
+					}
+				}
+			}
+		});
 	}
 	catch(e){
 		console.log(e.message);
@@ -69,169 +59,71 @@ GeoBeans.Format.KML.prototype.readFeatures = function(kml){
 	}
 };
 
-// 先读取样式的列表
-GeoBeans.Format.KML.prototype.readStyleList = function(kml){
+/**
+ * 读取文件夹
+ * @private
+ */
+GeoBeans.Format.KML.prototype.readFolder = function(kml){
 	if(!isValid(kml)){
-		return {};
+		return [];
 	}
-
-	var documentKML = $(kml).find("Document");
-	documentKML.children().each(function(){
-		var tagName = this.tagName;
-
-		switch(tagName){
-			case "Folder":{
-				// var rules = that.readRuleByFolderNode(this);
-				// if(rules != null){
-				// 	$(rules).each(function(){
-				// 		style.addRule(this);
-				// 	});
-				// }
-				break;
-			}
-			case "Style":{
-				
-				break;
-			}
-			case "StyleMap":{
-				break;
-			}
-			default:
-				break;
-		}
-	});
-};
-
-
-GeoBeans.Format.KML.prototype.readFields = function(kml){
-	if(kml == null){
-		return null;
-	}
-	var featureType = new GeoBeans.FeatureType();
-	featureType.fields = [];
-
-	var field = new GeoBeans.Field("name",GeoBeans.Field.Type.STRING,featureType,null);
-	featureType.fields.push(field);
-
-	var field = new GeoBeans.Field("geometry",GeoBeans.Field.Type.GEOMETRY,featureType,null);
-
-	var geomType = this.readGeometryType(kml);
-	field.setGeomType(geomType);
-
-	featureType.fields.push(field);
-	return featureType.fields;
-};
-
-GeoBeans.Format.KML.prototype.readGeometryType = function(kml){
-	if(kml == null){
-		return null;
-	}
-	var placemark = $(kml).find("Placemark").first();
-
 	var that = this;
-	var geomType = null;
-
-	placemark.children().each(function(){
-		var tagName = this.tagName;
-		switch(tagName){
-			case "Point":{
-				geomType = GeoBeans.Geometry.Type.POINT;
-				break;
-			}
-			case "LineString":{
-				geomType = GeoBeans.Geometry.Type.LINESTRING;
-				break;
-			}
-			case "Polygon":{
-				geomType = GeoBeans.Geometry.Type.POLYGON;
-				break;
-			}
-			case "MultiGeometry":{
-				geomType = GeoBeans.Geometry.Type.COLLECTION;
-				break;
-			}
-			default:
-				break;
-		}
-	});
-	return geomType;
-};
-
-GeoBeans.Format.KML.prototype.readStyle = function(kml){
-	if(kml == null){
-		return null;
-	}
-	console.log(kml);
-	var style = new GeoBeans.Style.FeatureStyle();
-	var that = this;
-
-	var documentKML = $(kml).find("Document");
-	documentKML.children().each(function(){
-		var tagName = this.tagName;
-
-		switch(tagName){
-			case "Folder":{
-				var rules = that.readRuleByFolderNode(this);
-				if(rules != null){
-					$(rules).each(function(){
-						style.addRule(this);
-					});
-				}
-				break;
-			}
-			case "Style":{
-				var rule = that.readRuleByStyleNode(this);
-				if(rule != null){
-					style.addRule(rule);
-				}
-				break;
-			}
-			case "StyleMap":{
-				break;
-			}
-			default:
-				break;
-		}
-	});
-
-	return style;
-};
-
-
-GeoBeans.Format.KML.prototype.readRuleByFolderNode = function(kml){
-	if(kml == null){
-		return;
-	}
-
-	var rule = null;
-	var that = this;
-	var rules = [];
+	var features = [];
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
 		switch(tagName){
-			// 嵌套循环
 			case "Folder":{
-				var rules_c = that.readRuleByFolderNode(this);
-				if(rules_c != null){
-					$(rules_c).each(function(){
-						rules.push(this);
-					});
+				var array = that.readFolder(this);
+				if(isValid(array)){
+					features = features.concat(array);
 				}
 			}
-			case "Style":{
-				rule = that.readRuleByStyleNode(this);
-				if(rule != null){
-					rules.push(rule);
+			case "Placemark":{
+				var feature = that.readPlacemark(this);
+				if(isValid(feature)){
+					features.push(feature);
 				}
+			}
+		}
+	});
+
+	return features;
+};
+
+/**
+ * 读取样式的列表
+ * @private
+ */
+GeoBeans.Format.KML.prototype.readStyle = function(kml){
+	if(!isValid(kml)){
+		return [];
+	}
+
+
+	var that = this;
+	var styles = [];
+	var documentKML = $(kml).find("Document");
+	documentKML.children().each(function(){
+		var tagName = this.tagName;
+
+		switch(tagName){
+			case "Folder":{
+				break;
+			}
+			case "Style":{
+				var style = that.readStyleNode(this);
+				styles.push(style);
+				break;
+			}
+			case "StyleMap":{
 				break;
 			}
 			default:
 				break;
 		}
 	});
-
-	return rules;
-};
+	return styles;
+}
 
 // <Style id="exampleStyleDocument">
 //     <LabelStyle>
@@ -246,54 +138,54 @@ GeoBeans.Format.KML.prototype.readRuleByFolderNode = function(kml){
 //          </Icon>
 //       </IconStyle>
 //   </Style>
-GeoBeans.Format.KML.prototype.readRuleByStyleNode = function(kml){
-	if(kml == null){
+// 
+/**
+ * 读取样式
+ * @private
+ */
+GeoBeans.Format.KML.prototype.readStyleNode = function(kml){
+	if(!isValid(kml)){
 		return null;
 	}
 
 	var name = $(kml).attr("id");
-	if(name == null){
+	if(!isValid(name)){
 		return null;
 	}
-	var rule = new GeoBeans.Style.Rule(name);
+	var style = {
+		name : name
+	};
+
 	var that = this;
-
-	var pointSymbolizer = null;
-	var lineSymbolizer = null;
-	var polygonSymbolizer = null;
-
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
 		switch(tagName){
 			case "IconStyle":{
-				var pointSymbolizer = that.readIconStyle(this);
-				rule.symbolizer = pointSymbolizer;
+				var iconStyle = that.readIconStyle(this);
+				style.iconStyle = iconStyle;
 				break;
 			}
 			case "LabelStyle":{
-				var textSymbolizer = that.readLabelStyle(this);
-				rule.textSymbolizer = textSymbolizer;
+				var labelStyle = that.readLabelStyle(this);
+				style.labelStyle = labelStyle;
 				break;
 			}
 			case "LineStyle":{
-				var lineSymbolizer = that.readLineStyle(this);
-				rule.symbolizer = lineSymbolizer;
+				var lineStyle = that.readLineStyle(this);
+				style.lineStyle = lineStyle;
 				break;
 			}
 			case "PolyStyle":{
-				var polygonSymbolizer = that.readPolyStyle(this);
-				rule.symbolizer = polygonSymbolizer;
+				var polyStyle = that.readPolyStyle(this);
+				style.polyStyle = polyStyle;
 				break;
 			}
 			default :
 				break;
 		}
-	});	
+	});
 
-	if(rule.textSymbolizer != null && rule.symbolizer == null){
-		rule.symbolizer = (this.getDefaultSymbolizer(GeoBeans.Geometry.Type.POINT)).clone();
-	}
-	return rule;
+	return style;
 };
 
 // 只解析了icon和scale
@@ -312,60 +204,30 @@ GeoBeans.Format.KML.prototype.readRuleByStyleNode = function(kml){
 //     xunits="fraction" yunits="fraction"/>    <!-- kml:vec2 -->
 // </IconStyle>
 GeoBeans.Format.KML.prototype.readIconStyle = function(kml){
-	if(kml == null){
-		return null;
+	if(!isValid(kml)){
+		return {};
 	}
 
+	var iconStyle = {};
 	var that = this;
-	var pointSymbolizer = (this.getDefaultSymbolizer(GeoBeans.Geometry.Type.POINT)).clone();
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
 		switch(tagName){
 			case "Icon":{
 				var url = that.readIcon(this);
-				if(url != null){
-					pointSymbolizer.symbol.icon = url;
-				}
+				iconStyle.icon = url;
 				break;
 			}
 			case "scale":{
 				var scale = that.readScale(this);
-				if(scale != null){
-					pointSymbolizer.symbol.scale = scale;
-				}
+				iconStyle.scale = scale;
 				break;
 			}
 		}
 	});
-	return pointSymbolizer;
+	return iconStyle;
 };
 
-GeoBeans.Format.KML.prototype.getDefaultSymbolizer = function(geomType){
-	var symbolizer = null;
-	switch(geomType){
-		case GeoBeans.Geometry.Type.POINT:{
-			symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-			var symbol = new GeoBeans.Style.Symbol();
-			symbol.icon = "../images/ylw-pushpin.png";
-			symbolizer.symbol = symbol;
-			break;
-		}
-		case GeoBeans.Geometry.Type.LINESTRING:{
-			symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
-			symbolizer.stroke.color.set(255,0,0,1);
-			break;
-		}
-		case GeoBeans.Geometry.Type.POLYGON:{
-			symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-			symbolizer.fill.color.set(255,0,0,1);
-			symbolizer.stroke.color.set(0,0,255,1);
-			break;
-		}
-		default:
-			break;
-	}
-	return symbolizer;
-},	
 
 GeoBeans.Format.KML.prototype.readIcon = function(kml){
 	if(kml == null){
@@ -395,23 +257,23 @@ GeoBeans.Format.KML.prototype.readScale = function(kml){
 //   <scale>1</scale>                   <!-- float -->
 // </LabelStyle>	
 GeoBeans.Format.KML.prototype.readLabelStyle = function(kml){
-	if(kml == null){
-		return null;
+	if(!isValid(kml)){
+		return {};
 	}
+
 	var that = this;
-	var textSymbolizer = this.getDefaultTextSymbolizer().clone();
-	
+	var labelStyle = {};
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
 		switch(tagName){
 			case "color":{
 				var color = that.readColor(this);
-				textSymbolizer.fill.color = color;
+				labelStyle.color = color;
 				break;
 			}
 			case "scale":{
 				var scale = that.readScale(this);
-				textSymbolizer.font.size = textSymbolizer.font.size*scale;
+				labelStyle.scale = scale;
 				break;
 			}
 			default :
@@ -419,44 +281,29 @@ GeoBeans.Format.KML.prototype.readLabelStyle = function(kml){
 		}
 	});
 
-	return textSymbolizer;
+	return labelStyle;
 };
 
 // <color>ffffffff</color>,abgr
 GeoBeans.Format.KML.prototype.readColor = function(kml){
-	if(kml == null){
+	if(!isValid(kml)){
 		return null;
 	}
 	var colorStr = $(kml).text();
 	if(colorStr.length == 8){
 		var color = new GeoBeans.Color();
-		color.setByABGR(colorStr);
+		color.setAbgr(colorStr);
 		return color;
 	}
 
 	if(colorStr.length == 9 && colorStr.indexOf("#") == 0){
 		var color = new GeoBeans.Color();
-		color.setByABGR(colorStr.slice(1,colorStr.length));
+		color.setAbgr(colorStr.slice(1,colorStr.length));
 		return color;
 	}
 	return (new GeoBeans.Color());
 };
 
-
-
-GeoBeans.Format.KML.prototype.getDefaultTextSymbolizer = function(){
-	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
-	textSymbolizer.fill.color.set(255,255,255,1);
-	textSymbolizer.stroke.color.set(51,51,51,1);
-	textSymbolizer.stroke.width = 1;
-	textSymbolizer.font.family = "Helvetica";
-	textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
-	textSymbolizer.font.size = 16;
-	textSymbolizer.displaceX = 8;
-	textSymbolizer.displaceY = -5;		
-	textSymbolizer.labelProp = "name";
-	return textSymbolizer;
-};
 
 // <LineStyle id="ID">
 //   <!-- inherited from ColorStyle -->
@@ -471,38 +318,37 @@ GeoBeans.Format.KML.prototype.getDefaultTextSymbolizer = function(){
 //   <gx:labelVisibility>0</gx:labelVisibility>  <!-- boolean -->
 // </LineStyle>
 GeoBeans.Format.KML.prototype.readLineStyle = function(kml){
-	if(kml == null){
+	if(!isValid(kml)){
 		return null;
-	}
+	}	
 
 	var that = this;
-	var lineSymbolizer = (this.getDefaultSymbolizer(GeoBeans.Geometry.Type.LINESTRING)).clone();
+	var lineStyle = {};
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
 		switch(tagName){
 			case "color":{
 				var color = that.readColor(this);
-				lineSymbolizer.stroke.color = color;
+				lineStyle.color = color;
 				break;
 			}
 			case "width":{
 				var width = that.readWidth(this);
-				lineSymbolizer.stroke.width = width;
+				lineStyle.width = width;
 				break;
 			}
 		}
 	});
-	return lineSymbolizer;	
+	return lineStyle;
 };
 
 GeoBeans.Format.KML.prototype.readWidth = function(kml){
-	if(kml == null){
+	if(!isValid(kml)){
 		return null;
 	}
 	var width = $(kml).text();
 	return parseFloat(width);	
 };
-
 
 // <PolyStyle id="ID">
 //   <!-- inherited from ColorStyle -->
@@ -514,44 +360,40 @@ GeoBeans.Format.KML.prototype.readWidth = function(kml){
 //   <outline>1</outline>               <!-- boolean -->
 // </PolyStyle>
 GeoBeans.Format.KML.prototype.readPolyStyle = function(kml){
-	if(kml == null){
+	if(!isValid(kml)){
 		return null;
 	}
 	var that = this;
-	var polygonSymbolizer = (this.getDefaultSymbolizer(GeoBeans.Geometry.Type.POLYGON)).clone();
+	var polyStyle = {};
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
 		switch(tagName){
 			case "color":{
 				var color = that.readColor(this);
-				polygonSymbolizer.fill.color = color;
+				polyStyle.color = color;
 				break;
 			}
 			case "fill":{
 				var fill = that.readFill(this);
-				if(!fill){
-					polygonSymbolizer.fill = null;
-				}
+				polyStyle.fill = fill;
 				break;
 			}
 			case "outline":{
 				var outline = that.readOutline(this);
-				if(!outline){
-					polygonSymbolizer.stroke = null;
-				}
+				polyStyle.outline = outline;
 				break;
 			}
 			default :
 				break;
 		}
 	});
-	return polygonSymbolizer;	
+	return polyStyle;	
 };
 
 // <fill>1</fill>
 GeoBeans.Format.KML.prototype.readFill = function(kml){
-	if(kml == null){
-		return null;
+	if(!isValid(kml)){
+		return true;
 	}
 	var text = $(kml).text();
 	var flag = parseInt(text);
@@ -563,8 +405,8 @@ GeoBeans.Format.KML.prototype.readFill = function(kml){
 };
 
 GeoBeans.Format.KML.prototype.readOutline = function(kml){
-	if(kml == null){
-		return null;
+	if(!isValid(kml)){
+		return true;
 	}
 	var text = $(kml).text();
 	var flag = parseInt(text);
@@ -576,23 +418,13 @@ GeoBeans.Format.KML.prototype.readOutline = function(kml){
 };
 
 
-GeoBeans.Format.KML.prototype.readPlacemark = function(kml,style,fields){
-	if(kml == null || style == null || fields == null){
+
+GeoBeans.Format.KML.prototype.readPlacemark = function(kml){
+	if(!isValid(kml)){
 		return null;
 	}
 
-
-	var featureType = null;
-	var field = fields[0];
-	if(field != null){
-		featureType = field.featureType;
-	}else{
-		featureType = new GeoBeans.FeatureType();
-	}
-
-	var name = null;
-	var styleName = null;
-	var geometry = null;
+	var name = null,styleName = null,geometry = null;
 	var that = this;
 	$(kml).children().each(function(){
 		var tagName = this.tagName;
@@ -626,140 +458,28 @@ GeoBeans.Format.KML.prototype.readPlacemark = function(kml,style,fields){
 		}
 	});
 
-
-	var fid = $(kml).attr("id");
-	if(fid == null){
-		fid = GeoBeans.Utility.uuid();
-	}
-
 	var values = {
 		name : name,
 		geometry : geometry
 	};
-	var feature = {
-		values : values,
-		geometry : geometry,
-		fid : fid
-	};
 
-	// 备注，不考虑MultiGeometry的情况
-	// 设定了样式
-	if(styleName != null){
-		if(geometry != null && geometry.type != GeoBeans.Geometry.Type.COLLECTION){
-			this.addFilterByID(style,styleName,fid);
+	var feature = new GeoBeans.Feature({
+		properties : values,
+		geometry : geometry
+	});
+
+	var style = this.getStyleByName(styleName);
+	var symbolizers = this.getSymbolizersByGeometry(style,geometry);
+	if(isValid(symbolizers)){
+		if(isValid(symbolizers.symbolizer)){
+			feature.symbolizer = symbolizers.symbolizer;
 		}
-	}else{
-		// 没有设定样式，采用默认样式
-		if(geometry != null && geometry.type != GeoBeans.Geometry.Type.COLLECTION){
-			var rule = this.getDefaultRuleByGeomType(geometry.type);
-			if(rule != null){
-				var ruleInStyle = this.getRuleFromStyle(rule.name,style);
-				if(ruleInStyle == null){
-					style.addRule(rule)
-				}
-				this.addFilterByID(style,rule.name,fid);
-			}
+		if(isValid(symbolizers.textSymbolizer)){
+			feature.textSymbolizer = symbolizers.textSymbolizer;
 		}
 	}
 
 	return feature;
-};
-
-//看读取出来的style里面有没有该rule
-GeoBeans.Format.KML.prototype.getRuleFromStyle = function(ruleName,style){
-	if(ruleName == null || style == null){
-		return null;
-	}
-	var rules = style.rules;
-	for(var i = 0; i < rules.length;++i){
-		if(rules[i].name == ruleName){
-			return rules[i];
-		}
-	}
-	return null;
-};
-GeoBeans.Format.KML.prototype.createDefaultRules = function(documentXML){
-	if(documentXML == null){
-		return;
-	}
-	var xmlStyleNames = [];
-	var xmlStyleArray = $(documentXML).find("Style");
-	xmlStyleArray.each(function(){
-		var name = $(this).attr("id");
-		xmlStyleNames.push(name);
-	});
-	var id = 0;
-	var pointRuleName = "default_point";
-	var lineRuleName = "default_line";
-	var polygonRuleName = "default_polygon";
-	var id = null;
-	while(xmlStyleNames.indexOf(pointRuleName) != -1){
-		id = 0;
-		pointRuleName += id; 
-	}
-	this.pointDefaultRule = this.getDefaultRule(pointRuleName,GeoBeans.Geometry.Type.POINT);
-
-
-	while(xmlStyleNames.indexOf(lineRuleName) != -1){
-		id = 0;
-		lineRuleName += id; 
-	}
-	this.lineDefaultRule = this.getDefaultRule(lineRuleName,GeoBeans.Geometry.Type.LINESTRING);
-
-
-	while(xmlStyleNames.indexOf(polygonRuleName) != -1){
-		id = 0;
-		polygonRuleName += id; 
-	}
-	this.polygonDefaultRule = this.getDefaultRule(polygonRuleName,GeoBeans.Geometry.Type.POLYGON);
-};
-
-GeoBeans.Format.KML.prototype.getDefaultRule = function(name,geomType){
-	if(name == null || geomType == null){
-		return null;
-	}
-	var symbolizer = this.getDefaultSymbolizer(geomType).clone();
-	if(symbolizer == null){
-		return null;
-	}
-	var rule = new GeoBeans.Style.Rule();
-	rule.name = name;
-	rule.symbolizer = symbolizer;
-	if(geomType == GeoBeans.Geometry.Type.POINT){
-		rule.textSymbolizer = this.getDefaultTextSymbolizer().clone();
-	}
-	return rule;	
-};
-
-GeoBeans.Format.KML.prototype.getDefaultRuleByGeomType = function(geomType){
-	if(geomType == GeoBeans.Geometry.Type.POINT){
-		return this.pointDefaultRule;
-	}else if(geomType == GeoBeans.Geometry.Type.LINESTRING){
-		return this.lineDefaultRule;
-	}else if(geomType == GeoBeans.Geometry.Type.POLYGON){
-		return this.polygonDefaultRule;
-	}
-	return null;	
-};
-
-
-GeoBeans.Format.KML.prototype.addFilterByID = function(style,styleName,fid){
-	if(style == null || styleName == null || fid == null){
-		return;
-	}
-
-	var rules = style.rules;
-	for(var i = 0; i < rules.length;++i){
-		var r = rules[i];
-		if(r.name == styleName){
-			var filter = r.filter;
-			if(filter == null){
-				filter = new GeoBeans.Filter.IDFilter();
-				r.filter = filter;
-			}	
-			filter.addID(fid);
-		}
-	}
 };
 
 // <styleUrl>#exampleStyleDocument</styleUrl>
@@ -773,6 +493,7 @@ GeoBeans.Format.KML.prototype.readStyleUrl = function(kml){
 	}
 	return null;
 };
+
 
 GeoBeans.Format.KML.prototype.readPoint = function(kml){
 	if(kml == null){
@@ -856,7 +577,6 @@ GeoBeans.Format.KML.prototype.readMultiGeometry = function(kml){
 	return geometry;
 };
 
-
 GeoBeans.Format.KML.prototype.readPointCoords = function(coordinates){
 	if(coordinates == null || coordinates.trim() == ""){
 		return null;
@@ -889,4 +609,166 @@ GeoBeans.Format.KML.prototype.readLineStringCoords = function(coordinates){
 	}
 	var lineString = new GeoBeans.Geometry.LineString(points);
 	return lineString;	
+};
+
+GeoBeans.Format.KML.prototype.getStyleByName = function(styleName){
+	if(!isValid(styleName) || !isValid(this.styles)){
+		return null;
+	}
+	for(var i = 0; i < this.styles.length;++i){
+		var style = this.styles[i];
+		if(style.name == styleName){
+			return style;
+		}
+	}
+	return null;
+};
+// 按照空间类型返回样式
+GeoBeans.Format.KML.prototype.getSymbolizersByGeometry = function(style,geometry){
+	if(!isValid(geometry) || !isValid(style)){
+		return null;
+	}
+
+	var type = geometry.type;
+	var result = {};
+	switch(type){
+		case GeoBeans.Geometry.Type.POINT:{
+			if(isValid(style.pointSymbolizer)){
+				result.symbolizer = style.pointSymbolizer;
+			}else{
+				if(isValid(style.iconStyle)){
+					var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+					var symbol = new GeoBeans.Style.Symbol();
+					if(isValid(style.iconStyle.icon)){
+						symbol.icon = style.iconStyle.icon;
+					}else{
+						symbol.icon = "../images/ylw-pushpin.png";
+					}
+					if(isValid(style.iconStyle.scale)){
+						symbol.scale = style.iconStyle.scale;
+					}
+					symbolizer.symbol = symbol;
+					result.symbolizer = symbolizer;
+					style.pointSymbolizer = symbolizer;
+				}else{
+					var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+					var symbol = new GeoBeans.Style.Symbol();
+					symbol.icon = "../images/ylw-pushpin.png";
+					symbolizer.symbol = symbol;
+					result.symbolizer = symbolizer;
+					style.pointSymbolizer = symbolizer;
+				}
+			}
+			if(isValid(style.textSymbolizer)){
+				result.textSymbolizer = style.textSymbolizer;
+			}else{
+				if(isValid(style.labelStyle)){
+					var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+					textSymbolizer.fill.color.set(255,255,255,1);
+					textSymbolizer.stroke.color.set(51,51,51,1);
+					textSymbolizer.stroke.width = 1;
+					textSymbolizer.font.family = "Helvetica";
+					textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+					textSymbolizer.font.size = 16;
+					textSymbolizer.displaceX = 8;
+					textSymbolizer.displaceY = -5;		
+					textSymbolizer.labelProp = "name";
+					if(isValid(style.labelStyle.color)){
+						textSymbolizer.fill.color = style.labelStyle.color;
+					}
+					if(isValid(style.labelStyle.scale)){
+						textSymbolizer.font.size = textSymbolizer.font.size * style.labelStyle.scale;
+					}
+					result.textSymbolizer = textSymbolizer;
+					style.textSymbolizer = textSymbolizer;
+				}else{
+					var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+					textSymbolizer.fill.color.set(255,255,255,1);
+					textSymbolizer.stroke.color.set(51,51,51,1);
+					textSymbolizer.stroke.width = 1;
+					textSymbolizer.font.family = "Helvetica";
+					textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+					textSymbolizer.font.size = 16;
+					textSymbolizer.displaceX = 8;
+					textSymbolizer.displaceY = -5;		
+					textSymbolizer.labelProp = "name";
+					result.textSymbolizer = textSymbolizer;
+					style.textSymbolizer = textSymbolizer;
+				}
+			}
+			break;
+		}
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			if(isValid(style.lineSymbolizer)){
+				result.symbolizer = style.lineSymbolizer;
+			}else{
+				if(isValid(style.lineStyle)){
+					var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+					if(isValid(style.lineStyle.color)){
+						symbolizer.stroke.color = style.lineStyle.color;
+					}else{
+						symbolizer.stroke.color.set(255,0,0,1);
+					}
+					if(isValid(style.lineStyle.width)){
+						symbolizer.stroke.width = style.lineStyle.width;
+					}
+					result.symbolizer = symbolizer;
+					style.lineSymbolizer = symbolizer;
+				}else{
+					var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+					symbolizer.stroke.color.set(255,0,0,1);
+					result.symbolizer = symbolizer;
+					style.lineSymbolizer = symbolizer;
+				}
+			}
+			break;
+		}
+		case GeoBeans.Geometry.Type.POLYGON:{
+			if(isValid(style.polygonSymbolizer)){
+				result.symbolizer = style.polygonSymbolizer;
+			}else{
+				if(isValid(style.polyStyle)){
+					var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+					if(isValid(style.polyStyle.color)){
+						symbolizer.fill.color = style.polyStyle.color;
+					}else{
+						symbolizer.fill.color.set(255,0,0,1);
+					}
+					if(isValid(style.polyStyle.fill)){
+						if(!style.polyStyle.fill){
+							symbolizer.fill = null;
+						}
+					}
+					if(isValid(style.polyStyle.outline)){
+						if(!style.polygonSymbolizer.outline){
+							symbolizer.stroke = null;
+						}
+					}
+					if(isValid(style.lineStyle)){
+						if(isValid(style.lineStyle.color)){
+							symbolizer.stroke.color = style.lineStyle.color;
+						}else{
+							symbolizer.stroke.color.set(255,0,0,1);
+						}
+						if(isValid(style.lineStyle.width)){
+							symbolizer.stroke.width = style.lineStyle.width;
+						}
+					}else{
+						symbolizer.stroke.color.set(0,0,255,1);
+					}
+					style.polygonSymbolizer = symbolizer;
+					result.symbolizer = symbolizer;
+				}else{
+					var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+					symbolizer.fill.color.set(255,0,0,1);
+					symbolizer.stroke.color.set(0,0,255,1);
+					style.polygonSymbolizer = symbolizer;
+					result.symbolizer = symbolizer;
+				}
+			}
+			break;
+		}
+	}
+
+	return result;
 };
