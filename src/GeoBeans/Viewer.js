@@ -17,6 +17,8 @@ GeoBeans.Viewer = GeoBeans.Class({
 
 	_minZoom : null,
 	_maxZoom : null,
+
+	_onChange : null,
 	
 	
 	initialize : function(map, options){
@@ -523,7 +525,9 @@ GeoBeans.Viewer.prototype.update = function(){
 
 	this._map.tolerance = this._map.TOLERANCE / this.scale;
 
-	this._onChange();
+	if(isValid(this._onChange)){
+		this._onChange();
+	}
 };
 
 
@@ -605,6 +609,14 @@ GeoBeans.Viewer.prototype.setMinZoom = function(zoom){
 	this._minZoom = zoom;
 }
 
-GeoBeans.Viewer.prototype._onChange = function(){
-	this._map.refresh();
+// GeoBeans.Viewer.prototype._onChange = function(){
+// 	this._map.refresh();
+// }
+
+GeoBeans.Viewer.prototype.on = function(event, handler){
+	switch(event){
+		case GeoBeans.Event.CHANGE:
+			this._onChange = handler;
+			break;
+	}
 }

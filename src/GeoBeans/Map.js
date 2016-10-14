@@ -108,8 +108,7 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* mapContainer Begin
 		/**************************************************************************************/
-		this.createMapContainer();
-		
+		this.createMapContainer();		
 		/**************************************************************************************/
 		/* mapContainer End
 		/**************************************************************************************/
@@ -159,6 +158,14 @@ GeoBeans.Map = GeoBeans.Class({
 		/* 初始选择集
 		/**************************************************************************************/	
 		this.initSelection();
+
+		/**************************************************************************************/
+		/* 注册View事件
+		/**************************************************************************************/
+		this.registerViewerEvent();		
+		/**************************************************************************************/
+		/* mapContainer End
+		/**************************************************************************************/
 
 		/**************************************************************************************/
 		/* 启用Window的Resize事件
@@ -1016,6 +1023,20 @@ GeoBeans.Map.prototype.initSelection = function(){
 GeoBeans.Map.prototype.getSelection = function(){
 	return this._selection;
 }
+
+/**
+ * 注册Viewer的change事件。当Viewer变化时候，出发Map的重绘制。
+ * @private
+ */
+GeoBeans.Map.prototype.registerViewerEvent = function(){
+	if(isValid(this.viewer)){
+		var that = this;
+		//注册Viewer变化事件，Viewer发生变化时候，需要刷新地图。
+		this.viewer.on(GeoBeans.Event.CHANGE, function(){
+			that.refresh();
+		});
+	}
+}
 		
 /**
  * 初始化地图大小改变
@@ -1831,7 +1852,7 @@ GeoBeans.Map.prototype.apply = function(options){
 	else{
 		this.viewer = new GeoBeans.Viewer(this);
 	}
-
+	
 	//5) extent
 	if(isValid(options.extent)){
 		this.extent = options.extent;
