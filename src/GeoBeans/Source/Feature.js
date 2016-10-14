@@ -7,6 +7,7 @@
 GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 
 	_features : [],
+	_geometryName : "geometry",
 
 	initialize : function(options){
 
@@ -15,6 +16,10 @@ GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 	destroy : function(){
 	}
 });
+
+GeoBeans.Source.Feature.prototype.getGeometryName = function(){
+	return this._geometryName;
+}
 
 /**
  * 获得符合查询条件的Feature

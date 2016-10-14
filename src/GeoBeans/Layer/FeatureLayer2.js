@@ -4,7 +4,7 @@
  * @class
  * @extends {GeoBeans.Layer}
  */
-GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
+GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
 	features : [],
 	_source : null,	
@@ -17,7 +17,7 @@ GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
 	hitControl : null,
 	onhit : null,				//function onhit(layer, features)
 
-	CLASS_NAME : "GeoBeans.Layer.FeatureLayer2",
+	CLASS_NAME : "GeoBeans.Layer.FeatureLayer",
 
 	// initialize : function(name){
 	// 	GeoBeans.Layer.prototype.initialize.apply(this, arguments);
@@ -30,7 +30,7 @@ GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
 	 * [http description]
 	 * @type {String}
 
-	 * new GeoBeans.Layer.FeatureLayer2({
+	 * new GeoBeans.Layer.FeatureLayer({
 	 * 	"name" : "layername",
 	 *  "geometryType" : GeoBeans.Geometry.Type.POINT,
 	 *  "source" : new GeoBeans.Source.Feature.GeoJSON({
@@ -214,7 +214,7 @@ GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
 
 	//获取点线面的样式
 	getDefaultStyle : function(){
-		var geomType = this.featureType.getGeometryType();
+		var geomType = this.getGeometryType();
 		var style = null; 
 		switch(geomType){
 			case GeoBeans.Geometry.Type.POINT:
@@ -436,7 +436,7 @@ GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
  * 获得图层当前的空间范围
  * @return {GeoBeans.Envelope}	图层的空间范围
  */
-GeoBeans.Layer.FeatureLayer2.prototype.getExtent = function(){
+GeoBeans.Layer.FeatureLayer.prototype.getExtent = function(){
 
 	var extent = new GeoBeans.Envelope();	
 	if(isValid(this.features)){
@@ -458,7 +458,7 @@ GeoBeans.Layer.FeatureLayer2.prototype.getExtent = function(){
  * @public
  * @param  {GeoBeasn.Feature} feature feature对象
  */
-GeoBeans.Layer.FeatureLayer2.prototype.addFeature = function(feature){
+GeoBeans.Layer.FeatureLayer.prototype.addFeature = function(feature){
 	if(isValid(feature)){
 		this.features.push(feature);
 	}
@@ -469,7 +469,7 @@ GeoBeans.Layer.FeatureLayer2.prototype.addFeature = function(feature){
  * @public
  * @param  {Array.<GeoBeasn.Feature>} features feature集合
  */
-GeoBeans.Layer.FeatureLayer2.prototype.addFeatures = function(features){
+GeoBeans.Layer.FeatureLayer.prototype.addFeatures = function(features){
 	if(features==null){
 		return;	
 	}
@@ -490,7 +490,7 @@ GeoBeans.Layer.FeatureLayer2.prototype.addFeatures = function(features){
  * @public
  * @param  {Array.<GeoBeasn.Feature>} features feature集合
  */
-GeoBeans.Layer.FeatureLayer2.prototype.setFeatures = function(features){
+GeoBeans.Layer.FeatureLayer.prototype.setFeatures = function(features){
 	if(!isValid(features)){
 		this.features = [];
 	}
@@ -504,16 +504,16 @@ GeoBeans.Layer.FeatureLayer2.prototype.setFeatures = function(features){
  * @public
  * @return  {GeoBeasn.FeatureType} 图层相关的featureType
  */
-GeoBeans.Layer.FeatureLayer2.prototype.getFeatureType = function(){
-	return this.featureType;
-}
+// GeoBeans.Layer.FeatureLayer.prototype.getFeatureType = function(){
+// 	return this.featureType;
+// }
 
 /**
  * 获得给定字段的最大最小值
  * @public
  * @return  {Object} 最大最小值
  */
-GeoBeans.Layer.FeatureLayer2.prototype.getMinMaxValue = function(fname){
+GeoBeans.Layer.FeatureLayer.prototype.getMinMaxValue = function(fname){
 	var minmax = {
 		min : 0,
 		max : 0
@@ -557,7 +557,7 @@ GeoBeans.Layer.FeatureLayer2.prototype.getMinMaxValue = function(fname){
  * 启用Feature拾取功能
  * @param  {boolean} enable 是否启用拾取功能
  */
-GeoBeans.Layer.FeatureLayer2.prototype.enableHit = function(enable){
+GeoBeans.Layer.FeatureLayer.prototype.enableHit = function(enable){
 	this.enableHit = enable;
 	if(enable){
 		if(!isValid(this.hitControl)){
@@ -576,7 +576,7 @@ GeoBeans.Layer.FeatureLayer2.prototype.enableHit = function(enable){
 /************************************************************************************/
 /*
 /************************************************************************************/
-GeoBeans.Layer.FeatureLayer2.prototype.draw = function(){
+GeoBeans.Layer.FeatureLayer.prototype.draw = function(){
 	if(!this.isVisible()){
 		this.drawBackground();
 		return;
@@ -620,4 +620,8 @@ GeoBeans.Layer.FeatureLayer2.prototype.draw = function(){
 	}
 
 	this.flag = GeoBeans.Layer.Flag.LOADED;
+}
+
+GeoBeans.Layer.FeatureLayer.prototype.getGeometryType = function(){
+	return this.geometryType;
 }

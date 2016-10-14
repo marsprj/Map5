@@ -18,14 +18,22 @@ function loadMap(){
 	// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 	var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 	mapObj.addLayer(baselayer);
-	var server = "/geoserver/radi/ows?";
-	// 2、定义WFS图层
-	wfsLayer = new GeoBeans.Layer.WFSLayer("country", 		//在地图中的名称
-												server, 		//服务器
-												"radi:country_2", //图层在geoserver的名称
-												"GML2"); 		// 格式
-	mapObj.addLayer(wfsLayer);
+	
+	wfsLayer = new GeoBeans.Layer.FeatureLayer({			
+		"name" : "country",
+		"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+		"source" : new GeoBeans.Source.Feature.WFS({
+			"url" : "/geoserver/radi/ows?",
+			"version" : "1.0.0",
+			"featureNS" : 'http://www.radi.ac.cn',
+			"featurePrefix" : "radi",
+			"featureType" : "country_2",
+			"geometryName" : "shape",
+			"outputFormat": "GML2"
+		})
+	});
 
+	mapObj.addLayer(wfsLayer);
 
 
 	// 5、设置中心点和显示级别
@@ -87,10 +95,20 @@ function loadCities(){
 	mapObj.addLayer(baselayer);
 	var server = "/geoserver/radi/ows?";
 	// 2、定义WFS图层
-	wfsLayer = new GeoBeans.Layer.WFSLayer("cities", 		//在地图中的名称
-												server, 		//服务器
-												"radi:cities_2", //图层在geoserver的名称
-												"GML2"); 		// 格式
+	wfsLayer = new GeoBeans.Layer.FeatureLayer({			
+		"name" : "cities",
+		"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+		"source" : new GeoBeans.Source.Feature.WFS({
+			"url" : "/geoserver/radi/ows?",
+			"version" : "1.0.0",
+			"featureNS" : 'http://www.radi.ac.cn',
+			"featurePrefix" : "radi",
+			"featureType" : "cities_2",
+			"geometryName" : "shape",
+			"outputFormat": "GML2"
+		})
+	});
+
 	mapObj.addLayer(wfsLayer);
 
 
@@ -124,10 +142,21 @@ function loadRivers(){
 	mapObj.addLayer(baselayer);
 	var server = "/geoserver/radi/ows?";
 	// 2、定义WFS图层
-	wfsLayer = new GeoBeans.Layer.WFSLayer("rivers", 		//在地图中的名称
-												server, 		//服务器
-												"radi:rivers_2", //图层在geoserver的名称
-												"GML2"); 		// 格式
+
+	wfsLayer = new GeoBeans.Layer.FeatureLayer({			
+		"name" : "rivers",
+		"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+		"source" : new GeoBeans.Source.Feature.WFS({
+			"url" : "/geoserver/radi/ows?",
+			"version" : "1.0.0",
+			"featureNS" : 'http://www.radi.ac.cn',
+			"featurePrefix" : "radi",
+			"featureType" : "rivers_2",
+			"geometryName" : "shape",
+			"outputFormat": "GML2"
+		})
+	});
+
 	mapObj.addLayer(wfsLayer);
 
 
