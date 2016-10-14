@@ -89,7 +89,7 @@ GeoBeans.Viewer.prototype.setCenter = function(val){
 		this._center = val;
 	}
 	
-	this._map.refresh();
+	//this._map.refresh();
 };
 
 /**
@@ -168,7 +168,7 @@ GeoBeans.Viewer.prototype.setZoom = function(zoom){
 		this.update();
 	}
 
-	this._map.refresh();
+	//this._map.refresh();
 };
 
 /**
@@ -201,7 +201,7 @@ GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
 		this.update();
 	}
 
-	this._map.refresh();
+	//this._map.refresh();
 };
 
 /**
@@ -522,6 +522,8 @@ GeoBeans.Viewer.prototype.update = function(){
 	this.scale = scale_x < scale_y ? scale_x : scale_y;
 
 	this._map.tolerance = this._map.TOLERANCE / this.scale;
+
+	this._onChange();
 };
 
 
@@ -601,4 +603,8 @@ GeoBeans.Viewer.prototype.setMaxZoom = function(zoom){
  */
 GeoBeans.Viewer.prototype.setMinZoom = function(zoom){
 	this._minZoom = zoom;
+}
+
+GeoBeans.Viewer.prototype._onChange = function(){
+	this._map.refresh();
 }
