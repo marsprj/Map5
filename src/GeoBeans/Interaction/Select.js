@@ -129,7 +129,7 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 				selection.setFeatures(features);
 			}
 		}
-		that._layer.query(query, handler);
+		that._layer.getSource().query(query, handler);
 	};
 	
 	this._onMouseDown = onmousedown;
@@ -327,11 +327,11 @@ GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
 	var filter = new GeoBeans.Filter.SpatialFilter();
 	filter.geometry = g;
 	filter.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects;
-	var featureType = this._layer.getFeatureType();
-	filter.propName = featureType.geomFieldName;
+	var source = this._layer.getSource();
+	filter.propName = source.getGeometryName();
 
 	var query = new GeoBeans.Query({
-		"typeName"	: featureType.getName(),
+		/*"typeName"	: featureType.getName(),*/
 		"filter"	: filter
 	});
 

@@ -84,7 +84,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
@@ -144,7 +143,7 @@
 
 	function addWfsLayer(){
 
-		wfsLayer = new GeoBeans.Layer.FeatureLayer2({			
+		wfsLayer = new GeoBeans.Layer.FeatureLayer({			
 			"name" : "country",
 			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
 			"source" : new GeoBeans.Source.Feature.WFS({

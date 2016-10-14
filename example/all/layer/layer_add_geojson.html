@@ -83,7 +83,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
@@ -150,7 +149,7 @@
 	}
 
 	function addGeoJSONLayer(){
-		jsonLayer = new GeoBeans.Layer.FeatureLayer2({			
+		jsonLayer = new GeoBeans.Layer.FeatureLayer({			
 			"name" : "layername",
 			"geometryType" : GeoBeans.Geometry.Type.POINT,
 			"source" : new GeoBeans.Source.Feature.GeoJSON({

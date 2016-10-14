@@ -22,6 +22,7 @@ GeoBeans.Layer = GeoBeans.Class({
 	canvas : null,
 
 	renderer : null,
+	_source  : null,
 
 	mapPoint_lt : null,
 	mapPoint_rb : null,
@@ -149,6 +150,10 @@ GeoBeans.Layer.prototype.getMap = function(){
 GeoBeans.Layer.prototype.refresh = function() {
 	this.draw();
 };
+
+GeoBeans.Layer.prototype.getSource = function(){
+	return this._source;
+}
 
 /**
  * 注册Layer事件
