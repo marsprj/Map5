@@ -83,10 +83,10 @@ GeoBeans.Source.Feature.GeoJSON.prototype.getFeatures = function(filter, success
  */
 GeoBeans.Source.Feature.GeoJSON.prototype.getFeaturesByExtent = function(extent, success, failure){
 	if(this._loaded){
-		if(isValid(extent)){
+		if(!isValid(extent)){
 			success.execute(this._features);
 		}else{
-			var target = selectByExtent(filter,this._features);
+			var target = this.selectByExtent(extent,this._features);
 			success.execute(target);
 		}
 	}
