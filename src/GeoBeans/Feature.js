@@ -11,6 +11,7 @@ GeoBeans.Feature = GeoBeans.Class({
 	_fields  : [],
 	_properties	 : {},
 	symbolizer: null,
+	textSymbolizer : null,
 	
 
 	/**

@@ -214,7 +214,8 @@ GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
 
 	//获取点线面的样式
 	getDefaultStyle : function(){
-		var geomType = this.featureType.getGeometryType();
+		// var geomType = this.featureType.getGeometryType();
+		var geomType = this.geometryType;
 		var style = null; 
 		switch(geomType){
 			case GeoBeans.Geometry.Type.POINT:
@@ -277,6 +278,37 @@ GeoBeans.Layer.FeatureLayer2 = GeoBeans.Class(GeoBeans.Layer, {
 					//否则，使用简单方式渲染
 					this.renderer.draw(feature, s, viewer);
 				}
+			}
+
+			if(isValid(feature.textSymbolizer)){
+				this.renderer.save();
+				var textSymbolizer = feature.textSymbolizer;
+				this.renderer.setSymbolizer(textSymbolizer);
+				var text = null, value = null,labelProp = null;
+				var labelText = textSymbolizer.labelText;
+				if(labelText == null || labelText.length == 0){
+					labelProp = textSymbolizer.labelProp;
+				}else{
+					text = labelText;
+				}
+				if(text == null){
+					value = feature.getValue(labelProp);
+				}else{
+					value = text;
+				}
+				var label = new GeoBeans.PointLabel();
+				label.geometry = feature.geometry;
+				label.textSymbolizer = textSymbolizer;
+				if(text == null){
+					value = feature.getValue(labelProp);
+				}else{
+					value = text;
+				}
+				label.text = value;
+				label.computePosition(this.renderer,this.map.getViewer());
+
+				this.renderer.drawLabel(label);	
+				this.renderer.restore();
 			}
 
 			// if(isValid(feature.symbolizer)){

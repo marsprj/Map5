@@ -5,8 +5,12 @@
  */
 GeoBeans.Format.KML = GeoBeans.Class(GeoBeans.Format,{
 	
-	initialize : function(){
-		
+	geometryName : "geometry",
+
+	initialize : function(options){
+		if(isValid(options.geometryName)){
+			this.geometryName = options.geometryName;
+		}
 	},
 });
 
@@ -40,6 +44,62 @@ GeoBeans.Format.KML.prototype.read = function(kml,style,fields){
 	});
 
 	return features;
+};
+
+
+/**
+ * 读取Features
+ * @param  {tetxt} text geojson字符串
+ * @return {Array.<GeoBeans.Feature>}      Feature数组
+ */
+GeoBeans.Format.KML.prototype.readFeatures = function(kml){
+	if(!isValid(kml)){
+		return [];
+	}
+
+	var features = [];	
+	try{
+
+	}
+	catch(e){
+		console.log(e.message);
+	}
+	finally{
+		return features;
+	}
+};
+
+// 先读取样式的列表
+GeoBeans.Format.KML.prototype.readStyleList = function(kml){
+	if(!isValid(kml)){
+		return {};
+	}
+
+	var documentKML = $(kml).find("Document");
+	documentKML.children().each(function(){
+		var tagName = this.tagName;
+
+		switch(tagName){
+			case "Folder":{
+				// var rules = that.readRuleByFolderNode(this);
+				// if(rules != null){
+				// 	$(rules).each(function(){
+				// 		style.addRule(this);
+				// 	});
+				// }
+				break;
+			}
+			case "Style":{
+				
+				break;
+			}
+			case "StyleMap":{
+				break;
+			}
+			default:
+				break;
+		}
+	});
 };
 
 

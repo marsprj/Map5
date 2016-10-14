@@ -19,7 +19,7 @@
   <Style id="exampleStyleDocument2">
     <LabelStyle>
       <color>ff0000cc</color>
-  	  <scale>0</scale>
+  	  <scale>1</scale>
     </LabelStyle>
   </Style>
   <Placemark>
@@ -34,6 +34,13 @@
     <styleUrl>#exampleStyleDocument2</styleUrl>
     <Point>
       <coordinates>22.370,37.817,0</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Document Feature 3</name>
+    <styleUrl>#exampleStyleDocument2</styleUrl>
+    <Point>
+      <coordinates>0,0,0</coordinates>
     </Point>
   </Placemark>
 </Document>
