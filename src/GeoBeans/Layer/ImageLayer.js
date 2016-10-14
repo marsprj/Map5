@@ -1,3 +1,10 @@
+/**
+ * @classdesc
+ * Image图层
+ * @class
+ * @extends {GeoBeans.Layer}
+ * @deprecated 
+ */
 GeoBeans.Layer.ImageLayer = GeoBeans.Class(GeoBeans.Layer,{
 	images : null,
 
