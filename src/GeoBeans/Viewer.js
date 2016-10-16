@@ -89,6 +89,7 @@ GeoBeans.Viewer.prototype.setCenter = function(val){
 		this.update();
 	}else{
 		this._center = val;
+		this._onChange();
 	}
 	
 	//this._map.refresh();

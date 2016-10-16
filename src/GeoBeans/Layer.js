@@ -38,7 +38,7 @@ GeoBeans.Layer = GeoBeans.Class({
 		this.canvas = document.createElement("canvas");
 	},
 	
-	destroy : function(){
+	desoy : function(){
 		var mapContainer = this.map.getContainer();
 		$(mapContainer).find(".map5-canvas[id='" + this.name + "']").remove();
 		
@@ -144,13 +144,31 @@ GeoBeans.Layer.prototype.getMap = function(){
 }
 
 /**
- * 单个图层重绘
+ * 刷新图层
  * @public
  */
 GeoBeans.Layer.prototype.refresh = function() {
-	this.draw();
+	if(this.visible){
+		this.draw();
+	}
+	else{
+		this.clear();
+	}
 };
 
+/**
+ * 重绘图层
+ * @public
+ */
+GeoBeans.Layer.prototype.draw = function() {
+
+};
+
+/**
+ * 获得数据源对象
+ * @public
+ * @return {GeoBeans.Source} 图层的数据源对象
+ */
 GeoBeans.Layer.prototype.getSource = function(){
 	return this._source;
 }
@@ -209,6 +227,22 @@ GeoBeans.Layer.prototype.un = function(event){
 	this.events.removeEvent(event);
 }
 
+/**
+ * 设置不透明度
+ * @public
+ * @param  {GeoBeans.Event} event   事件
+ */
+GeoBeans.Layer.prototype.setOpacity = function(opacity){
+	if(opacity<0){
+		this.opacity = 0;
+	}
+	else if(opacity>1){
+		this.opacity = 1;
+	}
+	else{
+		this.opacity = opacity;
+	}
+},
 
 /**
  * 保存缩略图
@@ -277,7 +311,16 @@ GeoBeans.Layer.prototype.cleanupSnap = function(){
 
 /**
  * 清空
- * @private
+ * @protected
+ */
+GeoBeans.Layer.prototype.clear = function(){
+	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+};
+
+
+/**
+ * 清空
+ * @protected
  */
 GeoBeans.Layer.prototype.drawBackground = function(){
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);

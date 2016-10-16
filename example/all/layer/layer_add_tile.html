@@ -54,14 +54,9 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter/IsNullFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/PropertyName.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/Literal.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <!--Workspace-->
@@ -77,6 +72,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
@@ -87,6 +84,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
@@ -108,57 +106,55 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
 
-<script type="text/javascript" src="../js/initMap.js"></script>
-
 <style type="text/css">
 	body{
 		margin: 0px;
 	}
 </style>
-
-<title>地图：拉框缩放</title>
-<body onload="init()">
-	<button onclick="zoomIn()">拉框放大</button>
-	<button onclick="zoomOut()">拉框缩小</button>
-	<button onclick="end()">停止</button>
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
-	</div>
-</body>
-	
 <script type="text/javascript">
 	
 	var mapObj = null;
-
-	var zoomControl = null;
 	function  init(){
 		
-		loadMap();
+		// 1、设置地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 
-		// 5、根据control类型获取control
-		zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
-	}
-
-
-	function zoomIn(){
-		if(zoomControl == null){
+		mapObj = new GeoBeans.Map({
+			id : "mapDiv",
+			name : "map",
+			srid : 4326
+		});
+		if(mapObj == null){
 			return;
 		}
+		
+		// 3、添加一个图层
+		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
+		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+		var layer2 = new GeoBeans.Layer.TileLayer2({
+			"name" : "world",
+			"source" : new GeoBeans.Source.Tile.QuadServer({
+	 			"url" : "http://127.0.0.1/QuadServer/maprequest?services=world_vector"
+	 		}),
+	 		"opacity" : 0.5,
+	 		"visible" : true
+		});
 
-		zoomControl.zoomIn();
-	}
+		// 添加图层
+		mapObj.addLayer(layer1);
+		mapObj.addLayer(layer2);
+		mapObj.setBaseLayer(layer1);
 
-	function zoomOut(){
-		if(zoomControl == null){
-			return;
-		}
-		zoomControl.zoomOut();
-	}
-
-	function end(){
-		if(zoomControl == null){
-			return;
-		}
-
-		zoomControl.end();
+		// 4、设置中心点和显示级别
+		var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);
+		var viewer = mapObj.getViewer();	
+		viewer.setZoomCenter(zoom,center);
 	}
 </script>
+<title>地图：加载地图</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	</div>
+</body>

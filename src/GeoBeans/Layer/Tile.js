@@ -5,25 +5,37 @@ GeoBeans.TileState = {
 
 GeoBeans.Tile = GeoBeans.Class({
 	
-	map : null,
-	image : null,
+	map : null,		//@deprecated
+	layer : null,	//@deprecated
+
+	x : 0,
+	y : 0,
+	size : 256,
 	url : null,
 	row : null,
 	col : null,
 	zoom : null,
-	layer : null,
-
-	state : null,
+	image : null,
 	
-	initialize : function(map,url, layer, row, col, zoom){
-		this.map = map;
+	state : null,
+
+	onComplete : null,
+	
+	initialize : function(map,url, layer, row, col, zoom, x, y, size){
 		this.url = url;
 		this.row = row;
 		this.col = col;
 		this.zoom = zoom;
-		this.layer = layer;
+		this.x = x,
+		this.y = y,
+		this.size = size;
+		
+		//
+		this.map = map;		//@deprecated
+		this.layer = layer;	//@deprecated
 	},
 
+	//@deprecated
 	loading : function(loadTileCallback,tiles,index){
 		if(this.image==null){
 			this.image = new Image();
@@ -52,6 +64,7 @@ GeoBeans.Tile = GeoBeans.Class({
 
 	},
 
+	//@deprecated
 	draw : function(x, y, img_width, img_height){
 		var viewer = this.map.getViewer();
 		var rotation = viewer.getRotation();
@@ -75,3 +88,25 @@ GeoBeans.Tile = GeoBeans.Class({
 		}		
 	},
 });
+
+
+GeoBeans.Tile.prototype.load = function(){
+
+	if(!isValid(this.image)){
+		this.image = new Image();
+	}
+
+	var that = this;
+	this.image.onload = function(){
+		if(isValid(that.onComplete)){
+			that.onComplete(that);
+		}
+	}
+
+	this.image.src = this.url;
+	if(this.image.complete){
+		if(isValid(this.onComplete)){
+			this.onComplete(this);
+		}
+	}
+}
