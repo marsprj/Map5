@@ -35,59 +35,30 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 
 			var viewer = map.getViewer();
 			var extent = viewer.getExtent();
-			if(map.baseLayer!=null){
+			if(isValid(map.baseLayer)){
 				var zoom = viewer.getZoom();
 				if(e.wheelDelta>0){
-					if(isValid(map.baseLayer)){
-						var target_zoom = zoom + count;
-						if(target_zoom > maxZoom){
-							target_zoom = maxZoom;
-						}
-						map.saveSnap();
-						map.drawBackground();
-						map.drawBaseLayerSnap(target_zoom);
-						map.setZoom(target_zoom);
-						map.draw();		
-					}else{
-						var zoom = 1/(1 + count *0.2);
-						extent.scale(zoom);
-						map.saveSnap();
-						map.drawBackground();
-						map.drawLayersSnap(zoom);
-						viewer.setExtent(extent);
-						map.draw();
+					var target_zoom = zoom + count;
+					if(target_zoom > maxZoom){
+						target_zoom = maxZoom;
 					}
+					map.saveSnap();
+					map.drawBackground();
+					map.drawBaseLayerSnap(target_zoom);
+					map.setZoom(target_zoom);
 				}else{
-					if(isValid(map.baseLayer)){
-						var target_zoom = zoom - count;
-						if(target_zoom < minZoom){
-							target_zoom = minZoom;
-						}
-						map.saveSnap();
-						map.drawBackground();
-						map.drawBaseLayerSnap(target_zoom);
-						map.setZoom(target_zoom);
-						map.draw();	
-					}else{
-						var zoom = 1 + 0.2*count;
-						extent.scale(zoom);
-						map.saveSnap();
-						map.drawBackground();
-						map.drawLayersSnap(zoom);
-						viewer.setExtent(extent);
-						map.draw();
+					var target_zoom = zoom - count;
+					if(target_zoom < minZoom){
+						target_zoom = minZoom;
 					}
+					map.saveSnap();
+					map.drawBackground();
+					map.drawBaseLayerSnap(target_zoom);
+					map.setZoom(target_zoom);
 				}
 			}
 			else{
 				if(e.wheelDelta>0){
-					// var zoom = 1/(1 + count *0.2);
-					// map.saveSnap();
-					// map.drawBackground();
-					// map.drawLayersSnap(zoom);
-					// extent.scale(zoom);
-					// viewer.setExtent(extent);
-					// map.draw();
 					var resolution = viewer.getResolution();
 					var target_res = resolution / Math.pow(1.2,count);
 					viewer.setResolution(target_res);
