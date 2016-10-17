@@ -39,14 +39,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 				var zoom = viewer.getZoom();
 				if(e.wheelDelta>0){
 					if(isValid(map.baseLayer)){
-						zoom = zoom + count;
-						if(zoom > maxZoom){
-							zoom = maxZoom;
+						var target_zoom = zoom + count;
+						if(target_zoom > maxZoom){
+							target_zoom = maxZoom;
 						}
 						map.saveSnap();
 						map.drawBackground();
-						map.drawBaseLayerSnap(zoom);
-						map.setZoom(zoom);
+						map.drawBaseLayerSnap(target_zoom);
+						map.setZoom(target_zoom);
 						map.draw();		
 					}else{
 						var zoom = 1/(1 + count *0.2);
@@ -59,14 +59,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					}
 				}else{
 					if(isValid(map.baseLayer)){
-						zoom = zoom - count;
-						if(zoom < minZoom){
-							zoom = minZoom;
+						var target_zoom = zoom - count;
+						if(target_zoom < minZoom){
+							target_zoom = minZoom;
 						}
 						map.saveSnap();
 						map.drawBackground();
-						map.drawBaseLayerSnap(zoom);
-						map.setZoom(zoom);
+						map.drawBaseLayerSnap(target_zoom);
+						map.setZoom(target_zoom);
 						map.draw();	
 					}else{
 						var zoom = 1 + 0.2*count;
@@ -81,22 +81,21 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			else{
 				if(e.wheelDelta>0){
-					var zoom = 1/(1 + count *0.2);
-					map.saveSnap();
-					map.drawBackground();
-					map.drawLayersSnap(zoom);
-					extent.scale(zoom);
-					viewer.setExtent(extent);
-					map.draw();
+					// var zoom = 1/(1 + count *0.2);
+					// map.saveSnap();
+					// map.drawBackground();
+					// map.drawLayersSnap(zoom);
+					// extent.scale(zoom);
+					// viewer.setExtent(extent);
+					// map.draw();
+					var resolution = viewer.getResolution();
+					var target_res = resolution / Math.pow(1.2,count);
+					viewer.setResolution(target_res);
 				}
 				else{
-					var zoom = 1 + 0.2*count;
-					map.saveSnap();
-					map.drawBackground();
-					map.drawLayersSnap(zoom);
-					extent.scale(zoom);
-					viewer.setExtent(extent);
-					map.draw();
+					var resolution = viewer.getResolution();
+					var target_res = resolution * Math.pow(1.2,count);
+					viewer.setResolution(target_res);
 				}
 			}
 			// 保存snap,为了绘制使用

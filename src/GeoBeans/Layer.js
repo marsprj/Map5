@@ -38,7 +38,7 @@ GeoBeans.Layer = GeoBeans.Class({
 		this.canvas = document.createElement("canvas");
 	},
 	
-	desoy : function(){
+	destroy : function(){
 		var mapContainer = this.map.getContainer();
 		$(mapContainer).find(".map5-canvas[id='" + this.name + "']").remove();
 		

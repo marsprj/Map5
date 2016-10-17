@@ -52,6 +52,7 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
@@ -148,6 +149,17 @@
 		mapObj.addLayer(layer2);
 		// mapObj.setBaseLayer(layer1);
 
+
+		var jsonLayer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "layername",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : new GeoBeans.Source.Feature.GeoJSON({
+				"url" : "/Map5/example/all/data/geojson/countries.geojson",
+				"geometryName" : "geometry",
+			}),		
+			// "style" : createSimplePolygonStyle()
+		});
+		mapObj.addLayer(jsonLayer);
 		// 4、设置中心点和显示级别
 		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);

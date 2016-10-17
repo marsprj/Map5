@@ -1885,6 +1885,11 @@ GeoBeans.Map.prototype.removeLayersWidget = function(){
 };
 
 
+/**
+ * 设置级别
+ * @public
+ * @param {int} zoom 设置地图级别
+ */
 GeoBeans.Map.prototype.setZoom = function(zoom){
 	if(!isValid(this.baseLayer)){
 		return;
@@ -1899,11 +1904,17 @@ GeoBeans.Map.prototype.setZoom = function(zoom){
 
 };
 
+
+/**
+ * 设置视口的中心点和缩放级
+ * @public
+ * @param {int} zoom   zoom级别
+ * @param {GeoBeans.Geometry.Point} center 中心点坐标
+ */
 GeoBeans.Map.prototype.setZoomCenter = function(zoom,center){
 	if(!isValid(this.baseLayer)){
 		return;
 	}
-
 
 	var viewer = this.getViewer();
 	viewer.setZoom(zoom);
@@ -1911,6 +1922,25 @@ GeoBeans.Map.prototype.setZoomCenter = function(zoom,center){
 	var source = this.baseLayer.getSource();
 	var resolution = source.getResolution(zoom);
 	viewer.setCenterResolution(center,resolution);
+};
 
+/**
+ * 设置视口范围
+ * @public
+ * @param {GeoBeans.Envelope} extent 视口范围
+ */
+GeoBeans.Map.prototype.setViewExtent = function(extent){
+	if(!isValid(extent)){
+		return;
+	}
 
+	var viewer = this.getViewer();
+	viewer.setExtent(extent);
+
+	if(isValid(this.baseLayer)){
+		var resolution = viewer.getResolution();
+		var source = this.baseLayer.getSource();
+		var zoom = source.getFitZoom(resolution);
+		viewer.setZoom(zoom);
+	}
 };
