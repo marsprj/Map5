@@ -38,14 +38,11 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Stroke.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Style/TextSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
 <!--Control-->
 <script type="text/javascript" src="../../../src/GeoBeans/Control.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/DragMapControl.js"></script>
@@ -57,7 +54,6 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
@@ -78,7 +74,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WMS/WMSWorkspace.js"></script>
 <!--Source-->
 <script type="text/javascript" src="../../../src/GeoBeans/Source.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature.js"></script>
@@ -86,6 +81,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
@@ -96,17 +93,9 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/BarChartLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/HeatMapLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/RangeChartLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/ClusterLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/MapLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer/WMSLayer.js"></script>
 <!--Interaction-->
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
@@ -115,10 +104,7 @@
 <!--Events-->
 <script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
 <!--Render-->
-<script type="text/javascript" src="../../../src/GeoBeans/Label.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/PointLabel.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/LabelSet.js"></script>
 <!--Widget-->
 <script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
@@ -166,7 +152,7 @@
 
 		var zoom = 3;
 		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.getViewer().setZoomCenter(zoom,center);
+		mapObj.setZoomCenter(zoom,center);
 
 		mapObj.refresh();
 	}

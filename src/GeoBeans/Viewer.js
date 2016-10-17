@@ -101,7 +101,7 @@ GeoBeans.Viewer.prototype.setCenterResolution = function(center,resolution){
 		var offset_x = center.x - this._center.x;
 		var offset_y = center.y - this._center.y;
 		this._extent.offset(offset_x, offset_y);
-		this._center = val;
+		this._center = center;
 	}else{
 		this._center = center;
 	}	
