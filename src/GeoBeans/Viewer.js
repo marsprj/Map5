@@ -568,7 +568,7 @@ GeoBeans.Viewer.prototype.getMaxZoom = function(){
 	var maxZoom = null;
 	for(var i = 0; i < layers.length;++i){
 		layer = layers[i];
-		if(layer instanceof GeoBeans.Layer.TileLayer2){
+		if(layer instanceof GeoBeans.Layer.TileLayer){
 			var source = layer.getSource();
 			var lmz = source.getMaxZoom();
 			if(maxZoom == null){
@@ -598,7 +598,7 @@ GeoBeans.Viewer.prototype.getMinZoom = function(){
 	var minZoom = null;
 	for(var i = 0; i < layers.length; ++i){
 		layer = layers[i];
-		if(layer instanceof GeoBeans.Layer.TileLayer2){
+		if(layer instanceof GeoBeans.Layer.TileLayer){
 			var source = layer.getSource();
 			var lmz = source.getMinZoom();
 			if(minZoom == null){
