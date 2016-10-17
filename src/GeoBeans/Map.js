@@ -869,8 +869,7 @@ GeoBeans.Map.prototype.addLayer = function(layer){
 	}
 	
 	this.layers.push(layer);
-	//if(layer instanceof GeoBeans.Layer.TileLayer){
-	if(layer instanceof GeoBeans.Layer.TileLayer2){
+	if(layer instanceof GeoBeans.Layer.TileLayer){
 		if(this.baseLayer == null){
 			this.baseLayer = layer;
 		}

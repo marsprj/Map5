@@ -1,8 +1,3 @@
-GeoBeans.TileLayerState = {
-	LOADING : 0,
-	LOADED : 1,
-	ERROR : 2
-};
 
 /**
  * @classdesc
@@ -10,204 +5,100 @@ GeoBeans.TileLayerState = {
  * @class
  * @extends {GeoBeans.Layer}
  */
-GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
-	
-	//FULL_EXTENT :	null,
-	//ORIGIN : 		null,
-    IMG_WIDTH : 	null,
-    IMG_HEIGHT:		null,	
-	MIN_ZOOM_LEVEL: null,
-	MAX_ZOOM_LEVEL: null,	    
-	RESOLUTIONS : 	null,
-	
-	server: null,
-	scale : null,
-	cache : null,
-
-	state : null,
-	tiles : null,
-	// 图片缩放比例
-	imageScale : null,
-
-	
-	initialize : function(name, url){
-		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
-		
-		this.url = url;
-		this.cache = new GeoBeans.TileCache();
-
-		this.tiles = [];
-		this.imageScale =  1.0;
-	},
-	
-	destroy : function(){
-		
-		this.server= null;
-		this.scale = null;
-		this.cache = null;
-		GeoBeans.Layer.prototype.destroy.apply(this, arguments);
-	},
-	setName : function(){
-		this.name = name;
-	},
+GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer,{
 	
 	/**
-	 * 有效view指落在FULL_EXTENT范围内的view
-	 **/
-	getValidView : function(){
-		
-		var viewer = this.map.getViewer();
-		var extent = viewer.getExtent();
-		var xmin = Math.max(extent.xmin, this.FULL_EXTENT.xmin);
-		var ymin = Math.max(extent.ymin, this.FULL_EXTENT.ymin);
-		var xmax = Math.min(extent.xmax, this.FULL_EXTENT.xmax);
-		var ymax = Math.min(extent.ymax, this.FULL_EXTENT.ymax);
-		
-		return (new GeoBeans.Envelope(xmin, ymin, xmax, ymax));
-	},
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	updateScale : function(){
-		var map = this.map;
-		var extent = this.FULL_EXTENT;
-	},
-	
-	draw : function(){
-		if(this.visible){
-			this.preDraw();
-			this.loadingTiles();
-		}else{
-			this.clear();
-		}
-	},
-
-	drawCache : null,
-	preDraw : null,
-	loadingTiles : null,
-
-	getTileID : null,
-	computeTileBound : null,
-	
-	
-	// getResolution : function(zoom){
-	// 	if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
-	// 		return -1;
-	// 	}
-	// 	return this.RESOLUTIONS[zoom-1];
-	// },
-
-	getResolution : function(zoom){
-		if(this.resolution != null){
-			return this.resolution;
-		}
-		if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
-			return -1;
-		}
-		return this.RESOLUTIONS[zoom-1];
-	},
-
-	getResolutionByZoom : function(zoom){
-		if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
-			return -1;
-		}
-		return this.RESOLUTIONS[zoom-1];
-	},
-	
-	getZoom : function(resolution){
-		var maxLevel = this.MAX_ZOOM_LEVEL;
-		var minLevel = this.MIN_ZOOM_LEVEL;
-		for(var i = 0;i < this.RESOLUTIONS.length;++i){
-			var re = this.RESOLUTIONS[i];
-			if(resolution >= re){
-				if(i+1 < minLevel){
-					return minLevel;
-				}else if(i+1 > maxLevel){
-					return maxLevel;
-				}else{
-					// return i;	
-					// return i + 1;
-					var  big = this.RESOLUTIONS[i -1];
-					if(big != null){
-						var delta = (big - resolution) / (big - re);
-						console.log(delta);
-						this.imageScale = big/resolution; 
-						// this.imageScale = re/resolution;
-						console.log(this.imageScale);
-						this.resolution = resolution;
-						return i; 
-					}
-					
-				}
-			}
-		}
-		return maxLevel;
-	},
-	
-	init : function(){
-		// update resultion
-		var map = this.map;
-		
-		// set the zoom of the layer
-		this.zoom = this.map.zoom;		
-		// get resolution according to 
-		this.resolution = this.getResolution(this.zoom);
-		// compute extent of the map
-		map.setResolution(this.resolution);
-		map.updateMapExtent();
-		//this.cols = this.getCols();		
-	},
-
-	// 设置透明度
-	setOpacity : function(opacity){
-		if(opacity >=0 && opacity <=1){
-			this.opacity = opacity;
-			this.renderer.setGlobalAlpha(this.opacity);
-		}
-	},
-
-
-	// 设置该图层的最大级别
-	setMaxZoom : function(zoom){
-		this.MAX_ZOOM_LEVEL = zoom;
-	},
-
-	// 获取该图层的最大级别
-	getMaxZoom : function(){
-		return this.MAX_ZOOM_LEVEL;
-	},
-
-	// 设置该图层的最小级别
-	setMinZoom : function(zoom){
-		this.MIN_ZOOM_LEVEL = zoom;
-	},
-
-	// 获取该图层的最小级别
-	getMinZoom : function(){
-		return this.MIN_ZOOM_LEVEL;
-	},
-
-
-	/**
-	 * 转换到屏幕坐标，不加旋转角度的
-	 * @param  {float} x x坐标
-	 * @param  {float} y y坐标
-	 * @return {GeoBeans.Geometry.Point}    屏幕坐标
+	 * new GeoBeans.Layer.TileLayer({
+	 * 	"name" : "layername",
+	 *  "source" : new GeoBeans.Source.Tile.QuadServer({
+	 *  	"url" : "http://127.0.0.1/QuadServer/maprequest?services=world_image'
+	 *    }),
+	 *  "opacity" : 0.5
+	 * });
 	 */
-	toScreenPoint : function(x,y){
-		var viewer = this.map.viewer;
-		var screenX = viewer.scale * (x - viewer.view_c.x) + viewer.win_cx;
-		var screenY = viewer.win_cy - viewer.scale * (y - viewer.view_c.y);
-		
-		return new GeoBeans.Geometry.Point(screenX, screenY);
+	
+	initialize : function(options){
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
+
+		this.name = options.name;
+		this._source = options.source;
+		this.setOpacity(isValid(options.opacity) ? options.opacity : 1.0);
 	},
 });
 
+
 /**
- * 瓦片图层类型
- * @type {string}
+ * 刷新图层
+ * @public
+ * @override
  */
-GeoBeans.Layer.TileLayer.Type = {
-	QS : "QuadServer",
-	WMTS : "wmts",
-	PGIS : "pgis"
+GeoBeans.Layer.TileLayer.prototype.refresh = function() {
+	if(this.visible){
+		this.draw();
+	}
+	else{
+		this.clear();
+	}
+	
+};
+
+/**
+ * 重绘图层
+ * @public
+ * @override
+ */
+GeoBeans.Layer.TileLayer.prototype.draw = function() {
+
+	if(!isValid(this._source)){
+		return;
+	}
+
+	var viewer = this.map.getViewer();
+
+	var view_extent = viewer.getExtent();
+	var view_resolution = viewer.getResolution();
+
+	/*
+	 * 根据当前地图的分辨率view_resolution，计算Tile上与当前分辨率最近接的zoom。
+	 * Map5获取该zoom上的Tile。再根据当前的view_resolution和Tile的分辨率tile_resolution的分辨率，计算绘制时候的缩放比例。
+	 */
+	var tile_zoom, tile_resolution;
+	tile_zoom  = this._source.getFitZoom(view_resolution);
+	if(!isValid(tile_zoom)){
+		return;
+	}
+	tile_resolution  = this._source.getResolution(tile_zoom);
+
+	var success = {		
+		renderer: this.renderer,
+		viewer : this.map.getViewer(),
+		resolution : view_resolution, 
+		execute : function(tile){
+			var scale = 1;
+			var that = this;
+			tile.onComplete = function(){
+				var image = tile.image;
+				var x = tile.x;
+				var y = tile.y;
+				var tile_size = tile.size;
+
+				var tile_scale = tile.resolution / that.resolution;
+				var image_size = tile_size * tile_scale;
+				var pt = that.viewer.toScreenPoint(x, y);
+
+				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);i
+				that.renderer.drawImage(image, pt.x, pt.y, image_size, image_size);
+			}
+			tile.load();			
+		}
+	}
+
+	var failure = {
+		execute : function(){
+			console.log("failure");	
+		}
+	}
+
+	this.renderer.setGlobalAlpha(this.opacity);	
+	this._source.getTile(tile_zoom, view_extent, success, failure);
 };
