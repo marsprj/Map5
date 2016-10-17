@@ -15,8 +15,15 @@ function loadMap(){
 	}
 	
 	// 3、添加一个底图
-	// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-	var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+	var baselayer = new GeoBeans.Layer.TileLayer({
+		"name" : "base",
+		"source" : new GeoBeans.Source.Tile.QuadServer({
+ 			"url" : "/QuadServer/maprequest",
+ 			"imageSet" : "world_vector"
+ 		}),
+ 		"opacity" : 1.0,
+ 		"visible" : true
+	});
 	mapObj.addLayer(baselayer);
 	
 	wfsLayer = new GeoBeans.Layer.FeatureLayer({			
@@ -40,7 +47,7 @@ function loadMap(){
 	var zoom = 3;
 	var center = new GeoBeans.Geometry.Point(0,0);
 	var viewer = mapObj.getViewer();	
-	viewer.setZoomCenter(zoom,center);
+	mapObj.setZoomCenter(zoom,center);
 }
 
 function loadTileMap(){
@@ -60,8 +67,15 @@ function loadTileMap(){
 	}
 	
 	// 3、添加一个底图
-	// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-	var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+	var baselayer = new GeoBeans.Layer.TileLayer({
+		"name" : "base",
+		"source" : new GeoBeans.Source.Tile.QuadServer({
+ 			"url" : "/QuadServer/maprequest",
+ 			"imageSet" : "world_vector"
+ 		}),
+ 		"opacity" : 1.0,
+ 		"visible" : true
+	});
 	mapObj.addLayer(baselayer);
 
 	mapObj.setBaseLayer(baselayer);
@@ -70,7 +84,7 @@ function loadTileMap(){
 	var zoom = 3;
 	var center = new GeoBeans.Geometry.Point(0,0);
 	var viewer = mapObj.getViewer();	
-	viewer.setZoomCenter(zoom,center);
+	mapObj.setZoomCenter(zoom,center);
 }
 
 function loadCities(){
