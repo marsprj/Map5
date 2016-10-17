@@ -321,14 +321,6 @@ GeoBeans.Layer.prototype.clear = function(){
 
 
 /**
- * 清空
- * @protected
- */
-GeoBeans.Layer.prototype.drawBackground = function(){
-	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-};
-
-/**
  * 重新调整大小
  * @private
  * @param  {int} width  宽度

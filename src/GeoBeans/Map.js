@@ -1646,14 +1646,14 @@ GeoBeans.Map.prototype.drawLayers = function(){
  * 清空所有图层
  * @private
  */
-GeoBeans.Map.prototype.drawBackground = function(){
+GeoBeans.Map.prototype.clear = function(){
 
 
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 
 	for(var i = 0; i < this.layers.length;++i){
 		var layer = this.layers[i];
-		layer.drawBackground();
+		layer.clear();
 	}	
 }
 

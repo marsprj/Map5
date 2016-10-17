@@ -149,7 +149,7 @@ GeoBeans.Viewer.prototype.getResolution = function(){
  */
 GeoBeans.Viewer.prototype.setRotation = function(angle){
 	this._rotation = angle;
-	this._map.drawBackground();
+	this._map.clear();
 	this.setZoom(this._zoom);
 };
 

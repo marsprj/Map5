@@ -83,7 +83,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					document.body.style.cursor = 'pointer';
 					mask_x += (e.layerX - d_x);
 					mask_y += (e.layerY - d_y);
-					map.drawBackground();
+					map.clear();
 					map.putSnap(mask_x, mask_y);
 
 					// 新增

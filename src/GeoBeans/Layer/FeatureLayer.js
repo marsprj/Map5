@@ -610,7 +610,7 @@ GeoBeans.Layer.FeatureLayer.prototype.enableHit = function(enable){
 /************************************************************************************/
 GeoBeans.Layer.FeatureLayer.prototype.draw = function(){
 	if(!this.isVisible()){
-		this.drawBackground();
+		this.clear();
 		return;
 	}
 	

@@ -77,7 +77,7 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer, {
 			this.preDraw();
 			this.loadingTiles();
 		}else{
-			this.drawBackground();
+			this.clear();
 		}
 	},
 

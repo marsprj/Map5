@@ -177,18 +177,7 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 	},
 
 	zoomInMap : function(rect){
-		// if(this.map.baseLayer != null){
-		// 	var level = this.map.getLevel(rect);
-		// 	this.map._setLevel(level);
-		// 	console.log(level);
-		// 	var center = rect.getCenter();
-		// 	this.map.setCenter(center);
-		// }else{
-		// 	this.map.setViewer(rect);
-		// }
-		// this.map.getViewer().setExtent(rect);
-		//this.map.draw();
-		this.map.drawBackground();		
+		this.map.clear();		
 		this.map.setViewExtent(rect);
 	},
 
@@ -210,7 +199,7 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 		nextent.moveTo(tr_c.x, tr_c.y);
 		nextent.scale(s);
 
-		this.map.drawBackground();
+		this.map.clear();
 		this.map.setViewExtent(nextent);
 	},
 });

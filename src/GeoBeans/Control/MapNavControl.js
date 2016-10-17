@@ -64,11 +64,11 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			that.map.draw();
 		});
 		$(mapContainer).find(".map-nav-pan-S").click(function(){
-			// that.map.drawBackground();
+			// that.map.clear();
 			var center = that.map.center;
 			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
 			that.map.saveSnap();
-			that.map.drawBackground();
+			that.map.clear();
 			that.map.putSnap(0,that.map.height/2);
 			that.map.offset(0,t_p.y - center.y);
 			that.map.draw();
@@ -77,18 +77,18 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			var center = that.map.center;
 			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
 			that.map.saveSnap();
-			that.map.drawBackground();
+			that.map.clear();
 			that.map.putSnap(-that.map.width/2, 0);
 			that.map.offset(r_p.x - center.x,0);
 			that.map.draw();
 		});
 
 		$(mapContainer).find(".map-nav-pan-E").click(function(){
-			// that.map.drawBackground();
+			// that.map.clear();
 			var center = that.map.center;
 			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
 			that.map.saveSnap();
-			that.map.drawBackground();
+			that.map.clear();
 			that.map.putSnap(that.map.width/2,0);
 			that.map.offset(center.x - r_p.x,0);
 			// that.map.offset(-10, 0);
@@ -109,7 +109,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 				return;
 			}
 			that.map.saveSnap();
-			that.map.drawBackground();
+			that.map.clear();
 			that.map.drawBaseLayerSnap(zoom);			
 			viewer.setZoom(zoom);	
 			that.map.draw();
@@ -127,7 +127,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 				return;
 			}
 			that.map.saveSnap();
-			that.map.drawBackground();
+			that.map.clear();
 			that.map.drawBaseLayerSnap(zoom);			
 			viewer.setZoom(zoom);		
 			that.map.draw();
@@ -202,7 +202,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 				var viewer = that.map.getViewer();
 				var mapZoom = viewer.getZoom();
 				if(mapZoom != zoom){
-					that.map.drawBackground();	
+					that.map.clear();	
 					viewer.setZoom(zoom);	
 					that.map.draw();
 				}
@@ -236,7 +236,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		$(".map-nav-zoom-label-street").click(function(){
 			var viewer = that.map.getViewer();
 			if(17 > viewer.getMinZoom() && 17 <= viewer.getMaxZoom()){
-				that.map.drawBackground();	
+				that.map.clear();	
 				viewer.setZoom(17);
 				that.map.draw();				
 			}
@@ -244,7 +244,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		$(".map-nav-zoom-label-city").click(function(){
 			var viewer = that.map.getViewer();
 			if(12 > viewer.getMinZoom() && 12 < viewer.getMaxZoom()){
-				that.map.drawBackground();	
+				that.map.clear();	
 				viewer.setZoom(12);
 				that.map.draw();
 			}
@@ -252,14 +252,14 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		$(".map-nav-zoom-label-province").click(function(){
 			var viewer = that.map.getViewer();
 			if(8 > viewer.getMinZoom() && 8 < viewer.getMaxZoom()){
-				that.map.drawBackground();	
+				that.map.clear();	
 				viewer.setZoom(8);
 				that.map.draw();
 			}
 		});	
 		$(".map-nav-zoom-label-country").click(function(){
 			if(4 > that.map.getMinLevel() && 4 < that.map.getMaxLevel()){
-				that.map.drawBackground();	
+				that.map.clear();	
 				that.map.setLevel(4);
 				that.map.draw();
 			}

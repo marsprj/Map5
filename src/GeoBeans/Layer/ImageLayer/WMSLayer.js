@@ -55,7 +55,7 @@ GeoBeans.Layer.WMSLayer = GeoBeans.Class(GeoBeans.Layer, {
 
 	draw : function(){
 		if(!this.isVisible()){
-			this.drawBackground();
+			this.clear();
 			return;
 		}
 		var w = this.map.canvas.width;

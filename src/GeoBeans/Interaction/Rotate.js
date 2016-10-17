@@ -120,7 +120,7 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 					var angle_e = GeoBeans.Utility.getAngle(center.x,center.y,point_e.x,point_e.y);
 
 					var delta = angle_e - angle_b;
-					that._map.drawBackground();
+					that._map.clear();
 
 					for(var i = 0; i < that._map.layers.length;++i){
 						var layer = that._map.layers[i];

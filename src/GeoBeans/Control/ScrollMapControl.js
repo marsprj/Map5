@@ -43,7 +43,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						target_zoom = maxZoom;
 					}
 					map.saveSnap();
-					map.drawBackground();
+					map.clear();
 					map.drawBaseLayerSnap(target_zoom);
 					map.setZoom(target_zoom);
 				}else{
@@ -52,7 +52,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						target_zoom = minZoom;
 					}
 					map.saveSnap();
-					map.drawBackground();
+					map.clear();
 					map.drawBaseLayerSnap(target_zoom);
 					map.setZoom(target_zoom);
 				}
