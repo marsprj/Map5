@@ -80,7 +80,8 @@ GeoBeans.Layer.TileLayer2.prototype.draw = function() {
 				var image = tile.image;
 				var x = tile.x;
 				var y = tile.y;
-				var tile_size = tile.size;
+				var w = tile.width;
+				var h = tile.height;
 
 				var tile_scale = tile.resolution / that.resolution;
 				var image_size = tile_size * tile_scale;
