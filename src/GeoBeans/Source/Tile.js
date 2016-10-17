@@ -22,7 +22,7 @@ GeoBeans.Source.Tile = GeoBeans.Class(GeoBeans.Source,{
 	initialize : function(options){
 		GeoBeans.Source.prototype.initialize.apply(this, arguments);
 
-		this._url = options.url;
+		//this._url = options.url;
 	},
 
 	destroy : function(){
@@ -39,7 +39,6 @@ GeoBeans.Source.Tile = GeoBeans.Class(GeoBeans.Source,{
  * @param  {GeoBeans.Handler}   failure 失败回调函数
  */
 GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure){
-	console.log("GeoBeans.Source.Tile.prototype.getTile()");
 
 	var maxZoom = this.getMaxZoom();
 	var minZoom = this.getMinZoom();
@@ -69,6 +68,8 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 
 			tid = this.makeTileID(row, col, zoom);
 			turl = this.makeTileURL(this._url, tid);
+
+			console.log(turl);
 			
 			var ul = this.getTilePosisiton(row, col, tile_size);
 

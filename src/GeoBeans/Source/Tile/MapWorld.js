@@ -15,6 +15,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
         x: -20037508.3427892,
         y:  20037508.3427892
     },*/
+    SRS : GeoBeans.SrsType.WGS84,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 	
