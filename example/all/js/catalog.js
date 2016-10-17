@@ -93,7 +93,7 @@ var g_catalog = [
 				"name" : "天地图层",
 				"link" : "layer/layer_add_mapworld.html"
 			},{
-				"name" : "(*)OSM图层(待实现)",
+				"name" : "OSM图层(待实现)",
 				"link" : "layer/layer_add_osm.html"
 			},{
 				"name" : "(*)Bing图层(待实现)",
@@ -102,7 +102,7 @@ var g_catalog = [
 				"name" : "GeoJSON图层",
 				"link" : "layer/layer_add_geojson.html"
 			},{
-				"name" : "(*)KML图层",
+				"name" : "KML图层",
 				"link" : "layer/layer_add_kml.html"
 			}
 		]

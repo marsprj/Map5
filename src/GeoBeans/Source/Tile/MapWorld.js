@@ -7,9 +7,22 @@
 GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	_url : "http://t4.tianditu.com/DataServer?T=vec_c&x=3&y=1&l=2",	
+	/**
+	 * WGS84： : 后缀	_c
+	 * Mercator: 后缀	_w
+	 */
+	_srs : GeoBeans.SrsType.WGS84,
+	/**
+	 *  矢量: vec 	http://t5.tianditu.com/DataServer?T=vec_w&x=6748&y=3133&l=13
+	 *  影像：img	http://t5.tianditu.com/DataServer?T=img_w&x=6748&y=3133&l=13
+	 *  地形：ter	http://t5.tianditu.com/DataServer?T=ter_w&x=6748&y=3133&l=13
+	 *  地名(矢量)：cav 	http://t5.tianditu.com/DataServer?T=cav_w&x=6748&y=3133&l=13
+	 *  注记(影像)：cia 	http://t5.tianditu.com/DataServer?T=cia_w&x=6748&y=3133&l=13
+	 */
 	_imageSet : "vec_c",
+		
 
-	_TID : "T={T}&x={col}&y={row}&l={zoom}",
+	_TID : "T={T}&x={col}&y={row}&l={zoom}",	
 
 	/*	ORIGIN :{
         x: -20037508.3427892,
@@ -21,15 +34,18 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 	
 	MIN_ZOOM_LEVEL: 1,
 	MAX_ZOOM_LEVEL: 19,	
+
+	RESOLUTIONS : null,
+	FULL_EXTENT : null,
 	
-	FULL_EXTENT : {
+	FULL_EXTENT_WGS : {
 				xmin:-180.0,
 				ymin:- 90.0,
 				xmax: 180.0,
 				ymax:  90.0
 	},
     
-	RESOLUTIONS : [			
+	RESOLUTIONS_WGS : [			
 				0.703125,	/*1*/
 				0.3515625,
 				0.17578125,
@@ -48,6 +64,32 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 				0.0000214576721191,
 				0.0000107288360596,
 				0.00000536441802979],
+
+	FULL_EXTENT_MER : {
+				xmin:-20037508.3427892,
+				ymin:-20037508.3427892,
+				xmax:20037508.3427892,
+				ymax:20037508.3427892
+	},
+	RESOLUTIONS_MER : [			
+				78271.51696402031, 
+				39135.75848201016, 
+				19567.87924100508, 
+				9783.939620502539, 
+				4891.96981025127, 
+				2445.984905125635, 
+				1222.992452562817, 
+				611.4962262814087, 
+				305.7481131407043, 
+				152.8740565703522, 
+				76.43702828517608, 
+				38.21851414258804, 
+				19.10925707129402, 
+				9.554628535647009,
+				4.777314267823505,
+				2.388657133911752,
+				1.194328566955876,
+				0.5971642834779381],
 
 				
 	resolution : 1,
@@ -76,6 +118,18 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		this._url = options.url;
 		this._imageSet = options.imageSet;
+		this._srs = options.srs;
+
+		if(this._srs == GeoBeans.SrsType.WGS84){
+			this._imageSet = this._imageSet + "_c";
+			this.FULL_EXTENT = this.FULL_EXTENT_WGS;
+			this.RESOLUTIONS = this.RESOLUTIONS_WGS;
+		}
+		else{
+			this._imageSet = this._imageSet + "_w";
+			this.FULL_EXTENT = this.FULL_EXTENT_MER;
+			this.RESOLUTIONS = this.RESOLUTIONS_MER;
+		}
 	},
 
 	destroy : function(){

@@ -4,28 +4,28 @@
  * @class
  * @extends {GeoBeans.Source.Raster}
  */
-GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
+GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 
-	_url : "/appmaptile?lang=zh_cn&size=1&scale=1&style=6",	
+	_url : "/osm/",	
 	_imageSet : null,
 	_srs : GeoBeans.SrsType.WebMercator,
 	_isWGS84 : false,
 
-	_TID : "x={col}&y={row}&z={zoom}",
+	_TID : "{zoom}/{col}/{row}.png",
 
 
 	/*	ORIGIN :{
         x: -20037508.3427892,
         y:  20037508.3427892
     },*/
-	AMP_URL : "http://wprd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7",
+	OSM_URL : "http://127.0.0.1/osm/1/0/1.png",
 
 
     SRS : GeoBeans.SrsType.WebMercator,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 		
-	MIN_ZOOM_LEVEL: 3,
+	MIN_ZOOM_LEVEL: 1,
 	MAX_ZOOM_LEVEL: 18,	
 	
 	FULL_EXTENT : {
@@ -70,11 +70,11 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 	lcol : 0,
 	rcol : 0,	
 
-	CLASS_NAME : "GeoBeans.Source.Tile.AMap",
+	CLASS_NAME : "GeoBeans.Source.Tile.OSM",
 
 	/**
-	 * new GeoBeans.Source.Tile.AMap({
-	 * 		"url" : '/AMap/maprequest?services=world_image'
+	 * new GeoBeans.Source.Tile.OSM({
+	 * 		"url" : '/OSM/maprequest?services=world_image'
 	 * })
 	 */
 	initialize : function(options){
@@ -96,7 +96,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 	},
 });
 
-GeoBeans.Source.Tile.AMap.prototype.getResolution = function(zoom){
+GeoBeans.Source.Tile.OSM.prototype.getResolution = function(zoom){
 	if( zoom < this.MIN_ZOOM_LEVEL){
 		return this.RESOLUTIONS[0];
 	}
@@ -114,7 +114,7 @@ GeoBeans.Source.Tile.AMap.prototype.getResolution = function(zoom){
  * @return {integer}            zoom
  * @public
  */
-GeoBeans.Source.Tile.AMap.prototype.getFitZoom = function(resolution){
+GeoBeans.Source.Tile.OSM.prototype.getFitZoom = function(resolution){
 	var length = this.RESOLUTIONS.length;
 	if(resolution > this.RESOLUTIONS[0]){
 		return 1;
@@ -150,7 +150,7 @@ GeoBeans.Source.Tile.AMap.prototype.getFitZoom = function(resolution){
  * @protected
  * @override
  */
-GeoBeans.Source.Tile.AMap.prototype.computeTileBound = function(extent, tile_size){
+GeoBeans.Source.Tile.OSM.prototype.computeTileBound = function(extent, tile_size){
 	var ve = this.getValidView(extent);
 	
 	var col_min = Math.floor((ve.xmin - this.FULL_EXTENT.xmin) / tile_size);
@@ -175,7 +175,7 @@ GeoBeans.Source.Tile.AMap.prototype.computeTileBound = function(extent, tile_siz
  * @protected
  * @override
  */
-GeoBeans.Source.Tile.AMap.prototype.makeTileID = function(row, col, zoom){
+GeoBeans.Source.Tile.OSM.prototype.makeTileID = function(row, col, zoom){
 	return this._TID.replace("{col}"	,col)
 					.replace("{row}"	,row)
 					.replace("{zoom}"	,zoom);
@@ -189,12 +189,20 @@ GeoBeans.Source.Tile.AMap.prototype.makeTileID = function(row, col, zoom){
  * @protected
  * @override
  */
-GeoBeans.Source.Tile.AMap.prototype.makeTileURL = function(url,tid){
+GeoBeans.Source.Tile.OSM.prototype.makeTileURL = function(url,tid){
 
-	return url + "&" + tid;
+	var turl = "";
+	var length = url.length;
+	if(url[length-1] == "/"){
+		turl = url + tid;
+	}
+	else{
+		turl = url + "/" + tid;
+	}
+	return turl;
 }
 
-GeoBeans.Source.Tile.AMap.prototype.getTilePosisiton = function(row, col, tile_size){
+GeoBeans.Source.Tile.OSM.prototype.getTilePosisiton = function(row, col, tile_size){
 	
 	var x = this.FULL_EXTENT.xmin + col * tile_size;
 	var y = this.FULL_EXTENT.ymax - row * tile_size;
@@ -223,14 +231,14 @@ GeoBeans.Source.Tile.AMap.prototype.getTilePosisiton = function(row, col, tile_s
 	return pos;
 }
 
-GeoBeans.Source.Tile.AMap.prototype.getRows = function(zoom){
+GeoBeans.Source.Tile.OSM.prototype.getRows = function(zoom){
 	return Math.pow(2,(zoom-1));
 }
 
-GeoBeans.Source.Tile.AMap.prototype.getCols = function(zoom){
+GeoBeans.Source.Tile.OSM.prototype.getCols = function(zoom){
 	return Math.pow(2,(zoom));
 }
 
-GeoBeans.Source.Tile.AMap.prototype.isWGS84 = function(){
+GeoBeans.Source.Tile.OSM.prototype.isWGS84 = function(){
 	return this._isWGS84;
 }

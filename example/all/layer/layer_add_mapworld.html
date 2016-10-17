@@ -84,8 +84,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
@@ -113,11 +111,27 @@
 	body{
 		margin: 0px;
 	}
+	#mapDiv{
+		height:800px;
+		width:100%;
+		top:60px;
+		position:absolute;
+	}
 </style>
 
 <title>地图：加载天地图</title>
 <body onload="init()">
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	<table>
+		<tr>
+			<td>Mercator：</td>
+			<td><input id="m_x" type="text" size="20"> - <input id="m_y" type="text" size="20"></td>
+		</tr>
+		<tr>
+			<td>WGS84：</td>
+			<td><input id="w_x" type="text" size="20"> - <input id="w_y" type="text" size="20"></td>
+		</tr>
+	</table>
+	<div id="mapDiv">
 	</div>
 </body>
 
@@ -139,35 +153,37 @@
 		}
 		
 		// 3、添加一个图层
-		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
-		var layer2 = new GeoBeans.Layer.TileLayer2({
-			"name" : "world",
+		var layer1 = new GeoBeans.Layer.TileLayer({
+			"name" : "vector",
 			"source" : new GeoBeans.Source.Tile.MapWorld({
 	 			"url" : "/DataServer?",
-	 			"imageSet" : "vec_c"
+	 			"imageSet" : /*"img", "cia", "vec",*/ "ter",
+	 			//"srs" : GeoBeans.SrsType.WGS84,
+	 			"srs" : GeoBeans.SrsType.WebMercator,
 	 		}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
 		});
 
-		var layer3 = new GeoBeans.Layer.TileLayer2({
-			"name" : "world",
-			"source" : new GeoBeans.Source.Tile.MapWorld({
-	 			"url" : "/DataServer?",
-	 			"imageSet" : "cva_c"
-	 		}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
-		});
+		// var layer3 = new GeoBeans.Layer.TileLayer2({
+		// 	"name" : "world",
+		// 	"source" : new GeoBeans.Source.Tile.MapWorld({
+	 // 			"url" : "/DataServer?",
+	 // 			"imageSet" : "cva_c"
+	 // 		}),
+	 // 		"opacity" : 1.0,
+	 // 		"visible" : true
+		// });
 
 		//layer1.setVisible(false);
 
 		// 添加图层
 		mapObj.addLayer(layer1);
 		//mapObj.addLayer(layer2);
-		mapObj.addLayer(layer3);
+		//mapObj.addLayer(layer3);
 		mapObj.setBaseLayer(layer1);
+
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 
 		// 4、设置中心点和显示级别
 		var zoom = 2;
@@ -175,13 +191,14 @@
 		mapObj.setZoomCenter(zoom,center);
 	}
 
-	function onZoomIn(){
-		var zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
-		zoomControl.zoomIn();
-	}
+	function onMouseMove(evt){
+		
+		document.getElementById("m_x").value = evt.mapX;
+		document.getElementById("m_y").value = evt.mapY;
 
-	function onZoomOut(){
-		var zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
-		zoomControl.zoomOut();	
+		var proj = new GeoBeans.Proj();
+		var pt = proj.toLonLat(evt.mapX, evt.mapY);
+		document.getElementById("w_x").value = pt.x;
+		document.getElementById("w_y").value = pt.y;
 	}
 </script>

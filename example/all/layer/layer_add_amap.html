@@ -85,8 +85,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
@@ -159,9 +157,11 @@
 		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
 		//var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
-		var amapLayer = new GeoBeans.Layer.TileLayer2({
+		var amapLayer = new GeoBeans.Layer.TileLayer({
 			"name" : "world",
-			"source" : new GeoBeans.Source.Tile.AMap(),
+			"source" : new GeoBeans.Source.Tile.AMap({
+				"srs": GeoBeans.SrsType.WebMercator,
+			}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
 		});
