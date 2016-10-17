@@ -196,8 +196,7 @@
 		document.getElementById("m_x").value = evt.mapX;
 		document.getElementById("m_y").value = evt.mapY;
 
-		var proj = new GeoBeans.Proj();
-		var pt = proj.toLonLat(evt.mapX, evt.mapY);
+		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;
 	}

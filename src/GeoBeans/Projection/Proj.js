@@ -17,6 +17,9 @@ GeoBeans.Proj = GeoBeans.Class({
 	}
 });
 
+EARTH_RADIUS = 6378136;	//unit: meter
+PROJ_CONSTANT= EARTH_RADIUS * Math.PI / 180.0;
+
 /**
  * 经纬度(WGS84)转平面坐标(Web Mercator)
  * @param  {float} lon 经度
@@ -24,12 +27,12 @@ GeoBeans.Proj = GeoBeans.Class({
  * @return {GeoBeans.Geometry.Point}     平面坐标点
  * @public
  */
-GeoBeans.Proj.prototype.fromLonLat = function(lon, lat){
+GeoBeans.Proj.fromLonLat = function(lon, lat){
 
-	var x = lon * this.PROJ_CONSTANT;
+	var x = lon * PROJ_CONSTANT;
 	var y = Math.log(Math.tan((90+lat)*Math.PI/360))/(Math.PI/180);  
 	//y = y * 20037508.34 / 180;
-	y = y * this.PROJ_CONSTANT;
+	y = y * PROJ_CONSTANT;
 	return (new GeoBeans.Geometry.Point(x, y));
 }
 
@@ -40,10 +43,10 @@ GeoBeans.Proj.prototype.fromLonLat = function(lon, lat){
  * @return {GeoBeans.Geometry.Point}     经纬度坐标点
  * @public
  */
-GeoBeans.Proj.prototype.toLonLat = function(x, y){
+GeoBeans.Proj.toLonLat = function(x, y){
 
-	var lon = x / this.PROJ_CONSTANT;
-	var lat = y / this.PROJ_CONSTANT;
+	var lon = x / PROJ_CONSTANT;
+	var lat = y / PROJ_CONSTANT;
 	lat = 180 / Math.PI * (2 * Math.atan( Math.exp(lat * Math.PI / 180)) - Math.PI / 2); 
 
 	return (new GeoBeans.Geometry.Point(lon, lat));
