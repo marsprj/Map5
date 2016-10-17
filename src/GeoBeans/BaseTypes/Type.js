@@ -5,5 +5,6 @@ GeoBeans.ImageType = {
 };
 
 GeoBeans.SrsType = {
-	"WGS84"	: "EPSG:4326"
+	"WGS84"	: "EPSG:4326",
+	"WebMercator" : "EPSG:900913"
 }
