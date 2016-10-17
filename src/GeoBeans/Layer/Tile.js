@@ -16,12 +16,13 @@ GeoBeans.Tile = GeoBeans.Class({
 	col : null,
 	zoom : null,
 	image : null,
+	resolution : 1.0,
 	
 	state : null,
 
 	onComplete : null,
 	
-	initialize : function(map,url, layer, row, col, zoom, x, y, size){
+	initialize : function(map,url, layer, row, col, zoom, x, y, size, resolution){
 		this.url = url;
 		this.row = row;
 		this.col = col;
@@ -29,6 +30,7 @@ GeoBeans.Tile = GeoBeans.Class({
 		this.x = x,
 		this.y = y,
 		this.size = size;
+		this.resolution = resolution;
 		
 		//
 		this.map = map;		//@deprecated

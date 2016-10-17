@@ -72,7 +72,7 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 			
 			var ul = this.getTilePosisiton(row, col, tile_size);
 
-			var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, ul.x, ul.y, this.IMG_WIDTH);
+			var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, ul.x, ul.y, this.IMG_WIDTH, resolution);
 			success.execute(tile);
 
 			// var image = new Image();
@@ -160,6 +160,16 @@ GeoBeans.Source.Tile.prototype.getTilePosisiton = function(row, col, tile_size){
  */
 GeoBeans.Source.Tile.prototype.makeTileID = function(row, col, zoom){
 	return "";
+}
+
+/**
+ * 根据resolution，计算最接近的zoom
+ * @param  {float} resolution  分辨率
+ * @return {integer}            zoom
+ * @public
+ */
+GeoBeans.Source.Tile.prototype.getFitZoom = function(resolution){
+	
 }
 
 /**

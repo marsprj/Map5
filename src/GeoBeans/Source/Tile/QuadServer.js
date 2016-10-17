@@ -110,6 +110,50 @@ GeoBeans.Source.Tile.QuadServer = GeoBeans.Class(GeoBeans.Source.Tile,{
 // GeoBeans.Source.Tile.QuadServer.prototype.getTile = function(zoom, extent, success, failure){
 // 	console.log("GeoBeans.Source.Tile.QuadServer.prototype.getTile()");
 // }
+// 
+
+GeoBeans.Source.Tile.QuadServer.prototype.getResolution = function(zoom){
+	if( zoom<=0 || zoom>=this.RESOLUTIONS.length){
+		return -1;
+	}
+	return this.RESOLUTIONS[zoom-1]; 
+}
+
+/**
+ * 根据resolution，计算最接近的zoom
+ * @param  {float} resolution  分辨率
+ * @return {integer}            zoom
+ * @public
+ */
+GeoBeans.Source.Tile.QuadServer.prototype.getFitZoom = function(resolution){
+	var length = this.RESOLUTIONS.length;
+	if(resolution > this.RESOLUTIONS[0]){
+		return 1;
+	}
+	else if(resolution < this.RESOLUTIONS[length-1]){
+		return length;
+	}
+	else{
+		var b,u;
+		for(i=1; i<length; i++){
+			u = this.RESOLUTIONS[i-1];
+			b = this.RESOLUTIONS[i];
+
+			/*
+			 * 1) resolution的两层之间，说明这两层可能时最合适的层。
+			 * 2) 判断resolution与上下两层的距离，较近的一层为目标层。
+			 */ 
+			if((resolution>=b) && (resolution<=u)){
+				var d_b = Math.abs(resolution - b);
+				var d_u = Math.abs(resolution - u);
+
+				var zoom = d_u < d_b ? i : i+1;
+				return zoom;
+			}
+		}
+	}
+}
+
 
 /**
  * computeTileBound
@@ -117,7 +161,7 @@ GeoBeans.Source.Tile.QuadServer = GeoBeans.Class(GeoBeans.Source.Tile,{
  * @protected
  * @override
  */
-GeoBeans.Source.Tile.prototype.computeTileBound = function(extent, tile_size){
+GeoBeans.Source.Tile.QuadServer.prototype.computeTileBound = function(extent, tile_size){
 	var ve = this.getValidView(extent);
 	
 	var col_min = Math.floor((ve.xmin - this.FULL_EXTENT.xmin) / tile_size);
@@ -125,11 +169,18 @@ GeoBeans.Source.Tile.prototype.computeTileBound = function(extent, tile_size){
 	var row_min = Math.floor((ve.ymin - this.FULL_EXTENT.ymin) / tile_size);
 	var row_max = Math.ceil ((ve.ymax - this.FULL_EXTENT.ymin) / tile_size);
 	
+	// return {
+	// 	rmin : row_min - 1 < 0 ? 0 : row_min - 1,
+	// 	rmax : row_max + 1 < 0 ? 0 : row_max + 1,
+	// 	cmin : col_min - 1 < 0 ? 0 : col_min - 1,
+	// 	cmax : col_max + 1 < 0 ? 0 : col_max + 1
+	// };
+
 	return {
-		rmin : row_min - 1 < 0 ? 0 : row_min - 1,
-		rmax : row_max + 1 < 0 ? 0 : row_max + 1,
-		cmin : col_min - 1 < 0 ? 0 : col_min - 1,
-		cmax : col_max + 1 < 0 ? 0 : col_max + 1
+		rmin : row_min - 1,
+		rmax : row_max + 1,
+		cmin : col_min - 1,
+		cmax : col_max + 1
 	};
 }
 
@@ -142,11 +193,11 @@ GeoBeans.Source.Tile.prototype.computeTileBound = function(extent, tile_size){
  * @protected
  * @override
  */
-GeoBeans.Source.Tile.prototype.makeTileID = function(row, col, zoom){
+GeoBeans.Source.Tile.QuadServer.prototype.makeTileID = function(row, col, zoom){
 	return ("col=" + col + "&row=" + row + "&level=" + zoom);
 }
 
-GeoBeans.Source.Tile.prototype.getTilePosisiton = function(row, col, tile_size){
+GeoBeans.Source.Tile.QuadServer.prototype.getTilePosisiton = function(row, col, tile_size){
 	
 	var x = this.FULL_EXTENT.xmin + col     * tile_size;
 	var y = this.FULL_EXTENT.xmin + (row+1) * tile_size;

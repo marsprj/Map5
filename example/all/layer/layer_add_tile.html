@@ -130,15 +130,17 @@
 		
 		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
 		var layer2 = new GeoBeans.Layer.TileLayer2({
 			"name" : "world",
 			"source" : new GeoBeans.Source.Tile.QuadServer({
-	 			"url" : "http://127.0.0.1/QuadServer/maprequest?services=world_vector"
+	 			"url" : "/QuadServer/maprequest?services=world_image"
 	 		}),
 	 		"opacity" : 0.5,
 	 		"visible" : true
 		});
+
+		layer1.setVisible(false);
 
 		// 添加图层
 		mapObj.addLayer(layer1);
@@ -151,9 +153,21 @@
 		var viewer = mapObj.getViewer();	
 		viewer.setZoomCenter(zoom,center);
 	}
+
+	function onZoomIn(){
+		var zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
+		zoomControl.zoomIn();
+	}
+
+	function onZoomOut(){
+		var zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
+		zoomControl.zoomOut();	
+	}
 </script>
 <title>地图：加载地图</title>
 <body onload="init()">
+	<button onclick="onZoomIn()">放大</button>
+	<button onclick="onZoomOut()">缩小</button>
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
 	</div>
