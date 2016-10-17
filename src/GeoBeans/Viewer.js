@@ -48,21 +48,66 @@ GeoBeans.Viewer.prototype.cleanup = function(){
  * @public
  * @param {GeoBeans.Envelope} extent  地图的范围
  */
-GeoBeans.Viewer.prototype.setExtent = function(val){
-	// this._extent = val;
+// GeoBeans.Viewer.prototype.setExtent = function(val){
+// 	// this._extent = val;
+// 	var map = this._map;
+// 	var baseLayer = map.baseLayer;
+// 	if(baseLayer != null){
+// 		var zoom = this.getZoomByExtent(val);
+// 		this._setZoom(zoom);
+// 		var center = val.getCenter();
+// 		this.setCenter(center);
+// 	}else{
+// 		var extent = this.scaleView(val);
+// 		this._extent = val;
+// 		this.update();
+// 	}
+// };
+
+
+GeoBeans.Viewer.prototype.setExtent = function(extent){
+	if(!isValid(extent)){
+		return;
+	}
 	var map = this._map;
 	var baseLayer = map.baseLayer;
-	if(baseLayer != null){
-		var zoom = this.getZoomByExtent(val);
-		this._setZoom(zoom);
-		var center = val.getCenter();
-		this.setCenter(center);
+	if(isValid(baseLayer)){
+		var cx = extent.getCenter().x;
+		var cy = extent.getCenter().y;	
+
+		var vw = map.width;
+		var vh = map.height;
+
+		var mw = cx - extent.xmin;
+		var mh = cy - extent.ymin;
+
+		var resolution_w = mw*2/vw;
+		var resolution_h = mh*2/vh;
+
+		var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
+		this.setResolution(resolution);
+
+		var source = baseLayer.getSource();
+		var zoom = source.getFitZoom(resolution);
+
+		var center = extent.getCenter();
+		if(this._extent != null){
+			var offset_x = center.x - this._center.x;
+			var offset_y = center.y - this._center.y;
+			this._extent.offset(offset_x, offset_y);
+			this._center = center;
+		}else{
+			this._center = center;
+		}	
+		this.updateMapExtent(resolution);
+		this.update();
 	}else{
 		var extent = this.scaleView(val);
 		this._extent = val;
 		this.update();
 	}
 };
+
 
 
 /**
@@ -93,6 +138,20 @@ GeoBeans.Viewer.prototype.setCenter = function(val){
 	}
 	
 	//this._map.refresh();
+};
+GeoBeans.Viewer.prototype.setCenterResolution = function(center,resolution){
+	if(this._extent != null){
+		var offset_x = center.x - this._center.x;
+		var offset_y = center.y - this._center.y;
+		this._extent.offset(offset_x, offset_y);
+		this._center = val;
+	}else{
+		this._center = center;
+	}	
+
+	this._resolution = resolution;
+	this.updateMapExtent(resolution);
+	this.update();
 };
 
 /**
@@ -161,17 +220,25 @@ GeoBeans.Viewer.prototype.getZoom = function(){
  * @param {int} zoom 地图的级别
  */
 GeoBeans.Viewer.prototype.setZoom = function(zoom){
-	var map = this._map;
+	// var map = this._map;
 	this._zoom = zoom;
-	if(map.baseLayer != null){
-		map.baseLayer.imageScale = 1.0;
-		var resolution = map.baseLayer.getResolutionByZoom(zoom);
-		this.setResolution(resolution);
-		this.updateMapExtent(this._resolution);
-		this.update();
-	}
+	// if(map.baseLayer != null){
+	// 	map.baseLayer.imageScale = 1.0;
+	// 	var resolution = map.baseLayer.getResolutionByZoom(zoom);
+	// 	this.setResolution(resolution);
+	// 	this.updateMapExtent(this._resolution);
+	// 	this.update();
+	// }
 
 	//this._map.refresh();
+};
+
+GeoBeans.Viewer.prototype.setZoomResolution = function(zoom,resolution){
+	this._zoom = zoom;
+
+	this._resolution = resolution;
+	this.updateMapExtent(resolution);
+	this.update();
 };
 
 /**
@@ -234,7 +301,7 @@ GeoBeans.Viewer.prototype.getWindowHeight = function(){
  * @return {int}        			  地图级别
  */
 GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
-	if(extent == null){
+	if(!isValid(extent) || !isValid(this._map.baseLayer)){
 		return null;
 	}	
 
@@ -258,7 +325,9 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
 		return null;
 	}
 
-	var zoom = map.baseLayer.getZoom(resolution);
+	// var zoom = map.baseLayer.getZoom(resolution);
+	var source = map.baseLayer.getSource();
+	var zoom = source.getFitZoom(resolution);
 	if(zoom == null){
 		return 1;
 	}
@@ -549,8 +618,9 @@ GeoBeans.Viewer.prototype.getMaxZoom = function(){
 	var maxZoom = null;
 	for(var i = 0; i < layers.length;++i){
 		layer = layers[i];
-		if(layer instanceof GeoBeans.Layer.TileLayer){
-			var lmz = layer.getMaxZoom();
+		if(layer instanceof GeoBeans.Layer.TileLayer2){
+			var source = layer.getSource();
+			var lmz = source.getMaxZoom();
 			if(maxZoom == null){
 				maxZoom = lmz;
 			}else{
@@ -578,8 +648,9 @@ GeoBeans.Viewer.prototype.getMinZoom = function(){
 	var minZoom = null;
 	for(var i = 0; i < layers.length; ++i){
 		layer = layers[i];
-		if(layer instanceof GeoBeans.Layer.TileLayer){
-			var lmz = layer.getMinZoom();
+		if(layer instanceof GeoBeans.Layer.TileLayer2){
+			var source = layer.getSource();
+			var lmz = source.getMinZoom();
 			if(minZoom == null){
 				minZoom = lmz;
 			}else{

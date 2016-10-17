@@ -38,16 +38,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			if(map.baseLayer!=null){
 				var zoom = viewer.getZoom();
 				if(e.wheelDelta>0){
-					// 底图缩放比例不为1
-					if(map.baseLayer.imageScale != 1.0){
-						var zoom = 1/(1 + count *0.2);
-						extent.scale(zoom);
-						map.saveSnap();
-						map.drawBackground();
-						map.drawLayersSnap(zoom);
-						viewer.setExtent(extent);
-						map.draw();
-					}else{
+					if(isValid(map.baseLayer)){
 						zoom = zoom + count;
 						if(zoom > maxZoom){
 							zoom = maxZoom;
@@ -55,19 +46,19 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(zoom);
-						viewer.setZoom(zoom);
-						map.draw();
-					}
-				}else{
-					if(map.baseLayer.imageScale != 1.0){
-						var zoom = 1 + 0.2*count;
+						map.setZoom(zoom);
+						map.draw();		
+					}else{
+						var zoom = 1/(1 + count *0.2);
 						extent.scale(zoom);
 						map.saveSnap();
 						map.drawBackground();
 						map.drawLayersSnap(zoom);
 						viewer.setExtent(extent);
 						map.draw();
-					}else{
+					}
+				}else{
+					if(isValid(map.baseLayer)){
 						zoom = zoom - count;
 						if(zoom < minZoom){
 							zoom = minZoom;
@@ -75,8 +66,16 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						map.saveSnap();
 						map.drawBackground();
 						map.drawBaseLayerSnap(zoom);
-						viewer.setZoom(zoom);
-						map.draw();						
+						map.setZoom(zoom);
+						map.draw();	
+					}else{
+						var zoom = 1 + 0.2*count;
+						extent.scale(zoom);
+						map.saveSnap();
+						map.drawBackground();
+						map.drawLayersSnap(zoom);
+						viewer.setExtent(extent);
+						map.draw();
 					}
 				}
 			}

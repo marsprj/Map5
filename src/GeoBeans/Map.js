@@ -869,7 +869,8 @@ GeoBeans.Map.prototype.addLayer = function(layer){
 	}
 	
 	this.layers.push(layer);
-	if(layer instanceof GeoBeans.Layer.TileLayer){
+	// if(layer instanceof GeoBeans.Layer.TileLayer){
+	if(layer instanceof GeoBeans.Layer.TileLayer2){
 		if(this.baseLayer == null){
 			this.baseLayer = layer;
 		}
@@ -1881,4 +1882,35 @@ GeoBeans.Map.prototype.removeLayersWidget = function(){
 		this._layersWidget.destory();
 		this._layersWidget = null;
 	}
+};
+
+
+GeoBeans.Map.prototype.setZoom = function(zoom){
+	if(!isValid(this.baseLayer)){
+		return;
+	}
+
+	var viewer = this.getViewer();
+
+	var source = this.baseLayer.getSource();
+	var resolution = source.getResolution(zoom);
+
+	viewer.setZoomResolution(zoom,resolution);
+
+};
+
+GeoBeans.Map.prototype.setZoomCenter = function(zoom,center){
+	if(!isValid(this.baseLayer)){
+		return;
+	}
+
+
+	var viewer = this.getViewer();
+	viewer.setZoom(zoom);
+
+	var source = this.baseLayer.getSource();
+	var resolution = source.getResolution(zoom);
+	viewer.setCenterResolution(center,resolution);
+
+
 };
