@@ -48,6 +48,7 @@ GeoBeans.Viewer.prototype.setExtent = function(extent){
 		return;
 	}
 	this._extent = extent;
+	this._center = extent.getCenter();
 	var cx = extent.getCenter().x;
 	var cy = extent.getCenter().y;	
 
