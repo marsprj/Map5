@@ -24,7 +24,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 
 	draw : function(){
 		if(!this.isVisible()){
-			this.drawBackground();
+			this.clear();
 			return;
 		}
 		if(this.features == null){
@@ -285,7 +285,7 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.ChartLayer,{
 			var zoom = viewer.getZoomByExtent(extent);
 			var center = extent.getCenter();
 			viewer.setZoomCenter(zoom,center);
-			this.map.drawBackground();
+			this.map.clear();
 		}else{
 			viewer.setExtent(extent);
 		}

@@ -7,7 +7,6 @@
 GeoBeans.Viewer = GeoBeans.Class({
 	
 	_map : null,
-
 	_zoom : null,
 	_extent : null,
 	_viewer : null,
@@ -21,7 +20,7 @@ GeoBeans.Viewer = GeoBeans.Class({
 	_onChange : null,
 	
 	
-	initialize : function(map, options){
+	initialize : function(map,options){
 		this._map = map;
 		if(isValid(options)){
 			this._extent = options.extent;
@@ -43,69 +42,27 @@ GeoBeans.Viewer.prototype.cleanup = function(){
 	this._center = null;
 };
 
-/**
- * 设置Viewer的可见地图范围
- * @public
- * @param {GeoBeans.Envelope} extent  地图的范围
- */
-// GeoBeans.Viewer.prototype.setExtent = function(val){
-// 	// this._extent = val;
-// 	var map = this._map;
-// 	var baseLayer = map.baseLayer;
-// 	if(baseLayer != null){
-// 		var zoom = this.getZoomByExtent(val);
-// 		this._setZoom(zoom);
-// 		var center = val.getCenter();
-// 		this.setCenter(center);
-// 	}else{
-// 		var extent = this.scaleView(val);
-// 		this._extent = val;
-// 		this.update();
-// 	}
-// };
-
 
 GeoBeans.Viewer.prototype.setExtent = function(extent){
 	if(!isValid(extent)){
 		return;
 	}
-	var map = this._map;
-	var baseLayer = map.baseLayer;
-	if(isValid(baseLayer)){
-		var cx = extent.getCenter().x;
-		var cy = extent.getCenter().y;	
+	this._extent = extent;
+	this._center = extent.getCenter();
+	var cx = extent.getCenter().x;
+	var cy = extent.getCenter().y;	
 
-		var vw = map.width;
-		var vh = map.height;
+	var vw = this.getWindowWidth();
+	var vh = this.getWindowHeight();
 
-		var mw = cx - extent.xmin;
-		var mh = cy - extent.ymin;
+	var mw = cx - extent.xmin;
+	var mh = cy - extent.ymin;
 
-		var resolution_w = mw*2/vw;
-		var resolution_h = mh*2/vh;
+	var resolution_w = mw*2/vw;
+	var resolution_h = mh*2/vh;
 
-		var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
-		this.setResolution(resolution);
-
-		var source = baseLayer.getSource();
-		var zoom = source.getFitZoom(resolution);
-
-		var center = extent.getCenter();
-		if(this._extent != null){
-			var offset_x = center.x - this._center.x;
-			var offset_y = center.y - this._center.y;
-			this._extent.offset(offset_x, offset_y);
-			this._center = center;
-		}else{
-			this._center = center;
-		}	
-		this.updateMapExtent(resolution);
-		this.update();
-	}else{
-		var extent = this.scaleView(val);
-		this._extent = val;
-		this.update();
-	}
+	var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
+	this.setResolution(resolution);
 };
 
 
@@ -171,6 +128,8 @@ GeoBeans.Viewer.prototype.getCenter = function(){
  */
 GeoBeans.Viewer.prototype.setResolution = function(resolution){
 	this._resolution = resolution;
+	this.updateMapExtent(resolution);
+	this.update();
 };
 
 
@@ -190,7 +149,7 @@ GeoBeans.Viewer.prototype.getResolution = function(){
  */
 GeoBeans.Viewer.prototype.setRotation = function(angle){
 	this._rotation = angle;
-	this._map.drawBackground();
+	this._map.clear();
 	this.setZoom(this._zoom);
 };
 
@@ -220,17 +179,7 @@ GeoBeans.Viewer.prototype.getZoom = function(){
  * @param {int} zoom 地图的级别
  */
 GeoBeans.Viewer.prototype.setZoom = function(zoom){
-	// var map = this._map;
 	this._zoom = zoom;
-	// if(map.baseLayer != null){
-	// 	map.baseLayer.imageScale = 1.0;
-	// 	var resolution = map.baseLayer.getResolutionByZoom(zoom);
-	// 	this.setResolution(resolution);
-	// 	this.updateMapExtent(this._resolution);
-	// 	this.update();
-	// }
-
-	//this._map.refresh();
 };
 
 GeoBeans.Viewer.prototype.setZoomResolution = function(zoom,resolution){
@@ -244,35 +193,36 @@ GeoBeans.Viewer.prototype.setZoomResolution = function(zoom,resolution){
 /**
  * 设置视口的中心点和缩放级
  * @public
+ * @deprecated 
  * @param {int} zoom   zoom级别
  * @param {GeoBeans.Geometry.Point} center 中心点坐标
  */
-GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
-	var map = this._map;
-	this._zoom = zoom;
+// GeoBeans.Viewer.prototype.setZoomCenter = function(zoom,center){
+// 	var map = this._map;
+// 	this._zoom = zoom;
 
-	// set center
-	if(this._extent != null){
-		var offset_x = center.x - this._center.x;
-		var offset_y = center.y - this._center.y;
-		this._extent.offset(offset_x, offset_y);
-		this._center = center;
-		this.update();
-	}else{
-		this._center = center;
-	}
+// 	// set center
+// 	if(this._extent != null){
+// 		var offset_x = center.x - this._center.x;
+// 		var offset_y = center.y - this._center.y;
+// 		this._extent.offset(offset_x, offset_y);
+// 		this._center = center;
+// 		this.update();
+// 	}else{
+// 		this._center = center;
+// 	}
 
-	//set zoom
-	if(map.baseLayer != null){
-		map.baseLayer.imageScale = 1.0;
-		var resolution = map.baseLayer.getResolutionByZoom(zoom);
-		this.setResolution(resolution);
-		this.updateMapExtent(this._resolution);
-		this.update();
-	}
+// 	//set zoom
+// 	if(map.baseLayer != null){
+// 		map.baseLayer.imageScale = 1.0;
+// 		var resolution = map.baseLayer.getResolutionByZoom(zoom);
+// 		this.setResolution(resolution);
+// 		this.updateMapExtent(this._resolution);
+// 		this.update();
+// 	}
 
-	//this._map.refresh();
-};
+// 	//this._map.refresh();
+// };
 
 /**
  * 获取地图的屏幕宽度
@@ -300,39 +250,39 @@ GeoBeans.Viewer.prototype.getWindowHeight = function(){
  * @param  {GeoBeans.Envelope} viewer 返回
  * @return {int}        			  地图级别
  */
-GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
-	if(!isValid(extent) || !isValid(this._map.baseLayer)){
-		return null;
-	}	
+// GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
+// 	if(!isValid(extent) || !isValid(this._map.baseLayer)){
+// 		return null;
+// 	}	
 
-	var map = this._map;
-	var map = this._map;
-	var cx = extent.getCenter().x;
-	var cy = extent.getCenter().y;	
+// 	var map = this._map;
+// 	var map = this._map;
+// 	var cx = extent.getCenter().x;
+// 	var cy = extent.getCenter().y;	
 
-	var vw = map.width;
-	var vh = map.height;
+// 	var vw = map.width;
+// 	var vh = map.height;
 
-	var mw = cx - extent.xmin;
-	var mh = cy - extent.ymin;
+// 	var mw = cx - extent.xmin;
+// 	var mh = cy - extent.ymin;
 
-	var resolution_w = mw*2/vw;
-	var resolution_h = mh*2/vh;
+// 	var resolution_w = mw*2/vw;
+// 	var resolution_h = mh*2/vh;
 
-	var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
+// 	var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
 
-	if(map.baseLayer == null){
-		return null;
-	}
+// 	if(map.baseLayer == null){
+// 		return null;
+// 	}
 
-	// var zoom = map.baseLayer.getZoom(resolution);
-	var source = map.baseLayer.getSource();
-	var zoom = source.getFitZoom(resolution);
-	if(zoom == null){
-		return 1;
-	}
-	return zoom;	
-};
+// 	// var zoom = map.baseLayer.getZoom(resolution);
+// 	var source = map.baseLayer.getSource();
+// 	var zoom = source.getFitZoom(resolution);
+// 	if(zoom == null){
+// 		return 1;
+// 	}
+// 	return zoom;	
+// };
 
 
 /**
@@ -340,16 +290,16 @@ GeoBeans.Viewer.prototype.getZoomByExtent = function(extent){
  * @private
  * @param {int} zoom 地图的级别
  */
-GeoBeans.Viewer.prototype._setZoom = function(zoom){
-	var map = this._map;
-	this._zoom = zoom;
-	if(map.baseLayer != null){
-		var resolution = map.baseLayer.getResolution(zoom);
-		this.setResolution(resolution);
-		this.updateMapExtent(this._resolution);
-		this.update();
-	}
-};
+// GeoBeans.Viewer.prototype._setZoom = function(zoom){
+// 	var map = this._map;
+// 	this._zoom = zoom;
+// 	if(map.baseLayer != null){
+// 		var resolution = map.baseLayer.getResolution(zoom);
+// 		this.setResolution(resolution);
+// 		this.updateMapExtent(this._resolution);
+// 		this.update();
+// 	}
+// };
 
 
 

@@ -38,7 +38,7 @@ GeoBeans.Layer = GeoBeans.Class({
 		this.canvas = document.createElement("canvas");
 	},
 	
-	desoy : function(){
+	destroy : function(){
 		var mapContainer = this.map.getContainer();
 		$(mapContainer).find(".map5-canvas[id='" + this.name + "']").remove();
 		
@@ -292,13 +292,15 @@ GeoBeans.Layer.prototype.drawLayerSnap = function(x,y,width,height){
 	if(this.snap == null){
 		return;
 	}
+	this.renderer.save();
+	this.renderer.setGlobalAlpha(1);	
 	var canvas = $("<canvas>")
 	    .attr("width", this.snap.width)
 	    .attr("height", this.snap.height)[0];
 	canvas.getContext("2d").putImageData(this.snap, 0, 0);
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 	this.renderer.drawImage(canvas,x,y,width,height);
-
+	this.renderer.restore();
 };
 
 /**
@@ -317,14 +319,6 @@ GeoBeans.Layer.prototype.clear = function(){
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 };
 
-
-/**
- * 清空
- * @protected
- */
-GeoBeans.Layer.prototype.drawBackground = function(){
-	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-};
 
 /**
  * 重新调整大小

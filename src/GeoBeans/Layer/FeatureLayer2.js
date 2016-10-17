@@ -78,7 +78,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
 	draw : function(){
 		if(!this.isVisible()){
-			this.drawBackground();
+			this.clear();
 			return;
 		}
 		

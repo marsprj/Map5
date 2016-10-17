@@ -47,7 +47,7 @@ GeoBeans.Layer.WFSLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 
 	draw : function(){
 		if(!this.isVisible()){
-			this.drawBackground();
+			this.clear();
 			return;
 		}
 
