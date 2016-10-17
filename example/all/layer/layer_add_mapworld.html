@@ -145,7 +145,17 @@
 	 			"url" : "/DataServer?",
 	 			"imageSet" : "vec_c"
 	 		}),
-	 		"opacity" : 0.7,
+	 		"opacity" : 1.0,
+	 		"visible" : true
+		});
+
+		var layer3 = new GeoBeans.Layer.TileLayer2({
+			"name" : "world",
+			"source" : new GeoBeans.Source.Tile.MapWorld({
+	 			"url" : "/DataServer?",
+	 			"imageSet" : "cva_c"
+	 		}),
+	 		"opacity" : 1.0,
 	 		"visible" : true
 		});
 
@@ -153,7 +163,8 @@
 
 		// 添加图层
 		mapObj.addLayer(layer1);
-		mapObj.addLayer(layer2);
+		//mapObj.addLayer(layer2);
+		mapObj.addLayer(layer3);
 		mapObj.setBaseLayer(layer1);
 
 		// 4、设置中心点和显示级别

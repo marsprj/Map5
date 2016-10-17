@@ -90,8 +90,8 @@ var g_catalog = [
 				"name" : "(*)百度图层",
 				"link" : "layer/layer_add_baidu.html"
 			},{
-				"name" : "(*)天地图层",
-				"link" : "layer/layer_add_tianditu.html"
+				"name" : "天地图层",
+				"link" : "layer/layer_add_mapworld.html"
 			},{
 				"name" : "(*)OSM图层(待实现)",
 				"link" : "layer/layer_add_osm.html"
