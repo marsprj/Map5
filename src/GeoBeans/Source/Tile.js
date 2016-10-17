@@ -68,25 +68,12 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 		for(col=col_min; col<col_max; col++){
 
 			tid = this.makeTileID(row, col, zoom);
-			turl = this._url + "&" + tid;
+			turl = this.makeTileURL(this._url, tid);
 			
 			var ul = this.getTilePosisiton(row, col, tile_size);
 
 			var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, ul.x, ul.y, this.IMG_WIDTH, resolution);
 			success.execute(tile);
-
-			// var image = new Image();
-			// image.onload = function(){
-
-			// 	var tile = new GeoBeans.Tile(null, null, null, row, col, zoom);
-			// 	success.execute(tile);
-			// }
-
-			// image.src = turl;
-			// if(image.complete){
-			// 	var tile = new GeoBeans.Tile(null, null, null, row, col, zoom);
-			// 	success.execute(tile);
-			// }
 		}
 	}	
 }
@@ -151,11 +138,23 @@ GeoBeans.Source.Tile.prototype.getTilePosisiton = function(row, col, tile_size){
 }
 
 /**
+ * 生成tile的URL
+ * @param  {string} url  
+ * @param  {string} tid
+ * @return {string} tile url
+ * @protected
+ */
+GeoBeans.Source.Tile.prototype.makeTileURL = function(url,tid){
+	return "";
+}
+
+
+/**
  * 生成tile的ID
  * @param  {integer} row  行
  * @param  {integer} col  列
  * @param  {integer} zoom 层
- * @return {Tile}      	  tile对象
+ * @return {string}       tile id
  * @protected
  */
 GeoBeans.Source.Tile.prototype.makeTileID = function(row, col, zoom){

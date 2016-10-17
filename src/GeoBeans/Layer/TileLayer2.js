@@ -63,7 +63,6 @@ GeoBeans.Layer.TileLayer2.prototype.draw = function() {
 	 * Map5获取该zoom上的Tile。再根据当前的view_resolution和Tile的分辨率tile_resolution的分辨率，计算绘制时候的缩放比例。
 	 */
 	var tile_zoom, tile_resolution;
-	tile_zoom  = viewer.getZoom();
 	tile_zoom  = this._source.getFitZoom(view_resolution);
 	if(!isValid(tile_zoom)){
 		return;
@@ -87,8 +86,7 @@ GeoBeans.Layer.TileLayer2.prototype.draw = function() {
 				var image_size = tile_size * tile_scale;
 				var pt = that.viewer.toScreenPoint(x, y);
 
-
-				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);
+				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);i
 				that.renderer.drawImage(image, pt.x, pt.y, image_size, image_size);
 			}
 			tile.load();			
@@ -102,5 +100,5 @@ GeoBeans.Layer.TileLayer2.prototype.draw = function() {
 	}
 
 	this.renderer.setGlobalAlpha(this.opacity);	
-	this._source.getTile(viewer.getZoom(), view_extent, success, failure);
+	this._source.getTile(tile_zoom, view_extent, success, failure);
 };

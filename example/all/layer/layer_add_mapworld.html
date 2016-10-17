@@ -73,6 +73,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/MapWorld.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
@@ -111,6 +112,13 @@
 		margin: 0px;
 	}
 </style>
+
+<title>地图：加载天地图</title>
+<body onload="init()">
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	</div>
+</body>
+
 <script type="text/javascript">
 	
 	var mapObj = null;
@@ -130,18 +138,18 @@
 		
 		// 3、添加一个图层
 		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
 		var layer2 = new GeoBeans.Layer.TileLayer2({
 			"name" : "world",
-			"source" : new GeoBeans.Source.Tile.QuadServer({
-	 			"url" : "/QuadServer/maprequest",
-	 			"imageSet" : "world_image"
+			"source" : new GeoBeans.Source.Tile.MapWorld({
+	 			"url" : "/DataServer?",
+	 			"imageSet" : "vec_c"
 	 		}),
-	 		"opacity" : 0.5,
+	 		"opacity" : 0.7,
 	 		"visible" : true
 		});
 
-		layer1.setVisible(false);
+		//layer1.setVisible(false);
 
 		// 添加图层
 		mapObj.addLayer(layer1);
@@ -165,11 +173,3 @@
 		zoomControl.zoomOut();	
 	}
 </script>
-<title>地图：加载地图</title>
-<body onload="init()">
-	<button onclick="onZoomIn()">放大</button>
-	<button onclick="onZoomOut()">缩小</button>
-	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
-	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
-	</div>
-</body>
