@@ -551,6 +551,14 @@ var g_catalog = [
 			}
 		]
 	},{
+		"name" : "投影变换",
+		"items":[
+			{
+				"name" : "坐标转换",
+				"link" : "proj/coordinate.html"
+			}
+		]
+	},{
 		"name" : "动画",
 		"items":[
 			{
