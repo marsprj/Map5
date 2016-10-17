@@ -71,9 +71,10 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 
 			console.log(turl);
 			
-			var ul = this.getTilePosisiton(row, col, tile_size);
+			var pos = this.getTilePosisiton(row, col, tile_size);
 
-			var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, ul.x, ul.y, this.IMG_WIDTH, resolution);
+			//var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, pos.x, pos.y, pos.width, pos.height, resolution);
+			var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, pos.x, pos.y, tile_size, tile_size, resolution);
 			success.execute(tile);
 		}
 	}	
