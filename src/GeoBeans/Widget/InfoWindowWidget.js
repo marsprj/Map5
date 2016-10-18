@@ -7,6 +7,7 @@
 GeoBeans.Widget.InfoWindowWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 	initialize : function(map){
+		this.type = GeoBeans.Widget.Type.INFO_WINDOW;
 		this.attach(map);
 		this.createContainer();
 	},

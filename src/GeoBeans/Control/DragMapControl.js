@@ -92,8 +92,8 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					o_y = (d_p.y - m_p.y);
 					// map.getViewer().offset(o_x, o_y);
 
-					var infoWindow = map.getInfoWindow();
-					infoWindow.refresh();
+					// var infoWindow = map.getInfoWindow();
+					// infoWindow.refresh();
 
 					d_x = e.layerX;
 					d_y = e.layerY;	

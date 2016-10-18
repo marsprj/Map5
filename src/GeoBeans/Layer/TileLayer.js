@@ -49,6 +49,10 @@ GeoBeans.Layer.TileLayer.prototype.refresh = function() {
  * @override
  */
 GeoBeans.Layer.TileLayer.prototype.draw = function() {
+	if(!this.isVisible()){
+		this.clear();
+		return;
+	}
 
 	if(!isValid(this._source)){
 		return;

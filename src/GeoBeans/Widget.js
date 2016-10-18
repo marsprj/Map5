@@ -51,7 +51,8 @@ GeoBeans.Widget = GeoBeans.Class({
 
 GeoBeans.Widget.Type = {
 	COPYRIGHT	: "Copyright",
-	INFO_WINDOW	: "InfoWindow"
+	INFO_WINDOW	: "InfoWindow",
+	LAYERS_WIDGET : "LayersWidget"
 };
 
 
@@ -99,3 +100,89 @@ GeoBeans.Widget.prototype.setPosition = function(pos){
 GeoBeans.Widget.prototype.createContainer = function(){
 	return null;
 }
+
+GeoBeans.Widget.prototype.refresh = function(){
+
+};
+
+
+GeoBeans.Widget.Widgets = GeoBeans.Class({
+	_map : null,
+	_widgets : null,
+
+
+	initialize : function(map){
+		this._map = map;
+
+		this._widgets = [];
+
+		var copyRightWidget = new GeoBeans.Widget.CopyRightWidget(this._map);
+		this.add(copyRightWidget);
+
+		var infoWindowWidget = new GeoBeans.Widget.InfoWindowWidget(this._map);
+		this.add(infoWindowWidget);
+	},
+
+	destory : function(){
+		this._widgets = null;
+	}
+});
+
+GeoBeans.Widget.Widgets.prototype.add = function(w){
+	if(!isValid(w)){
+		return;
+	}
+
+	var i = this.find(w.type);
+	if(i < 0){
+		w.attach(this._map);
+		this._widgets.push(w);
+	}else{
+		this._widgets[i] = null;
+		this._widgets[i] = w;
+	}
+};
+
+
+GeoBeans.Widget.Widgets.prototype.remove = function(w){
+	if(!isValid(w)){
+		return;
+	}
+	var i = this.find(w.type);
+	if(i > 0){
+		this._widgets[i].destory();
+		this._widgets[i] = null;
+		this._widgets.splice(i,1);
+	}
+};
+
+GeoBeans.Widget.Widgets.prototype.get = function(i){
+	return this._widgets[i];
+};
+
+GeoBeans.Widget.Widgets.prototype.find = function(t){
+	for(var i = 0; i < this._widgets.length;++i){
+		var w = this._widgets[i];
+		if(isValid(w) && w.type == t){
+			return i;
+		}
+	}
+	return -1;
+};
+
+GeoBeans.Widget.Widgets.prototype.cleanup = function(){
+	for(var i = 0; i < this._widgets.length;++i){
+		this._widgets[i].destory();
+		this._widgets[i] = null;
+	}
+	this._widgets = [];
+};
+
+
+GeoBeans.Widget.Widgets.prototype.refresh = function(){
+	for(var i = 0; i < this._widgets.length;++i){
+		var w = this._widgets[i];
+		w.refresh();
+	}
+};
+

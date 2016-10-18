@@ -76,11 +76,7 @@ GeoBeans.Map = GeoBeans.Class({
 	snap : null,
 	baseLayerSnap : null,
 
-	_infoWindowWidget : null,
-	// copyright
-	_copyRightWidget : null,
-
-	_layersWidget : null,
+	widgets : null,
 
 	//图例列表
 	legendList : null,
@@ -960,19 +956,7 @@ GeoBeans.Map.prototype.initControls = function(){
  * @private
  */
 GeoBeans.Map.prototype.initWidgets = function(){
-
-	var copyRightWidget = new GeoBeans.Widget.CopyRightWidget(this);
-	this._copyRightWidget = copyRightWidget;
-
-
-	// tooltip 暂时没有用到
-	// var tooltipHtml = "<div class='map5-tooltip'></div>";
-	// $(this._container).append(tooltipHtml);
-
-
-	var infoWindowWidget = new GeoBeans.Widget.InfoWindowWidget(this);
-	this._infoWindowWidget = infoWindowWidget;
-
+	this.widgets = new GeoBeans.Widget.Widgets(this);
 };
 
 /**
@@ -1132,7 +1116,7 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 
 /**
  * 获取infoWindow对象
- * @public
+ * @deprecated 
  * @return {GeoBeans.Widget.InfoWindow} InfoWindow对象
  */
 GeoBeans.Map.prototype.getInfoWindow = function(){
@@ -1527,9 +1511,7 @@ GeoBeans.Map.prototype.draw = function(){
 	//设置地图控件
 	this.drawNavControl();
 
-	if(this._layersWidget != null){
-		this._layersWidget.refresh();
-	}
+	this.drawWidgets();
 	
 }
 
@@ -1799,6 +1781,14 @@ GeoBeans.Map.prototype.drawNavControl = function(){
 };
 
 /**
+ * 绘制Widgets
+ * @private
+ */
+GeoBeans.Map.prototype.drawWidgets = function(){
+	this.widgets.refresh();
+};
+
+/**
  * 按照control的类型返回control
  * @public
  * @param  {GeoBeans.Control.Type} type 
@@ -1859,30 +1849,6 @@ GeoBeans.Map.prototype.apply = function(options){
 	}
 }
 
-/**
- * 添加图层面板
- * @public
- * @param {GeoBeans.Widget.LayersWidget} layersWidget 图层面板
- */
-GeoBeans.Map.prototype.addLayersWidget = function(layersWidget){
-	if(!isValid(layersWidget)){
-		return;
-	}
-	this._layersWidget = layersWidget;
-	this._layersWidget.refresh();
-};
-
-/**
- * 删除图层面板
- * @public
- */
-GeoBeans.Map.prototype.removeLayersWidget = function(){
-	if(isValid(this._layersWidget)){
-		this._layersWidget.destory();
-		this._layersWidget = null;
-	}
-};
-
 
 /**
  * 设置级别
@@ -1942,4 +1908,42 @@ GeoBeans.Map.prototype.setViewExtent = function(extent){
 		var zoom = source.getFitZoom(resolution);
 		viewer.setZoom(zoom);
 	}
+};
+
+/**
+ * 添加Widget
+ * @public
+ * @param {GeoBeans.Widget} widget widget
+ */
+GeoBeans.Map.prototype.addWidget = function(widget){
+	this.widgets.add(widget);
+};
+
+
+/**
+ * 删除widget
+ * @public
+ * @param  {GeoBeans.Widget} widget 要删除的widget
+ */
+GeoBeans.Map.prototype.removeWidget = function(widget){
+	this.widgets.remove(widget);
+};
+
+/**
+ * 根据类型获取widget
+ * @public
+ * @param  {GeoBeans.Widget.Type} type  widget类型
+ * @return {GeoBeans.Widget}      返回的widget
+ */
+GeoBeans.Map.prototype.getWidget = function(type){
+	if(!isValid(type)){
+		return null;
+	}
+
+	var i = this.widgets.find(type);
+	if(i < 0){
+		return null;
+	}
+	var widget = this.widgets.get(i);
+	return widget;
 };

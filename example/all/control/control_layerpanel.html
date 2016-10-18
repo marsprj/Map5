@@ -31,6 +31,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
@@ -53,8 +55,10 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
@@ -65,13 +69,15 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WMS/WMSWorkspace.js"></script>
 <!--Source-->
 <script type="text/javascript" src="../../../src/GeoBeans/Source.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature.js"></script>
@@ -79,6 +85,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
@@ -88,13 +96,11 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/MapLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer/WMSLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/RasterLayer.js"></script>
 <!--Interaction-->
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
@@ -135,44 +141,46 @@
 
 	function addWfsLayer(){
 
-		var server = "/geoserver/radi/ows?";
-		// 2、定义WFS图层
-		var wfsLayer = new GeoBeans.Layer.WFSLayer("country", 		//在地图中的名称
-													server, 		//服务器
-													"radi:country_2", //图层在geoserver的名称
-													"GML2"); 		// 格式
-		mapObj.addLayer(wfsLayer);
+		var wfsLayer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "country",
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "country_2",
+				"geometryName" : "shape",
+				"outputFormat": "GML2"
+			}),		
+		});
 
-		// 5、设置中心点和显示级别
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		var viewer = mapObj.getViewer();	
-		viewer.setZoomCenter(zoom,center);
+		mapObj.addLayer(wfsLayer);
 	}
 
 	function addWmsLayer(){
-			// 1、geoserver服务器地址
-		var server = "/geoserver/radi/ows?";
-
-		// 2、设置要添加的图层数组，可以添加多个
-		var layers = ["cities_2"];
-
-		// 3、定义WMS图层
-		var layer = new GeoBeans.Layer.WMSLayer("cities", //图层名称
-								server, // 服务器地址
-								layers,	// 要注册的图层列表，数组	
-								[],		// 样式数组（不设置，为该图层默认的样式）
-								null);  // 图片格式，默认"image/png",可以不设定
-
-		// 4、添加图层
-		mapObj.addLayer(layer);
-		mapObj.refresh();
+		var wmsLayer = new GeoBeans.Layer.RasterLayer({			
+			"name" : "world",
+			"source" : new GeoBeans.Source.Raster.WMS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.1.0",
+				"layers"  : [
+						"radi:cities_2"
+				],//["cities","rivers","country"],
+				/*"styles"  : ["point" ,"line",  "polygon"],*/
+				"format"  : "image/png",
+				"srs"	  : "EPSG:4326",
+				"transparent": true
+			})
+		});
+		mapObj.addLayer(wmsLayer);
 	}
 
 
 	function addLayersWidget(){
 		var layersWidget = new GeoBeans.Widget.LayersWidget(mapObj);
-		mapObj.addLayersWidget(layersWidget);
+		mapObj.addWidget(layersWidget);
+		mapObj.refresh();
 	}
 </script>
 <title>控件：图层面板</title>

@@ -8,6 +8,7 @@
 GeoBeans.Widget.LayersWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 	initialize : function(map){
+		this.type = GeoBeans.Widget.Type.LAYERS_WIDGET;
 		this.attach(map);
 		this.createContainer();
 	},
@@ -83,7 +84,7 @@ GeoBeans.Widget.LayersWidget.prototype.refresh = function(){
 					break;
 			}
 
-		}else if(layer instanceof GeoBeans.Layer.WMSLayer){
+		}else if(layer instanceof GeoBeans.Layer.RasterLayer){
 			layerIcon = "layer-type-image";
 		}
 
