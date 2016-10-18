@@ -83,7 +83,7 @@ GeoBeans.Widget.LayersWidget.prototype.refresh = function(){
 					break;
 			}
 
-		}else if(layer instanceof GeoBeans.Layer.WMSLayer){
+		}else if(layer instanceof GeoBeans.Layer.RasterLayer){
 			layerIcon = "layer-type-image";
 		}
 
