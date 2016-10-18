@@ -2,6 +2,7 @@
  * @classdesc
  * 高德地图图层
  * @class
+ * @deprecated 
  * @extends {GeoBeans.Layer.TileLayer}
  */
 GeoBeans.Layer.AMapLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer, {
