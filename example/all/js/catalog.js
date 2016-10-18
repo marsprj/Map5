@@ -72,7 +72,7 @@ var g_catalog = [
 				"name" : "WMS图层",
 				"link" : "layer/layer_add_wms.html"
 			},{
-				"name" : "WMTS图层",
+				"name" : "(*)WMTS图层",
 				"link" : "layer/layer_add_wmts.html"
 			},{
 				"name" : "QuadServer图层",

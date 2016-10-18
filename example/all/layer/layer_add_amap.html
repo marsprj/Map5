@@ -153,9 +153,7 @@
 			return;
 		}
 		
-		// 3、添加一个图层
-		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		//var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+
 		var amapLayer = new GeoBeans.Layer.TileLayer({
 			name   : "world",
 			source : new GeoBeans.Source.Tile.AMap({
@@ -165,12 +163,8 @@
 	 		visible : true
 		});
 
-		//layer1.setVisible(false);
 
-		// 添加图层
-		//mapObj.addLayer(layer1);
 		mapObj.addLayer(amapLayer);
-		mapObj.setBaseLayer(amapLayer);
 
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 
