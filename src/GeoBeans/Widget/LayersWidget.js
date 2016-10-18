@@ -63,7 +63,7 @@ GeoBeans.Widget.LayersWidget.prototype.refresh = function(){
 		if(layer instanceof GeoBeans.Layer.TileLayer){
 			layerIcon = "layer-type-tile";
 		}else if(layer instanceof GeoBeans.Layer.FeatureLayer){
-			var geomType = layer.getGeomType();
+			var geomType = layer.getGeometryType();
 			switch(geomType){
 				case GeoBeans.Geometry.Type.POINT:
 				case GeoBeans.Geometry.Type.MULTIPOINT:{
