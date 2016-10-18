@@ -1,8 +1,15 @@
 /**
  * @classdesc
  * Feature数据源类。
+ *
+ *	var source = new GeoBeans.Source.Feature({
+ * 					"geometryName": "shape"
+ * 				});
+ * 
  * @class
  * @extends {GeoBeans.Source}
+ * @param {object} options options
+ * @api stable
  */
 GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 
@@ -10,7 +17,8 @@ GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 	_geometryName : "geometry",
 
 	initialize : function(options){
-
+		
+		this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";
 	},
 
 	destroy : function(){
