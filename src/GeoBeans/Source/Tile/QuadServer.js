@@ -1,8 +1,16 @@
 /**
  * @classdesc
  * GeoBeans地图服务数据源。
+ *
+ *	var source" = new GeoBeans.Source.Tile.QuadServer({
+ *		url : "http://127.0.0.1/QuadServer/maprequest", * 
+ *	 	imageSet : "world_image"
+ *	});
+ *		
  * @class
- * @extends {GeoBeans.Source.Raster}
+ * @extends {GeoBeans.Source.Tile}
+ * @param 	{object} options QuadServer Source options
+ * @api stable
  */
 GeoBeans.Source.Tile.QuadServer = GeoBeans.Class(GeoBeans.Source.Tile,{
 

@@ -1,8 +1,16 @@
 /**
  * @classdesc
  * 天地图地图服务数据源。
+ *
+ *	var layer = new GeoBeans.Source.Tile.ArcGIS({
+ *		imageSet : "ChinaOnlineCommunity",
+ *		srs: GeoBeans.Proj.WebMercator
+ *	});
+ *	
  * @class
- * @extends {GeoBeans.Source.Raster}
+ * @extends {GeoBeans.Source.Tile}
+ * @param 	{object} options options
+ * @api stable
  */
 GeoBeans.Source.Tile.ArcGIS = GeoBeans.Class(GeoBeans.Source.Tile,{
 
@@ -86,11 +94,6 @@ GeoBeans.Source.Tile.ArcGIS = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	CLASS_NAME : "GeoBeans.Source.Tile.ArcGIS",
 
-	/**
-	 * new GeoBeans.Source.Tile.ArcGIS({
-	 * 		"url" : '/ArcGIS/maprequest?services=world_image'
-	 * })
-	 */
 	initialize : function(options){
 		GeoBeans.Source.Tile.prototype.initialize.apply(this, arguments);
 		

@@ -1,8 +1,15 @@
 /**
  * @classdesc
- * 天地图地图服务数据源。
+ * OpenStreetMap数据源。
+ *
+ *	var layer = new GeoBeans.Source.Tile.OSM({,
+ *		srs: GeoBeans.Proj.WebMercator
+ *	});
+ *	
  * @class
- * @extends {GeoBeans.Source.Raster}
+ * @extends {GeoBeans.Source.Tile}
+ * @param 	{object} options options
+ * @api stable
  */
 GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 

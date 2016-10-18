@@ -1,8 +1,15 @@
 /**
  * @classdesc
  * 天地图地图服务数据源。
+ *
+ *	var layer = new GeoBeans.Source.Tile.AMap({
+ *		srs: GeoBeans.Proj.WebMercator,
+ *	});
+ *	
  * @class
- * @extends {GeoBeans.Source.Raster}
+ * @param 	{object} options options
+ * @extends {GeoBeans.Source.Tile}
+ * @api stable
  */
 GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 
@@ -75,7 +82,6 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	/**
 	 * new GeoBeans.Source.Tile.AMap({
-	 * 		"url" : '/AMap/maprequest?services=world_image'
 	 * })
 	 */
 	initialize : function(options){

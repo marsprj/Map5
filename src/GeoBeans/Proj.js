@@ -39,8 +39,8 @@ GeoBeans.Proj.fromLonLat = function(lon, lat){
 /**
  * 平面坐标(Web Mercator)转经纬度(WGS84)
  * @param  {float} x x坐标
- * @param  {float} x y坐标
- * @return {GeoBeans.Geometry.Point}     经纬度坐标点
+ * @param  {float} y y坐标
+ * @returns {GeoBeans.Geometry.Point}     经纬度坐标点
  * @public
  */
 GeoBeans.Proj.toLonLat = function(x, y){
@@ -52,6 +52,9 @@ GeoBeans.Proj.toLonLat = function(x, y){
 	return (new GeoBeans.Geometry.Point(lon, lat));
 }
 
+/**
+ * WGS84投影类
+ */
 GeoBeans.Proj.WGS84 = {
 	SRID : "EPSG:4326",
 	EXTENT : {
@@ -63,13 +66,28 @@ GeoBeans.Proj.WGS84 = {
 	UNIT : "degree"
 }
 
+/**
+ * WebMercator投影类
+ */
 GeoBeans.Proj.WebMercator = {
+	/** 
+	 * SRID
+	 * @type {String}
+	 */
 	SRID : "EPSG:3857",
+	/** 
+	 * WebMercator投影下的空间范围
+	 * @type {Object}
+	 */
 	EXTENT : {
 		xmin:-20037508.3427892,
 		ymin:-20037508.3427892,
 		xmax: 20037508.3427892,
 		ymax: 20037508.3427892
 	},
+	/** 
+	 * 单位
+	 * @type {String}
+	 */
 	UNIT : "meter"
 }

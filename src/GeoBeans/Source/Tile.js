@@ -1,6 +1,8 @@
 /**
  * @classdesc
- * Tile类。
+ * Tile类型的数据源。<br>
+ * <p>管理瓦片类型的数据源。</p>
+ * <p>Tile类为虚类，无法实例化。</p>
  * @class
  */
 GeoBeans.Source.Tile = GeoBeans.Class(GeoBeans.Source,{

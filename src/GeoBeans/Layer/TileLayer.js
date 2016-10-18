@@ -1,22 +1,23 @@
-
 /**
  * @classdesc
  * 瓦片图层
+ * 
+ *	var layer = new GeoBeans.Layer.TileLayer({
+ *		name : "world",
+ *		source : new GeoBeans.Source.Tile.QuadServer({
+ *	 		url : "http://127.0.0.1/QuadServer/maprequest",
+ *	 		imageSet : "world_image"
+ *	 	}),
+ *	 	opacity : 0.5,
+ *	 	visible : true
+ *	});
+ *		
  * @class
  * @extends {GeoBeans.Layer}
+ * @api stable
  */
 GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer,{
-	
-	/**
-	 * new GeoBeans.Layer.TileLayer({
-	 * 	"name" : "layername",
-	 *  "source" : new GeoBeans.Source.Tile.QuadServer({
-	 *  	"url" : "http://127.0.0.1/QuadServer/maprequest?services=world_image'
-	 *    }),
-	 *  "opacity" : 0.5
-	 * });
-	 */
-	
+		
 	initialize : function(options){
 		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 

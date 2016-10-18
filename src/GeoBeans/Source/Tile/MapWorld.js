@@ -1,8 +1,16 @@
 /**
  * @classdesc
  * 天地图地图服务数据源。
+ *
+ *	var source = new GeoBeans.Source.Tile.ArcGIS({
+ *		url : "http://127.0.0.1/DataServer?",
+ *		imageSet : "vec",
+ *		srs: GeoBeans.Proj.WGS84
+ *	});
+ *	
  * @class
- * @extends {GeoBeans.Source.Raster}
+ * @extends {GeoBeans.Source.Tile}
+ * @api stable
  */
 GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 
@@ -109,11 +117,6 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	CLASS_NAME : "GeoBeans.Source.Tile.MapWorld",
 
-	/**
-	 * new GeoBeans.Source.Tile.MapWorld({
-	 * 		"url" : '/MapWorld/maprequest?services=world_image'
-	 * })
-	 */
 	initialize : function(options){
 		GeoBeans.Source.Tile.prototype.initialize.apply(this, arguments);
 		
