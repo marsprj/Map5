@@ -109,6 +109,10 @@ GeoBeans.Tile.prototype.load = function(){
 		}
 	}
 
+	this.image.onerror = function(){
+		//that.onError(that);
+	}
+
 	this.image.src = this.url;
 	if(this.image.complete){
 		if(isValid(this.onComplete)){
