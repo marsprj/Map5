@@ -179,7 +179,8 @@
 
 	function addLayersWidget(){
 		var layersWidget = new GeoBeans.Widget.LayersWidget(mapObj);
-		mapObj.addLayersWidget(layersWidget);
+		mapObj.addWidget(layersWidget);
+		mapObj.refresh();
 	}
 </script>
 <title>控件：图层面板</title>

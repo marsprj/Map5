@@ -8,6 +8,7 @@
 GeoBeans.Widget.LayersWidget = GeoBeans.Class(GeoBeans.Widget,{
 
 	initialize : function(map){
+		this.type = GeoBeans.Widget.Type.LAYERS_WIDGET;
 		this.attach(map);
 		this.createContainer();
 	},

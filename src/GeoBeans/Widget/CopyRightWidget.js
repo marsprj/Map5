@@ -7,6 +7,7 @@
 GeoBeans.Widget.CopyRightWidget = GeoBeans.Class(GeoBeans.Widget,{
 	
 	initialize : function(map){
+		this.type = GeoBeans.Widget.Type.COPYRIGHT;
 		this.attach(map);
 		this.createContainer();
 	},
