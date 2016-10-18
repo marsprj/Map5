@@ -132,9 +132,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				o_x = (d_p.x - m_p.x);
 				o_y = (d_p.y - m_p.y);
 	
-				// map.offset(o_x, o_y);
 				map.getViewer().offset(o_x, o_y);
-				map.refresh();
 				map.cleanupSnap();
 				
 
