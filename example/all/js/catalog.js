@@ -35,7 +35,7 @@ var g_catalog = [
 				"name" : "(*)图例（待补充）",
 				"link" : "control/control_legend.html"
 			},{
-				"name" : "版权（待补充）",
+				"name" : "版权",
 				"link" : "control/control_copyright.html"
 			},{
 				"name" : "图层面板",
