@@ -41,6 +41,16 @@ GeoBeans.Source.Feature.prototype.getFeatures = function(filter, success, failur
 }
 
 /**
+ * 添加Feature
+ * @param {GeoBeans.Feature} feature 要素
+ */
+GeoBeans.Source.Feature.prototype.addFeature = function(feature){
+	if(isValid(feature)){
+		this._features.push(feature);
+	}
+}
+
+/**
  * 获得指定范围的的Feature
  * @param  {GeoBeans.Envelope} extent 空间范围
  * @param  {GeoBeans.Handler} success 	   查询成功的回调函数
@@ -48,7 +58,8 @@ GeoBeans.Source.Feature.prototype.getFeatures = function(filter, success, failur
  * @public
  */
 GeoBeans.Source.Feature.prototype.getFeaturesByExtent = function(extent, success, failure){
-	var target = this.selectByExtent(extent, this._features)
+	var target = this.selectByExtent(extent, this._features);
+	success.execute(target);
 }
 
 /**
