@@ -8,7 +8,7 @@ GeoBeans.Source.Tile.QuadServer = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	_url : "/QuadServer/maprequest?services=world_image",
 	_imageSet : null,
-
+	_srs : GeoBeans.Proj.WGS84,
 	_TID : "services={services}&col={col}&row={row}&level={zoom}",
 
 	/*	ORIGIN :{
@@ -20,13 +20,16 @@ GeoBeans.Source.Tile.QuadServer = GeoBeans.Class(GeoBeans.Source.Tile,{
 	
 	MIN_ZOOM_LEVEL: 2,
 	MAX_ZOOM_LEVEL: 17,	
+
+	SRS : GeoBeans.Proj.WGS84,
+	FULL_EXTENT : GeoBeans.Proj.WGS84.EXTENT,
 	
-	FULL_EXTENT : {
-				xmin:-256.0,
-				ymin:-256.0,
-				xmax: 256.0,
-				ymax: 256.0
-	},
+	// FULL_EXTENT : {
+	// 			xmin:-256.0,
+	// 			ymin:-256.0,
+	// 			xmax: 256.0,
+	// 			ymax: 256.0
+	// },
     
 	RESOLUTIONS : [			
 				/*2,*/

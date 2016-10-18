@@ -8,7 +8,7 @@ GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	_url : "/osm/",	
 	_imageSet : null,
-	_srs : GeoBeans.SrsType.WebMercator,
+	_srs : GeoBeans.Proj.WebMercator,
 	_isWGS84 : false,
 
 	_TID : "{zoom}/{col}/{row}.png",
@@ -20,20 +20,20 @@ GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
     },*/
 	OSM_URL : "http://127.0.0.1/osm/1/0/1.png",
 
-
-    SRS : GeoBeans.SrsType.WebMercator,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 		
 	MIN_ZOOM_LEVEL: 1,
 	MAX_ZOOM_LEVEL: 18,	
+	SRS : GeoBeans.Proj.WebMercator,
+	FULL_EXTENT : GeoBeans.Proj.WebMercator.EXTENT,
 	
-	FULL_EXTENT : {
-				xmin:-20037508.3427892,
-				ymin:-20037508.3427892,
-				xmax:20037508.3427892,
-				ymax:20037508.3427892
-	},
+	// FULL_EXTENT : {
+	// 			xmin:-20037508.3427892,
+	// 			ymin:-20037508.3427892,
+	// 			xmax:20037508.3427892,
+	// 			ymax:20037508.3427892
+	// },
     
 	RESOLUTIONS : [
 				78271.51696402031, 
@@ -85,6 +85,7 @@ GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 		this._srs = options.srs;
 		if(isValid(options.srs)){
 			this._srs = options.srs;
+			this.FULL_EXTENT = this._srs.EXTENT;
 			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}

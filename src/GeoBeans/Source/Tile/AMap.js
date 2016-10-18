@@ -20,20 +20,21 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
     },*/
 	AMP_URL : "http://wprd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7",
 
-
-    SRS : GeoBeans.Proj.WebMercator,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 		
 	MIN_ZOOM_LEVEL: 3,
 	MAX_ZOOM_LEVEL: 18,	
+
+	SRS : GeoBeans.Proj.WebMercator,
+	FULL_EXTENT : GeoBeans.Proj.WebMercator.EXTENT,
 	
-	FULL_EXTENT : {
-				xmin:-20037508.3427892,
-				ymin:-20037508.3427892,
-				xmax:20037508.3427892,
-				ymax:20037508.3427892
-	},
+	// FULL_EXTENT : {
+	// 			xmin:-20037508.3427892,
+	// 			ymin:-20037508.3427892,
+	// 			xmax:20037508.3427892,
+	// 			ymax:20037508.3427892
+	// },
     
 	RESOLUTIONS : [
 				78271.51696402031, 
@@ -85,9 +86,10 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		if(isValid(options.srs)){
 			this._srs = options.srs;
+			this.FULL_EXTENT = this._srs.EXTENT;
 			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
-			}
+			}			
 		}
 	},
 

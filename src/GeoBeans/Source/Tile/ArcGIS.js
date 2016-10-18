@@ -34,19 +34,20 @@ GeoBeans.Source.Tile.ArcGIS = GeoBeans.Class(GeoBeans.Source.Tile,{
 	/* ArcGIS_URL : "//http://127.0.0.1/arcgis/rest/services/ChinaOnlineCommunity/MapServer/tile/1/0/1",*/
 
 
-    SRS : GeoBeans.SrsType.WebMercator,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 		
 	MIN_ZOOM_LEVEL: 1,
 	MAX_ZOOM_LEVEL: 18,	
-	
-	FULL_EXTENT : {
-				xmin:-20037508.3427892,
-				ymin:-20037508.3427892,
-				xmax:20037508.3427892,
-				ymax:20037508.3427892
-	},
+
+	SRS : GeoBeans.SrsType.WebMercator,	
+	FULL_EXTENT : GeoBeans.Proj.WebMercator.EXTENT,
+	// FULL_EXTENT : {
+	// 			xmin:-20037508.3427892,
+	// 			ymin:-20037508.3427892,
+	// 			xmax:20037508.3427892,
+	// 			ymax:20037508.3427892
+	// },
     
 	RESOLUTIONS : [
 				78271.51696402031, 
@@ -98,6 +99,7 @@ GeoBeans.Source.Tile.ArcGIS = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		if(isValid(options.srs)){
 			this._srs = options.srs;
+			this.FULL_EXTENT = this._srs.EXTENT;
 			if(this._srs != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}

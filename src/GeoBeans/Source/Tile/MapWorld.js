@@ -28,7 +28,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
         x: -20037508.3427892,
         y:  20037508.3427892
     },*/
-    SRS : GeoBeans.Proj.WGS84,
+    
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 	
@@ -36,7 +36,8 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 	MAX_ZOOM_LEVEL: 19,	
 
 	RESOLUTIONS : null,
-	FULL_EXTENT : null,
+	SRS : GeoBeans.Proj.WGS84,
+	FULL_EXTENT : GeoBeans.Proj.WGS84.EXTENT,
 	
 	FULL_EXTENT_WGS : {
 				xmin:-180.0,
@@ -120,15 +121,16 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 		this._imageSet = options.imageSet;
 		this._srs = options.srs;
 
-		if(this._srs.SRID == GeoBeans.SrsType.WGS84){
-			this._imageSet = this._imageSet + "_c";
-			this.FULL_EXTENT = this.FULL_EXTENT_WGS;
-			this.RESOLUTIONS = this.RESOLUTIONS_WGS;
-		}
-		else{
-			this._imageSet = this._imageSet + "_w";
-			this.FULL_EXTENT = this.FULL_EXTENT_MER;
-			this.RESOLUTIONS = this.RESOLUTIONS_MER;
+		if(isValid(this._srs)){
+			this.FULL_EXTENT = this._srs.EXTENT;
+			if(this._srs.SRID == GeoBeans.SrsType.WGS84){
+				this._imageSet = this._imageSet + "_c";
+				this.RESOLUTIONS = this.RESOLUTIONS_WGS;
+			}
+			else{
+				this._imageSet = this._imageSet + "_w";
+				this.RESOLUTIONS = this.RESOLUTIONS_MER;
+			}
 		}
 	},
 
