@@ -14,6 +14,7 @@
  *		
  * @class
  * @extends {GeoBeans.Layer}
+ * @param 	{object} options options
  * @api stable
  */
 GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer,{

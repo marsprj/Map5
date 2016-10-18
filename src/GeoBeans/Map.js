@@ -1,7 +1,41 @@
 /**
  * @classdesc
  * Map5的地图空间，实现地图的展示、渲染、查询、专题图以及用户交互功能。
+ *
+ *	var map = new GeoBeans.Map({
+ *		target : "mapDiv",
+ *		name : "map",
+ *		srs  : GeoBeans.Proj.WGS84,
+ *		baseLayer : "world"
+ *		layers : [
+ *			new GeoBeans.Layer.TileLayer({
+ *				name : "world",
+ *				source : new GeoBeans.Source.Tile.QuadServer({
+ *					url : "http://127.0.0.1/QuadServer/maprequest",
+ *					imageSet : "world_image"
+ *				}),
+ * 				opacity : 1.0,
+ * 				visible : true
+ * 			}),
+ * 			new GeoBeans.Layer.FeatureLayer({
+ * 				name : "country",
+ * 				geometryType : GeoBeans.Geometry.Type.POINT,
+ * 				source : new GeoBeans.Source.Feature.GeoJSON({
+ * 					url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
+ * 					geometryName : "geometry",
+ * 				}),
+ * 				style : createSimplePolygonStyle()
+ * 			})		
+ *		],
+ *		viewer : new GeoBeans.Viewer({
+ *			center : new GeoBeans.GeometryPoint(0,0),
+ *			zoom : 2
+ *		})
+ *	});
  * @class
+ * @param 	{object} options options
+ * @api stable
+ *
  */
 GeoBeans.Map = GeoBeans.Class({
 	
@@ -1128,6 +1162,17 @@ GeoBeans.Map.prototype.getInfoWindow = function(){
  * @public
  * @param  {GeoBeans.Event} event   事件
  * @param  {function} handler 		事件响应函数
+ * @listens CLICK
+ * @listens DBCLICK
+ * @listens CHANGE
+ * @listens DRAG_BEGIN
+ * @listens DRAGING
+ * @listens MOUSE_DOWN
+ * @listens MOUSE_UP
+ * @listens MOUSE_MOVE
+ * @listens MOUSE_OVER
+ * @listens MOUSE_OUT
+ * @listens MOUSE_WHEEL
  */
 GeoBeans.Map.prototype.on = function(event, handler){
 
