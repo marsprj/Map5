@@ -286,8 +286,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var filterXML = xml.createElement("Intersects");
 		var geometry  = filter.geometry;
 		var propName = filter.propName;
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
 		$(filterXML).append(propXML);
@@ -301,8 +301,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var distance = filter.distance;
 		var propName = filter.propName;
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -321,8 +321,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -338,8 +338,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -355,8 +355,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -372,8 +372,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -388,8 +388,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -404,8 +404,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -420,8 +420,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var distance = filter.distance;
 		var propName = filter.propName;
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);
@@ -439,8 +439,8 @@ GeoBeans.FilterWriter = GeoBeans.Class({
 		var geometry = filter.geometry;
 		var propName = filter.propName;
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(geometry);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(geometry);
 
 		var propXML = xml.createElement("PropertyName");
 		$(propXML).text(propName);

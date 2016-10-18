@@ -46,15 +46,15 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 		var f = null;
 		var g = null;
 		var features = new Array();
-		var reader  = new GeoBeans.Format.GML.Reader(GeoBeans.Format.GML.Version.v_2_0);
+		var format = new GeoBeans.Format.GML();
 		$(xml).find("featureMember").each(function() {
-            f = that.parseFeature($(this).children()[0], reader);
+            f = that.parseFeature($(this).children()[0], format);
 			features.push(f);
         });		
 		return features;
 	},
 	
-	parseFeature : function(xml, reader){
+	parseFeature : function(xml, format){
 		
 		var that = this;
 		var geometry = null;
@@ -66,7 +66,7 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 			var field = pnode.tagName.substr(pnode.tagName.indexOf(":")+1);
 			if(field == that._geometryName){
 				var gnode = $(this).children()[0];
-				geometry = reader.read(gnode);
+				geometry = format.read(gnode);
 			}
 			else{
 				var value = $(this).text();

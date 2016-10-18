@@ -657,3 +657,23 @@ GeoBeans.Layer.FeatureLayer.prototype.draw = function(){
 GeoBeans.Layer.FeatureLayer.prototype.getGeometryType = function(){
 	return this.geometryType;
 }
+
+
+/**
+ * 查询
+ * @public
+ * @param  {GeoBeasn.Filter} filter 查询过滤器
+ * @return {GeoBeans.Feature}        目标要素集合
+ */
+GeoBeans.Layer.FeatureLayer.prototype.query = function(query, handler){
+	if(!isValid(query)){
+		if(isValid(handler)){
+			handler.execute(null);
+		}
+		return;
+	}
+
+	if(isValid(this._source)){
+		this._source.query(query,handler);
+	}
+}

@@ -360,15 +360,15 @@ GeoBeans.FeatureType = GeoBeans.Class({
 		var f = null;
 		var g = null;
 		var features = new Array();
-		var reader  = new GeoBeans.Format.GML.Reader(GeoBeans.Format.GML.Version.v_2_0);
+		var format = new GeoBeans.Format.GML();
 		$(xml).find("featureMember").each(function() {
-            f = that.parseFeature($(this).children()[0], reader);
+            f = that.parseFeature($(this).children()[0], format);
 			features.push(f);
         });		
 		return features;
 	},
 	
-	parseFeature : function(xml, reader){
+	parseFeature : function(xml, format){
 		
 		var fid = this.parseFID($(xml).attr("fid"));
 				
@@ -387,7 +387,7 @@ GeoBeans.FeatureType = GeoBeans.Class({
 					values[f.name] = null;	
 				}
 				else{
-					g = reader.read(gml);
+					g = format.read(gml);
 					values[f.name] = g;
 				}
 			}
@@ -599,8 +599,8 @@ GeoBeans.FeatureType = GeoBeans.Class({
 			}
 		}
 
-		var gmlWriter = new GeoBeans.Format.GML.Writer(GeoBeans.Format.GML.Version.v_2_0);
-		var geomGml = gmlWriter.write(point);
+		var format = new GeoBeans.Format.GML();
+		var geomGml = format.write(point);
 		xml +=  "xmlns:world=\"www.world.ac.cn\" "
 	         +  "xmlns:wfs=\"http://www.opengis.net/wfs\" "
 	         +  "xmlns:gml=\"http://www.opengis.net/gml\" "
