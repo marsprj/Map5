@@ -93,8 +93,11 @@ var g_catalog = [
 				"name" : "天地图层",
 				"link" : "layer/layer_add_mapworld.html"
 			},{
-				"name" : "OSM图层(待实现)",
+				"name" : "OSM图层",
 				"link" : "layer/layer_add_osm.html"
+			},{
+				"name" : "ArcGIS Online图层",
+				"link" : "layer/layer_add_arcgisonline.html"
 			},{
 				"name" : "(*)Bing图层(待实现)",
 				"link" : "layer/layer_add_bing.html"
