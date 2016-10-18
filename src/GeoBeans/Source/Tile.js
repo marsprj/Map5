@@ -101,6 +101,28 @@ GeoBeans.Source.Tile.prototype.getMaxZoom = function(){
 }
 
 /**
+ * 设置最小Zoom
+ * @public
+ * @param {integer} zoom 最小zoom
+ */
+GeoBeans.Source.Tile.prototype.setMinZoom = function(zoom){
+	if(isValid(zoom)){
+		this.MIN_ZOOM_LEVEL = zoom;
+	}
+};
+
+/**
+ * 设置最大Zoom
+ * @public
+ * @param {integer} zoom 最大zoom
+ */
+GeoBeans.Source.Tile.prototype.setMaxZoom = function(zoom){
+	if(isValid(zoom)){
+		this.MAX_ZOOM_LEVEL = zoom;
+	}
+};
+
+/**
  * 获得指定zoom下的分辨率。
  * @param  {integer} zoom zoom
  * @return {float}      分辨率

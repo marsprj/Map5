@@ -224,7 +224,7 @@ GeoBeans.Source.Tile.QuadServer.prototype.makeTileID = function(row, col, zoom){
  * @protected
  * @override
  */
-GeoBeans.Source.Tile.prototype.makeTileURL = function(url,tid){
+GeoBeans.Source.Tile.QuadServer.prototype.makeTileURL = function(url,tid){
 
 	var turl = "";
 	var length = url.length;
