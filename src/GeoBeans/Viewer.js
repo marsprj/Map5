@@ -150,7 +150,7 @@ GeoBeans.Viewer.prototype.getResolution = function(){
 GeoBeans.Viewer.prototype.setRotation = function(angle){
 	this._rotation = angle;
 	this._map.clear();
-	this.setZoom(this._zoom);
+	this._map.setZoom(this._zoom);
 };
 
 
@@ -471,6 +471,19 @@ GeoBeans.Viewer.prototype.toScreenPoint = function(x,y){
 	var screenX = this.scale *((mx - this.view_c.x)* Math.cos(rotation * Math.PI/180) + (my - this.view_c.y) * Math.sin(rotation * Math.PI/180)) + this.win_cx;
 	var screenY = this.scale *((mx - this.view_c.x)* Math.sin(rotation * Math.PI/180) - (my - this.view_c.y) * Math.cos(rotation * Math.PI/180)) + this.win_cy;
 	return  new GeoBeans.Geometry.Point(screenX, screenY); 
+};
+
+/**
+ * 地图坐标转换为屏幕坐标，不考虑地图旋转
+ * @protected
+ * @param  {float} x 地图坐标X值
+ * @param  {float} y 地图坐标Y值
+ * @return {GeoBeans.Geometry.Point}    转换后的屏幕坐标值
+ */
+GeoBeans.Viewer.prototype.toScreenPointNotRotate = function(x,y){
+	var screenX = this.scale * (x - this.view_c.x) + this.win_cx;
+	var screenY = this.win_cy - this.scale * (y - this.view_c.y);
+	return new GeoBeans.Geometry.Point(screenX, screenY);
 };
 
 

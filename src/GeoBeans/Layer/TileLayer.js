@@ -58,6 +58,7 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 	var view_extent = viewer.getExtent();
 	var view_resolution = viewer.getResolution();
 
+	
 	/*
 	 * 根据当前地图的分辨率view_resolution，计算Tile上与当前分辨率最近接的zoom。
 	 * Map5获取该zoom上的Tile。再根据当前的view_resolution和Tile的分辨率tile_resolution的分辨率，计算绘制时候的缩放比例。
@@ -84,10 +85,27 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 
 				var tile_scale = tile.resolution / that.resolution;
 				var image_size = tile_size * tile_scale;
-				var pt = that.viewer.toScreenPoint(x, y);
+				
+				// var pt = that.viewer.toScreenPoint(x, y);
+				var viewer = that.viewer;
+
+				var rotation = viewer.getRotation();
+				that.renderer.save();
+				if(rotation != 0){
+					var width = viewer.getWindowWidth();
+					var height = viewer.getWindowHeight();
+
+					that.renderer.translate(width/2,height/2);
+					that.renderer.rotate(rotation* Math.PI/180);
+					that.renderer.translate(-width/2,-height/2);
+				}
+
+				var pt = viewer.toScreenPointNotRotate(x,y);
 
 				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);i
 				that.renderer.drawImage(image, pt.x, pt.y, image_size, image_size);
+
+				that.renderer.restore();
 			}
 			tile.load();			
 		}
@@ -101,4 +119,12 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 
 	this.renderer.setGlobalAlpha(this.opacity);	
 	this._source.getTile(tile_zoom, view_extent, success, failure);
+};
+
+GeoBeans.Layer.prototype.toScreenPoint = function(x,y){
+	var viewer = this.map.getViewer();
+	var screenX = viewer.scale * (x - viewer.view_c.x) + viewer.win_cx;
+	var screenY = viewer.win_cy - viewer.scale * (y - viewer.view_c.y);
+	
+	return new GeoBeans.Geometry.Point(screenX, screenY);
 };
