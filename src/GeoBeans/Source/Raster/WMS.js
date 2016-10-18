@@ -1,8 +1,26 @@
 /**
  * @classdesc
- * Raster数据源类。
+ * WMS数据源类。
+ *
+ *	var source = new GeoBeans.Source.Raster.WMS({
+ * 						"url" : 'http://..',
+ * 						"version" : "1.1.0",
+ * 						"layers"  : [
+ * 								"cities","rivers","country"
+ * 						],
+ * 						"styles"  : [
+ * 								"point","line","polygon"
+ * 						],
+ * 						"format"  : "image/png",
+ * 						"srs"	  : "EPSG:4326",
+ * 						"transparent": true
+ * 				});
+ * 				
  * @class
  * @extends {GeoBeans.Source.Raster}
+ * @param 	{object} options options
+ * @api stable
+ * 
  */
 GeoBeans.Source.Raster.WMS = GeoBeans.Class(GeoBeans.Source.Raster, {
 
