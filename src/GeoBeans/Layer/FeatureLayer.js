@@ -1,8 +1,21 @@
 /**
  * @classdesc
  * 要素图层
+ * 
+ * 	var layer = new GeoBeans.Layer.FeatureLayer({
+ * 					name : "country",
+ * 					geometryType : GeoBeans.Geometry.Type.POINT,
+ * 					source : new GeoBeans.Source.Feature.GeoJSON({
+ * 						url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
+ * 						geometryName : "geometry",
+ * 					}),
+ * 					style : createSimplePolygonStyle()
+ * 				});
+ * 
  * @class
  * @extends {GeoBeans.Layer}
+ * @param 	{object} options options
+ * @api stable
  */
 GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	

@@ -1,8 +1,24 @@
 /**
  * @classdesc
  * 栅格图层
+ *
+ *	var layer = new GeoBeans.Layer.RasterLayer({
+ * 					"name" : "layername",
+ * 					"source" : 	new GeoBeans.Source.Raster.WMS({
+ * 									"url" : 'http://..',
+ * 									"version" : "1.1.0",
+ * 									"layers"  : ["cities","rivers","country"],
+ * 									"styles"  : ["point" ,"line",  "polygon"],
+ * 									"format"  : "image/png",
+ * 									"srs"	  : "EPSG:4326",
+ * 									"transparent": true
+ * 					})
+ * 				});
+ * 
  * @class
  * @extends {GeoBeans.Layer}
+ * @param 	{object} options options
+ * @api stable
  */
 GeoBeans.Layer.RasterLayer = GeoBeans.Class(GeoBeans.Layer,{
 

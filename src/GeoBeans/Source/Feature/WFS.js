@@ -1,7 +1,21 @@
 /**
  * @classdesc
  * WFS类型的数据源类。
+ *
+ *	var source = new GeoBeans.Source.Feature.WFS({
+ * 					"url" : 'http://..',
+ * 					"version" : "1.0.0",
+ * 					"featureNS" : 'http://www.radi.ac.cn',
+ * 					"featurePrefix" : "radi",
+ * 					"featureType" : "cities",
+ * 					"geometryName": "shape",
+ * 					"outputFormat": "GML2"
+ * 				});
+ * 				
  * @class
+ * @extends {GeoBeans.Source.Feature}
+ * @param 	{object} options options
+ * @api stable
  */
 GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 
