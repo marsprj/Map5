@@ -30,8 +30,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
-<!--Projection-->
-<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
@@ -86,6 +84,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer2.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
@@ -103,6 +103,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Projection/Proj.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
@@ -119,16 +121,16 @@
 	}
 </style>
 
-<title>地图：加载天地图</title>
+<title>地图： 坐标转换</title>
 <body onload="init()">
 	<table>
 		<tr>
-			<td>Mercator：</td>
-			<td><input id="m_x" type="text" size="20"> - <input id="m_y" type="text" size="20"></td>
-		</tr>
-		<tr>
 			<td>WGS84：</td>
 			<td><input id="w_x" type="text" size="20"> - <input id="w_y" type="text" size="20"></td>
+		</tr>
+		<tr>
+			<td>Mercator：</td>
+			<td><input id="m_x" type="text" size="20"> - <input id="m_y" type="text" size="20"></td>
 		</tr>
 	</table>
 	<div id="mapDiv">
@@ -153,34 +155,21 @@
 		}
 		
 		// 3、添加一个图层
-		var layer1 = new GeoBeans.Layer.TileLayer({
-			"name" : "vector",
-			"source" : new GeoBeans.Source.Tile.MapWorld({
-	 			"url" : "/DataServer?",
-	 			"imageSet" : /*"img", "cia", "vec",*/ "ter",
-	 			//"srs" : GeoBeans.Proj.WGS84,
-	 			"srs" : GeoBeans.Proj.WebMercator,
+		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
+		var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
+		var layer2 = new GeoBeans.Layer.TileLayer2({
+			"name" : "world",
+			"source" : new GeoBeans.Source.Tile.QuadServer({
+	 			"url" : "/QuadServer/maprequest",
+	 			"imageSet" : "world_image"
 	 		}),
-	 		"opacity" : 1.0,
+	 		"opacity" : 0.5,
 	 		"visible" : true
 		});
-
-		// var layer3 = new GeoBeans.Layer.TileLayer2({
-		// 	"name" : "world",
-		// 	"source" : new GeoBeans.Source.Tile.MapWorld({
-	 // 			"url" : "/DataServer?",
-	 // 			"imageSet" : "cva_c"
-	 // 		}),
-	 // 		"opacity" : 1.0,
-	 // 		"visible" : true
-		// });
-
-		//layer1.setVisible(false);
-
 		// 添加图层
+		layer1.setVisible(false);
 		mapObj.addLayer(layer1);
-		//mapObj.addLayer(layer2);
-		//mapObj.addLayer(layer3);
+		mapObj.addLayer(layer2);
 		mapObj.setBaseLayer(layer1);
 
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
@@ -188,16 +177,22 @@
 		// 4、设置中心点和显示级别
 		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.setZoomCenter(zoom,center);
+		var viewer = mapObj.getViewer();	
+		viewer.setZoomCenter(zoom,center);
 	}
 
 	function onMouseMove(evt){
 		
-		document.getElementById("m_x").value = evt.mapX;
-		document.getElementById("m_y").value = evt.mapY;
+		var lon = evt.mapX;
+		var lat = evt.mapY;
 
-		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
-		document.getElementById("w_x").value = pt.x;
-		document.getElementById("w_y").value = pt.y;
+		document.getElementById("w_x").value = evt.mapX;
+		document.getElementById("w_y").value = evt.mapY;
+
+		var proj = new GeoBeans.Proj();
+		var pt = proj.fromLonLat(lon, lat);
+		document.getElementById("m_x").value = pt.x;
+		document.getElementById("m_y").value = pt.y;
 	}
+
 </script>

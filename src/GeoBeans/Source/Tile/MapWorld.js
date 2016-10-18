@@ -11,7 +11,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 	 * WGS84： : 后缀	_c
 	 * Mercator: 后缀	_w
 	 */
-	_srs : GeoBeans.SrsType.WGS84,
+	_srs : GeoBeans.Proj.WGS84,
 	/**
 	 *  矢量: vec 	http://t5.tianditu.com/DataServer?T=vec_w&x=6748&y=3133&l=13
 	 *  影像：img	http://t5.tianditu.com/DataServer?T=img_w&x=6748&y=3133&l=13
@@ -28,7 +28,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
         x: -20037508.3427892,
         y:  20037508.3427892
     },*/
-    SRS : GeoBeans.SrsType.WGS84,
+    SRS : GeoBeans.Proj.WGS84,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 	
@@ -120,7 +120,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 		this._imageSet = options.imageSet;
 		this._srs = options.srs;
 
-		if(this._srs == GeoBeans.SrsType.WGS84){
+		if(this._srs.SRID == GeoBeans.SrsType.WGS84){
 			this._imageSet = this._imageSet + "_c";
 			this.FULL_EXTENT = this.FULL_EXTENT_WGS;
 			this.RESOLUTIONS = this.RESOLUTIONS_WGS;

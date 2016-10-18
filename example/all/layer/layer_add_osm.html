@@ -16,10 +16,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Envelope.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
-
-<!--View-->
-<script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Geometry-->
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Point.js"></script>
@@ -30,6 +26,11 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
+<!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
@@ -103,8 +104,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
-<!--Projection-->
-<script type="text/javascript" src="../../../src/GeoBeans/Projection/Proj.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
@@ -161,7 +160,7 @@
 		var osmLayer = new GeoBeans.Layer.TileLayer({
 			"name" : "osm",
 			"source" : new GeoBeans.Source.Tile.OSM({
-				"srs": GeoBeans.SrsType.WebMercator,
+				srs: GeoBeans.Proj.WebMercator,
 			}),
 	 		"opacity" : 0.5,
 	 		"visible" : true
@@ -170,7 +169,7 @@
 		var amapLayer = new GeoBeans.Layer.TileLayer({
 			"name" : "amap",
 			"source" : new GeoBeans.Source.Tile.AMap({
-				"srs": GeoBeans.SrsType.WebMercator,
+				"srs": GeoBeans.Proj.WebMercator,
 			}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
@@ -181,8 +180,8 @@
 			"source" : new GeoBeans.Source.Tile.MapWorld({
 	 			"url" : "/DataServer?",
 	 			"imageSet" : "cia", /*"vec", */
-	 			//"srs" : GeoBeans.SrsType.WGS84,
-	 			"srs" : GeoBeans.SrsType.WebMercator,
+	 			//"srs" : GeoBeans.Proj.WGS84,
+	 			"srs" : GeoBeans.Proj.WebMercator,
 	 		}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
@@ -210,8 +209,6 @@
 		document.getElementById("m_x").value = evt.mapX;
 		document.getElementById("m_y").value = evt.mapY;
 
-		var proj = new GeoBeans.Proj();
-		//var pt = proj.toLonLat(evt.mapX, evt.mapY);
 		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;

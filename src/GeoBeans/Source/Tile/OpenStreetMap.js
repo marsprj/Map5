@@ -82,10 +82,10 @@ GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		// this._url = options.url;
 		// this._imageSet = options.imageSet;
-		
+		this._srs = options.srs;
 		if(isValid(options.srs)){
 			this._srs = options.srs;
-			if(this._srs != GeoBeans.SrsType.WebMercator){
+			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}
 		}
@@ -209,15 +209,15 @@ GeoBeans.Source.Tile.OSM.prototype.getTilePosisiton = function(row, col, tile_si
 
 	var pos = null;
 	if(this.isWGS84()){
-		var proj = new GeoBeans.proj();
-		var pt0  = proj.toLonLat(x, y);
-		var pt1  = proj.toLonLat(x+tile_size, y+tile_size);
-		pos = {
-			"x" : pt0.x,
-			"y" : pt0.y,
-			"width" : Math.abs(pt1.x - pt0.x),
-			"height": Math.abs(pt1.y - pt1.y)
-		}
+		// var proj = new GeoBeans.proj();
+		// var pt0  = proj.toLonLat(x, y);
+		// var pt1  = proj.toLonLat(x+tile_size, y+tile_size);
+		// pos = {
+		// 	"x" : pt0.x,
+		// 	"y" : pt0.y,
+		// 	"width" : Math.abs(pt1.x - pt0.x),
+		// 	"height": Math.abs(pt1.y - pt1.y)
+		// }
 	}
 	else{
 		pos = {

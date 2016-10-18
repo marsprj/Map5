@@ -5,6 +5,8 @@
  */
 GeoBeans.Source = GeoBeans.Class({
 	
+	_srs : GeoBeans.Proj.WGS84,
+
 	initialize : function(options){
 		
 	},
@@ -13,3 +15,7 @@ GeoBeans.Source = GeoBeans.Class({
 		
 	},
 });
+
+GeoBeans.Source.prototype.getSRS = function(){
+	return this._srs;
+}

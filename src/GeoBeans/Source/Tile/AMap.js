@@ -8,7 +8,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 
 	_url : "/appmaptile?lang=zh_cn&size=1&scale=1&style=6",	
 	_imageSet : null,
-	_srs : GeoBeans.SrsType.WebMercator,
+	_srs : GeoBeans.Proj.WebMercator,
 	_isWGS84 : false,
 
 	_TID : "x={col}&y={row}&z={zoom}",
@@ -21,7 +21,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 	AMP_URL : "http://wprd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7",
 
 
-    SRS : GeoBeans.SrsType.WebMercator,
+    SRS : GeoBeans.Proj.WebMercator,
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 		
@@ -85,7 +85,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		if(isValid(options.srs)){
 			this._srs = options.srs;
-			if(this._srs != GeoBeans.SrsType.WebMercator){
+			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}
 		}

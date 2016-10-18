@@ -51,3 +51,25 @@ GeoBeans.Proj.toLonLat = function(x, y){
 
 	return (new GeoBeans.Geometry.Point(lon, lat));
 }
+
+GeoBeans.Proj.WGS84 = {
+	SRID : "EPSG:4326",
+	EXTENT : {
+		xmin : -180.0,
+		xmax :  180.0,
+		ymin :  -90.0,
+		ymax :   90.0,
+	},
+	UNIT : "degree"
+}
+
+GeoBeans.Proj.WebMercator = {
+	SRID : "EPSG:3857",
+	EXTENT : {
+		xmin:-20037508.3427892,
+		ymin:-20037508.3427892,
+		xmax: 20037508.3427892,
+		ymax: 20037508.3427892
+	},
+	UNIT : "meter"
+}

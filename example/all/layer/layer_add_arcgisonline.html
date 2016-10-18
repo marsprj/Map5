@@ -30,6 +30,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
@@ -104,8 +106,6 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
-<!--Projection-->
-<script type="text/javascript" src="../../../src/GeoBeans/Projection/Proj.js"></script>
 <!--Map-->
 <script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
@@ -162,8 +162,8 @@
 		var arcgisLayer = new GeoBeans.Layer.TileLayer({
 			"name" : "arcgis",
 			"source" : new GeoBeans.Source.Tile.ArcGIS({
-				imageSet : "World_Imagery",
-				srs: GeoBeans.SrsType.WebMercator,
+				imageSet : "ChinaOnlineCommunity",
+				srs: GeoBeans.Proj.WebMercator,
 			}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
@@ -172,7 +172,7 @@
 		var amapLayer = new GeoBeans.Layer.TileLayer({
 			"name" : "amap",
 			"source" : new GeoBeans.Source.Tile.AMap({
-				"srs": GeoBeans.SrsType.WebMercator,
+				"srs": GeoBeans.Proj.WebMercator,
 			}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
@@ -183,8 +183,8 @@
 			"source" : new GeoBeans.Source.Tile.MapWorld({
 	 			"url" : "/DataServer?",
 	 			"imageSet" : "cia", /*"vec", */
-	 			//"srs" : GeoBeans.SrsType.WGS84,
-	 			"srs" : GeoBeans.SrsType.WebMercator,
+	 			//"srs" : GeoBeans.Proj.WGS84,
+	 			"srs" : GeoBeans.Proj.WebMercator,
 	 		}),
 	 		"opacity" : 1.0,
 	 		"visible" : true
@@ -193,7 +193,7 @@
 		// 添加图层
 		//mapObj.addLayer(amapLayer);
 		mapObj.addLayer(arcgisLayer);
-		mapObj.addLayer(mapworldLayer);
+		//mapObj.addLayer(mapworldLayer);
 		
 		//mapObj.addLayer([amapLayer,arcgisLayer]);
 		mapObj.setBaseLayer(arcgisLayer);
