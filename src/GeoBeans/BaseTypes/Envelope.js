@@ -131,6 +131,9 @@ GeoBeans.Envelope.prototype.contains = function(x, y){
  *                   false 不相交
  */
 GeoBeans.Envelope.prototype.intersects = function(other){
+	if(!isVaild(other)){
+		return false;
+	}
 	var xmin = this.xmin > other.xmin ? this.xmin : other.xmin;
 	var xmax = this.xmax < other.xmax ? this.xmax : other.xmax;
 
