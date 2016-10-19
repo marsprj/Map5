@@ -163,47 +163,7 @@
 		loadTileMap();
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
-	// function  init(){
-		
-	// 	// 1、设置地图的范围
-	// 	var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
-	// 	mapObj = new GeoBeans.Map({
-	// 		id : "mapDiv",
-	// 		name : "map",
-	// 		srid : 4326
-	// 	});
-	// 	if(mapObj == null){
-	// 		return;
-	// 	}
-		
-	// 	// 3、添加一个图层
-	// 	// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-	// 	var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
-	// 	var layer2 = new GeoBeans.Layer.TileLayer2({
-	// 		"name" : "world",
-	// 		"source" : new GeoBeans.Source.Tile.QuadServer({
-	//  			"url" : "/QuadServer/maprequest",
-	//  			"imageSet" : "world_image"
-	//  		}),
-	//  		"opacity" : 0.5,
-	//  		"visible" : true
-	// 	});
-	// 	// 添加图层
-	// 	layer1.setVisible(false);
-	// 	mapObj.addLayer(layer1);
-	// 	mapObj.addLayer(layer2);
-	// 	mapObj.setBaseLayer(layer1);
-
-	// 	mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
-
-	// 	// 4、设置中心点和显示级别
-	// 	var zoom = 2;
-	// 	var center = new GeoBeans.Geometry.Point(0,0);
-	// 	var viewer = mapObj.getViewer();	
-	// 	viewer.setZoomCenter(zoom,center);
-	// }
-
+	
 	function onMouseMove(evt){
 		
 		var lon = evt.mapX;
