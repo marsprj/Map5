@@ -37,7 +37,10 @@ GeoBeans.Source.Feature.prototype.getGeometryName = function(){
  * @public
  */
 GeoBeans.Source.Feature.prototype.getFeatures = function(filter, success, failure){
-	
+	var query = new GeoBeans.Query({
+		"filter" : filter
+	});
+	this.query(query,success);
 }
 
 /**
@@ -133,7 +136,7 @@ GeoBeans.Source.Feature.prototype.query = function(query, handler){
 	var offset = query.getOffset();
 	var orderby = query.getOrderby();
 
-	var features = this.features;
+	var features = this._features;
 
 	var result = this.selectByFilter(filter,features,maxFeatures,offset);
 	if(isValid(handler)){
@@ -716,3 +719,49 @@ GeoBeans.Source.Feature.prototype.selectByBBoxFilter = function(filter,features,
 	}
 	return result;
 }
+
+
+/**
+ * 获得给定字段的最大最小值
+ * @param  {string} fname 给定字段
+ * @return {Object}       最大最小值
+ */
+GeoBeans.Source.Feature.prototype.getMinMaxValue = function(fname){
+	var minmax = {
+		min : 0,
+		max : 0
+	};
+	if(!isValid(this._features)){
+		return minmax;
+	}
+	var min = null;
+	var max = null;
+	var feature = null;
+
+	for(var i = 0; i < this._features.length; ++i){
+		feature = this._features[i];
+		if(feature == null){
+			continue;
+		}
+		var value = feature.getValue(fname);
+		if(value == null){
+			continue;
+		}
+		value = parseFloat(value);
+		if(min == null){
+			min = value;
+		}else{
+			min = (value < min ) ? value : min; 
+		}
+		if(max == null){
+			max = value;
+		}else{
+			max = (value > max) ? value : max;
+		}			
+
+	}
+	return {
+		min : min,
+		max : max
+	};	
+};
