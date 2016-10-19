@@ -681,7 +681,7 @@ GeoBeans.Source.Feature.prototype.selectByBBoxFilter = function(filter,features,
 
 	var extent = filter.extent;
 
-	var geomType = this.getGeomType();
+	// var geomType = this.getGeomType();
 
 	var target = [];
 
@@ -700,7 +700,7 @@ GeoBeans.Source.Feature.prototype.selectByBBoxFilter = function(filter,features,
 			continue;
 		}
 		var g_extent = g.extent;
-		if(extent.intersects(g_extent)){
+		if(extent.intersects(g_extent)|| extent.containOther(g_extent)){
 			target.push(f);
 		}
 		if(total != null && target.length == total){

@@ -100,17 +100,19 @@ GeoBeans.Layer.HeatMapLayer2.prototype.apply = function(options){
 	if(isValid(options.name)){
 		this.name = options.name;
 	}
-	//2.features
-	if(isValid(options.features)){
-		this.features = options.features;
-	}
-	//3.field
+
+	//2.field
 	if(isValid(options.field)){
 		this.field = options.field;
 	}
-	//4.radius
+	//3.radius
 	if(isValid(options.radius)){
 		this.radius = options.radius;
+	}
+
+	// 4.source
+	if(isValid(options.source)){
+		this._source = options.source;
 	}	
 }
 
@@ -166,22 +168,19 @@ GeoBeans.Layer.HeatMapLayer2.prototype.setData = function(features){
 	var max = null,min = null,points = [];
 	var that = this;
 
-	var finidex = -1
-	if(isValid(this.field)){
-		findex = this.featureType.findField(this.field);
-	}	
 
 	features.forEach(function(f){
 		geometry = f.geometry;
 		if(geometry != null){
 
 			if(geometry.type == GeoBeans.Geometry.Type.POINT){
-				if(findex == -1){
+
+				value = f.getValue(that.field);
+				if(!isValid(value)){
 					value = 1;
 					min = value;
 					max = value;
 				}else{
-					value = f.getValue(that.field);
 					if(min == null){
 						min = value;
 					}else{
