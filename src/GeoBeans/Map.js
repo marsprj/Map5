@@ -1,37 +1,73 @@
 /**
  * @classdesc
- * Map5的地图空间，实现地图的展示、渲染、查询、专题图以及用户交互功能。
+ * Map5的地图控件，实现地图的展示、渲染、查询、专题图以及人机交互功能。
+ * Map５地图控件由GeoBeans.Map类实现。由{@link GeoBeans.Layer}、{@link GeoBeans.Source}、{@link GeoBeans.Viewer}、{@link GeoBeans.Widget}等４个主要类构成。此外包含{@link GeoBeans.Control}和{@link GeoBeans.Interaction}实现Map控件的控制和用户交互。
+ * 下面是Map5的一个简单示例，实现基本的地图显示。
+ * 1) 编写显示Map的HTML页面。Map5需要一个div作为地图的容器，设置div的id为mapDiv。此id将作为Map的target参数，用于Map设置Map对象的容器。
+ * 2) 将Map5的引用添加到HTMl页面上。
+ * 
+ * 	<html>
+ * 		<head>
+ * 			<title>Map5地图</title>
+ * 			
+ * 			<link rel="stylesheet" type="text/css" href="/lib/css/Map5.min.css">
+ * 			
+ * 			<script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+ * 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+ * 			<script type="text/javascript" src="lib/css/Map5.min.js"></script>
+ * 			
+ *    		<style type="text/css">
+ *    			body{
+ *    				margin: 0px;
+ *    			}
+ *    			#mapDiv{
+ *    				height:100%;
+ *    				width:
+ *    				position:absolute;
+ *    			}
+ *    		</style>
+ * 		</head>
+ * 		<body>
+ * 			<p>Map5地图</p>
+ * 			<div id="MapDiv"></div>
+ * 		</body>
+ * 	</html>
  *
- *	var map = new GeoBeans.Map({
- *		target : "mapDiv",
- *		name : "map",
- *		srs  : GeoBeans.Proj.WGS84,
- *		baseLayer : "world"
- *		layers : [
- *			new GeoBeans.Layer.TileLayer({
- *				name : "world",
- *				source : new GeoBeans.Source.Tile.QuadServer({
- *					url : "http://127.0.0.1/QuadServer/maprequest",
- *					imageSet : "world_image"
+ * 3) 然后编写Javascript代码，初始化Map对象并显示地图。
+ *
+ * 	<script type="text/javascript">
+ *		var map = new GeoBeans.Map({
+ *			target : "mapDiv",
+ *			name : "map",
+ *			srs  : GeoBeans.Proj.WGS84,
+ *			baseLayer : "world"
+ *			layers : [
+ *				new GeoBeans.Layer.TileLayer({
+ *					name : "world",
+ *					source : new GeoBeans.Source.Tile.QuadServer({
+ *						url : "http://127.0.0.1/QuadServer/maprequest",
+ *						imageSet : "world_image"
+ *					}),
+ *					opacity : 1.0,
+ *					visible : true
  *				}),
- * 				opacity : 1.0,
- * 				visible : true
- * 			}),
- * 			new GeoBeans.Layer.FeatureLayer({
- * 				name : "country",
- * 				geometryType : GeoBeans.Geometry.Type.POINT,
- * 				source : new GeoBeans.Source.Feature.GeoJSON({
- * 					url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
- * 					geometryName : "geometry",
- * 				}),
- * 				style : createSimplePolygonStyle()
- * 			})		
- *		],
- *		viewer : new GeoBeans.Viewer({
- *			center : new GeoBeans.GeometryPoint(0,0),
- *			zoom : 2
- *		})
- *	});
+ *				new GeoBeans.Layer.FeatureLayer({
+ *					name : "country",
+ *					geometryType : GeoBeans.Geometry.Type.POINT,
+ *					source : new GeoBeans.Source.Feature.GeoJSON({
+ * 						url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
+ * 						geometryName : "geometry",
+ *					}),
+ *					style : createSimplePolygonStyle()
+ *				})		
+ *			],
+ *			viewer : new GeoBeans.Viewer({
+ *				center : new GeoBeans.GeometryPoint(0,0),
+ *				zoom : 2
+ *			})
+ *		});
+ *	</script>
+ *	
  * @class
  * @param 	{object} options options
  * @api stable
