@@ -20,20 +20,39 @@ GeoBeans.Viewer = GeoBeans.Class({
 	_onChange : null,
 	
 	
-	initialize : function(map,options){
-		this._map = map;
+	// initialize : function(map,options){
+	// 	this._map = map;
+	// 	if(isValid(options)){
+	// 		this._extent = options.extent;
+	// 		// this._viewer = options.viewer;
+	// 		// if(this._viewer == null){
+	// 		// 	this._viewer = this._extent;
+	// 		// }
+	// 		// this.setViewer(this._viewer);
+	// 		this.setExtent(this._extent);	
+	// 	}
+	// }
+
+	initialize : function(options){
 		if(isValid(options)){
-			this._extent = options.extent;
-			// this._viewer = options.viewer;
-			// if(this._viewer == null){
-			// 	this._viewer = this._extent;
-			// }
-			// this.setViewer(this._viewer);
-			this.setExtent(this._extent);	
+			if(isValid(options.zoom)){
+				this._zoom = options.zoom;
+			}
+			if(isValid(options.center)){
+				this._center = options.center;
+			}
 		}
 	}
 });
 
+/**
+ * 绑定地图
+ * @protected
+ * @param {GeoBeans.Map} map 地图
+ */
+GeoBeans.Viewer.prototype.setMap = function(map){
+	this._map = map;
+};
 /**
  * cleanup
  * @private

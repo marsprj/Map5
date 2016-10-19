@@ -150,6 +150,43 @@
 		var center = new GeoBeans.Geometry.Point(0,0);
 		mapObj.setZoomCenter(zoom,center);
 	}
+
+
+	function init(){
+		mapObj = new GeoBeans.Map({
+	        target : "mapDiv",
+	        name : "map",
+	        srs  : GeoBeans.Proj.WGS84,
+	        baseLayer : "world",
+	        layers : [
+	            new GeoBeans.Layer.TileLayer({
+	                name : "world",
+	                source : new GeoBeans.Source.Tile.QuadServer({
+	                    url : "/QuadServer/maprequest",
+	                    imageSet : "world_image"
+	                }),
+	                opacity : 1.0,
+	                visible : true
+	            }),
+	            new GeoBeans.Layer.FeatureLayer({
+	                name : "country",
+	                geometryType : GeoBeans.Geometry.Type.POINT,
+	                source : new GeoBeans.Source.Feature.GeoJSON({
+	                    url : "/Map5/example/all/data/geojson/countries.geojson",
+	                    geometryName : "geometry",
+	                }),
+	                // style : createSimplePolygonStyle()
+	            })        
+	        ],
+	        // viewer : new GeoBeans.Viewer({
+	        //     center : new GeoBeans.Geometry.Point(0,0),
+	        //     zoom : 2
+	        // })
+	    });
+	    var zoom = 2;
+		var center = new GeoBeans.Geometry.Point(0,0);
+		mapObj.setZoomCenter(zoom,center);
+	}
 </script>
 <title>地图：加载地图</title>
 <body onload="init()">

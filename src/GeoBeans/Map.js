@@ -174,7 +174,7 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* mapContainer Begin
 		/**************************************************************************************/
-		this.createMapContainer();		
+		// this.createMapContainer();		
 		/**************************************************************************************/
 		/* mapContainer End
 		/**************************************************************************************/
@@ -215,7 +215,7 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* Layers Begin
 		/**************************************************************************************/
-		this.initLayers();
+		// this.initLayers();
 		/**************************************************************************************/
 		/* Layers End
 		/**************************************************************************************/
@@ -1049,8 +1049,9 @@ GeoBeans.Map.prototype.initInteractions = function(){
  * 初始化地图图层要素
  * @private
  */
-GeoBeans.Map.prototype.initLayers = function(){
+GeoBeans.Map.prototype.initLayers = function(layers){
 	this.layers = [];
+	this.addLayers(layers);
 
 	this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
 	this.overlayLayer.setMap(this);
@@ -1895,39 +1896,77 @@ GeoBeans.Map.prototype.getControl = function(type){
  */
 GeoBeans.Map.prototype.apply = function(options){
 
+	// //1）container id	
+	// if(isValid(options.id)){
+	// 	this.id = options.id;
+	// }
+
+	// //2) name
+	// if(isValid(options.name)){
+	// 	this.name = options.name;
+	// }
+	// else{
+	// 	this.name = options.name;	
+	// }
+
+	// //3) srid
+	// if(isValid(options.srid)){
+	// 	this.srid = options.srid;
+	// }
+	// else{
+	// 	this.srid = 4326;
+	// }
+
+	// //4）viewer
+	// if(isValid(options.viewer)){
+	// 	this.viewer = new GeoBeans.Viewer(this,options.viewer);
+	// }
+	// else{
+	// 	this.viewer = new GeoBeans.Viewer(this);
+	// }
+	
+	// //5) extent
+	// if(isValid(options.extent)){
+	// 	this.extent = options.extent;
+	// }
 	//1）container id	
-	if(isValid(options.id)){
-		this.id = options.id;
+	if(isValid(options.target)){
+		this.id = options.target;
+		this.createMapContainer();		
 	}
 
 	//2) name
 	if(isValid(options.name)){
 		this.name = options.name;
 	}
-	else{
-		this.name = options.name;	
-	}
 
-	//3) srid
-	if(isValid(options.srid)){
-		this.srid = options.srid;
-	}
-	else{
-		this.srid = 4326;
+	// 3) srs
+	if(isValid(options.srs)){
+		this.srs = options.srs;
 	}
 
 	//4）viewer
 	if(isValid(options.viewer)){
-		this.viewer = new GeoBeans.Viewer(this,options.viewer);
+		this.viewer = options.viewer;
+		this.viewer.setMap(this);
 	}
 	else{
-		this.viewer = new GeoBeans.Viewer(this);
+		this.viewer = new GeoBeans.Viewer();
+		this.viewer.setMap(this);
 	}
-	
-	//5) extent
-	if(isValid(options.extent)){
-		this.extent = options.extent;
+
+	// 5) layers
+	if(isValid(options.layers)){
+		this.initLayers(options.layers);
+	}else{
+		this.initLayers();
 	}
+
+	if(isValid(options.baseLayer)){
+		var layer = this.getLayer(options.baseLayer);
+		this.setBaseLayer(layer);
+	}
+
 }
 
 
