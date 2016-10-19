@@ -8,8 +8,10 @@ GeoBeans.Format.KML = GeoBeans.Class(GeoBeans.Format,{
 	geometryName : "geometry",
 
 	initialize : function(options){
-		if(isValid(options.geometryName)){
-			this.geometryName = options.geometryName;
+		if(isValid(options)){
+			if(isValid(options.geometryName)){
+				this.geometryName = options.geometryName;
+			}
 		}
 	},
 });
