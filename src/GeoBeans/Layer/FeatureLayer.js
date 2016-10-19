@@ -1,21 +1,8 @@
 /**
  * @classdesc
  * 要素图层
- * 
- * 	var layer = new GeoBeans.Layer.FeatureLayer({
- * 					name : "country",
- * 					geometryType : GeoBeans.Geometry.Type.POINT,
- * 					source : new GeoBeans.Source.Feature.GeoJSON({
- * 						url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
- * 						geometryName : "geometry",
- * 					}),
- * 					style : createSimplePolygonStyle()
- * 				});
- * 
  * @class
  * @extends {GeoBeans.Layer}
- * @param 	{object} options options
- * @api stable
  */
 GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	
@@ -343,11 +330,59 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// ？？？这里不做碰撞检测
 	// ？？？即便是做碰检测，Maplex类已经实现了，这里又何必再实现一次？
 	// 解释： 这个是参考Auge.GIS里面写的，每个图层进行判断，然后添加到maplex里面。
+	// labelFeatures : function(features,symbolizer){
+	// 	if(features == null || features.length == 0){
+	// 		return;
+	// 	}
+
+	// 	this.renderer.save();
+	// 	this.renderer.setSymbolizer(symbolizer);
+	// 	var feature = features[0];
+	// 	var text = null;
+	// 	var labelText = symbolizer.labelText;
+	// 	if(labelText == null || labelText.length == 0){
+	// 		var labelProp = symbolizer.labelProp;
+	// 		// if(labelProp != null){
+	// 		// 	var findex = feature.featureType.findField(labelProp);
+	// 		// }
+	// 	}else{
+	// 		text = labelText;
+	// 	}
+
+	// 	var value = null;
+	// 	var geometry = null;
+	// 	var label = null;
+	// 	for(var i=0,len=features.length; i<len; i++){
+	// 		feature = features[i];
+	// 		geometry = feature.geometry;
+	// 		if(geometry == null){
+	// 			continue;
+	// 		}
+	// 		label = new GeoBeans.PointLabel();
+	// 		label.geometry = geometry;
+	// 		label.textSymbolizer = symbolizer;
+	// 		if(text == null){
+	// 			value = feature.getValue(labelProp);
+	// 		}else{
+	// 			value = text;
+	// 		}
+	// 		label.text = value;
+	// 		label.computePosition(this.renderer,this.map.getViewer());
+	// 		label.adjustPosition(this.canvas.width,this.canvas.height);
+	// 		if(!this.map.maplex.isCollision(label)){
+	// 			this.map.maplex.addLabel(this.name,label);
+	// 		}
+	// 	}		
+
+	// 	this.renderer.restore();
+
+	// },
+	
+	// 图层单独绘制，不进行碰撞检测
 	labelFeatures : function(features,symbolizer){
-		if(features == null || features.length == 0){
+		if(!isValid(features) || !isValid(symbolizer)){
 			return;
 		}
-
 		this.renderer.save();
 		this.renderer.setSymbolizer(symbolizer);
 		var feature = features[0];
@@ -355,9 +390,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var labelText = symbolizer.labelText;
 		if(labelText == null || labelText.length == 0){
 			var labelProp = symbolizer.labelProp;
-			// if(labelProp != null){
-			// 	var findex = feature.featureType.findField(labelProp);
-			// }
 		}else{
 			text = labelText;
 		}
@@ -368,9 +400,16 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		for(var i=0,len=features.length; i<len; i++){
 			feature = features[i];
 			geometry = feature.geometry;
-			if(geometry == null){
+			if(!isValid(geometry)){
 				continue;
 			}
+			
+			if(text == null){
+				value = feature.getValue(labelProp);
+			}else{
+				value = text;
+			}
+
 			label = new GeoBeans.PointLabel();
 			label.geometry = geometry;
 			label.textSymbolizer = symbolizer;
@@ -381,16 +420,14 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 			label.text = value;
 			label.computePosition(this.renderer,this.map.getViewer());
-			label.adjustPosition(this.canvas.width,this.canvas.height);
-			if(!this.map.maplex.isCollision(label)){
-				this.map.maplex.addLabel(this.name,label);
-			}
-		}		
 
-		this.renderer.restore();
+			this.renderer.drawLabel(label);	
+			
+		}	
+		this.renderer.restore();	
 
 	},
-	
+
 	
 	
 	init : function(){
