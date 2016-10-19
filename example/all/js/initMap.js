@@ -104,14 +104,21 @@ function loadCities(){
 	}
 	
 	// 3、添加一个底图
-	// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-	var baselayer = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_vector");
+	var baselayer = new GeoBeans.Layer.TileLayer({
+		"name" : "base",
+		"source" : new GeoBeans.Source.Tile.QuadServer({
+ 			"url" : "/QuadServer/maprequest",
+ 			"imageSet" : "world_vector"
+ 		}),
+ 		"opacity" : 1.0,
+ 		"visible" : true
+	});
 	mapObj.addLayer(baselayer);
 	var server = "/geoserver/radi/ows?";
 	// 2、定义WFS图层
 	wfsLayer = new GeoBeans.Layer.FeatureLayer({			
 		"name" : "cities",
-		"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+		"geometryType" : GeoBeans.Geometry.Type.POINT,
 		"source" : new GeoBeans.Source.Feature.WFS({
 			"url" : "/geoserver/radi/ows?",
 			"version" : "1.0.0",
@@ -125,13 +132,10 @@ function loadCities(){
 
 	mapObj.addLayer(wfsLayer);
 
-
-
 	// 5、设置中心点和显示级别
 	var zoom = 3;
 	var center = new GeoBeans.Geometry.Point(0,0);
-	var viewer = mapObj.getViewer();	
-	viewer.setZoomCenter(zoom,center);
+	mapObj.setZoomCenter(zoom,center);
 }
 
 function loadRivers(){

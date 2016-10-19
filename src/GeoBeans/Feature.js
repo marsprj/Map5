@@ -119,3 +119,12 @@ GeoBeans.Feature.prototype.getValue = function(field){
 // 	}
 // 	return null;
 // }
+
+/**
+ * 获取字段属性值对象
+ * @public
+ * @return {Object} 字段属性值
+ */
+GeoBeans.Feature.prototype.getProperties = function(){
+	return this._properties;
+};
