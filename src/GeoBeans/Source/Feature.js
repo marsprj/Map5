@@ -50,6 +50,19 @@ GeoBeans.Source.Feature.prototype.addFeature = function(feature){
 	}
 }
 
+
+/**
+ * 添加Feature数组
+ * @param {Array.<GeoBeans.Feature>} features 要素数组
+ */
+GeoBeans.Source.Feature.prototype.addFeatures = function(features){
+	if(isValid(features)){
+		for(var i = 0; i < features.length;++i){
+			this.addFeature(features[i]);
+		}
+	}
+};
+
 /**
  * 获得指定范围的的Feature
  * @param  {GeoBeans.Envelope} extent 空间范围

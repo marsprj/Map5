@@ -120,7 +120,6 @@
 
 <script type="text/javascript" src="../js/initMap.js"></script>
 
-<script type="text/javascript" src="../js/initMap.js"></script>
 
 <style type="text/css">
 	body{
@@ -244,49 +243,8 @@
 		mapObj.refresh();
 	}
 
-	function addFeatureLayer(name){
-		var fields = [
-			{
-				name : "name",  // 字段名称
-				type : "string"  // 字段类型
-			},{
-				name : "shape",
-				type : "geometry"
-			}
-		];
-		var geomType  = GeoBeans.Geometry.Type.POINT;
-		var featureType = new GeoBeans.FeatureType(null,name);
-		var fieldsArray = [];
-		for(var i = 0; i < fields.length;++i){
-			var f = fields[i];
-			var type = f.type;
-			var name = f.name;
-			var field = new GeoBeans.Field(name, type, featureType,null);
-			if(type == GeoBeans.Field.Type.GEOMETRY){
-				featureType.geomFieldName = name;
-				field.setGeomType(geomType);
-			}
-			fieldsArray.push(field); 
-		}
-
-		featureType.fields = fieldsArray;
-
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
-		featureLayer.featureType = featureType;
-
-		mapObj.addLayer(featureLayer);
-
-		return featureLayer;
-	}
-
 
 	function addFeatureLayer(name){
-		// var source = new GeoBeans.Source.Feature();
-		// var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
-		// featureLayer.setSource(source);
-		// mapObj.addLayer(featureLayer);
-		// return featureLayer;
-
 		var featureLayer = new GeoBeans.Layer.FeatureLayer({
 			name : name,
 			geometryType : GeoBeans.Geometry.Type.POINT,
