@@ -167,11 +167,6 @@ GeoBeans.Map = GeoBeans.Class({
 		this.legendList = [];
 
 		/**************************************************************************************/
-		/* 初始化地图参数
-		/**************************************************************************************/		
-		//this.apply(options);
-
-		/**************************************************************************************/
 		/* 1) Map Name
 		/**************************************************************************************/
 		if(isValid(options.name)){
@@ -1985,95 +1980,6 @@ GeoBeans.Map.prototype.getControl = function(type){
 	var control = this.controls.get(i);
 	return control;
 };
-
-/**
- * 应用Map对象的options参数
- * @param  {Object} options 参数
- */
-GeoBeans.Map.prototype.apply = function(options){
-
-	// //1）container id	
-	// if(isValid(options.id)){
-	// 	this.id = options.id;
-	// }
-
-	// //2) name
-	// if(isValid(options.name)){
-	// 	this.name = options.name;
-	// }
-	// else{
-	// 	this.name = options.name;	
-	// }
-
-	// //3) srid
-	// if(isValid(options.srid)){
-	// 	this.srid = options.srid;
-	// }
-	// else{
-	// 	this.srid = 4326;
-	// }
-
-	// //4）viewer
-	// if(isValid(options.viewer)){
-	// 	this.viewer = new GeoBeans.Viewer(this,options.viewer);
-	// }
-	// else{
-	// 	this.viewer = new GeoBeans.Viewer(this);
-	// }
-	
-	// //5) extent
-	// if(isValid(options.extent)){
-	// 	this.extent = options.extent;
-	// }
-	//1）container id	
-	if(isValid(options.target)){
-		this.id = options.target;
-		this.createMapContainer();		
-	}
-
-	//2) name
-	if(isValid(options.name)){
-		this.name = options.name;
-	}
-
-	// 3) srs
-	if(isValid(options.srs)){
-		this.srs = options.srs;
-	}
-
-	//4）viewer
-	if(isValid(options.viewer)){
-		this.viewer = options.viewer;
-		this.viewer.setMap(this);
-
-	}
-	else{
-		this.viewer = new GeoBeans.Viewer();
-		this.viewer.setMap(this);
-	}
-
-	// 5) layers
-	if(isValid(options.layers)){
-		this.initLayers(options.layers);
-	}else{
-		this.initLayers();
-	}
-
-	if(isValid(options.baseLayer)){
-		var layer = this.getLayer(options.baseLayer);
-		this.setBaseLayer(layer);
-	}
-
-	var zoom = this.viewer.getZoom();
-	var center = this.viewer.getCenter();
-	if(isValid(zoom) && !isValid(center)){
-		this.setZoom(zoom);
-	}else if(!isValid(zoom) && isValid(center)){
-		this.viewer.setCenter(center);
-	}else if(isValid(zoom) && isValid(center)){
-		this.setZoomCenter(zoom,center);
-	}
-}
 
 
 /**
