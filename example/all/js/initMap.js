@@ -6,7 +6,7 @@ function loadMap(){
 	// 2、初始化地图变量，参数分别为:
 	// 地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 	mapObj = new GeoBeans.Map({
-			id : "mapDiv",
+			target : "mapDiv",
 			name : "map",
 			srid : 4326
 		});
