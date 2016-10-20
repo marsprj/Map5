@@ -146,9 +146,9 @@
 		var extent = new GeoBeans.Envelope(-180,-90,180,90);
 
 		mapObj = new GeoBeans.Map({
-			id : "mapDiv",
+			target : "mapDiv",
 			name : "map",
-			srid : 4326
+			srs: GeoBeans.Proj.WebMercator
 		});
 		if(mapObj == null){
 			return;
@@ -213,7 +213,7 @@
 
 		var proj = new GeoBeans.Proj();
 		//var pt = proj.toLonLat(evt.mapX, evt.mapY);
-		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
+		var pt = proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;
 	}

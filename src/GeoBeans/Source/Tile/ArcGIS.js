@@ -228,8 +228,9 @@ GeoBeans.Source.Tile.ArcGIS.prototype.getTilePosisiton = function(row, col, tile
 
 	var pos = null;
 	if(this.isWGS84()){
-		var pt0  = GeoBeans.Proj.toLonLat(x, y);
-		var pt1  = GeoBeans.Proj.toLonLat(x+tile_size, y+tile_size);
+		var proj = new GeoBeans.Proj();
+		var pt0  = proj.toLonLat(x, y);
+		var pt1  = proj.toLonLat(x+tile_size, y+tile_size);
 		pos = {
 			"x" : pt0.x,
 			"y" : pt0.y,
