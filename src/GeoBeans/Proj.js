@@ -27,7 +27,7 @@ PROJ_CONSTANT= EARTH_RADIUS * Math.PI / 180.0;
  * @return {GeoBeans.Geometry.Point}     平面坐标点
  * @public
  */
-GeoBeans.Proj.prototype.fromLonLat = function(lon, lat){
+GeoBeans.Proj.fromLonLat = function(lon, lat){
 
 	var x = lon * PROJ_CONSTANT;
 	var y = Math.log(Math.tan((90+lat)*Math.PI/360))/(Math.PI/180);  
@@ -43,7 +43,7 @@ GeoBeans.Proj.prototype.fromLonLat = function(lon, lat){
  * @returns {GeoBeans.Geometry.Point}     经纬度坐标点
  * @public
  */
-GeoBeans.Proj.prototype.toLonLat = function(x, y){
+GeoBeans.Proj.toLonLat = function(x, y){
 
 	var lon = x / PROJ_CONSTANT;
 	var lat = y / PROJ_CONSTANT;

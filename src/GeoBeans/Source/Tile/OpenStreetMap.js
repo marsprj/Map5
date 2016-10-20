@@ -13,7 +13,8 @@
  */
 GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 
-	_url : "/osm/",	
+	//_url : "/osm/",
+	_url : "http://a.tile.openstreetmap.org/",	
 	_imageSet : null,
 	_srs : GeoBeans.Proj.WebMercator,
 	_isWGS84 : false,

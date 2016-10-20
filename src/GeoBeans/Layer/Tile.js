@@ -100,6 +100,8 @@ GeoBeans.Tile.prototype.load = function(){
 
 	if(!isValid(this.image)){
 		this.image = new Image();
+		this.image.crossOrigin = "Anonymous";
+		
 	}
 
 	var that = this;
