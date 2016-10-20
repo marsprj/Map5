@@ -57,12 +57,10 @@ GeoBeans.Proj.prototype.toLonLat = function(x, y){
  */
 GeoBeans.Proj.WGS84 = {
 	SRID : "EPSG:4326",
-	EXTENT : {
-		xmin : -180.0,
-		xmax :  180.0,
-		ymin :  -90.0,
-		ymax :   90.0,
-	},
+	EXTENT : new GeoBeans.Envelope(
+		-180.0, -90.0,
+		 180.0,  90.0
+	),
 	UNIT : "degree"
 }
 
@@ -79,12 +77,12 @@ GeoBeans.Proj.WebMercator = {
 	 * WebMercator投影下的空间范围
 	 * @type {Object}
 	 */
-	EXTENT : {
-		xmin:-20037508.3427892,
-		ymin:-20037508.3427892,
-		xmax: 20037508.3427892,
-		ymax: 20037508.3427892
-	},
+	EXTENT : new GeoBeans.Envelope(
+		-20037508.3427892,		
+		 20037508.3427892,
+		-20037508.3427892,
+		 20037508.3427892
+	),
 	/** 
 	 * 单位
 	 * @type {String}

@@ -34,13 +34,25 @@ GeoBeans.Viewer = GeoBeans.Class({
 	// }
 
 	initialize : function(options){
-		if(isValid(options)){
+		if(!isValid(options)){
+			return;
+		}
+
+		if(isValid(options.map)){
+			this._map = options.map;
+		}
+
+		if(isValid(options.extent)){
+			this._extent = options.extent;
+			this.setExtent(this._extent);
+		}
+		else{
 			if(isValid(options.zoom)){
 				this._zoom = options.zoom;
 			}
 			if(isValid(options.center)){
 				this._center = options.center;
-			}
+			}	
 		}
 	}
 });

@@ -61,10 +61,10 @@
  *					style : createSimplePolygonStyle()
  *				})		
  *			],
- *			viewer : new GeoBeans.Viewer({
+ *			viewer : {
  *				center : new GeoBeans.GeometryPoint(0,0),
  *				zoom : 2
- *			})
+ *			}
  *		});
  *	</script>
  *	
@@ -168,19 +168,38 @@ GeoBeans.Map = GeoBeans.Class({
 
 		/**************************************************************************************/
 		/* 初始化地图参数
-		/**************************************************************************************/
-		this.apply(options);
+		/**************************************************************************************/		
+		//this.apply(options);
 
 		/**************************************************************************************/
-		/* mapContainer Begin
+		/* 1) Map Name
 		/**************************************************************************************/
-		// this.createMapContainer();		
-		/**************************************************************************************/
-		/* mapContainer End
-		/**************************************************************************************/
+		if(isValid(options.name)){
+			this.name = name;
+		}
 
 		/**************************************************************************************/
-		/* Events Begin
+		/* 2) create mapContainer
+		/**************************************************************************************/
+		this.createMapContainer(options.target);
+
+		/**************************************************************************************/
+		/* 3) init Projection
+		/**************************************************************************************/
+		this.initProjection(options.srs);
+
+		/**************************************************************************************/
+		/* 4) init Layers
+		/**************************************************************************************/
+		this.initLayers(options.layers);
+
+		/**************************************************************************************/
+		/* 5) set base layer
+		/**************************************************************************************/
+		this.initBaseLayer(options.baseLayer);
+
+		/**************************************************************************************/
+		/* 3) Events Begin
 		/**************************************************************************************/
 		this.initEvents();
 		/**************************************************************************************/
@@ -213,30 +232,19 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 
 		/**************************************************************************************/
-		/* Layers Begin
-		/**************************************************************************************/
-		// this.initLayers();
-		/**************************************************************************************/
-		/* Layers End
-		/**************************************************************************************/
-
-		/**************************************************************************************/
 		/* 初始选择集
 		/**************************************************************************************/	
 		this.initSelection();
 
 		/**************************************************************************************/
-		/* 注册View事件
-		/**************************************************************************************/
-		this.registerViewerEvent();		
-		/**************************************************************************************/
-		/* mapContainer End
-		/**************************************************************************************/
-
-		/**************************************************************************************/
 		/* 启用Window的Resize事件
 		/**************************************************************************************/	
 		this.enableWindowResize();
+
+		/**************************************************************************************/
+		/* 初始化Viewer
+		/**************************************************************************************/	
+		this.initViewer(options.viewer);
 	
 		// this.maplex = new GeoBeans.Maplex(this);
 
@@ -992,25 +1000,38 @@ GeoBeans.Map.prototype.removeLayer = function(name){
  * 初始化地图容器
  * @private
  */
-GeoBeans.Map.prototype.createMapContainer = function(){
+GeoBeans.Map.prototype.createMapContainer = function(target){
+
+	if(!isValid(target)){
+		return false;
+	}
+
+	this.id = target;
 	this._container = $("#" + this.id)[0];
 
-	this._container.innerHTML = '';
 
 	this.width = $("#" + this.id).width();
 	this.height = $("#" + this.id).height();
-
-
 	// canvas
 	var canvasID = this.id + "_canvas";
 	var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
 						+ this.height + "' width='" 
 						+ this.width + "'></canvas>";
+
 	this._container.innerHTML = mapCanvasHtml;
 
 	this.canvas = document.getElementById(canvasID);
 	this.renderer = new GeoBeans.Renderer(this.canvas);
 
+	return true;
+}
+
+/**
+ * 初始化Projection
+ * @private 
+ */
+GeoBeans.Map.prototype.initProjection = function(srs){
+	this._srs = isValid(srs) ? srs : GeoBeans.Proj.WGS84;
 }
 
 /**
@@ -1055,11 +1076,86 @@ GeoBeans.Map.prototype.initLayers = function(layers){
 
 	this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
 	this.overlayLayer.setMap(this);
+}
 
-/*	this.panoramaLayer = new GeoBeans.Layer.PanoramaLayer("panorama");
-	this.panoramaLayer.setMap(this);*/
+/**
+ * 根据名称初始化BaseLayer
+ * @param  {string} lname 图层名称
+ * @private
+ */
+GeoBeans.Map.prototype.initBaseLayer = function(lname){
+	if(!isValid(lname)){
+		return;
+	}
 
-	this.hitRippleLayers = [];
+	var layer = this.getLayer(lname);
+	this.setBaseLayer(layer);
+}
+
+/**
+ * 初始化地图视图，并设置地图视图。
+ * @param  {GeoBeans.Viewer} viewer 地图视图
+ */
+GeoBeans.Map.prototype.initViewer = function(viewer){
+
+	//1) 读取当前投影的空间范围
+	var full_extent = this._srs.EXTENT;
+	if(!isValid(full_extent)){
+		return false;
+	}
+
+	//2) 利用当前投影的空间范围创建viewer对象。
+	this.viewer = new GeoBeans.Viewer({
+		map : this,
+		extent: full_extent
+	});
+	//3) 注册viewer的onchange事件，在viewer发生变化时候，触发改时间重绘map
+	this.registerViewerEvent();
+
+	//4) 利用options传入的viewer参数更新this.viewer，并触发onchange事件。
+	//   if  ：用户设置了options.viewer参数，利用options.viewer参数更新this.viewer
+	//   else: this.viewer使用默认参数，直接refresh地图。
+	if(isValid(viewer)){
+		
+		// <1> 如果设置了baseLayer，利用zoom和center参数更新viewer
+		if(isValid(this.baseLayer)){
+			var zoom = viewer.zoom;
+			var center = viewer.center;
+
+			if((isValid(zoom))&&(isValid(center))){
+				this.setZoomCenter(zoom, center);	
+			}
+			else if(isValid(zoom)){
+				this.setZoom(zoom);
+			}
+			else if(isValid(center)){
+				this.setCenter(center);
+			}
+			else if(isValid(viewer.extent)){
+				this.setViewExtent(viewer.extent);
+			}
+			else if(isValid(viewer.resolution)){
+				this.setViewResolution(viewer.resolution);
+			}
+		}
+		else{
+			// <2> 否则
+			// 检查是否设置了options.extent参数，如果设置了。则利用options.extent参数更新viewer。
+			var extent = viewer.extent;
+			if(isValid(extent)){
+				this.setViewExtent(extent);
+				return;
+			}
+			// 检查是否设置了options.resolution参数，如果设置了。则利用options.resolution参数更新viewer。
+			var resolution = viewer.resolution;
+			if(isValid(resolution)){
+				this.setViewResolution(resolution);
+			}
+		}
+	}
+	else{
+		this.refresh();
+	}
 }
 
 /**
@@ -1989,6 +2085,23 @@ GeoBeans.Map.prototype.setZoom = function(zoom){
 
 };
 
+/**
+ * 设置中心点
+ * @public
+ * @param {int} zoom 设置地图级别
+ */
+GeoBeans.Map.prototype.setCenter = function(center){
+	if(!isValid(center)){
+		return;
+	}
+
+	if(!(center instanceof GeoBeans.Geometry.Point)){
+		return;
+	}
+
+	var viewer = this.getViewer();
+	viewer.setCenter(center);
+};
 
 /**
  * 设置视口的中心点和缩放级
@@ -2029,6 +2142,17 @@ GeoBeans.Map.prototype.setViewExtent = function(extent){
 		viewer.setZoom(zoom);
 	}
 };
+
+/**
+ * 设置视口的分辨率
+ * @param {float} resolution 视口分辨率
+ */
+GeoBeans.Map.prototype.setViewResolution = function(resolution){
+	if(!isValid(resolution)){
+		return;
+	}
+	this.viewer.setResolution(resolution);
+}
 
 /**
  * 添加Widget
