@@ -82,7 +82,9 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 			if(keyCode != 16){
 				return;
 			}
+			that._rotating = true;
 			var onkeyup = function(evt){
+				that._rotating = false;
 				keyCode = null;
 				document.removeEventListener("keyup",onkeyup);
 			};
