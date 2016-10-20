@@ -34,6 +34,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
 <!--Projection-->
 <script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
+<!--Cluster-->
+<script type="text/javascript" src="../../../src/GeoBeans/Cluster.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
@@ -105,11 +107,10 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/Cluster.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/ClusterLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/HeatMapLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/ClusterLayer.js"></script>
 <!--Interaction-->
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
@@ -143,8 +144,8 @@
 <body onload="init()">
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;"></div>
 	<button onclick="addCluster()">点聚合图(cities)</button>
-	<button onclick="setLayerVisible()">隐藏/显示原始图</button>
-	<button onclick="removeChartLayer()">删除点聚合图</button>
+	<button onclick="setLayerVisible()">隐藏/显示</button>
+	<button onclick="removeLayer()">删除点聚合图</button>
 </body>
 
 <script type="text/javascript">
@@ -152,8 +153,7 @@
 	var mapObj = null;
 	function  init(){
 		
-		loadTileMap();
-		loadFeatureLayer();
+		loadMap();
 	}
 
 	/**
@@ -168,7 +168,13 @@
 		var baseLayerName = "cities";
 
 		// 3、定义聚合图
-		var layer = new GeoBeans.Layer.ClusterLayer(layerName,baseLayerName);
+		var layer = new GeoBeans.Layer.ClusterLayer({
+			name: layerName,
+			baseLayerName :baseLayerName,
+			source : new GeoBeans.Source.Feature({
+
+			})
+		});
 
 		// 4、添加图层
 		mapObj.addLayer(layer);
@@ -177,8 +183,27 @@
 		mapObj.refresh();
 	}
 
+
+	function addCluster(){
+		var layer = new GeoBeans.Layer.ClusterLayer({
+			name : "cluster",
+			source : new GeoBeans.Source.Feature.WFS({
+				url : "/geoserver/radi/ows?",
+				version : "1.0.0",
+				featureNS : 'http://www.radi.ac.cn',
+				featurePrefix : "radi",
+				featureType : "cities_2",
+				geometryName : "shape",
+				outputFormat: "GML2"
+			}),
+			showGeometry : true
+		});
+		mapObj.addLayer(layer);
+		mapObj.refresh();
+	}
+
 	function setLayerVisible(){
-		var layer = mapObj.getLayer("cities");
+		var layer = mapObj.getLayer("cluster");
 		if(layer.visible){
 			layer.setVisible(false);
 		}else{
@@ -187,7 +212,7 @@
 		mapObj.refresh();
 	}
 
-	function removeChartLayer(){
+	function removeLayer(){
 
 		// 1、根据名称删除图层 
 		mapObj.removeLayer("cluster");
@@ -195,90 +220,6 @@
 		// 2、刷新地图
 		mapObj.refresh();
 	}
-
-	function loadFeatureLayer(){
-		var name = "cities";
-		var features = loadFeatures();
-
-		var layer = new GeoBeans.Layer.FeatureLayer({
-			name : "cities",
-			geometryType : GeoBeans.Geometry.Type.POINT,
-			source : new GeoBeans.Source.Feature({
-				geometryName : "shape"
-			})
-		});
-		mapObj.addLayer(layer);
-
-		var source = layer.getSource();
-		source.addFeatures(features);
-
-		//创建分级图样式
-		var style = createStyle();
-		layer.setStyle(style);
-
-		
-		// mapObj.getViewer().setExtent(layer.getExtent());
-		mapObj.refresh();
-	}
-
-	function createFeatureLayer(name, featureType){
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
-		featureLayer.featureType = featureType;
-
-		return featureLayer;
-	}
-
-
-	function loadFeatures(){
-		var features = [];		
-		var length = g_citiesValue.length;
-
-		for(var i = 0; i < length;++i){
-			var pairs = g_citiesValue[i];	
-			var feature = createFeature(i, pairs);
-			features.push(feature);
-		}
-
-		return features;
-	}
-
-	function createFeature(i, pairs){
-		// 使用wkt转换为geometry
-		var format = new GeoBeans.Format.WKT();
-		var geometry = format.read(pairs.shape);
-		var fid = "id_" + i;
-		var values = {
-			name : pairs.name,
-			populat : pairs.populat,
-			capital : pairs.capital,
-			shape : geometry
-		};
-
-		var feature = new GeoBeans.Feature({
-			fid : fid,
-			geometry : geometry,
-			properties : values			
-		});
-		return feature;
-	}
-
-	/**
-	 * 创建图层样式
-	 */
-	function createStyle(){
-		var style = new GeoBeans.Style.FeatureStyle();
-		var rule = new GeoBeans.Style.Rule();
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 6;
-		symbolizer.fill.color.set(255, 0, 0,1);
-		symbolizer.stroke.color.set(0,255, 0,1);
-		rule.symbolizer = symbolizer;
-		style.addRule(rule);
-
-		return style;
-	}
-
-	
 
 
 </script>
