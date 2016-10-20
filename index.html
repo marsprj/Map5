@@ -53,6 +53,7 @@
 <!--Format-->
 <script type="text/javascript" src="src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="src/GeoBeans/Format/GeoJSON.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="src/GeoBeans/Filter/SpatialFilter.js"></script>
@@ -131,49 +132,42 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
-			id : "mapDiv",
-			name : "map",
-			srid : 4326
-		});
-		if(mapObj == null){
-			return;
-		}
-		
-		var quadServerLayer = new GeoBeans.Layer.TileLayer({
-			"name" : "osm",
-			"source" : new GeoBeans.Source.Tile.QuadServer({
-	 			"url" : "/QuadServer/maprequest",
-	 			"imageSet" : "world_image"
-	 		}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
-		});
-
-		var mapworldLayer = new GeoBeans.Layer.TileLayer({
-			"name" : "vector",
-			"source" : new GeoBeans.Source.Tile.MapWorld({
-	 			"url" : "/DataServer?",
-	 			"imageSet" : "cia", 
-	 			"srs" : GeoBeans.Proj.WGS84,
-	 		}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
-		});
-
-		mapObj.addLayer(quadServerLayer);
-		mapObj.addLayer(mapworldLayer);
-		
-		mapObj.setBaseLayer(quadServerLayer);
-
-		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
-
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.setZoomCenter(zoom,center);
+	        target : "mapDiv",
+	        name : "map",
+	        srs  : GeoBeans.Proj.WGS84,
+	        baseLayer : "world",
+	        layers : [
+	            new GeoBeans.Layer.TileLayer({
+	                name : "world",
+	                source : new GeoBeans.Source.Tile.QuadServer({
+	                    url : "/QuadServer/maprequest",
+	                    imageSet : "world_image"
+	                }),
+	                opacity : 1.0,
+	                visible : true
+	            }),
+	            new GeoBeans.Layer.TileLayer({
+					"name" : "label",
+					"source" : new GeoBeans.Source.Tile.MapWorld({
+			 			"url" : "/DataServer?",
+			 			"imageSet" : "cia", 
+			 			"srs" : GeoBeans.Proj.WGS84,
+			 		}),
+			 		"opacity" : 1.0,
+			 		"visible" : true
+				}),
+	            new GeoBeans.Layer.FeatureLayer({
+	                name : "country",
+	                geometryType : GeoBeans.Geometry.Type.POINT,
+	                source : new GeoBeans.Source.Feature.GeoJSON({
+	                    url : "/Map5/example/all/data/geojson/countries.geojson",
+	                    geometryName : "geometry",
+	                }),
+	                // style : createSimplePolygonStyle()
+	            })        
+	        ]
+	    });
 	}
 
 	function onMouseMove(evt){
