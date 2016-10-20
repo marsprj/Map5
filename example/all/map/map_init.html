@@ -178,14 +178,15 @@
 	                // style : createSimplePolygonStyle()
 	            })        
 	        ],
-	        // viewer : new GeoBeans.Viewer({
-	        //     center : new GeoBeans.Geometry.Point(0,0),
-	        //     zoom : 2
-	        // })
+	        viewer : new GeoBeans.Viewer({
+	            center : new GeoBeans.Geometry.Point(0,0),
+	            zoom : 2
+	        })
 	    });
-	    var zoom = 2;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.setZoomCenter(zoom,center);
+	 	//var zoom = 2;
+		// var center = new GeoBeans.Geometry.Point(0,0);
+		// mapObj.setZoomCenter(zoom,center);
+		mapObj.refresh();
 	}
 </script>
 <title>地图：加载地图</title>

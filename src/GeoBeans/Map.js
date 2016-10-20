@@ -1949,6 +1949,7 @@ GeoBeans.Map.prototype.apply = function(options){
 	if(isValid(options.viewer)){
 		this.viewer = options.viewer;
 		this.viewer.setMap(this);
+
 	}
 	else{
 		this.viewer = new GeoBeans.Viewer();
@@ -1967,6 +1968,15 @@ GeoBeans.Map.prototype.apply = function(options){
 		this.setBaseLayer(layer);
 	}
 
+	var zoom = this.viewer.getZoom();
+	var center = this.viewer.getCenter();
+	if(isValid(zoom) && !isValid(center)){
+		this.setZoom(zoom);
+	}else if(!isValid(zoom) && isValid(center)){
+		this.viewer.setCenter(center);
+	}else if(isValid(zoom) && isValid(center)){
+		this.setZoomCenter(zoom,center);
+	}
 }
 
 
