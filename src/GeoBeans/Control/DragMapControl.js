@@ -15,9 +15,6 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 		var that = this;
 
 		var mapContainer = this.map.getContainer();
-		var viewer = this.map.getViewer();
-
-		
 
 		var onmousedown = function(e){
 			if(!that.enabled){
@@ -59,17 +56,17 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			if(dragBeginHandler != null){
 				var x = d_x;
 				var y = d_y;
-				if(viewer == null){
+				if(map.getViewer() == null){
 					return;
 				}
-				var mp = viewer.toMapPoint(x, y);
+				var mp = map.getViewer().toMapPoint(x, y);
 				var args = new GeoBeans.Event.MouseArgs();
 				args.buttn = null;
 				args.X = x;
 				args.Y = y;
 				args.mapX = mp.x;
 				args.mapY = mp.y;
-				args.zoom = viewer.getZoom();
+				args.zoom = map.getViewer().getZoom();
 				dragBeginHandler(args);
 			}		
 			var onmousemove = function(e){
@@ -106,17 +103,17 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					if(dragingHandler != null){
 						var x = d_x;
 						var y = d_y;
-						if(viewer == null){
+						if(map.getViewer() == null){
 							return;
 						}
-						var mp = viewer.toMapPoint(x, y);
+						var mp = map.getViewer().toMapPoint(x, y);
 						var args = new GeoBeans.Event.MouseArgs();
 						args.buttn = null;
 						args.X = x;
 						args.Y = y;
 						args.mapX = mp.x;
 						args.mapY = mp.y;
-						args.zoom = viewer.getZoom();
+						args.zoom = map.getViewer().getZoom();
 						dragingHandler(args);
 					}					
 				}
@@ -151,17 +148,17 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				if(dragEndHandler != null){
 					var x = e.layerX;
 					var y = e.layerY;
-					if(viewer == null){
+					if(map.getViewer() == null){
 						return;
 					}
-					var mp = viewer.toMapPoint(x, y);
+					var mp = map.getViewer().toMapPoint(x, y);
 					var args = new GeoBeans.Event.MouseArgs();
 					args.buttn = null;
 					args.X = x;
 					args.Y = y;
 					args.mapX = mp.x;
 					args.mapY = mp.y;
-					args.zoom = viewer.getZoom();
+					args.zoom = map.getViewer().getZoom();
 					dragEndHandler(args);
 				}				
 			};
