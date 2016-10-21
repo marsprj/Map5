@@ -61,6 +61,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/DistanceBufferFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression.js"></script>
@@ -130,6 +131,7 @@
 	var wfsLayer = null;
 	function init(){
 		loadMap();
+		wfsLayer = mapObj.getLayer("country");
 		createSelectInteraction();
 	}
 

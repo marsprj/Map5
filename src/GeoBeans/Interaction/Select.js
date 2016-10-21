@@ -359,14 +359,14 @@ GeoBeans.Interaction.Select.prototype.createBBoxQuery = function(rect){
 }
 
 GeoBeans.Interaction.Select.prototype.createDistanceBufferFilterQuery = function(g, r){
-	var featureType = this._layer.getFeatureType();
+	var source = this._layer.getSource();
 	var filter = new GeoBeans.Filter.DistanceBufferFilter(
-						featureType.geomFieldName,
+						source.getGeometryName(),
 						g,
 						r);
 	
 	var query = new GeoBeans.Query({
-		"typeName"	: featureType.getName(),
+		"typeName"	: this._layer.getName(),
 		"filter"	: filter
 	});
 
