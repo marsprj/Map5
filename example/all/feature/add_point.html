@@ -31,6 +31,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
@@ -42,6 +44,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
 <!--Control-->
 <script type="text/javascript" src="../../../src/GeoBeans/Control.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Control/DragMapControl.js"></script>
@@ -53,13 +56,25 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/PropertyName.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/Literal.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+<!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
@@ -72,6 +87,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
@@ -81,10 +98,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
 <!--Interaction-->
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
@@ -133,13 +148,14 @@
 		var feature = new GeoBeans.Feature({
 			fid : 1,
 			geometry : point,
-			values : values
+			properties : values
 		});
 
 		var symbolizer = createPointSymbolizer();
 		feature.symbolizer = symbolizer;
 
-		featureLayer.addFeature(feature);
+		var source = featureLayer.getSource();
+		source.addFeature(feature);
 
 		mapObj.refresh();
 	}
@@ -157,63 +173,20 @@
 		return symbolizer;
 	}
 
+
 	function addFeatureLayer(){
-		featureType = createFeatureType();
-		var name = featureType.getName();
-		featureLayer= createFeatureLayer(name, featureType);
+		featureLayer = new GeoBeans.Layer.FeatureLayer({
+			name : layerName,
+			geometryType : GeoBeans.Geometry.Type.POINT,
+			source : new GeoBeans.Source.Feature({
+				geometryName : "shape"
+			})
+		});
 
 		mapObj.addLayer(featureLayer);
 		mapObj.refresh();
 	}
 
-	/**
-	 * ?????这个函数在FeatureType和Field的构造函数重构后，需要修改。?????
-	 * @return {[type]} [description]
-	 */
-	function createFeatureType(){
-
-		// 1、定义字段数组
-		var fields = [
-			{
-				name : "fname",  // 字段名称
-				type : "string"  // 字段类型
-			},{
-				name : "shape",
-				type : "geometry"
-			}
-		];
-		var geomType  = GeoBeans.Geometry.Type.POINT;
-
-		var featureType = new GeoBeans.FeatureType(null,layerName);
-		var fieldsArray = [];
-		for(var i = 0; i < fields.length;++i){
-			var f = fields[i];
-			var type = f.type;
-			var name = f.name;
-			var field = new GeoBeans.Field(name, type, featureType,null);
-			if(type == GeoBeans.Field.Type.GEOMETRY){
-				featureType.geomFieldName = name;
-				field.setGeomType(geomType);
-			}
-			fieldsArray.push(field); 
-		}
-
-		featureType.fields = fieldsArray;
-		featureType.geomFieldName = "shape";
-		return featureType;
-	}
-
-	/**
-	 * [createFeatureLayer description]
-	 * @param  {[type]} layerName   [description]
-	 * @param  {[type]} featureType [description]
-	 * @return {[type]}             [description]
-	 */
-	function createFeatureLayer(layerName, featureType){
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(layerName);
-		featureLayer.featureType = featureType;
-		return featureLayer;
-	}
 
 </script>
 <title>图层：添加点</title>
