@@ -345,13 +345,13 @@ GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
  * @return {[type]}      [description]
  */
 GeoBeans.Interaction.Select.prototype.createBBoxQuery = function(rect){
-	var featureType = this._layer.getFeatureType();
+	var source = this._layer.getSource();
 	var filter = new GeoBeans.Filter.BBoxFilter(
-						featureType.geomFieldName,
+						source.getGeometryName(),
 						rect);
 
 	var query = new GeoBeans.Query({
-		"typeName"	: featureType.getName(),
+		"typeName"	: this._layer.getName(),
 		"filter"	: filter
 	});
 
