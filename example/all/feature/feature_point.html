@@ -77,7 +77,6 @@
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
 <!--Source-->
@@ -156,20 +155,20 @@
 	}
 
 		
-	function loadFeatures(featureType){
+	function loadFeatures(){
 		var features = [];		
 		var length = g_citiesValue.length;
 
 		for(var i = 0; i < length;++i){
 			var pairs = g_citiesValue[i];	
-			var feature = createFeature(i, featureType, pairs);
+			var feature = createFeature(i, pairs);
 			features.push(feature);
 		}
 
 		return features;
 	}
 
-	function createFeature(i, featureType, pairs){
+	function createFeature(i, pairs){
 		// 使用wkt转换为geometry
 		var format = new GeoBeans.Format.WKT();
 		var geometry = format.read(pairs.shape);

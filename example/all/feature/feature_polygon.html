@@ -158,20 +158,20 @@
 	}
 
 
-	function loadFeatures(featureType){
+	function loadFeatures(){
 		var features = [];		
 		var length = g_countryValue.length;
 
 		for(var i = 0; i < length;++i){
 			var pairs = g_countryValue[i];	
-			var feature = createFeature(i, featureType, pairs);
+			var feature = createFeature(i, pairs);
 			features.push(feature);
 		}
 
 		return features;
 	}
 
-	function createFeature(i, featureType, pairs){
+	function createFeature(i, pairs){
 		// 使用wkt转换为geometry
 		var format = new GeoBeans.Format.WKT();
 		var geometry = format.read(pairs.shape);
