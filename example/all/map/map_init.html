@@ -78,6 +78,8 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/MapWorld.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/TMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/WMTS.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
@@ -160,15 +162,27 @@
 	        srs  : GeoBeans.Proj.WGS84,
 	        baseLayer : "world",
 	        layers : [
-	            new GeoBeans.Layer.TileLayer({
-	                name : "world",
-	                source : new GeoBeans.Source.Tile.QuadServer({
-	                    url : "/QuadServer/maprequest",
-	                    imageSet : "world_image"
-	                }),
-	                opacity : 1.0,
-	                visible : true
-	            }),
+	            // new GeoBeans.Layer.TileLayer({
+	            //     name : "world",
+	            //     source : new GeoBeans.Source.Tile.QuadServer({
+	            //         url : "/QuadServer/maprequest",
+	            //         imageSet : "world_image"
+	            //     }),
+	            //     opacity : 1.0,
+	            //     visible : true
+	            // }),
+				new GeoBeans.Layer.TileLayer({
+					name   : "geoserver",
+					"source" : new GeoBeans.Source.Tile.WMTS({
+						url : "/geoserver/gwc/service/wmts",
+						imageSet : "radi:country_2",
+						matrixSet: "EPSG:4326",					
+						format : "image/png",
+						srs: GeoBeans.Proj.WGS84,
+					}),
+			 		"opacity" : 1.0,
+			 		"visible" : true
+				}),
 	            new GeoBeans.Layer.FeatureLayer({
 	                name : "country",
 	                geometryType : GeoBeans.Geometry.Type.POINT,

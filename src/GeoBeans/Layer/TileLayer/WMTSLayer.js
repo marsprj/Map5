@@ -3,6 +3,7 @@
  * OGC WMTS图层
  * @class
  * @extends {GeoBeans.Layer.TileLayer}
+ * @deprecated /geoserver/gwc/service/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=radi:country_2&STYLE=&FORMAT=image/jpeg&TILEMATRIXSET=EPSG:4326&TILEMATRIX=EPSG:4326:1&TILEROW=0&TILECOL=2 
  */
 GeoBeans.Layer.WMTSLayer = GeoBeans.Class(GeoBeans.Layer.TileLayer,{
 	name 			: null,

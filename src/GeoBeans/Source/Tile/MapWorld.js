@@ -46,14 +46,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 	RESOLUTIONS : null,
 	SRS : GeoBeans.Proj.WGS84,
 	FULL_EXTENT : GeoBeans.Proj.WGS84.EXTENT,
-	
-	FULL_EXTENT_WGS : {
-				xmin:-180.0,
-				ymin:- 90.0,
-				xmax: 180.0,
-				ymax:  90.0
-	},
-    
+	    
 	RESOLUTIONS_WGS : [			
 				0.703125,	/*1*/
 				0.3515625,
@@ -74,12 +67,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 				0.0000107288360596,
 				0.00000536441802979],
 
-	FULL_EXTENT_MER : {
-				xmin:-20037508.3427892,
-				ymin:-20037508.3427892,
-				xmax:20037508.3427892,
-				ymax:20037508.3427892
-	},
+
 	RESOLUTIONS_MER : [			
 				78271.51696402031, 
 				39135.75848201016, 
