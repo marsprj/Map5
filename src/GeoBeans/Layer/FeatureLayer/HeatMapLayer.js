@@ -59,7 +59,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.refresh = function(){
 
 /**
  * 绘制热力图
- * @return {[type]} [description]
+ * @private
  */
 GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){	
 

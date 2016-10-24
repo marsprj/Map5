@@ -67,6 +67,7 @@
  *			}
  *		});
  *	</script>
+ *
  *	
  * @class
  * @param 	{object} options options

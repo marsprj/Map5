@@ -1,8 +1,26 @@
 /**
  * @classdesc
- * 地图视图类
- * 设置Map显示的分辨率、范围、旋转角等参数。
+ * 地图视图类，用于设置Map显示的分辨率、范围、旋转角等参数，实现地图显示方式的控制。
+ * Viewer类为Map的属性，通过map.getViewer()方法获取。
+ * Map的显示方式由以下4个参数控制:
+ * 1) zoom+center
+ *    设置地图的缩放级别和中心点。
+ *    仅在Map上添加并设置了baseLayer的情况下，zoom和center参数才起作用。
+ *    设置zoom和center后，Map会根据baseLayer的参数进行地图绘制。
+ * 2) extent
+ *    设置地图的视口范围。
+ *    Map5会将地图缩放到extent范围内进行显示。
+ *    由于extent和zoom不一定完全对应，因此由extent反算得到的zoom不一定是整数。因此瓦片地图的显示级别有可能是小数。因此Map5支持无级缩放。
+ * 3) resolution
+ *    设置地图的显示分辨率。
+ *    Map5会将地图以该分辨率进行显示。同上，resolution参数支持无级缩放。
+ * 4) rotation
+ *    设置地图旋转角度
+ *    Map5以地图中心点为旋转点，以rotation为角度旋转地图。
+ *    rotation的单位为“度”。 *    
+ * 
  * @class
+ * @api stable
  */
 GeoBeans.Viewer = GeoBeans.Class({
 	

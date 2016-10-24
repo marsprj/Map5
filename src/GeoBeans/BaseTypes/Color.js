@@ -18,11 +18,12 @@ GeoBeans.Color = GeoBeans.Class({
 });
 
 /**
- * [set description]
- * @param {[type]} r [description]
- * @param {[type]} g [description]
- * @param {[type]} b [description]
- * @param {[type]} a [description]
+ * 设置颜色的值
+ * @param {int} r Red
+ * @param {int} g Green
+ * @param {int} b Blue
+ * @param {int} a Alpha
+ * @public
  */
 GeoBeans.Color.prototype.set = function(r,g,b,a){
 	this.r = r;
@@ -32,9 +33,9 @@ GeoBeans.Color.prototype.set = function(r,g,b,a){
 }
 
 /**
- * [setByHex description]
- * @param {[type]} hex [description]
- * @param {[type]} a   [description]
+ * 设置16进制格式表示的颜色的值
+ * @param {string} hex 16进制格式表示的颜色的值
+ * @param {float} a    alpha
  */
 GeoBeans.Color. prototype.setHex = function(hex,a){
 		if(hex != null){
@@ -54,8 +55,9 @@ GeoBeans.Color. prototype.setHex = function(hex,a){
 }
 
 /**
- * [getRgb description]
- * @return {[type]} [description]
+ * 获取RGB格式的颜色
+ * @return {GeoBeans.Color} 颜色
+ * @public
  */
 GeoBeans.Color.prototype.getRgb = function(){
 	return "rgb(" + this.r + "," + this.g + 
@@ -63,8 +65,9 @@ GeoBeans.Color.prototype.getRgb = function(){
 }
 
 /**
- * [getRgba description]
- * @return {[type]} [description]
+ * 获取RGBA格式的颜色
+ * @return {GeoBeans.Color} 颜色
+ * @public
  */
 GeoBeans.Color.prototype.getRgba = function(){
 	return "rgba(" + this.r + "," + this.g 
@@ -72,25 +75,25 @@ GeoBeans.Color.prototype.getRgba = function(){
 }
 
 /**
- * [getOpacity description]
- * @return {[type]} [description]
+ * 获得不透明度
+ * @return {int} 不透明度
  */
 GeoBeans.Color.prototype.getOpacity = function(){
 	return this.a;
 }
 
 /**
- * [setOpacity description]
- * @param {[type]} opacity [description]
+ * 设置不透明度
+ * @param {integer} opacity 不透明度
  */
 GeoBeans.Color.prototype.setOpacity = function(opacity){
 	this.a = opacity;
 }
 
 /**
- * [setRgb description]
- * @param {[type]} rgb [description]
- * @param {[type]} a   [description]
+ * 设置颜色值（RGB）
+ * @param {string} rgb rgb
+ * @param {integer} a   alpha
  */
 GeoBeans.Color. prototype.setRgb = function(rgb,a){
 	if(rgb != null){
@@ -113,8 +116,9 @@ GeoBeans.Color. prototype.setRgb = function(rgb,a){
 }
 
 /**
- * [getHex description]
- * @return {[type]} [description]
+ * 获得16进制格式的颜色
+ * @return {string} 16进制格式的颜色
+ * @public
  */
 GeoBeans.Color.prototype.getHex = function(){
 	var rgb = this.getRgb();
@@ -127,8 +131,8 @@ GeoBeans.Color.prototype.getHex = function(){
 }
 
 /**
- * [clone description]
- * @return {[type]} [description]
+ * 复制颜色
+ * @return {GeoBeans.Color} 颜色对象
  */
 GeoBeans.Color.prototype.clone = function(){
 	var clone = new GeoBeans.Color();
@@ -140,11 +144,11 @@ GeoBeans.Color.prototype.clone = function(){
 }
 
 /**
- * [setHsl description]
- * @param {[type]} h [description]
- * @param {[type]} s [description]
- * @param {[type]} l [description]
- * @param {[type]} a [description]
+ * 设置HSL格式颜色
+ * @param {integer} h h
+ * @param {integer} s s
+ * @param {integer} l l
+ * @param {integer} a a
  */
 GeoBeans.Color. prototype.setHsl = function(h,s,l,a){
     var r, g, b;
@@ -178,8 +182,8 @@ GeoBeans.Color. prototype.setHsl = function(h,s,l,a){
 }
 
 /**
- * [getHsl description]
- * @return {[type]} [description]
+ * 获取HSL格式颜色
+ * @return {GeoBeans.Color} HSL格式颜色
  */
 GeoBeans.Color.prototype.getHsl = function(){
 	var r = this.r/255, g = this.g/255, b = this.b/255;
@@ -207,8 +211,8 @@ GeoBeans.Color.prototype.getHsl = function(){
 }
 
 /**
- * [setAbgr description]
- * @param {[type]} abgr [description]
+ * 设置ABGR格式颜色
+ * @param {integer} abgr 颜色值
  */
 GeoBeans.Color. prototype.setAbgr = function(abgr){
 	if(abgr.length == 8){
@@ -222,11 +226,11 @@ GeoBeans.Color. prototype.setAbgr = function(abgr){
 }
 
 /**
- * [zero_fill_hex description]
+ * 清空
  * @private
- * @param  {[type]} num    [description]
- * @param  {[type]} digits [description]
- * @return {[type]}        [description]
+ * @param  {float} num     num
+ * @param  {float} digits  digits
+ * @return {string}        string
  */
 GeoBeans.Color.prototype.zero_fill_hex = function(num, digits){
 	var s = num.toString(16);

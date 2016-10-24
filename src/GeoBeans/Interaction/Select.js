@@ -309,8 +309,7 @@ GeoBeans.Interaction.Select.prototype.cleanup = function(){
  * function onchange(features){<br>
  * }<br>
  * @public
- * @param  {[type]} handler [description]
- * @return {[type]}         [description]
+ * @param  {function} handler onchange事件响应函数
  */
 GeoBeans.Interaction.Select.prototype.onchange = function(handler){
 	this._onchange = handler;
@@ -319,8 +318,8 @@ GeoBeans.Interaction.Select.prototype.onchange = function(handler){
 /**
  * 创建Spatial查询Filter
  * @private
- * @param  {[type]} point [description]
- * @return {[type]}       [description]
+ * @param  {GeoBeans.Geometry} g 几何对象
+ * @return {GeoBeans.Query}       查询条件对象
  */
 GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
 	// Filter
@@ -341,8 +340,8 @@ GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
 /**
  * 创建BBox查询Filter
  * @private
- * @param  {[type]} rect [description]
- * @return {[type]}      [description]
+ * @param  {GeoBeans.Envelope} rect 矩形
+ * @return {GeoBeans.Query}       查询条件对象
  */
 GeoBeans.Interaction.Select.prototype.createBBoxQuery = function(rect){
 	var source = this._layer.getSource();
@@ -378,8 +377,7 @@ GeoBeans.Interaction.Select.prototype.createDistanceBufferFilterQuery = function
  * 查询结果回调函数，处理查询到的features。然后将features，设置为选择集合_selections，用于高亮显示。
  * @deprecated [description]
  * @private
- * @param  {[type]} features [description]
- * @return {[type]}          [description]
+ * @param  {Array.<GeoBeans.Feature>} features Feature集合
  */
 GeoBeans.Interaction.Select.prototype.setSelection = function(features){
 	this._selection = features;

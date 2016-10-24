@@ -41,10 +41,9 @@ GeoBeans.Interaction.Rotate = GeoBeans.Class(GeoBeans.Interaction, {
 });
 
 /**
- * [enable description]
+ * 启用/禁用Rotate
  * @public
- * @param  {[type]} enabled [description]
- * @return {[type]}         [description]
+ * @param  {boolean} enabled 启用/禁用
  */
 GeoBeans.Interaction.Rotate.prototype.enable = function(enabled){
 	this._enabled = enabled;
@@ -60,7 +59,6 @@ GeoBeans.Interaction.Rotate.prototype.enable = function(enabled){
 /**
  * 开始交互
  * @public
- * @return {[type]} [description]
  */
 GeoBeans.Interaction.Rotate.prototype.start = function(){
 	var that = this;
@@ -170,7 +168,6 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 /**
  * [cleanup description]
  * @private
- * @return {[type]} [description]
  */
 GeoBeans.Interaction.Rotate.prototype.stop = function(){
 	var mapContainer = this._map.getContainer();
@@ -185,7 +182,7 @@ GeoBeans.Interaction.Rotate.prototype.stop = function(){
 /**
  * 返回是否已经在交互的状态
  * @private
- * @return {bool} 交互状态
+ * @return {boolean} 交互状态
  */
 GeoBeans.Interaction.Rotate.prototype.getRotateStatus = function(){
 	return this._rotating;

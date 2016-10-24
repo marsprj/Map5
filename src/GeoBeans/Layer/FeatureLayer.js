@@ -27,9 +27,6 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 	// },
 	
 	/**
-	 * [http description]
-	 * @type {String}
-
 	 * new GeoBeans.Layer.FeatureLayer({
 	 * 	"name" : "layername",
 	 *  "geometryType" : GeoBeans.Geometry.Type.POINT,
