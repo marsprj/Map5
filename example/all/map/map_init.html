@@ -76,6 +76,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/MapWorld.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
@@ -162,7 +163,7 @@
 	            new GeoBeans.Layer.TileLayer({
 	                name : "world",
 	                source : new GeoBeans.Source.Tile.QuadServer({
-	                    url : "http://ourgis.digitalearth.cn/QuadServer/maprequest",
+	                    url : "/QuadServer/maprequest",
 	                    imageSet : "world_image"
 	                }),
 	                opacity : 1.0,
@@ -179,7 +180,7 @@
 	            })        
 	        ],
 	        viewer : {
-	            center : new GeoBeans.Geometry.Point(116,39),
+	            center : new GeoBeans.Geometry.Point(0,0),
 	            zoom : 3,
 	            // extent : new GeoBeans.Envelope(0,0,180,90),
 	            // resolution : 0.01,

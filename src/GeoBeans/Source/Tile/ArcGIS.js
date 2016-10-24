@@ -14,7 +14,8 @@
  */
 GeoBeans.Source.Tile.ArcGIS = GeoBeans.Class(GeoBeans.Source.Tile,{
 
-	_url : "/arcgis/rest/services/",	
+	//_url : "/arcgis/rest/services/",	
+	_url : "http://server.arcgisonline.com/ArcGIS/rest/services/",
 	_imageSet : null,
 	_srs : GeoBeans.SrsType.WebMercator,
 	_isWGS84 : false,

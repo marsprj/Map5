@@ -5,7 +5,7 @@ var g_catalog = [
 			{
 				"name" : "初始化地图",
 				"link" : "map/map_init.html"
-			},{
+			}/*,{
 				"name" : "(*)关闭地图",
 				"link" : "map/map_close.html"
 			},{
@@ -14,7 +14,7 @@ var g_catalog = [
 			},{
 				"name" : "(*)滚轮缩放",
 				"link" : "map/map_scroll.html"
-			},{
+			}*/,{
 				"name" : "拉框缩放",
 				"link" : "map/map_zoom.html"
 			}
@@ -25,7 +25,7 @@ var g_catalog = [
 			{
 				"name" : "导航条",
 				"link" : "control/control_nav.html"
-			},{
+			}/*,{
 				"name" : "(*)鹰眼（待实现）",
 				"link" : "control/control_hawk.html"
 			},{
@@ -34,7 +34,7 @@ var g_catalog = [
 			},{
 				"name" : "(*)图例（待补充）",
 				"link" : "control/control_legend.html"
-			},{
+			}*/,{
 				"name" : "版权",
 				"link" : "control/control_copyright.html"
 			},{
@@ -86,10 +86,10 @@ var g_catalog = [
 			},{
 				"name" : "高德图层",
 				"link" : "layer/layer_add_amap.html"
-			},{
+			}/*,{
 				"name" : "(*)百度图层",
 				"link" : "layer/layer_add_baidu.html"
-			},{
+			}*/,{
 				"name" : "天地图层",
 				"link" : "layer/layer_add_mapworld.html"
 			},{
@@ -98,10 +98,10 @@ var g_catalog = [
 			},{
 				"name" : "ArcGIS Online图层",
 				"link" : "layer/layer_add_arcgisonline.html"
-			},{
+			}/*,{
 				"name" : "(*)Bing图层(待实现)",
 				"link" : "layer/layer_add_bing.html"
-			},{
+			}*/,{
 				"name" : "GeoJSON图层",
 				"link" : "layer/layer_add_geojson.html"
 			},{
@@ -164,13 +164,13 @@ var g_catalog = [
 			},{
 				"name" : "面要素",
 				"link" : "feature/feature_polygon.html"
-			},{
+			}/*,{
 				"name" : "(*)加载GeoJSON数据",
 				"link" : "feature/feature_geojson.html"
 			},{
 				"name" : "(*)加载KML数据",
 				"link" : "feature/feature_kml.html"
-			}
+			}*/
 		]
 	},{
 		"name" : "条件查询",
@@ -226,7 +226,30 @@ var g_catalog = [
 			}
 		]
 	},{
-		"name" : "图层样式(前端)",
+
+		"name" : "交互式查询",
+
+		"items":[
+
+			{
+
+				"name" : "点击查询",
+
+				"link" : "interaction/interaction_select_by_click.html"
+
+			},{
+
+				"name" : "缓冲区查询",
+
+				"link" : "interaction/interaction_select_by_circle.html"
+
+			},{
+				"name" : "拉框查询",
+				"link" : "interaction/interaction_select_by_rect.html"
+			}
+		]
+	},{
+		"name" : "图层样式",
 		"items":[
 			{
 				"name" : "点样式(简单)",
@@ -254,7 +277,7 @@ var g_catalog = [
 				"link" : "style/style_text_polygon.html"
 			}*/
 		]
-	},{
+	}/*,{
 		"name" : "图层样式(服务端)",
 		"items":[
 			{
@@ -275,15 +298,15 @@ var g_catalog = [
 			},{
 				"name" : "(*)文字样式(点)",
 				"link" : "style/style_text_point.html"
-			}/*,{
+			},{
 				"name" : "(*)文字样式(线)",
 				"link" : "style/style_text_line.html"
 			},{
 				"name" : "(*)文字样式(面)",
 				"link" : "style/style_text_polygon.html"
-			}*/
+			}
 		]
-	},{
+	}*/,{
 		"name" : "专题图",
 		"items":[
 			{
@@ -299,6 +322,11 @@ var g_catalog = [
 				"name" : "热力图",
 				"link" : "theme/theme_heatmap.html"
 			},{
+				"name" : "点聚合图",
+
+				"link" : "theme/theme_cluster_1.html"
+
+			}/*,{
 				"name" : "点聚合图-示例1",
 				"link" : "theme/theme_cluster_1.html"
 			},{
@@ -307,38 +335,15 @@ var g_catalog = [
 			},{
 				"name" : "(*)点聚合图-示例3",
 				"link" : "theme/theme_cluster_2.html"
-			},{
-				"name" : "[#]柱状图",
+			}*/,{
+				"name" : "柱状图",
 				"link" : "theme/chart_bar.html"
 			},{
-				"name" : "[#]饼状图",
+				"name" : "饼状图",
 				"link" : "theme/chart_pie.html"
 			},{
-				"name" : "[#]等级符号图",
+				"name" : "等级符号图",
 				"link" : "theme/chart_symbol.html"
-			}
-		]
-	},{
-		"name" : "要素查询",
-		"items":[
-			{
-				"name" : "(*)点击查询",
-				"link" : "layerClickEvent.html"
-			},{
-				"name" : "(*)缓冲区查询",
-				"link" : "wfsBuffer.html"
-			},{
-				"name" : "(*)拉框查询",
-				"link" : "wfsQueryRect.html"
-			},{
-				"name" : "(*)属性查询",
-				"link" : "ComparisionFilterQuery.html"
-			},{
-				"name" : "(*)空间查询",
-				"link" : "spatialFilterQuery.html"
-			},{
-				"name" : "(*)逻辑查询",
-				"link" : "logicFilterQuery.html"
 			}
 		]
 	},/*{
@@ -355,7 +360,7 @@ var g_catalog = [
 				"link" : "featureLayerComparisionFilterQuery.html"
 			}
 		]		
-	},*/{
+	},{
 		"name" : "标注",
 		"items":[
 			{
@@ -393,7 +398,7 @@ var g_catalog = [
 				"link" : "label/event_hover.html"
 			}
 		]
-	},{
+	},*/{
 		"name" : "添加要素",
 		"items":[
 			{
@@ -459,7 +464,7 @@ var g_catalog = [
 				"link" : "event/map_drag.html"
 			}
 		]
-	},{
+	}/*,{
 		"name" : "数据源事件",
 		"items":[
 			{
@@ -471,7 +476,7 @@ var g_catalog = [
 			},{
 				"name" : "(*)Image加载错误事件",
 				"link" : "event/image_load_error.html"
-			}/*,{
+			},{
 				"name" : "(*)Image加载开始事件",
 				"link" : "event/image_load_start.html"
 			},{
@@ -480,7 +485,7 @@ var g_catalog = [
 			},{
 				"name" : "(*)Image加载错误事件",
 				"link" : "event/image_load_error.html"
-			},*/
+			},
 		]
 	}/*,{
 		"name" : "加载KML文件",
