@@ -92,7 +92,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		if(isValid(options.srs)){
 			this._srs = options.srs;
-			this.FULL_EXTENT = this._srs.EXTENT.clone();
+			this.FULL_EXTENT = this._srs.EXTENT;
 			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}			

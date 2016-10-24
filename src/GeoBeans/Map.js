@@ -1103,7 +1103,7 @@ GeoBeans.Map.prototype.initViewer = function(viewer){
 	//2) 利用当前投影的空间范围创建viewer对象。
 	this.viewer = new GeoBeans.Viewer({
 		map : this,
-		extent: full_extent
+		extent: full_extent.clone()
 	});
 	//3) 注册viewer的onchange事件，在viewer发生变化时候，触发改时间重绘map
 	this.registerViewerEvent();

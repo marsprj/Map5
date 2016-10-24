@@ -93,7 +93,7 @@ GeoBeans.Source.Tile.OSM = GeoBeans.Class(GeoBeans.Source.Tile,{
 		this._srs = options.srs;
 		if(isValid(options.srs)){
 			this._srs = options.srs;
-			this.FULL_EXTENT = this._srs.EXTENT.clone();
+			this.FULL_EXTENT = this._srs.EXTENT;
 			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}
