@@ -146,10 +146,10 @@
 	}
 
 	#code_div{
-		float: left;
+		float: right;
 		/*width: 540px;*/
 		height: 100%;
-		border-right: 1px solid #cfcfcf;
+		border-left: : 1px solid #cfcfcf;
 		width: 0px;
 	}
 	#coll_bar{
@@ -177,7 +177,7 @@
 		height: 100%;
 		/*width: calc(100% - 541px);*/
 		width: calc(100% - 1px);
-		float: right;
+		float: left;
 	}
 
 	#code_bar{
@@ -286,7 +286,8 @@
 		        	width : "540px",
 		        },300);
 
-		        $(this).html("<<").removeClass("whole").attr("title","展开");
+		        $(this).html(">>").removeClass("whole").attr("title","展开");
+		        $(this).css("right","540px");
 			}else{
 				$("#apiID").css("width","calc(100% - 1px)");
 
@@ -298,7 +299,8 @@
 		        $("#code_bar").css("display","none").animate({
 		        	width : "0px",
 		        },300);
-				$(this).html(">>").addClass("whole").attr("title","收起");
+				$(this).html("<<").addClass("whole").attr("title","收起");
+				$(this).css("right","0px");
 			}
 		});
 
@@ -374,6 +376,8 @@
 		</div>
 		<div class="right">
 			<div class="right_tab" id="api_tab">
+				<iframe src="map/map_init.html" frameborder="no" id="apiID" >
+				</iframe>
 				<div id="code_div">
 					<div id="code_bar">
 						<a href="javascript:void(0)" onclick="run()">运行</a>
@@ -384,9 +388,7 @@
 	 					</textarea>
 	 				</div>
 				</div>
-				<iframe src="map/map_init.html" frameborder="no" id="apiID" >
-				</iframe>
-				<div id="coll_bar" title="收起" class="whole">>></div>
+				<div id="coll_bar" title="收起" class="whole"><<</div>
 			</div>
 			
 			<div class="right_tab" id="version_tab">

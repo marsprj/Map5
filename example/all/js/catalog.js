@@ -142,10 +142,10 @@ var g_catalog = [
 				"name" : "查询(圆)",
 				"link" : "interaction/interaction_select_by_circle.html"
 			},{
-				"name" : "(*)查询(线)",
+				"name" : "查询(线)",
 				"link" : "interaction/interaction_select_by_line.html"
 			},{
-				"name" : "(*)查询(多边形)",
+				"name" : "查询(多边形)",
 				"link" : "interaction/interaction_select_by_polygon.html"
 			},{
 				"name" : "绘制图元",

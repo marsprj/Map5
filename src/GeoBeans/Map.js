@@ -1236,9 +1236,9 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 
 			if(that.baseLayer != null){
 				var zoom = viewer.getZoom();
-				viewer.setZoom(zoom);
+				that.setZoom(zoom);
 			}else{
-				viewer.setExtent(extent);
+				that.setViewExtent(extent);
 			}	
 
 			// var overlayLayerCanvas = that.overlayLayer.canvas;
