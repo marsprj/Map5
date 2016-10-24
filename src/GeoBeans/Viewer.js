@@ -61,7 +61,7 @@ GeoBeans.Viewer = GeoBeans.Class({
 		}
 
 		if(isValid(options.extent)){
-			this._extent = options.extent;
+			this._extent = options.extent.clone();
 			this.setExtent(this._extent);
 		}
 		else{
