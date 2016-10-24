@@ -153,12 +153,12 @@
 		width: 0px;
 	}
 	#coll_bar{
-		float: left;
+		float: right;
 		width: 40px;
 		height: 20px;
 		position: absolute;
 		top: 0px;
-		left: 261px;
+		right: 0px;
 		border: 1px solid #ddd;
 		cursor: pointer;
 		background-color: #44deee;
@@ -167,6 +167,8 @@
 	    font-size: 15px;
 	    font-weight: bold;
 	}
+
+
 	#api_tab{
 		display: block;
 
@@ -271,19 +273,33 @@
 		});
 
 		$("#coll_bar").click(function(){
-			$(this).hide();
-			$("#apiID").css("width","calc(100% - 541px)");
-			$("#code_div").animate({
-	            width: "540px"
-	        }, 300,function(){
-	        	var link = $("#apiID").attr("src");
-   				setResource(link);
-	        });
+			if($("#coll_bar").hasClass("whole")){
+				$("#apiID").css("width","calc(100% - 541px)");
+				$("#code_div").animate({
+		            width: "540px"
+		        }, 300,function(){
+		        	var link = $("#apiID").attr("src");
+	   				setResource(link);
+		        });
 
-	        $("#code_bar").css("display","block").animate({
-	        	width : "540px",
-	        },300);
-			
+		        $("#code_bar").css("display","block").animate({
+		        	width : "540px",
+		        },300);
+
+		        $(this).html("<<").removeClass("whole").attr("title","展开");
+			}else{
+				$("#apiID").css("width","calc(100% - 1px)");
+
+		   		$("#code_div").animate({
+		            width: "0px"
+		        }, 300,function(){
+		        });
+
+		        $("#code_bar").css("display","none").animate({
+		        	width : "0px",
+		        },300);
+				$(this).html(">>").addClass("whole").attr("title","收起");
+			}
 		});
 
 
@@ -344,20 +360,6 @@
    		run();
    }
 
-   	function collapse(){
-   		$("#coll_bar").show();
-   		// $("#code_div").hide();
-   		$("#apiID").css("width","calc(100% - 1px)");
-
-   		$("#code_div").animate({
-            width: "0px"
-        }, 300,function(){
-        });
-
-        $("#code_bar").css("display","none").animate({
-        	width : "0px",
-        },300);
-   	}
 </script>
 <title>Map5开发示例</title>
 <body onload="init()">
@@ -374,7 +376,6 @@
 			<div class="right_tab" id="api_tab">
 				<div id="code_div">
 					<div id="code_bar">
-						<a href="javascript:void(0)" onclick="collapse()" title="收回"><<</a>
 						<a href="javascript:void(0)" onclick="run()">运行</a>
 						<a href="javascript:void(0)" onclick="refresh()">刷新</a>
 					</div>
@@ -385,7 +386,7 @@
 				</div>
 				<iframe src="map/map_init.html" frameborder="no" id="apiID" >
 				</iframe>
-				<div id="coll_bar" title="展开">>></div>
+				<div id="coll_bar" title="收起" class="whole">>></div>
 			</div>
 			
 			<div class="right_tab" id="version_tab">

@@ -1215,6 +1215,8 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 				layer.resize(width,height);
 			}
 
+			that.overlayLayer.resize(width,height);
+
 			var viewer = that.getViewer();
 			var extent = viewer.getExtent();
 
