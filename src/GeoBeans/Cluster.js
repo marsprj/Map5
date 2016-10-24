@@ -21,7 +21,6 @@ GeoBeans.Cluster = GeoBeans.Class({
 
 /**
  * 获取聚类
- * @return {[type]} [description]
  */
 GeoBeans.Cluster.prototype.getClusters = function(){
 	if(!isValid(this.features) || !isValid(this.map)){
@@ -83,8 +82,8 @@ GeoBeans.Cluster.prototype.shouldCluster = function(cluster,geometry){
 /**
  * 添加到聚类
  * @private
- * @param {[type]} cluster [description]
- * @param {[type]} feature [description]
+ * @param {int} cluster 聚类
+ * @param {GeoBeans.Feature} feature 要素
  */
 GeoBeans.Cluster.prototype.addToCluster = function(cluster,feature){
 	cluster.features.push(feature);

@@ -283,7 +283,7 @@ GeoBeans.Layer.prototype.putSnap = function(x,y){
 /**
  * 指定位置和大小放置缩略图
  * @private
- * @param  {int]} x     x坐标
+ * @param  {int} x     x坐标
  * @param  {int} y      y坐标
  * @param  {int} width  放置后的宽度
  * @param  {int} height 放置后的高度

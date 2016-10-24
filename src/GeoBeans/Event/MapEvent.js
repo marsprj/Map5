@@ -4,8 +4,7 @@
  * @class
  * @extends {GeoBeans.Event}
  */
-GeoBeans.Event.MapEvent = function(){
-	map  : null,
-	type : ""
+GeoBeans.Event.MapEvent = {
+	map  = null,
+	type = ""
 };
-

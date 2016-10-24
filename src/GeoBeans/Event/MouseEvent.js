@@ -23,13 +23,13 @@ GeoBeans.Event.MouseButton = {
  * @class
  * @extends {GeoBeans.Event}
  */
-GeoBeans.Event.MouseEvent = function(){
+GeoBeans.Event.MouseEvent = {
 	map  : null,
 	type : "",
-	buttn : null;
-	X : null;
-	Y : null;
-	mapX : null;
-	mapY : null;
+	buttn : null,
+	X : null,
+	Y : null,
+	mapX : null,
+	mapY : null
 };
 
