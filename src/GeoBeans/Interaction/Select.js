@@ -78,10 +78,8 @@ GeoBeans.Interaction.Select.prototype.init = function(){
 		}
 		break;
 		case GeoBeans.Interaction.SelectType.POLYGON:
-		{
-
-		}
-		break;
+			this.selectByPolygon();
+			break;
 		case GeoBeans.Interaction.SelectType.CIRCLE:
 			this.selectByCircle();
 			break;
@@ -145,9 +143,105 @@ GeoBeans.Interaction.Select.prototype.selectByHover = function(){
 GeoBeans.Interaction.Select.prototype.selectByLine = function(){
 	
 }
-
+/**
+ * 面查询
+ * @private
+ */
 GeoBeans.Interaction.Select.prototype.selectByPolygon = function(){
-	
+	var that = this;
+
+	this._map.saveSnap();
+	this._map.enableDrag(false);
+	this.cleanup();
+
+	var points = [];
+	var db_points = [];
+	var addEvent_flag = false;
+
+	var viewer = this._map.getViewer();
+	var mapContainer = this._map.getContainer();
+
+	var onmousedown = function(evt){
+		evt.preventDefault();
+		
+		that._map.enableDrag(false);
+		if(points.length == 0){
+			that._map.saveSnap();
+		}
+		var db_flag = false;
+		for(var i = 0; i < points.length; ++i){
+			var point = points[i];
+			var point_x = point.x;
+			var point_y = point.y;
+			if(point_x == evt.layerX && point_y == evt.layerY){
+				db_flag = true;
+			}
+
+		}
+		if(db_flag == false){
+			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
+			points.push({x:evt.layerX,y:evt.layerY,mapX:pt.x,mapY:pt.y});
+		}
+
+		var onmousemove = function(evt){
+			that._map.restoreSnap();
+			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
+			if(points.length>1){
+				that.drawPolygon(points,evt.layerX,evt.layerY);
+				that.drawPoints(points,evt.layerX,evt.layerY);
+			}
+			else{
+				that.drawPolygon(points, evt.layerX,evt.layerY);
+				that.drawPoints(points,evt.layerX,evt.layerY);
+			}
+		};
+
+		var onmousedbclick = function(evt){
+			mapContainer.removeEventListener("mousemove", onmousemove);
+			mapContainer.removeEventListener("dbclick",onmousedbclick);
+
+			if(db_points.length == points.length){
+				return;
+			}			
+			if(db_points.length == 0){
+				points.forEach(function(element, index){
+					db_points.push(element);
+				});
+			}
+
+
+			var geometry = that.buildPolygon(points);
+			var query = that.createIntersectsQuery(geometry);
+			//查询结果的回调函数类，接口实现GeoBeans.Handler。
+			var handler = {
+				target : that,
+				execute : function(features){
+					var selection = this.target._map.getSelection();
+					selection.setFeatures(features);
+				}
+			}
+			that._layer.query(query, handler);
+
+			db_points = [];
+			points = [];
+			that.drawing = false;
+			addEvent_flag = false;
+
+			
+		}
+		if(!addEvent_flag){ //只有第一次mousedown的时候才会触发注册事件
+			mapContainer.addEventListener("mousemove", onmousemove);
+			mapContainer.addEventListener("dblclick", onmousedbclick);
+			addEvent_flag = true;
+		}
+		that.onMouseMove = onmousemove;
+		that.onMouseDBClick = onmousedbclick;
+	};
+
+	mapContainer.addEventListener("mousedown",onmousedown);
+	this.onMouseDown = onmousedown;
+
+
 }
 
 GeoBeans.Interaction.Select.prototype.selectByCircle = function(){
@@ -374,6 +468,25 @@ GeoBeans.Interaction.Select.prototype.createDistanceBufferFilterQuery = function
 
 
 /**
+ * 创建相交查询
+ * @private
+ * @param  {GeoBeans.Geometry} geometry 几何图形
+ * @return {GeoBeans.Query}          查询条件对象
+ */
+GeoBeans.Interaction.Select.prototype.createIntersectsQuery = function(geometry){
+	var source = this._layer.getSource();
+	var operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects;
+	var propName = "shape";
+	var filter = new GeoBeans.Filter.BinarySpatialFilter(operator,propName,geometry);
+	var query = new GeoBeans.Query({
+		"typeName"	: this._layer.getName(),
+		"filter"	: filter
+	});
+
+	return query;
+};
+
+/**
  * 查询结果回调函数，处理查询到的features。然后将features，设置为选择集合_selections，用于高亮显示。
  * @deprecated [description]
  * @private
@@ -469,4 +582,18 @@ GeoBeans.Interaction.Select.prototype.buildRect = function(point_b,point_e){
 	var ymax = (point_b.y > point_e.y) ? point_b.y : point_e.y;
 	var envelope = new GeoBeans.Envelope(xmin,ymin,xmax,ymax);
 	return envelope;
+}
+
+GeoBeans.Interaction.Select.prototype.buildPolygon = function(dots){
+	var pt = null;
+	var points = [];
+	var num = dots.length;
+	var viewer = this._map.getViewer();
+	for(var i=0; i<num; i++){
+		pt = new GeoBeans.Geometry.Point(dots[i].mapX, dots[i].mapY);
+		points.push(pt);
+	}
+	points.push(points[0]);
+	var r = new GeoBeans.Geometry.LinearRing(points);
+	return (new GeoBeans.Geometry.Polygon([r]));	
 }
