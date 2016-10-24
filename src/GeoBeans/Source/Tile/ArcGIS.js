@@ -102,7 +102,7 @@ GeoBeans.Source.Tile.ArcGIS = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		if(isValid(options.srs)){
 			this._srs = options.srs;
-			this.FULL_EXTENT = this._srs.EXTENT;
+			this.FULL_EXTENT = this._srs.EXTENT.clone();
 			if(this._srs != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}
@@ -228,9 +228,8 @@ GeoBeans.Source.Tile.ArcGIS.prototype.getTilePosisiton = function(row, col, tile
 
 	var pos = null;
 	if(this.isWGS84()){
-		var proj = new GeoBeans.Proj();
-		var pt0  = proj.toLonLat(x, y);
-		var pt1  = proj.toLonLat(x+tile_size, y+tile_size);
+		var pt0  = GeoBeans.Proj.toLonLat(x, y);
+		var pt1  = GeoBeans.Proj.toLonLat(x+tile_size, y+tile_size);
 		pos = {
 			"x" : pt0.x,
 			"y" : pt0.y,

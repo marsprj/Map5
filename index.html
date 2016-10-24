@@ -136,22 +136,22 @@
 	        target : "mapDiv",
 	        name : "map",
 	        srs  : GeoBeans.Proj.WGS84,
-	        baseLayer : "world",
+	        baseLayer : "label",
 	        layers : [
-	            new GeoBeans.Layer.TileLayer({
-	                name : "world",
-	                source : new GeoBeans.Source.Tile.QuadServer({
-	                    url : "/QuadServer/maprequest",
-	                    imageSet : "world_image"
-	                }),
-	                opacity : 1.0,
-	                visible : true
-	            }),
+	            // new GeoBeans.Layer.TileLayer({
+	            //     name : "world",
+	            //     source : new GeoBeans.Source.Tile.QuadServer({
+	            //         url : "/QuadServer/maprequest",
+	            //         imageSet : "world_image"
+	            //     }),
+	            //     opacity : 1.0,
+	            //     visible : true
+	            // }),
 	            new GeoBeans.Layer.TileLayer({
 					"name" : "label",
 					"source" : new GeoBeans.Source.Tile.MapWorld({
 			 			"url" : "/DataServer?",
-			 			"imageSet" : "cia", 
+			 			"imageSet" : "img", 
 			 			"srs" : GeoBeans.Proj.WGS84,
 			 		}),
 			 		"opacity" : 1.0,
@@ -166,7 +166,11 @@
 	                }),
 	                // style : createSimplePolygonStyle()
 	            })        
-	        ]
+	        ],
+	        viewer : {
+	            center : new GeoBeans.Geometry.Point(0,0),
+	            zoom : 2,
+	        }
 	    });
 	}
 

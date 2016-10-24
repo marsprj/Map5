@@ -30,7 +30,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
     IMG_WIDTH : 256,
     IMG_HEIGHT: 256,
 		
-	MIN_ZOOM_LEVEL: 3,
+	MIN_ZOOM_LEVEL: 1,
 	MAX_ZOOM_LEVEL: 18,	
 
 	SRS : GeoBeans.Proj.WebMercator,
@@ -92,7 +92,7 @@ GeoBeans.Source.Tile.AMap = GeoBeans.Class(GeoBeans.Source.Tile,{
 		
 		if(isValid(options.srs)){
 			this._srs = options.srs;
-			this.FULL_EXTENT = this._srs.EXTENT;
+			this.FULL_EXTENT = this._srs.EXTENT.clone();
 			if(this._srs.SRID != GeoBeans.SrsType.WebMercator){
 				this._isWGS84 = true;
 			}			

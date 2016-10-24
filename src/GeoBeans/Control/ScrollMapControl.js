@@ -59,11 +59,13 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			else{
 				if(e.wheelDelta>0){
+					map.drawLayersSnap(1/Math.pow(1.2,count));
 					var resolution = viewer.getResolution();
 					var target_res = resolution / Math.pow(1.2,count);
 					viewer.setResolution(target_res);
 				}
 				else{
+					map.drawLayersSnap(Math.pow(1.2,count));
 					var resolution = viewer.getResolution();
 					var target_res = resolution * Math.pow(1.2,count);
 					viewer.setResolution(target_res);

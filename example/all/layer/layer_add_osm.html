@@ -146,61 +146,27 @@
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
-			srs  : GeoBeans.Proj.WebMercator
+			srs  : GeoBeans.Proj.WebMercator,
+			baseLayer : "osm",
+			layers :[
+				new GeoBeans.Layer.TileLayer({
+					name   : "osm",
+					"source" : new GeoBeans.Source.Tile.OSM({
+						srs: GeoBeans.Proj.WebMercator,
+					}),
+			 		"opacity" : 1.0,
+			 		"visible" : true
+				})
+			],
+			viewer : {
+	            center : new GeoBeans.Geometry.Point(0,0),
+	            zoom : 2,
+	        }
+
 		});
 		if(mapObj == null){
 			return;
 		}
-		
-		// 3、添加一个图层
-		// 定义一个QuadServer图层，作为底图，第一个参数为图层名称，第二个参数为QuadServer地址
-		//var layer1 = new GeoBeans.Layer.QSLayer("base","/QuadServer/maprequest?services=world_image");
-		
-		var osmLayer = new GeoBeans.Layer.TileLayer({
-			"name" : "osm",
-			"source" : new GeoBeans.Source.Tile.OSM({
-				srs: GeoBeans.Proj.WebMercator,
-			}),
-	 		"opacity" : 0.5,
-	 		"visible" : true
-		});
-
-		var amapLayer = new GeoBeans.Layer.TileLayer({
-			"name" : "amap",
-			"source" : new GeoBeans.Source.Tile.AMap({
-				"srs": GeoBeans.Proj.WebMercator,
-			}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
-		});
-
-		var mapworldLayer = new GeoBeans.Layer.TileLayer({
-			"name" : "vector",
-			"source" : new GeoBeans.Source.Tile.MapWorld({
-	 			"url" : "/DataServer?",
-	 			"imageSet" : "cia", /*"vec", */
-	 			//"srs" : GeoBeans.Proj.WGS84,
-	 			"srs" : GeoBeans.Proj.WebMercator,
-	 		}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
-		});
-
-		// 添加图层
-		//mapObj.addLayer(amapLayer);
-		mapObj.addLayer(osmLayer);
-		mapObj.addLayer(mapworldLayer);
-		
-		//mapObj.addLayer([amapLayer,osmLayer]);
-		mapObj.setBaseLayer(osmLayer);
-		//mapObj.setBaseLayer(amapLayer);
-
-		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
-
-		// 4、设置中心点和显示级别
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.setZoomCenter(zoom,center);
 	}
 
 	function onMouseMove(evt){
@@ -208,8 +174,7 @@
 		document.getElementById("m_x").value = evt.mapX;
 		document.getElementById("m_y").value = evt.mapY;
 
-		var proj = new GeoBeans.Proj();
-		var pt = proj.toLonLat(evt.mapX, evt.mapY);
+		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;
 	}

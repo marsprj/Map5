@@ -125,7 +125,7 @@ GeoBeans.Source.Tile.MapWorld = GeoBeans.Class(GeoBeans.Source.Tile,{
 		this._srs = options.srs;
 
 		if(isValid(this._srs)){
-			this.FULL_EXTENT = this._srs.EXTENT;
+			this.FULL_EXTENT = this._srs.EXTENT.clone();
 			if(this._srs.SRID == GeoBeans.SrsType.WGS84){
 				this._imageSet = this._imageSet + "_c";
 				this.RESOLUTIONS = this.RESOLUTIONS_WGS;
