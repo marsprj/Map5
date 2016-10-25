@@ -97,6 +97,10 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		}
 		
 	},
+	destory : function(){
+		GeoBeans.Layer.FeatureLayer.prototype.destory.apply(this, arguments);
+	},	
+
 
 });
 

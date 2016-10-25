@@ -12,9 +12,11 @@
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Type.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Color.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Raster.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
 
 <!--View-->
@@ -30,17 +32,17 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
 <!--Stype-->
 <script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Stroke.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Style/TextSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
@@ -55,6 +57,7 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
@@ -69,36 +72,35 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
-
-
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
 <!--Workspace-->
 <script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WMS/WMSWorkspace.js"></script>
+<!--Source-->
+<script type="text/javascript" src="../../../src/GeoBeans/Source.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/WFS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
 <!--Layer-->
 <script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/PieChartLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/QSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer/WMTSLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/PieChartLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/HeatMapLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/RangeChartLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ChartLayer/ClusterLayer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/WFSLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/MapLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer/WMSLayer.js"></script>
 <!--Interaction-->
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
@@ -107,10 +109,7 @@
 <!--Events-->
 <script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
 <!--Render-->
-<script type="text/javascript" src="../../../src/GeoBeans/Label.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/PointLabel.js"></script>
-<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/LabelSet.js"></script>
 <!--Widget-->
 <script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
@@ -140,61 +139,41 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
-	// 2、定义图层名称
-	var layerName = "chart";  		
-
-	// 3、定义要显示饼状图的底图名称
-	var baseLayerName = "tianjin";	
-
 	function  init(){
 		
 		loadTileMap();
-		loadFeatureLayer();
 		addChart();
 	}
 
-	/**
-	 * 添加饼状图
-	 */
 	function addChart(){
-
-		// 1、定义参数
-		var option = {
+		var layer = new GeoBeans.Layer.PieChartLayer({
+			name : "chart",
+			fields : ["gdp","populat"],
+			source : new GeoBeans.Source.Feature({
+				geometryName : "shape"
+			}),
+			showGeometry : true,
+			style : createStyle(),
 			radius 		: 20,				// 饼状图的半径
 			colors 		: ["#e1c72d","#b171f6"], // 字段对应的颜色
 			offsetX 	: 0,				// x方向偏移量，向右为正
 			offsetY 	: 0,				// y方向偏移量，向上为正
 			showLabel 	: true,				// 是否显示标签
 			opacity 	: 1.0				// 透明度
-		};
+		});
 
-		// 2、定义图层名称
-		layerName = "chart";  		
+		var features = loadFeatures();
+		var source = layer.getSource();
+		source.addFeatures(features);
 
-		// 3、定义要显示饼状图的底图名称
-		baseLayerName = "tianjin";	
+		mapObj.addLayer(layer);
 
-		// 4、制图字段
-		var baseLayerFields = ["gdp","populat"]; 
-
-		// 5、定义饼状图
-		// 参数分别为：
-		// 图层名称
-		// 底图名称
-		// 制图的字段
-		// 参数设置
-		var chartLayer = new GeoBeans.Layer.PieChartLayer(layerName,baseLayerName,baseLayerFields,option);
-
-		// 6、添加图层，通过添加图层的方式添加专题图
-		mapObj.addLayer(chartLayer);
-
-
-		// 5、刷新地图
-		mapObj.refresh();
+		var center = new GeoBeans.Geometry.Point(117.68,39.26);
+		mapObj.setZoomCenter(10,center);
 	}
 
 	function setVisible(){
-		var layer = mapObj.getLayer(layerName);
+		var layer = mapObj.getLayer("chart");
 		if(layer.visible){
 			layer.setVisible(false);
 		}else{
@@ -206,50 +185,26 @@
 	function removeChart(){
 
 		// 1、根据名称删除图层 
-		mapObj.removeLayer(layerName);
+		mapObj.removeLayer("chart");
 
 		// 2、刷新地图
 		mapObj.refresh();
 	}
 
-	function loadFeatureLayer(){
-		var name = baseLayerName;
-		var featureType = createFeatureType(name);
-		var features = loadFeatures(featureType);
-
-		var layer = createFeatureLayer(name, featureType);
-		layer.setFeatures(features);
-
-		//创建分级图样式
-		var style = createStyle();
-		layer.setStyle(style);
-
-		mapObj.addLayer(layer);
-		mapObj.getViewer().setExtent(layer.getExtent());
-		mapObj.refresh();
-	}
-
-	function createFeatureLayer(name, featureType){
-		var featureLayer = new GeoBeans.Layer.FeatureLayer(name);
-		featureLayer.featureType = featureType;
-
-		return featureLayer;
-	}
-
-	function loadFeatures(featurType){
+	function loadFeatures(){
 		var features = [];		
 		var length = g_tianjinValue.length;
 
 		for(var i = 0; i < length;++i){
 			var pairs = g_tianjinValue[i];	
-			var feature = createFeature(i, featurType, pairs);
+			var feature = createFeature(i, pairs);
 			features.push(feature);
 		}
 
 		return features;
 	}
 
-	function createFeature(i, featureType, pairs){
+	function createFeature(i, pairs){
 		// 使用wkt转换为geometry
 		var format = new GeoBeans.Format.WKT();
 		var geometry = format.read(pairs.shape);
@@ -260,51 +215,15 @@
 			"populat" : pairs.populat,
 			"shape" : geometry
 		};
-
+		
 		var feature = new GeoBeans.Feature({
-			fid : fid,
 			geometry : geometry,
-			values : values
+			properties : values
 		});
+		
 		return feature;
 	}
 
-	function createFeatureType(){
-		var fields = [
-			{
-				name : "fname",  // 字段名称
-				type : "string"  // 字段类型
-			},{
-				name : "gdp",
-				type : "int"
-			},{
-				name : "populat",
-				type : "int"
-			},{
-				name : "shape",
-				type : "geometry"
-			}
-		];
-
-		var geomType  = GeoBeans.Geometry.Type.MULTIPOLYGON;
-		var featureType = new GeoBeans.FeatureType(null,name);
-		var fieldsArray = [];
-		for(var i = 0; i < fields.length;++i){
-			var f = fields[i];
-			var type = f.type;
-			var name = f.name;
-			var field = new GeoBeans.Field(name, type, featureType,null);
-			if(type == GeoBeans.FeatureType.GEOMETRY){
-				featureType.geomFieldName = name;
-				field.setGeomType(geomType);
-			}
-			fieldsArray.push(field); 
-		}
-
-		featureType.fields = fieldsArray;
-		return featureType;
-
-	}
 
 	/**
 	 * 创建图层样式
@@ -336,9 +255,6 @@
 		
 		return style;
 	}
-
-	
-
 
 </script>
 	
