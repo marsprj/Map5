@@ -15,15 +15,40 @@
 		width:100%;
 	}
 	#mapDiv{
-		height:800px;
+		position: absolute;
+		height:100%;
 		width:100%;
 		margin: 0px;
 		padding: 0px;
+		z-index: 5;
+	}
+	#mapbar{
+		position: absolute;
+		height:30px;
+		width:100%;
+		margin: 0px;
+		padding: 0px;
+		top: 0px;
+		background-color: #FFFFFF;
+		opacity: 0.5;
+		z-index: 10;
+	}
+	.toolbar{
+		float: right;
+	}
+	.toolbar a{
+		width: 100px;
 	}
 </style>
 
 <title>Map5地图</title>
 <body onload="init()">
+	<div id="mapbar">
+		<div class="toolbar">
+			<a href="api" target="_blank">API</a>
+			<a href="example/all" target="_blank">Tutorials</a>		
+		</div>
+	</div>
 	<div id="mapDiv"></div>
 </body>
 
