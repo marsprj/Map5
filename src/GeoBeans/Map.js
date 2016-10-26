@@ -149,8 +149,6 @@ GeoBeans.Map = GeoBeans.Class({
 
 	widgets : null,
 
-	//图例列表
-	legendList : null,
 	
 	animateCanvas : null,
 
@@ -164,8 +162,6 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	initialize: function (options) {	
 				
-		//测试否有存在的必要？？？
-		this.legendList = [];
 
 		/**************************************************************************************/
 		/* 1) Map Name
@@ -250,7 +246,6 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	destroy : function(){
 
-		$(this._container).find(".chart-legend ").remove();
 		$(this._container).find("canvas").remove();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.enableNavControl(false);
@@ -577,55 +572,6 @@ GeoBeans.Map = GeoBeans.Class({
 	clearPanoramas : function(){
 		this.panoramaLayer.clearMarkers();
 	},*/
-
-
-	//图例列表
-	_addLegend : function(layer){
-		if(layer == null){
-			return;
-		}
-
-		var index = this._getLegendIndex();
-		var obj = {
-			index : index,
-			layer : layer
-		};
-		this.legendList.push(obj);
-		layer.legendIndex = index;
-	},
-
-	_removeLegend : function(legendIndex){
-		var obj = null,l = null,index = null;
-		for(var i = 0; i < this.legendList.length;++i){
-			obj = this.legendList[i];
-			l = obj.layer;
-			index = obj.index;
-			// if(legendIndex > index){
-			// 	obj.index = index - 1;
-			// 	l.legendIndex = index - 1;
-			// }else if(legendIndex == index){
-			// 	this.legendList.splice(i,1);
-			// }
-			if(legendIndex == index){
-				this.legendList.splice(i,1);
-			}
-		}
-
-		for(var i = 0;i < this.legendList.length;++i){
-			obj = this.legendList[i];
-			l = obj.layer;
-			index = obj.index;
-			if(index > legendIndex){
-				obj.index = index - 1;
-				l.legendIndex = index - 1;
-			}
-		}
-
-	},
-
-	_getLegendIndex : function(){
-		return this.legendList.length;
-	},
 
 
 	// // 设置背景色
