@@ -29,8 +29,8 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		this.cluster = null;
 	},
 
-	destory : function(){
-		GeoBeans.Layer.FeatureLayer.prototype.destory.apply(this, arguments);
+	destroy : function(){
+		GeoBeans.Layer.FeatureLayer.prototype.destroy.apply(this, arguments);
 		this.symbolizers = null;
 		this.cluster = null;
 	},	

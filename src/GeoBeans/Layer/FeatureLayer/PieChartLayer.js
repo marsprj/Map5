@@ -98,7 +98,7 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		if(isValid(legendWidget)){
 			legendWidget.removeLegend(this.name);
 		}
-		GeoBeans.Layer.FeatureLayer.prototype.destory.apply(this, arguments);
+		GeoBeans.Layer.FeatureLayer.prototype.destroy.apply(this, arguments);
 	},
 
 	setMap : function(map){
