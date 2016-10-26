@@ -116,7 +116,7 @@ var g_catalog = [
 		"name" : "图层控制",
 		"items":[
 			{
-				"name" : "(*)删除图层",
+				"name" : "删除图层",
 				"link" : "layer/layer_remove.html"
 			},{
 				"name" : "图层显示",

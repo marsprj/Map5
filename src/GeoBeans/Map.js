@@ -977,7 +977,7 @@ GeoBeans.Map.prototype.removeLayer = function(name){
 	var layers = this.layers;
 	for(var i = 0; i < layers.length;++i){
 		if(name == layers[i].name){
-			if(name== this.baseLayer.name){
+			if(isValid(this.baseLayer) && this.baseLayer.name == name){
 				this.resetBaseLayer();
 			}
 			var layer = layers[i];
