@@ -97,9 +97,23 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 		}
 		
 	},
-	destory : function(){
-		GeoBeans.Layer.FeatureLayer.prototype.destory.apply(this, arguments);
+	destroy : function(){
+		var legendWidget = this.map.getWidget(GeoBeans.Widget.Type.LEGEND_WIDGET);
+		if(isValid(legendWidget)){
+			legendWidget.removeLegend(this.name);
+		}
+
+		GeoBeans.Layer.FeatureLayer.prototype.destroy.apply(this, arguments);
 	},	
+
+	setMap : function(map){
+		GeoBeans.Layer.prototype.setMap.apply(this, arguments);	
+
+		var legendWidget = this.map.getWidget(GeoBeans.Widget.Type.LEGEND_WIDGET);
+		if(isValid(legendWidget)){
+			legendWidget.addLegend(this.name);
+		}
+	},
 
 
 });
@@ -310,4 +324,33 @@ GeoBeans.Layer.BarChartLayer.prototype.drawBarFeatures = function(features){
 	var preName = "bar_chart_" + this.name;
 	$("*[id*='" + preName + "']").remove();
 	this.renderer.restore();
+};
+
+
+/**
+ * 获取图例内容
+ * @private
+ */
+GeoBeans.Layer.BarChartLayer.prototype.getLegendHtml = function(){
+	var html = "<div class='chart-legend' id='" +this.name 
+	+ "_legend'>";
+	html += "<div class='chart-legend-title'>"
+	+	"<h5>" + this.name + "</h5>"
+	+	"</div>";
+	var field = null;
+	var color = null;
+	var colors = this.colors;
+	for(var i = 0; i < this.fields.length;++i){
+		field = this.fields[i];
+		if(field == null){
+			continue;
+		}
+		color = colors[i];
+		html += "<div>"
+			+ 	"	<span class='chart-legend-symbol' style='background-color:" + color + "'></span>"
+			+	"	<span class='chart-legend-label'>" + field + "</span>"
+			+	"</div>";
+	}
+	html += "</div>";	
+	return html;
 };

@@ -52,7 +52,8 @@ GeoBeans.Widget = GeoBeans.Class({
 GeoBeans.Widget.Type = {
 	COPYRIGHT	: "Copyright",
 	INFO_WINDOW	: "InfoWindow",
-	LAYERS_WIDGET : "LayersWidget"
+	LAYERS_WIDGET : "LayersWidget",
+	LEGEND_WIDGET : "LegendWidget"
 };
 
 
@@ -121,6 +122,9 @@ GeoBeans.Widget.Widgets = GeoBeans.Class({
 
 		var infoWindowWidget = new GeoBeans.Widget.InfoWindowWidget(this._map);
 		this.add(infoWindowWidget);
+
+		var legendWidget = new GeoBeans.Widget.LegendWidget(this._map);
+		this.add(legendWidget); 
 	},
 
 	destory : function(){
