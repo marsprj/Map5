@@ -38,9 +38,6 @@ GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
  */
 GeoBeans.Layer.HeatMapLayer.prototype.draw = function(){
 	this.drawHeatMap();
-	if(this.showGeometry){
-		this.drawLayerFeatures(this.features);
-	}
 	this.flag = GeoBeans.Layer.Flag.LOADED;
 }
 
@@ -51,9 +48,6 @@ GeoBeans.Layer.HeatMapLayer.prototype.draw = function(){
  */
 GeoBeans.Layer.HeatMapLayer.prototype.refresh = function(){
 	this.drawHeatMap();
-	if(this.showGeometry){
-		this.drawLayerFeatures(this.features);
-	}
 	this.flag = GeoBeans.Layer.Flag.LOADED;	
 }
 
@@ -84,6 +78,10 @@ GeoBeans.Layer.HeatMapLayer.prototype.drawHeatMap = function(){
 		execute : function(features){
 			console.log("count:" + features.length);
 			this.target.setData(features);
+
+			if(this.target.showGeometry){
+				this.target.drawLayerFeatures(features);
+			}
 		}
 	}
 	
@@ -114,6 +112,10 @@ GeoBeans.Layer.HeatMapLayer.prototype.apply = function(options){
 	if(isValid(options.source)){
 		this._source = options.source;
 	}	
+
+	if(isValid(options.showGeometry)){
+		this.showGeometry = options.showGeometry;
+	}
 }
 
 /**
@@ -154,10 +156,6 @@ GeoBeans.Layer.HeatMapLayer.prototype.setMap = function(map){
 	}
 }
 
-GeoBeans.Layer.HeatMapLayer.prototype.showGeometry = function(visible){
-	this.showGeometry = visible;
-	this.refresh();
-}
 
 GeoBeans.Layer.HeatMapLayer.prototype.setData = function(features){
 
