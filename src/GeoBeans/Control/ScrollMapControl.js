@@ -71,14 +71,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					viewer.setResolution(target_res);
 				}
 			}
-			// 保存snap,为了绘制使用
-			map.saveSnap();
-			if(trackOverlayControl.drawing){
-				trackOverlayControl.drawingEvent();
-			}
-			if(tracker != null && tracker.drawing){
-				tracker.drawingEvent();
-			}
+			// // 保存snap,为了绘制使用
+			// map.saveSnap();
+			// if(trackOverlayControl.drawing){
+			// 	trackOverlayControl.drawingEvent();
+			// }
+			// if(tracker != null && tracker.drawing){
+			// 	tracker.drawingEvent();
+			// }
 		};
 
 		this.mousewheel = function(e){
