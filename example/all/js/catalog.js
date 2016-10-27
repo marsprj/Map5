@@ -258,7 +258,7 @@ var g_catalog = [
 				"name" : "点样式(简单)",
 				"link" : "style/style_simple_point.html"
 			},{
-				"name" : "(*)点样式(图片)",
+				"name" : "点样式(图片)",
 				"link" : "style/style_pic_point.html"
 			},{
 				"name" : "线样式(简单)",
