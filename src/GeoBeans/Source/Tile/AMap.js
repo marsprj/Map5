@@ -209,9 +209,8 @@ GeoBeans.Source.Tile.AMap.prototype.getTilePosisiton = function(row, col, tile_s
 
 	var pos = null;
 	if(this.isWGS84()){
-		var proj = new GeoBeans.proj();
-		var pt0  = proj.toLonLat(x, y);
-		var pt1  = proj.toLonLat(x+tile_size, y+tile_size);
+		var pt0  = GeoBeans.Proj.toLonLat(x, y);
+		var pt1  = GeoBeans.Proj.toLonLat(x+tile_size, y+tile_size);
 		pos = {
 			"x" : pt0.x,
 			"y" : pt0.y,
