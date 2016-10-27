@@ -408,10 +408,10 @@ var g_catalog = [
 				"name" : "点",
 				"link" : "feature/add_point.html"
 			},{
-				"name" : "(*)线",
+				"name" : "线",
 				"link" : "feature/add_line.html"
 			},{
-				"name" : "(*)面",
+				"name" : "面",
 				"link" : "feature/add_polygon.html"
 			},{
 				"name" : "Marker",
