@@ -78,7 +78,6 @@ if(platform == "win32"){
 			'src/GeoBeans/Source/*/*.js',
 			'src/GeoBeans/Source/*/*/*.js',
 			'src/GeoBeans/Layer/FeatureLayer.js',
-			'src/GeoBeans/Layer/ChartLayer.js',
 			'src/GeoBeans/Layer/ImageLayer.js',
 			'src/GeoBeans/Layer/OverlayLayer.js',
 			'src/GeoBeans/Layer/Tile.js',
