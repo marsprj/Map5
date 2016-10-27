@@ -76,38 +76,45 @@ GeoBeans.Control.FeatureHitControl = GeoBeans.Class(GeoBeans.Control, {
 			return;
 		}
 		
-		var features = this.layer.features;
-		if(features==null){
+		var source = this.layer.getSource();
+		if(!isValid(source)){
 			return;
 		}
-
-		var render = this.map.renderer;
-		
-		
-		this.selection = [];
-		//console.log(x + "," + y);
-		var i=0, j=0;
-		var f=null, g=null;
-		var len = features.length;
-		for(i=0; i<len; i++){
-			f = features[i];
-			g = f.geometry;
-			if(g!=null){
-				if(g.hit(x, y, this.map.tolerance)){
-					this.selection.push(f);
+		var success = {
+			target : this,
+			execute : function(features){
+				if(!isValid(features)){
+					return;
+				}
+				var layer = this.target;
+				layer.selection = [];
+				//console.log(x + "," + y);
+				var i=0, j=0;
+				var f=null, g=null;
+				var len = features.length;
+				for(i=0; i<len; i++){
+					f = features[i];
+					g = f.geometry;
+					if(g!=null){
+						if(g.hit(x, y, layer.map.tolerance)){
+							layer.selection.push(f);
+						}
+					}
+				}
+				
+				layer.highlight(layer.selection);
+				if(callback!=undefined){
+					callback(layer.layer, layer.selection);
 				}
 			}
-		}
+		};
+		source.getFeatures(null,success,null);
 		
-		this.map.restoreSnap();
-		this.highlight(this.selection);
-		if(callback!=undefined){
-			callback(this.layer, this.selection);
-		}
 	},
 
 	highlight : function(features){
 		var renderer = this.map.renderer;
+		renderer.clearRect(0,0,this.map.getWidth(),this.map.getHeight());
 		var len = features.length;
 		for(var i=0; i<len; i++){
 			var f = features[i];
