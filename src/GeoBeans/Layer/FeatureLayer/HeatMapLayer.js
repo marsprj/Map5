@@ -3,7 +3,7 @@
  * 热力图
  * @class
  */
-GeoBeans.Layer.HeatMapLayer2 = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
+GeoBeans.Layer.HeatMapLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 
 	// HeatMap参数
 	field  : null,
@@ -16,7 +16,7 @@ GeoBeans.Layer.HeatMapLayer2 = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
 	heatmap : null,
 	container : null,
 
-	CLASS_NAME : "GeoBeans.Layer.HeatMapLayer2",
+	CLASS_NAME : "GeoBeans.Layer.HeatMapLayer",
 
 	initialize : function(options){
 		//GeoBeans.Layer.FeatureLayer.prototype.initialize.apply(this, arguments);
@@ -36,7 +36,7 @@ GeoBeans.Layer.HeatMapLayer2 = GeoBeans.Class(GeoBeans.Layer.FeatureLayer, {
  * 刷新图层
  * @deprecated
  */
-GeoBeans.Layer.HeatMapLayer2.prototype.draw = function(){
+GeoBeans.Layer.HeatMapLayer.prototype.draw = function(){
 	this.drawHeatMap();
 	if(this.showGeometry){
 		this.drawLayerFeatures(this.features);
@@ -49,7 +49,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.draw = function(){
  * @public
  * @override
  */
-GeoBeans.Layer.HeatMapLayer2.prototype.refresh = function(){
+GeoBeans.Layer.HeatMapLayer.prototype.refresh = function(){
 	this.drawHeatMap();
 	if(this.showGeometry){
 		this.drawLayerFeatures(this.features);
@@ -61,7 +61,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.refresh = function(){
  * 绘制热力图
  * @private
  */
-GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){	
+GeoBeans.Layer.HeatMapLayer.prototype.drawHeatMap = function(){	
 
 	if(!isValid(this.features)){
 		return;
@@ -95,7 +95,7 @@ GeoBeans.Layer.HeatMapLayer2.prototype.drawHeatMap = function(){
  * @private
  * @param  {Object} options 参数
  */
-GeoBeans.Layer.HeatMapLayer2.prototype.apply = function(options){
+GeoBeans.Layer.HeatMapLayer.prototype.apply = function(options){
 	//1.name
 	if(isValid(options.name)){
 		this.name = options.name;
@@ -122,9 +122,9 @@ GeoBeans.Layer.HeatMapLayer2.prototype.apply = function(options){
  * @override
  * @param {GeoBeans.Map} map 地图对象。
  */
-GeoBeans.Layer.HeatMapLayer2.prototype.setMap = function(map){
+GeoBeans.Layer.HeatMapLayer.prototype.setMap = function(map){
 
-	GeoBeans.Layer.ChartLayer.prototype.setMap.apply(this, arguments);	
+	GeoBeans.Layer.prototype.setMap.apply(this, arguments);	
 
 	var width  = this.map.getWidth();
 	var height = this.map.getHeight();
@@ -154,12 +154,12 @@ GeoBeans.Layer.HeatMapLayer2.prototype.setMap = function(map){
 	}
 }
 
-GeoBeans.Layer.HeatMapLayer2.prototype.showGeometry = function(visible){
+GeoBeans.Layer.HeatMapLayer.prototype.showGeometry = function(visible){
 	this.showGeometry = visible;
 	this.refresh();
 }
 
-GeoBeans.Layer.HeatMapLayer2.prototype.setData = function(features){
+GeoBeans.Layer.HeatMapLayer.prototype.setData = function(features){
 
 	var viewer = this.map.getViewer();
 
