@@ -130,6 +130,18 @@ var g_catalog = [
 			}
 		]
 	},{
+		"name" : "数据源",
+		"items":[
+			{
+				"name" : "GeoJSON",
+				"link" : "source/geojson.html"
+			},
+			{
+				"name" : "WFS",
+				"link" : "source/source_wfs.html"
+			}
+		]
+	},{
 		"name" : "地图交互",
 		"items":[
 			{
@@ -431,8 +443,8 @@ var g_catalog = [
 				"name" : "Marker",
 				"link" : "feature/add_marker.html"
 			},{
-				"name" : "(*)点线面标绘",
-				"link" : "drawOverlay.html"
+				"name" : "动态标绘",
+				"link" : "interaction/interaction_draw.html"
 			},{
 				"name" : "(*)标绘&标注点击事件",
 				"link" : "overlayClick.html"
@@ -551,14 +563,6 @@ var g_catalog = [
 			},{
 				"name" : "(*)GeoJSON<-->Geometry",
 				"link" : "format/geojson.html"
-			}
-		]
-	},{
-		"name" : "数据源(source)",
-		"items":[
-			{
-				"name" : "GeoJSON",
-				"link" : "source/geojson.html"
 			}
 		]
 	},{

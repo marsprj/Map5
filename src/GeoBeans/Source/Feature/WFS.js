@@ -141,14 +141,31 @@ GeoBeans.Source.Feature.WFS.prototype.getFeaturesByExtent = function(extent, suc
  */
 GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 
+	if(!isValid(query)){
+		return;
+	}
+
 	var that = this;	
 	var mapName = null;
 	var sourceName = null;
+	var xml = null;
 
-	//将query对象序列化为xml字符串
-	var xml = this.serializeQuery(query, mapName,sourceName);
+	if(query instanceof GeoBeans.Filter){
+		var filter = query;
+		var condition = new GeoBeans.Query({
+			filter : filter
+		});
+		xml = this.serializeQuery(condition, mapName,sourceName);
+	}
+	else if(query instanceof GeoBeans.Query){
+		//将query对象序列化为xml字符串
+		xml = this.serializeQuery(query, mapName,sourceName);
+	}
+	else{
+		return;
+	}
 
-	var xhr = $.ajax({
+	$.ajax({
 		type : "post",
 		url	 : this._url,
 		data : xml,
@@ -165,9 +182,36 @@ GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 		error	: function(e){
 			failure.execute(e.message);
 		}
-	});		
-	return xhr;
+	});
 }
+
+/**
+ * 添加Feature
+ * @param {GeoBeans.Feature} feature 要素
+ * @public
+ * @override
+ */
+GeoBeans.Source.Feature.prototype.addFeature = function(feature){
+	if(isValid(feature)){
+		this._features.push(feature);
+	}
+}
+
+
+/**
+ * 添加Feature数组
+ * @param {Array.<GeoBeans.Feature>} features 要素数组
+ * @public
+ * @override
+ */
+GeoBeans.Source.Feature.prototype.addFeatures = function(features){
+	if(isValid(features)){
+		for(var i = 0; i < features.length;++i){
+			this.addFeature(features[i]);
+		}
+	}
+};
+
 
 
 /**

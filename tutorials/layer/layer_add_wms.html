@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	var wmsLayer = null;
+	function  init(){
+		
+		loadTileMap();
+		addWmsLayer();
+	}
+
+	function addWmsLayer(){
+		wmsLayer = new GeoBeans.Layer.RasterLayer({			
+			"name" : "world",
+			"source" : new GeoBeans.Source.Raster.WMS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.1.0",
+				"layers"  : [
+						"radi:cities_2"
+				],//["cities","rivers","country"],
+				/*"styles"  : ["point" ,"line",  "polygon"],*/
+				"format"  : "image/png",
+				"srs"	  : "EPSG:4326",
+				"transparent": true
+			})
+		});
+
+		// 4、添加图层
+		mapObj.addLayer(wmsLayer);
+		mapObj.refresh();
+	}
+
+</script>
+<title>图层：添加WMS图层</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+</body>
+	

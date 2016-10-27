@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	var layerName = "point";
+	var featureType = null;
+	var featureLayer = null;
+
+	function  init(){		
+		loadTileMap();
+		addFeatureLayer();		
+	}
+
+	function onAddPoint(){
+		var x = parseFloat(document.getElementById("x").value);
+		var y = parseFloat(document.getElementById("y").value);
+
+		var values = {
+			fname : 'v'
+		};
+		var point = new GeoBeans.Geometry.Point(x,y);
+		var feature = new GeoBeans.Feature({
+			fid : 1,
+			geometry : point,
+			properties : values
+		});
+
+		var symbolizer = createPointSymbolizer();
+		feature.symbolizer = symbolizer;
+
+		var source = featureLayer.getSource();
+		source.addFeature(feature);
+
+		mapObj.refresh();
+	}
+
+	/**
+	 * 创建点图层样式
+	 */
+	function createPointSymbolizer(){
+		
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 60;
+		symbolizer.fill.color.setHex('#ddb926',1);
+		symbolizer.stroke = null;
+		
+		return symbolizer;
+	}
+
+
+	function addFeatureLayer(){
+		featureLayer = new GeoBeans.Layer.FeatureLayer({
+			name : layerName,
+			geometryType : GeoBeans.Geometry.Type.POINT,
+			source : new GeoBeans.Source.Feature({
+				geometryName : "shape"
+			})
+		});
+
+		mapObj.addLayer(featureLayer);
+		mapObj.refresh();
+	}
+
+
+</script>
+<title>图层：添加点</title>
+<body onload="init()">
+	<span>x:</span><input type='text' id='x' value="0">
+	<span>y:</span><input type='text' id='y' value="0">
+	<button onclick="onAddPoint()">添加点</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+</body>
+	

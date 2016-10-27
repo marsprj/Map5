@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+
+<title>Interaction:绘制类</title>
+<body onload="init()">
+	<button onclick="onEnable()" id="status">启用</button>
+	<span></span>
+	<button onclick="onDrawPoint()">绘制点</button>
+	<button onclick="onDrawLine()">绘制线</button>
+	<button onclick="onDrawPolygon()">绘制面</button>
+	<button onclick="onDrawCircle()">绘制圆</button>
+	<button onclick="onDrawRect()">绘制矩形</button>
+	<br>
+	<span>Geometry</span>
+	<input type="text" id="geometry" size=100>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	</div>
+</body>
+	
+<script type="text/javascript">
+	
+	var mapObj = null;
+	var drawer = null;
+	var layer = null;
+	var enabled = true;
+
+	function  init(){
+		
+		loadTileMap();
+		addDrawInteraction();
+		layer = addFeatureLayer("vector");
+	}
+
+	function addDrawInteraction(){
+		drawer = new GeoBeans.Interaction.Draw({
+			map : mapObj,
+			onComplete : onComplete
+		});
+		mapObj.addInteraction(drawer);
+	}
+
+	function onDrawPoint(){
+		// symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		// symbolizer.size = 6;
+		// var fill   = symbolizer.fill;
+		// fill.color.setHex('#800080',1);
+
+		// var stroke = symbolizer.stroke;
+		// stroke.color.set(0,255, 0,1);
+		// stroke.width = 1.0; 
+
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/pin.png";
+		symbol.rotation = 45;
+		symbol.scale = 1.0;
+
+		symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.symbol = symbol;
+
+		drawer.draw(GeoBeans.Geometry.Type.POINT,symbolizer);
+	}
+
+	function onDrawLine(){
+		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+
+		drawer.draw(GeoBeans.Geometry.Type.LINESTRING,symbolizer);
+	}
+
+	function onDrawPolygon(){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw(GeoBeans.Geometry.Type.POLYGON,symbolizer);
+	}
+
+	function onDrawCircle(){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw(GeoBeans.Geometry.Type.CIRCLE,symbolizer);
+	}
+
+	function onDrawRect(){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw("Rect",symbolizer);
+	}	
+
+	function onComplete(geometry){
+		var format = new GeoBeans.Format.WKT();
+		var wkt = format.write(geometry);
+		document.getElementById("geometry").value = wkt;
+
+		
+		var feature = new GeoBeans.Feature({
+			fid : 1,
+			geometry : geometry,
+			value : {}
+		});
+		feature.symbolizer = symbolizer;
+
+		var source = layer.getSource();
+		source.addFeature(feature);
+		// pointLayer.addFeature(feature);
+		mapObj.refresh();
+	}
+
+
+	function addFeatureLayer(name){
+		var featureLayer = new GeoBeans.Layer.FeatureLayer({
+			name : name,
+			geometryType : GeoBeans.Geometry.Type.POINT,
+			source : new GeoBeans.Source.Feature({
+
+			})
+		});
+
+		mapObj.addLayer(featureLayer);
+		return featureLayer;
+
+	}
+
+	function createSimplePointStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		//设置点大小
+		symbolizer.size = 6;
+		//设置点的填充颜色
+		var fill   = symbolizer.fill;
+		fill.color.setHex('#800080',1);
+
+		//设置点的边界样式
+		var stroke = symbolizer.stroke;
+		// 边框的颜色
+		stroke.color.set(0,255, 0,1);
+		// 边框的颜色
+		stroke.width = 1.0; 
+
+		var rule = new GeoBeans.Style.Rule();
+		rule.symbolizer = symbolizer;
+		rule.filter = null;
+		
+		style.addRule(rule);		
+
+		return style;
+	}
+
+	function onEnable(){
+		var enabled = drawer.isEnabled();
+		if(enabled){
+			document.getElementById("status").value = "禁用";
+			drawer.enable(!enabled);
+		}
+		else{
+			document.getElementById("status").value = "启用";
+			drawer.enable(!enabled);
+		}
+	}
+
+</script>

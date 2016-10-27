@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+<script type="text/javascript" src="../data/sample/tianjinValue.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+
+<title>数据源:GeoJSON</title>
+<body onload="init()">
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;"></div>
+</body>
+
+<script type="text/javascript">
+
+	var mapObj = null;
+	var jsonLayer = null;
+
+	function  init(){
+		
+		loadTileMap();
+		addGeoJSONLayer();
+	}
+
+	function addGeoJSONLayer(){
+		jsonLayer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "layername",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : new GeoBeans.Source.Feature.GeoJSON({
+				"url" : "../data/geojson/countries.geojson",
+				"geometryName" : "geometry",
+			}),		
+			"style" : createSimplePolygonStyle()
+		});
+		mapObj.addLayer(jsonLayer);
+		mapObj.refresh();
+	}
+
+	function createSimplePolygonStyle(){
+		// 1、定义元素的样式
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		// 2、定义一个规则
+		var rule = new GeoBeans.Style.Rule();
+
+		// 3、定义一个面样式
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+
+		// 4、定义面样式的填充颜色，也可以设定填充为空
+		symbolizer.fill.color.set(50, 60, 72,1.0);
+
+		// 5、定义面样式的边框的颜色，也可以设定边框为空
+		symbolizer.stroke.color.set(17, 17, 17,0.6);
+
+		// 6、定义面样式的边框的宽度，默认为2
+		symbolizer.stroke.width = 1;
+
+		// 7、定义该规则的样式
+		rule.symbolizer = symbolizer;
+
+		// 8、添加该项规则
+		style.addRule(rule);
+		
+		return style;
+	}
+
+
+	
+</script>
+	

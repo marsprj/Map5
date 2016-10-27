@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+
+<title>事件：地图拖拽</title>
+<body onload="init()">
+	<button onclick="enableDrag()">启用拖拽</button>
+	<button onclick="disableDrag()">终止拖拽</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;"></div>
+</body>
+	
+
+<script type="text/javascript">
+	
+	var mapObj = null;
+
+	function  init(){		
+		loadTileMap();
+		registerDragEvent();
+	}
+
+	function enableDrag(){
+		mapObj.enableDrag(true);
+	}
+
+	function disableDrag(){
+		mapObj.enableDrag(false);
+	}
+
+	function registerDragEvent(){
+		mapObj.on(GeoBeans.Event.DRAG_BEGIN, onDragBegin);
+		mapObj.on(GeoBeans.Event.DRAGING, onDraging);
+		mapObj.on(GeoBeans.Event.DRAG_END, onDragEnd);
+	}
+
+	function onDragBegin(evt){
+		console.log("DragBegin");
+	}
+
+	function onDragEnd(evt){
+		console.log("DragEnd");
+	}
+
+	function onDraging(evt){
+		console.log("Draging");
+	}
+
+</script>

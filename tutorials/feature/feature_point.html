@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+<script type="text/javascript" src="../js/citiesValue.js"></script>
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	function init(){
+		
+		loadTileMap();
+		loadFeatureLayer();
+	}
+
+	function loadFeatureLayer(){
+		var featureLayer = new GeoBeans.Layer.FeatureLayer({
+			name : "cities",
+			geometryType : GeoBeans.Geometry.Type.POINT,
+			source : new GeoBeans.Source.Feature({
+				geometryName : "geometry"
+			})
+		});
+
+		mapObj.addLayer(featureLayer);
+
+		var style = createSimplePointStyle();
+		featureLayer.setStyle(style);
+
+		var features = loadFeatures();
+		var source = featureLayer.getSource();
+		source.addFeatures(features);
+
+		mapObj.refresh();
+	}
+
+		
+	function loadFeatures(){
+		var features = [];		
+		var length = g_citiesValue.length;
+
+		for(var i = 0; i < length;++i){
+			var pairs = g_citiesValue[i];	
+			var feature = createFeature(i, pairs);
+			features.push(feature);
+		}
+
+		return features;
+	}
+
+	function createFeature(i, pairs){
+		// 使用wkt转换为geometry
+		var format = new GeoBeans.Format.WKT();
+		var geometry = format.read(pairs.shape);
+		var fid = "id_" + i;
+		var values = {
+			name :pairs.name,
+			populat : pairs.populat,
+			capital : pairs.capital,
+			geometry :geometry
+		};
+
+		var feature = new GeoBeans.Feature({
+			fid : fid,
+			values : values,
+			geometry : geometry
+		});
+		return feature;
+	}
+
+
+
+
+
+	function createSimplePointStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		//设置点大小
+		symbolizer.size = 6;
+		//设置点的填充颜色
+		var fill   = symbolizer.fill;
+		fill.color.setHex('#800080',1);
+
+		//设置点的边界样式
+		var stroke = symbolizer.stroke;
+		// 边框的颜色
+		stroke.color.set(0,255, 0,1);
+		// 边框的颜色
+		stroke.width = 1.0; 
+
+		var rule = new GeoBeans.Style.Rule();
+		rule.symbolizer = symbolizer;
+		rule.filter = null;
+		
+		style.addRule(rule);		
+
+		return style;
+	}
+
+
+</script>
+<title>要素图层：点素图</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+</body>
+	

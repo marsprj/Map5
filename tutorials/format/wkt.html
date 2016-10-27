@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+	input{
+		width: 300px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+
+	var geometry = null;
+	function  init(){
+		
+		loadTileMap();
+	}
+
+	function wktFormat(){
+		var wkt = "POINT (30   10)";
+		// var wkt = "LINESTRING (30 10, 10 30, 40 40)";
+		// var wkt = "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))";
+		// var wkt = "POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10),(20 30, 35 35, 30 20, 20 30))";
+		// var wkt = "MULTIPOINT(3.5 5.6, 4.8 10.5)";
+		// var wkt = "MULTILINESTRING ((10 10, 20 20, 10 40),(40 40, 30 30, 40 20, 30 10))";
+		// var wkt = "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))";
+		// var wkt = "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 10 30, 10 10, 30 5, 45 20, 20 35),(30 20, 20 15, 20 25, 30 20)))";
+		// var wkt = "MULTIPOLYGON (((20 35, 10 30, 10 10, 30 5, 45 20, 20 35)))";		
+
+		var wktFormat = new GeoBeans.Format.WKT();
+		var geometry = wktFormat.read(wkt);
+		console.log(geometry);
+
+		var wktWrite = wktFormat.write(geometry);
+		console.log(wktWrite);
+
+		var geometryRead = wktFormat.read(wktWrite);
+		console.log(geometryRead);
+	}
+
+	function toGeometry(){
+		var wkt = $("#wkt").val();
+		var wktFormat = new GeoBeans.Format.WKT();
+		geometry = wktFormat.read(wkt);
+		if(geometry != null){
+			$("#geometry").val(geometry.type);
+		}
+	}
+
+	function toWKT(){
+		if(geometry == null){
+			return;
+		}
+		var wktFormat = new GeoBeans.Format.WKT();
+		var wktWrite = wktFormat.write(geometry);
+		$("#wkt_write").val(wktWrite);
+	}
+</script>
+<title>格式：geometry与WKT转换</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+	<!-- <button onclick="wktFormat()">转换</button> -->
+	<input type="text" value="POINT (30   10)" id="wkt"><br/>
+	<button onclick="toGeometry()">wkt=>geometry</button>
+	<input type="text" id="geometry" disabled>
+	<br/>
+	<button onclick="toWKT()">geometry=>wkt</button>
+	<input type="text" id="wkt_write" disabled="">
+</body>
+	

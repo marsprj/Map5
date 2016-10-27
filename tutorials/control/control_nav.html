@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	
+	var mapObj = null;
+	function  init(){
+		loadMap();
+	}
+
+	function show(){
+		mapObj.enableNavControl(true);
+	}
+
+	function hide(){
+
+		mapObj.enableNavControl(false);
+	}
+	function setPosition(){
+		// 默认位置为右下角
+
+		// 两个参数分别为left和top
+		// left>=0,参考线为地图的左侧，left<0 ,参考线为右侧
+		// top>=0,参考线为地图的顶部，top<0,参考线为底部
+		var navControl = mapObj.getControl(GeoBeans.Control.Type.NAV);
+		if(navControl == null){
+			return;
+		}
+		navControl.setPosition(10,-10);
+	}
+</script>
+<title>控件:导航条</title>
+<body onload="init()">
+	<button onclick="show()">显示</button>
+	<button onclick="hide()">隐藏</button>
+	<button onclick="setPosition()">设置导航条位置</button>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	</div>
+</body>
+	

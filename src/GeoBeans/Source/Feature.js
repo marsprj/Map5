@@ -18,7 +18,9 @@ GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 
 	initialize : function(options){
 		this._features = [];
-		this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";
+		if(isValid(options)){
+			this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";	
+		}
 	},
 
 	destroy : function(){
@@ -57,6 +59,7 @@ GeoBeans.Source.Feature.prototype.addFeature = function(feature){
 /**
  * 添加Feature数组
  * @param {Array.<GeoBeans.Feature>} features 要素数组
+ * @public
  */
 GeoBeans.Source.Feature.prototype.addFeatures = function(features){
 	if(isValid(features)){
@@ -65,6 +68,25 @@ GeoBeans.Source.Feature.prototype.addFeatures = function(features){
 		}
 	}
 };
+
+/**
+ * 删除Features
+ * @param  {GeoBeans.Filter} filter 过滤器
+ * @public
+ */
+GeoBeans.Source.Feature.prototype.removeFeatures = function(filter){
+
+}
+
+/**
+ * 更新Features的值
+ * @param  {Object} properties 属性值
+ * @param  {GeoBeans.Filter} filter     过滤器
+ * @public
+ */
+GeoBeans.Source.Feature.prototype.updateFeatures = function(properties, filter){
+
+}
 
 /**
  * 获得指定范围的的Feature

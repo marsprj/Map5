@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+
+<title>事件：鼠标移动</title>
+<body onload="init()">
+	<ul>
+		<li>地图坐标：<input id="mapXY" type="text" size="30"></li>
+		<li>屏幕坐标：<input id="srcXY" type="text" size="30"></li>
+	</ul>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;"></div>
+</body>
+	
+
+<script type="text/javascript">
+	
+	var mapObj = null;
+
+	function  init(){		
+		loadTileMap();
+		registerMapClick();
+	}
+
+	function registerMapClick(){
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
+	}
+
+	function onMouseMove(evt){
+		var mapXY = evt.mapX + "," + evt.mapY;
+		var srcXY = evt.X + "," + evt.Y;
+		document.getElementById("mapXY").value = mapXY;
+		document.getElementById("srcXY").value = srcXY;
+	}
+
+</script>

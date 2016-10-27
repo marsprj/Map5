@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+
+<title>事件：滚轮事件</title>
+<body onload="init()">
+	<button onclick="registerEvent()">注册滚轮事件</button>
+	<button onclick="unregisterEvent()">注销滚轮事件</button>
+	<input id="info" type="text" size="30">
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;"></div>
+</body>
+	
+
+<script type="text/javascript">
+	
+	var mapObj = null;
+
+	function  init(){		
+		loadTileMap();
+	}
+
+	function registerEvent(){
+		mapObj.on(GeoBeans.Event.MOUSE_WHEEL, onWheel);
+	}
+
+	function unregisterEvent(){
+		mapObj.un(GeoBeans.Event.MOUSE_WHEEL);	
+	}
+
+	function onWheel(evt){
+		var info = "delta:" + evt.delta + "," + "zoom:" + evt.zoom;
+		document.getElementById("info").value = info;
+	}
+
+</script>
