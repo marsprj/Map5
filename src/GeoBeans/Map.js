@@ -296,21 +296,7 @@ GeoBeans.Map = GeoBeans.Class({
 	 	}
 	},
 	
-	/**
-	 * 更新center点后，需要更新map的视口
-	 * 触发draw事件
-	 **/
-	// setCenter : function(center){
-	// 	this.mapViewer.setCenter(center);
-	// },
 
-	// getCenter : function(){
-	// 	return this.mapViewer.getCenter();
-	// },
-
-	// setLevel : function(level){
-	// 	this.mapViewer.setLevel(level);
-	// },
 
 	
 	/**
@@ -322,242 +308,6 @@ GeoBeans.Map = GeoBeans.Class({
 		
 	},
 	
-	// setResolution : function(resolution){
-	// 	this.resolution = resolution;
-	// },
-
-
-	// getResolution : function(){
-		
-	// },
-	
-	// draw : function(){
-	// 	var time = new Date();
-	// 	// var delta = time.getTime() - this.authTime.getTime();
-	// 	// if(delta > 30*24*3600*1000){
-	// 	// 	alert("请联系管理员进行授权");
-	// 	// 	return;
-	// 	// }
-
-	// 	// this.renderer.save();
-	// 	this.time = new Date();
-
-	// 	this.drawBaseLayer();
-
-	// 	this.drawLayersAll();
-	// 	// this.renderer.restore();
-
-	// 	// Draw Interactions
-	// 	this.drawInteractions();
-
-	// 	//设置地图控件
-	// 	// this.mapNavControl.setZoomSlider(this.level);
-	// 	var index = this.controls.find(GeoBeans.Control.Type.NAV);
-	// 	var mapNavControl = this.controls.get(index);
-	// 	var zoom = this.getViewer().getZoom();
-	// 	mapNavControl.setZoomSlider(zoom);
-
-	// },
-
-
-	//覆盖物操作
-	addOverlay:function(overlay){
-		this.overlayLayer.addOverlay(overlay);
-	},
-
-	addOverlays:function(overlays){
-		this.overlayLayer.addOverlays(overlays);
-	},
-
-	removeOverlay:function(id){
-		this.overlayLayer.removeOverlay(id);
-	},
-
-	removeOverlayObj : function(overlay){
-		this.overlayLayer.removeOverlayObj(overlay);
-	},
-
-	removeOverlays:function(ids){
-		this.overlayLayer.removeOverlays(ids);
-	},
-
-	clearOverlays:function(){
-		this.overlayLayer.clearOverlays();
-	},
-
-	getOverlays:function(){
-		return this.overlayLayer.overlays;
-	},
-
-	getOverlay:function(id){
-		// return this.overlayLayer.overlays[id];
-		return this.overlayLayer.getOverlay(id);
-	},
-
-	setFitView:function(overlay){
-		if(overlay == null){
-			return;
-		}
-		var extent = overlay.getExtent();
-		var viewer = this.viewer.scaleView(extent);
-		this.viewer.extent = viewer;
-		this.viewer.transformation.update();
-		var level = this.viewer.getLevelByExtent(this.viewer.getExtent());
-		viewer.setLevel(level);
-		this.draw();
-		
-	},
-
-	setOverlayVisible : function(overlay,visible){
-		if(overlay != null){
-			overlay.visible = visible;
-		}
-	},
-
-	// 获取overlay绘制
-	_getTrackOverlayControl : function(){
-		var i = this.controls.find(GeoBeans.Control.Type.TRACKOVERLAY);
-		if(i < 0){
-			var control = new GeoBeans.Control.TrackOverlayControl();
-			this.controls.add(control);
-			return control;
-		}
-		return this.controls.get(i);
-	},
-
-	// 绘制marker标注
-	drawMarker : function(symbolizer,callback){
-		if(symbolizer == null){
-			return;
-		}
-		var trackOverlayControl = this._getTrackOverlayControl();
-		if(trackOverlayControl == null){
-			return;
-		}
-		trackOverlayControl.trackMarker(symbolizer,callback);
-	},
-
-	// 绘制线标注
-	drawPolyline : function(symbolizer,callback){
-		if(symbolizer == null){
-			return;
-		}
-		var trackOverlayControl = this._getTrackOverlayControl();
-		if(trackOverlayControl == null){
-			return;
-		}
-		trackOverlayControl.trackLine(symbolizer,callback);
-	},
-
-	// 绘制面标注
-	drawPolygon : function(symbolizer,callback){
-		if(symbolizer == null){
-			return;
-		}
-		var trackOverlayControl = this._getTrackOverlayControl();
-		if(trackOverlayControl == null){
-			return;
-		}
-		trackOverlayControl.trackPolygon(symbolizer,callback);	
-	},
-
-	//注册hit和edit事件
-	registerOverlayEvent:function(){
-		this.overlayLayer.registerHitEvent();
-	},
-	unregisterOverlayEvent:function(){
-		this.overlayLayer.unregisterHitEvent();
-	},
-
-	// 注册overlay 弹窗
-	registerInfoWindowEvent : function(){
-		this.overlayLayer.registerInfoWindowEvent();
-	},
-	unRegisterInfoWindowEvent : function(){
-		this.overlayLayer.unRegisterInfoWindowEvent();
-	},
-
-	registerOverlayClickEvent : function(callback){
-		this.overlayLayer.registerOverlayClickEvent(callback);
-	},
-
-	unRegisterOverlayClickEvent : function(){
-		this.overlayLayer.unRegisterOverlayClickEvent();
-	},
-
-
-	openInfoWindow : function(option,point){
-		var infoWindowWidget = this.getInfoWindow();
-
-		infoWindowWidget.setPosition(point);
-
-		infoWindowWidget.setOption(option);
-
-		infoWindowWidget.show(true);
-	},
-
-	closeInfoWindow : function(){
-		var infoWindowWidget = this.getInfoWindow();
-		infoWindowWidget.show(false);
-	},
-
-
-	// 修改后未调试
-	// //zoomLayer
-	// zoomToLayer : function(layerName){
-	// 	if(layerName == null){
-	// 		return;
-	// 	}
-	// 	var layer = this.getLayer(layerName);
-	// 	if(layer == null){
-	// 		return;
-	// 	}
-		
-		
-	// 	var extent = layer.                ();
-	// 	if(extent == null){
-	// 		return;
-	// 	}
-	// 	if(this.baseLayer != null){
-	// 		var level = this.getLevel(extent);
-	// 		if(level == null){
-	// 			return;
-	// 		}
-	// 		var center = extent.getCenter();
-	// 		this.setLevel(level);
-	// 		this.setCenter(center);
-	// 	}else{
-	// 		this.setViewer(extent);
-	// 	}
-	// 	this.draw();
-	// },
-
-	// zoomToBaseLayer : function(){
-	// 	// var extent = this.extent;
-	// 	if(this.baseLayer == null){
-	// 		return;
-	// 	}
-	// 	var extent = this.baseLayer.extent;
-	// 	if(extent == null){
-	// 		if(this.baseLayer instanceof GeoBeans.Layer.QSLayer){
-	// 			extent = new GeoBeans.Envelope(-180,-90,180,90);
-	// 		}
-	// 		if(extent == null){
-	// 			return;
-	// 		}
-	// 	}
-	// 	var level = this.getLevel(extent);
-	// 	if(level == null){
-	// 		return;
-	// 	}
-	// 	this.setLevel(level);
-	// 	var center = extent.getCenter();
-	// 	if(center == null){
-	// 		return;
-	// 	}
-	// 	this.setCenter(center);
-	// 	this.draw();
-	// },
 
 
 	// 增加全景图
@@ -664,52 +414,35 @@ GeoBeans.Map = GeoBeans.Class({
 		return rippleLayers;
 	},
 
-	// // 图层名称，
-	// registerRippleHitEvent : function(name,content){
-	// 	var layer = this.getLayer(name);		
-	// 	if(layer == null || !(layer instanceof GeoBeans.Layer.RippleLayer)){
-	// 		return;
-	// 	}
-	// 	layer.registerHitEvent(content);
-	// },
 
-	// unRegisterRippleHitEvent : function(name){
-	// 	var layer = this.getLayer(name);		
-	// 	if(layer == null || !(layer instanceof GeoBeans.Layer.RippleLayer)){
-	// 		return;
-	// 	}
-	// 	layer.unregisterHitEvent();
-	// },
-
-
-	tooltip : function(point,content){
-		var spt = this.transformation.toScreenPoint(point.x,point.y);
-		var position = 'left:' + spt.x + "px;top:" + spt.y + "px";
+	// tooltip : function(point,content){
+	// 	var spt = this.transformation.toScreenPoint(point.x,point.y);
+	// 	var position = 'left:' + spt.x + "px;top:" + spt.y + "px";
 		
-		this._container.find(".map5-tooltip").html(content);
-		var left = spt.x;
-		var top = spt.y;
+	// 	this._container.find(".map5-tooltip").html(content);
+	// 	var left = spt.x;
+	// 	var top = spt.y;
 
-		var itemHeight = this._container.find(".map5-tooltip").height();
-		var itemWidth = this._container.find(".map5-tooltip").width();
-		var x = itemWidth + spt.x;
-		var y = itemHeight + spt.y;
+	// 	var itemHeight = this._container.find(".map5-tooltip").height();
+	// 	var itemWidth = this._container.find(".map5-tooltip").width();
+	// 	var x = itemWidth + spt.x;
+	// 	var y = itemHeight + spt.y;
 
-		if(x >= this.width){
-			left = spt.x - itemWidth;
-		}
-		if(y >= this.height){
-			top = spt.y - itemHeight;
-		}
+	// 	if(x >= this.width){
+	// 		left = spt.x - itemWidth;
+	// 	}
+	// 	if(y >= this.height){
+	// 		top = spt.y - itemHeight;
+	// 	}
 
-		$(this._container).find(".map5-tooltip").css("left",left + "px");
-		$(this._container).find(".map5-tooltip").css("top",top + "px");
-		$(this._container).find(".map5-tooltip").css("display","block");
-	},
+	// 	$(this._container).find(".map5-tooltip").css("left",left + "px");
+	// 	$(this._container).find(".map5-tooltip").css("top",top + "px");
+	// 	$(this._container).find(".map5-tooltip").css("display","block");
+	// },
 
-	closeTooltip : function(){
-		$(this._container).find(".map5-tooltip").css("display","none");
-	},
+	// closeTooltip : function(){
+	// 	$(this._container).find(".map5-tooltip").css("display","none");
+	// },
 
 
 	registerRippleHitEvent : function(name,content){
@@ -1016,8 +749,8 @@ GeoBeans.Map.prototype.initLayers = function(layers){
 	this.layers = [];
 	this.addLayers(layers);
 
-	this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
-	this.overlayLayer.setMap(this);
+	// this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
+	// this.overlayLayer.setMap(this);
 }
 
 /**
@@ -1161,7 +894,7 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 				layer.resize(width,height);
 			}
 
-			that.overlayLayer.resize(width,height);
+			// that.overlayLayer.resize(width,height);
 
 			var viewer = that.getViewer();
 			var extent = viewer.getExtent();
@@ -1225,14 +958,6 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 
 };
 
-/**
- * 获取infoWindow对象
- * @deprecated 
- * @return {GeoBeans.Widget.InfoWindow} InfoWindow对象
- */
-GeoBeans.Map.prototype.getInfoWindow = function(){
-	return this._infoWindowWidget;
-}
 
 /**
  * Map事件绑定
@@ -1654,96 +1379,6 @@ GeoBeans.Map.prototype.drawLayers = function(){
 };
 
 
-/**
- * 绘制所有图层，较为通用，包括hitCanvas和bufferCanvas
- * @deprecated 
- */
-// GeoBeans.Map.prototype.drawLayersAll = function(){
-	
-// 	this.maplex.cleanup();
-	
-// 	for(var i = 0; i < this.layers.length; ++i){
-// 		var layer = this.layers[i];
-// 		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
-// 			layer.load();
-// 		}
-// 	}
-// 	this.overlayLayer.load();
-
-// 	/*this.panoramaLayer.load();*/
-
-// 	for(var i = 0; i < this.layers.length; ++i){
-// 		var layer = this.layers[i];
-// 		if(layer.visible && !(layer instanceof GeoBeans.Layer.TileLayer) ){
-// 			if(layer.flag != GeoBeans.Layer.Flag.LOADED){
-// 				return;
-// 			}				
-// 		}
-// 	}
-
-// 	var overlayLayerFlag = this.overlayLayer.getLoadFlag();
-// 	if(overlayLayerFlag != GeoBeans.Layer.Flag.LOADED){
-// 		return;
-// 	}
-
-
-// /*	var panoramaLayerFlag = this.panoramaLayer.getLoadFlag();
-// 	if(panoramaLayerFlag != GeoBeans.Layer.Flag.LOADED){
-// 		return;
-// 	}*/
-
-// 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-
-// 	for(var i = 0; i < this.layers.length; ++i){
-// 		var layer = this.layers[i];
-// 		if(layer instanceof GeoBeans.Layer.RippleLayer){
-// 			continue;
-// 		}
-// 		if(!layer.visible || (layer instanceof GeoBeans.Layer.TileLayer)){
-// 			if(layer instanceof GeoBeans.Layer.ChartLayer){
-// 				layer.hideLegend();
-// 			}
-// 			continue;
-// 		}
-// 		var canvas = layer.canvas;
-// 		if(canvas != null){
-// 			this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-// 		}
-// 		// var hitCanvas = layer.hitCanvas;
-// 		// if(hitCanvas != null){
-// 		// 	this.renderer.drawImage(hitCanvas,0,0,hitCanvas.width,hitCanvas.height);
-// 		// }
-
-// 		// var clickCanvas = layer.clickCanvas;
-// 		// if(clickCanvas != null){
-// 		// 	this.renderer.drawImage(clickCanvas,0,0,clickCanvas.width,clickCanvas.height);
-// 		// }
-// 		if(layer instanceof GeoBeans.Layer.ChartLayer){
-// 			layer.showLegend();
-// 		}
-// 	}
-
-// 	var canvas = this.overlayLayer.canvas;
-// 	this.renderer.drawImage(canvas,0,0,canvas.width,canvas.height);
-
-
-// /*	// 全景图
-// 	var panoramaLayerCanvas = this.panoramaLayer.canvas;
-// 	if(panoramaLayerCanvas != null){
-// 		this.renderer.drawImage(panoramaLayerCanvas,0,0,panoramaLayerCanvas.width,panoramaLayerCanvas.height);
-// 	}
-// */
-
-// 	var infoWindow = this.getInfoWindow();
-// 	infoWindow.refresh();
-
-
-// 	this.maplex.draw();
-// 	var maplexCanvas = this.maplex.canvas;
-// 	if(maplexCanvas != null){
-// 		this.renderer.drawImage(maplexCanvas,0,0,maplexCanvas.width,maplexCanvas.height);
-// 	}
-// }
 
 /**
  * 清空所有图层
@@ -1816,6 +1451,11 @@ GeoBeans.Map.prototype.cleanupSnap = function(){
 	}
 }
 
+
+/**
+ * 绘制有底图的snap
+ * @private
+ */
 GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
 
 	var center = this.viewer.getCenter();
@@ -1857,7 +1497,7 @@ GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
 }
 
 /**
- * 绘制Layer的snap
+ * 绘制Layer的snap(无底图)
  * @private
  * @deprecated 
  */

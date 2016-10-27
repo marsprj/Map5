@@ -75,7 +75,6 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				}
 				e.preventDefault();
 				if(draging){
-					that.map.closeTooltip();
 					that.draging = true;
 					document.body.style.cursor = 'pointer';
 					mask_x += (e.layerX - d_x);

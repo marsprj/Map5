@@ -24,14 +24,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			var viewer = map.getViewer();
 			var maxZoom = viewer.getMaxZoom();
 			var minZoom = viewer.getMinZoom();
-			var trackOverlayControl = map._getTrackOverlayControl();
-			if(trackOverlayControl.drawing){
-				map.restoreSnap();
-			}
-			var tracker = map.tracker;
-			if(tracker != null && tracker.drawing){
-				map.restoreSnap();
-			}
+			// var trackOverlayControl = map._getTrackOverlayControl();
+			// if(trackOverlayControl.drawing){
+			// 	map.restoreSnap();
+			// }
+			// var tracker = map.tracker;
+			// if(tracker != null && tracker.drawing){
+			// 	map.restoreSnap();
+			// }
 
 			var viewer = map.getViewer();
 			var extent = viewer.getExtent();
