@@ -11,6 +11,8 @@
 
 <script type="text/javascript" src="../js/initMap.js"></script>
 
+<script type="text/javascript" src="../js/riversValue.js"></script>
+
 <style type="text/css">
 	body{
 		margin: 0px;
@@ -26,26 +28,40 @@
 	}
 
 	function loadFeatureLayer(){
+		// 1、定义一个要素图层
 		var layer = new GeoBeans.Layer.FeatureLayer({
-			name : "rivers",
-			geometryType : GeoBeans.Geometry.Type.LINESTRING,
-			source : new GeoBeans.Source.Feature({
+			name : "rivers", //图层名称
+			geometryType : GeoBeans.Geometry.Type.LINESTRING, //图层的几何类型，为线类型
+			source : new GeoBeans.Source.Feature({ // 定义一个要素数据源
 				geometryName : "geometry"
 			})
 		});
+
+		// 2、添加图层
 		mapObj.addLayer(layer);
 
-		var source = layer.getSource();
-		var features = loadFeatures();
-		source.addFeatures(features);
-
+		// 3、定义线样式
 		var style = createSimpleLineStyle();
+
+		// 4、图层设置样式
 		layer.setStyle(style);
 
+		// 5、获取图层的数据源
+		var source = layer.getSource();
+
+		// 6、定义要素数组
+		var features = loadFeatures();
+
+		// 7、数据源添加要素
+		source.addFeatures(features);
+
+		// 8、地图刷新
 		mapObj.refresh();
 	}
 
-
+	/**
+	 * 从js文件中读取要素
+	 */
 	function loadFeatures(){
 		var features = [];		
 		var length = g_riversValue.length;
@@ -69,14 +85,18 @@
 			shape :geometry
 		};
 
+		// 定义要素
 		var feature = new GeoBeans.Feature({
-			fid : fid,
-			values : values,
-			geometry : geometry
+			fid : fid, // 要素的fid
+			propertis : values,  // 要素的字段和对应的值
+			geometry : geometry // 要素的geometry
 		});
 		return feature;
 	}
 
+	/**
+	 * 定义线样式
+	 */
 	function createSimpleLineStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 		// 定义一个规则

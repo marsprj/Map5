@@ -20,33 +20,45 @@
 	// 地图变量
 	var mapObj = null;
 	function init(){
-		
 		loadTileMap();
 		loadFeatureLayer();
 	}
 
 	function loadFeatureLayer(){
+		// 1、定义一个要素图层
 		var featureLayer = new GeoBeans.Layer.FeatureLayer({
-			name : "cities",
-			geometryType : GeoBeans.Geometry.Type.POINT,
-			source : new GeoBeans.Source.Feature({
-				geometryName : "geometry"
+			name : "cities", //图层名称
+			geometryType : GeoBeans.Geometry.Type.POINT, //图层的几何类型
+			source : new GeoBeans.Source.Feature({ //定义一个要素数据源
+				geometryName : "geometry" // 数据源中几何要素的名称
 			})
 		});
 
+		// 2、添加图层
 		mapObj.addLayer(featureLayer);
 
+		// 3、定义点样式
 		var style = createSimplePointStyle();
+
+		// 4、定义该图层的样式
 		featureLayer.setStyle(style);
 
+		// 5、定义要素数组
 		var features = loadFeatures();
+
+		// 6、获取图层的数据源
 		var source = featureLayer.getSource();
+
+		// 7、数据源添加要素
 		source.addFeatures(features);
 
+		// 8、地图刷新
 		mapObj.refresh();
 	}
 
-		
+	/**
+	 * 从js文件中读取要素
+	 */
 	function loadFeatures(){
 		var features = [];		
 		var length = g_citiesValue.length;
@@ -56,7 +68,6 @@
 			var feature = createFeature(i, pairs);
 			features.push(feature);
 		}
-
 		return features;
 	}
 
@@ -72,18 +83,19 @@
 			geometry :geometry
 		};
 
+		// 定义要素
 		var feature = new GeoBeans.Feature({
-			fid : fid,
-			values : values,
-			geometry : geometry
+			fid : fid, // 要素的fid
+			propertis : values,  // 要素的字段和对应的值
+			geometry : geometry // 要素的geometry
 		});
 		return feature;
 	}
 
 
-
-
-
+	/**
+	 * 定义点样式
+	 */
 	function createSimplePointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 
