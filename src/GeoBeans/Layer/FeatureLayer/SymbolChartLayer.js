@@ -224,7 +224,7 @@ GeoBeans.Layer.SymbolChartLayer.prototype.drawLayerByLevel = function(features){
  * @param  {float} radius 最大半径
  * @param  {integer} level  级别
  * @param  {float} min    最小值
- * @param  {float]} max    最大值
+ * @param  {float} max    最大值
  * @return {Array}        
  */
 GeoBeans.Layer.SymbolChartLayer.prototype.getLevelMap = function(radius,level,min,max){
@@ -252,9 +252,6 @@ GeoBeans.Layer.SymbolChartLayer.prototype.getLevelMap = function(radius,level,mi
 /**
  * 从等级划分区间段内寻找值
  * @private
- * @param  {[type]} value    [description]
- * @param  {[type]} levelMap [description]
- * @return {[type]}          [description]
  */
 GeoBeans.Layer.SymbolChartLayer.prototype.getRadiusByLevelMap = function(value,levelMap){
 	if(!isValid(value) || !isValid(levelMap)){

@@ -26,7 +26,7 @@ GeoBeans.Widget.CopyRightWidget.prototype.createContainer = function(){
 	
 	$(mapContainer).find(".map5-copyright").remove();
 
-	var copyRightHtml = "<div class='map5-copyright'>GeoBeans © </div>";
+	var copyRightHtml = "<div class='map5-copyright'>© 2003-2016 GeoBeans</div>";
 	$(mapContainer).append(copyRightHtml);
 
 	this._container = $(mapContainer).find(".map5-copyright")[0];

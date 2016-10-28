@@ -75,7 +75,7 @@ var g_catalog = [
 				"name" : "TMS图层",
 				"link" : "layer/layer_add_tms.html"
 			},{
-				"name" : "(*)WMTS图层",
+				"name" : "WMTS图层",
 				"link" : "layer/layer_add_wmts.html"
 			},{
 				"name" : "QuadServer图层",
@@ -190,10 +190,10 @@ var g_catalog = [
 	},{
 		"name" : "条件查询",
 		"items":[
-			{
+			/*{
 				"name" : "(*)ID查询",
 				"link" : "query/filter_id.html"
-			},{
+			},*/{
 				"name" : "二元比较查询",
 				"link" : "query/filter_binary_comparision.html"
 			},{
@@ -232,18 +232,17 @@ var g_catalog = [
 			},{
 				"name" : "设置最大的返回的features个数",
 				"link" : "query/query_set_maxfeatures.html"
-			},{
+			}/*,{
 				"name" : "(*)设置返回结果的偏移量",
 				"link" : "query_set_offset.html"
 			},{
 				"name" : "(*)设置返回结果排序",
 				"link" : "query/query_set_orderby.html"
-			}
+			}*/
 		]
 	},{
 
 		"name" : "交互式查询",
-
 		"items":[
 
 			{
@@ -428,10 +427,10 @@ var g_catalog = [
 			},{
 				"name" : "Marker",
 				"link" : "feature/add_marker.html"
-			},{
+			}/*,{
 				"name" : "(*)标绘&标注点击事件",
 				"link" : "overlayClick.html"
-			}
+			}*/
 		]
 	},{
 		"name" : "标绘",
@@ -445,10 +444,10 @@ var g_catalog = [
 			},{
 				"name" : "动态标绘",
 				"link" : "interaction/interaction_draw.html"
-			},{
+			}/*,{
 				"name" : "(*)标绘&标注点击事件",
 				"link" : "overlayClick.html"
-			}
+			}*/
 		]
 	},{
 		"name" : "地图事件",
@@ -552,16 +551,16 @@ var g_catalog = [
 		"name" : "格式转换",
 		"items":[
 			{
-				"name" : "(*)WKT<-->Geometry",
+				"name" : "WKT<-->Geometry",
 				"link" : "format/wkt.html"
 			},{
-				"name" : "(*)GML<-->Geometry",
+				"name" : "GML<-->Geometry",
 				"link" : "format_gmal.html"
 			},{
-				"name" : "(*)KML<-->Geometry",
+				"name" : "KML<-->Geometry",
 				"link" : "format/kml.html"
 			},{
-				"name" : "(*)GeoJSON<-->Geometry",
+				"name" : "GeoJSON<-->Geometry",
 				"link" : "format/geojson.html"
 			}
 		]
@@ -573,7 +572,7 @@ var g_catalog = [
 				"link" : "proj/coordinate.html"
 			}
 		]
-	},{
+	}/*,{
 		"name" : "动画",
 		"items":[
 			{
@@ -584,5 +583,5 @@ var g_catalog = [
 				"link" : "geoLineLayer.html"
 			}
 		]
-	}
+	}*/
 ];
