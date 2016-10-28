@@ -80,6 +80,7 @@ if(platform == "win32"){
 			'src/GeoBeans/Layer/FeatureLayer.js',
 			'src/GeoBeans/Layer/ImageLayer.js',
 			'src/GeoBeans/Layer/OverlayLayer.js',
+			'src/GeoBeans/Layer/RasterLayer.js',
 			'src/GeoBeans/Layer/Tile.js',
 			'src/GeoBeans/Layer/TileCache.js',
 			'src/GeoBeans/Layer/TileLayer.js',
