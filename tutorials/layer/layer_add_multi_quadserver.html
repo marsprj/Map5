@@ -20,22 +20,17 @@
 	var mapObj = null;
 	function  init(){
 		
-		//1.设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		
-		//2.初始化地图变量，参数分别为:
-		//地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
+		// 1、定义地图变量	
 		mapObj = new GeoBeans.Map({
-			target : "mapDiv",
-			name : "map",
-			srs  : GeoBeans.Proj.WGS84,
+			target : "mapDiv", //地图存放的容器
+			name : "map", //地图的名称
+			srs  : GeoBeans.Proj.WGS84  //地图的投影
 		});
-
 		if(mapObj == null){
 			return;
 		}
 
-		// 3、第一个图层
+		// 2、定义第一个图层
 		var vector = new GeoBeans.Layer.TileLayer({
 			"name" : "vector",
 			"source" : new GeoBeans.Source.Tile.QuadServer({
@@ -46,7 +41,7 @@
 	 		"visible" : true
 		});
 
-		// 4、第二个图层
+		// 3、定义第二个图层
 		var trans = new GeoBeans.Layer.TileLayer({
 			"name" : "trans",
 			"source" : new GeoBeans.Source.Tile.QuadServer({
@@ -57,10 +52,10 @@
 	 		"visible" : true
 		});		
 
-		// 5、添加图层
+		// 4、添加多个图层数组
 		mapObj.addLayers([vector,trans]);
 		
-		//6.设置中心点和显示级别
+		// 5、设置中心点和显示级别
 		var zoom = 3;
 		var center = new GeoBeans.Geometry.Point(0,0);
 		mapObj.setZoomCenter(zoom,center);

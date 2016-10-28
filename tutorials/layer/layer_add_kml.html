@@ -37,14 +37,19 @@
 
 
 	function addPointKMLLayer(){
+		// 1、定义一个要素图层
 		var layer = new GeoBeans.Layer.FeatureLayer({
-			name : "point",
-			geometryType : GeoBeans.Geometry.Type.POINT,
-			source : new GeoBeans.Source.Feature.KML({
-				url : "/Map5/example/all/data/kml/point.kml"
+			name : "point", // 图层名称
+			geometryType : GeoBeans.Geometry.Type.POINT, // 图层的几何类型
+			source : new GeoBeans.Source.Feature.KML({ // 定义KML数据源
+				url : "/Map5/example/all/data/kml/point.kml" // 数据地址
 			})
 		});
+
+		// 2、添加图层
 		mapObj.addLayer(layer);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 	

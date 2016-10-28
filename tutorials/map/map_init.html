@@ -22,7 +22,7 @@
 	        target : "mapDiv",  //地图存放的容器
 	        name : "map",		//地图的名称
 	        srs  : GeoBeans.Proj.WGS84,  //地图的投影
-	        baseLayer : "world",		//地图的底图名称，应该为layers中的一个底图
+	        baseLayer : "world",		//地图的底图名称，应该为layers中的一个图层
 	        layers : [
 	            new GeoBeans.Layer.TileLayer({  //定义一个瓦片图层
 	                name : "world",   //图层的名称
@@ -35,7 +35,7 @@
 	            }),
 	            new GeoBeans.Layer.FeatureLayer({   //定义一个要素图层
 	                name : "country",	//图层名称
-	                geometryType : GeoBeans.Geometry.Type.POINT, //图层的几何类型
+	                geometryType : GeoBeans.Geometry.Type.POLYGON, //图层的几何类型
 	                source : new GeoBeans.Source.Feature.GeoJSON({ //图层的数据源
 	                    url : "../data/geojson/countries.geojson", // 地址
 	                    geometryName : "geometry", //几何要素的字段名称

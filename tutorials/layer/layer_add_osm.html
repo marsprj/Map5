@@ -51,12 +51,13 @@
 			srs  : GeoBeans.Proj.WebMercator,
 			baseLayer : "osm",
 			layers :[
+				// 定义瓦片图层
 				new GeoBeans.Layer.TileLayer({
 					name   : "osm",
-					"source" : new GeoBeans.Source.Tile.OSM({
-						srs: GeoBeans.Proj.WebMercator,
+					"source" : new GeoBeans.Source.Tile.OSM({ //定义OSM数据源
+						srs: GeoBeans.Proj.WebMercator, //定义投影
 					}),
-			 		"opacity" : 1.0,
+			 		"opacity" : 1.0, 
 			 		"visible" : true
 				})
 			],
@@ -69,6 +70,8 @@
 		if(mapObj == null){
 			return;
 		}
+
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 
 	function onMouseMove(evt){

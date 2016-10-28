@@ -35,16 +35,21 @@
 	}
 
 	function addGeoJSONLayer(){
+		// 1、定义一个要素图层
 		jsonLayer = new GeoBeans.Layer.FeatureLayer({			
-			"name" : "layername",
-			"geometryType" : GeoBeans.Geometry.Type.POINT,
-			"source" : new GeoBeans.Source.Feature.GeoJSON({
-				"url" : "../data/geojson/countries.geojson",
-				"geometryName" : "geometry",
+			"name" : "layername", // 图层名称
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON, // 图层的几何类型
+			"source" : new GeoBeans.Source.Feature.GeoJSON({ // 定义GeoJson数据源
+				"url" : "../data/geojson/countries.geojson", // 数据地址
+				"geometryName" : "geometry",	// 几何要素的字段名称
 			}),		
-			"style" : createSimplePolygonStyle()
+			"style" : createSimplePolygonStyle() // 图层样式
 		});
+
+		// 2、添加一个图层
 		mapObj.addLayer(jsonLayer);
+
+		// 3、刷新
 		mapObj.refresh();
 	}
 
@@ -76,7 +81,5 @@
 		return style;
 	}
 
-
-	
 </script>
 	

@@ -28,27 +28,26 @@
 
 	function addWfsLayer(){
 
+		// 1、定义一个要素图层
 		wfsLayer = new GeoBeans.Layer.FeatureLayer({			
-			"name" : "country",
-			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
-			"source" : new GeoBeans.Source.Feature.WFS({
-				"url" : "/geoserver/radi/ows?",
-				"version" : "1.0.0",
+			"name" : "country",   //图层名称
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON, // 图层的几何类型
+			"source" : new GeoBeans.Source.Feature.WFS({ // 定义WFS数据源
+				"url" : "/geoserver/radi/ows?", // 服务器地址
+				"version" : "1.0.0", // WFS版本
 				"featureNS" : 'http://www.radi.ac.cn',
 				"featurePrefix" : "radi",
-				"featureType" : "country_2",
-				"geometryName" : "shape",
-				"outputFormat": "GML2"
+				"featureType" : "country_2",  //图层名称
+				"geometryName" : "shape", // 几何要素的字段名称
+				"outputFormat": "GML2"    // 输出类型
 			}),		
-			"style" : createSimplePolygonStyle()
+			"style" : createSimplePolygonStyle()  // 图层的样式
 		});
 
+		// 2、添加图层
 		mapObj.addLayer(wfsLayer);
 
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.setZoomCenter(zoom,center);
-
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 

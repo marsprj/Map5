@@ -43,9 +43,6 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
@@ -54,9 +51,9 @@
 			layers : [
 				new GeoBeans.Layer.TileLayer({
 					"name" : "arcgis",
-					"source" : new GeoBeans.Source.Tile.ArcGIS({
-						imageSet : "ChinaOnlineCommunity",
-						srs: GeoBeans.Proj.WebMercator,
+					"source" : new GeoBeans.Source.Tile.ArcGIS({ //定义arcgis数据源
+						imageSet : "ChinaOnlineCommunity", // 定义数据集
+						srs: GeoBeans.Proj.WebMercator, // 定义投影
 					}),
 			 		"opacity" : 1.0,
 			 		"visible" : true
@@ -71,6 +68,7 @@
 			return;
 		}
 		
+		// 定义鼠标移动事件
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 

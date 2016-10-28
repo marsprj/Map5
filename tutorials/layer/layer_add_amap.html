@@ -44,22 +44,19 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
-			target : "mapDiv",
-			name : "map",
-			srs  : GeoBeans.Proj.WebMercator,
-			baseLayer : "world",
+			target : "mapDiv", //地图存放的容器
+			name : "map", //地图的名称
+			srs  : GeoBeans.Proj.WebMercator, //地图的投影
+			baseLayer : "world", 	//地图的底图名称，应该为layers中的一个图
 			layers :[
-				new GeoBeans.Layer.TileLayer({
-					name   : "world",
-					source : new GeoBeans.Source.Tile.AMap({
-						srs: GeoBeans.Proj.WebMercator,
+				new GeoBeans.Layer.TileLayer({ //定义一个瓦片图层
+					name   : "world",  //图层的名称
+					source : new GeoBeans.Source.Tile.AMap({ // 定义高德地图数据源
+						srs: GeoBeans.Proj.WebMercator, // 定义投影类型
 					}),
-			 		opacity : 1.0,
-			 		visible : true
+			 		opacity : 1.0,  // 透明度
+			 		visible : true  // 是否显示
 				})
 			],
 			viewer : {
@@ -70,26 +67,8 @@
 		if(mapObj == null){
 			return;
 		}
-		
-
-		var amapLayer = new GeoBeans.Layer.TileLayer({
-			name   : "world",
-			source : new GeoBeans.Source.Tile.AMap({
-				srs: GeoBeans.Proj.WebMercator,
-			}),
-	 		opacity : 1.0,
-	 		visible : true
-		});
-
-
-		mapObj.addLayer(amapLayer);
-
+		// 注册地图移动事件
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
-
-		// 4、设置中心点和显示级别
-		// var zoom = 3;
-		// var center = new GeoBeans.Geometry.Point(0,0);
-		// mapObj.setZoomCenter(zoom,center);
 	}
 
 	function onMouseMove(evt){
@@ -97,6 +76,7 @@
 		document.getElementById("m_x").value = evt.mapX;
 		document.getElementById("m_y").value = evt.mapY;
 
+		// 平面坐标转经纬度
 		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;

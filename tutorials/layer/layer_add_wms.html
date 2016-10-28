@@ -27,23 +27,26 @@
 	}
 
 	function addWmsLayer(){
+		// 1、定义一个栅格图层
 		wmsLayer = new GeoBeans.Layer.RasterLayer({			
-			"name" : "world",
-			"source" : new GeoBeans.Source.Raster.WMS({
-				"url" : "/geoserver/radi/ows?",
-				"version" : "1.1.0",
+			"name" : "world",  // 图层的名称
+			"source" : new GeoBeans.Source.Raster.WMS({  // 定义WMS数据源
+				"url" : "/geoserver/radi/ows?",  // WMS服务的地址
+				"version" : "1.1.0",	// 版本
 				"layers"  : [
 						"radi:cities_2"
-				],//["cities","rivers","country"],
-				/*"styles"  : ["point" ,"line",  "polygon"],*/
-				"format"  : "image/png",
-				"srs"	  : "EPSG:4326",
-				"transparent": true
+				],//["cities","rivers","country"],  // 图层列表，数组
+				"styles"  : ["capitals"], // 图层的样式，与上面的图层相对应 ，可以不设置
+				"format"  : "image/png", // 图片的格式
+				"srs"	  : "EPSG:4326", // 图片的投影
+				"transparent": true // 图片是否透明
 			})
 		});
 
-		// 4、添加图层
+		// 2、添加图层
 		mapObj.addLayer(wmsLayer);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 
