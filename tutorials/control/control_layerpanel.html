@@ -67,8 +67,14 @@
 
 
 	function addLayersWidget(){
+
+		// 1、定义图层面板控件
 		var layersWidget = new GeoBeans.Widget.LayersWidget(mapObj);
+
+		// 2、添加图层面板
 		mapObj.addWidget(layersWidget);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 </script>

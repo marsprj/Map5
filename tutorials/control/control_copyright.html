@@ -23,19 +23,25 @@
 	var widget = null;
 	function  init(){
 		loadTileMap();
+
+		// 根据控件类型获取版权控件
 		widget = mapObj.getWidget(GeoBeans.Widget.Type.COPYRIGHT);
 	}
 
 	function hide(){
+		// 显示
 		widget.show(false);
 	}
 
 	function show(){
+		// 隐藏
 		widget.show(true);
 	}
 
 	function setContent(){
 		var content = "© <a href='http://www.geobeans.cn/' target='_blank'>GeoBeans</a> Map5地图 ";
+
+		// 设置版权控件的内容
 		widget.setContent(content);
 	}
 	
@@ -50,3 +56,4 @@
 	</div>
 </body>
 	
+
