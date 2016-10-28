@@ -22,19 +22,22 @@
 	var wfsLayer = null;
 	function init(){
 		loadMap();
+		// 按照名称获取图层
 		wfsLayer = mapObj.getLayer("country");
 		createSelectInteraction();
 	}
 
 	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
+	 * 创建地图交互
 	 */
 	function createSelectInteraction(){
+		// 1、定义查询交互类
 		var select = new GeoBeans.Interaction.Select({
-			"map" : mapObj,
-			"layer" : wfsLayer
+			"map" : mapObj, // 定义地图
+			"layer" : wfsLayer // 定义要查询的图层
 		});
+
+		// 2、添加交互
 		mapObj.addInteraction(select);
 	}
 

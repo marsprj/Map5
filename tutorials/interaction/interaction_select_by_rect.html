@@ -27,21 +27,25 @@
 	}
 
 	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
+	 * 定义拉框查询交互
 	 */
 	function createSelectInteraction(){
+		// 1、定义地图交互
 		var select = new GeoBeans.Interaction.Select({
-			"map" : mapObj,
-			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.BBOX
+			"map" : mapObj, // 要查询的地图
+			"layer" : wfsLayer, // 要查询的图层
+			"condition" : GeoBeans.Interaction.SelectType.BBOX // 交互的类型
 		});
+
+		// 2、选择集变化时的相应函数
 		select.onchange(onSelectionChange);
+
+		// 3、增加交互
 		mapObj.addInteraction(select);
 	}
 
 	function onSelectionChange(features){
-		//alert(features.length);
+		alert(features.length);
 	}
 
 </script>

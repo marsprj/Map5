@@ -26,16 +26,21 @@
 	}
 
 	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
+	 * 添加旋转交互，键盘按住shift键，并鼠标拖动地图，即可实现旋转
 	 */
 	function createRotateInteraction(){
+		// 1、定义旋转交互
 		var rotate = new GeoBeans.Interaction.Rotate({
 			"map" : mapObj
 		});
+
+		// 2、添加交互
 		mapObj.addInteraction(rotate);
 	}
 
+	/**
+	 * 设置旋转
+	 */
 	function onRotate(){
 		var viewer = mapObj.getViewer();
 		viewer.setRotation(45);

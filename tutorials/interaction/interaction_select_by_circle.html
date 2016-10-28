@@ -28,16 +28,20 @@
 	}
 
 	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
+	 * 定义圆查询交互，落入圆范围内的元素
 	 */
 	function createSelectInteraction(){
+		// 1、定义查询交互
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
 			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.CIRCLE
+			"condition" : GeoBeans.Interaction.SelectType.CIRCLE // 查询类型为圆查询
 		});
+
+		// 2、查询的相应函数
 		select.onchange(onSelectionChange);
+
+		// 3、地图添加查询交互
 		mapObj.addInteraction(select);
 	}
 

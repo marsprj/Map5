@@ -26,16 +26,20 @@
 	}
 
 	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
+	 * 定义线查询交互，返回与线相交的要素
 	 */
 	function createSelectInteraction(){
+		// 1、定义查询交互
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
 			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.LINE
+			"condition" : GeoBeans.Interaction.SelectType.LINE //查询类型为线查询
 		});
+
+		// 2、定义查询的相应函数
 		select.onchange(onSelectionChange);
+
+		// 3、地图增加查询交互
 		mapObj.addInteraction(select);
 	}
 
@@ -44,7 +48,7 @@
 	}
 
 </script>
-<title>Interaction:多边形选择</title>
+<title>Interaction:线查询</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">

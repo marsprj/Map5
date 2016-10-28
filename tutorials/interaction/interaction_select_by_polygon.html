@@ -26,13 +26,21 @@
 		createSelectInteraction();
 	}
 
+	/**
+	 * 定义多边形查询
+	 */
 	function createSelectInteraction(){
+		// 1、定义查询交互
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
 			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.POLYGON
+			"condition" : GeoBeans.Interaction.SelectType.POLYGON // 查询类型为多边形查询
 		});
+
+		// 2、定义查询的相应函数
 		select.onchange(onSelectionChange);
+
+		// 3、添加查询交互
 		mapObj.addInteraction(select);
 	}
 
