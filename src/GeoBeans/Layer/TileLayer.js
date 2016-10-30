@@ -94,6 +94,9 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 				
 				// var pt = that.viewer.toScreenPoint(x, y);
 				var viewer = that.viewer;
+				if(tile.zoom!=viewer.getZoom()){
+					return;
+				}
 
 				var rotation = viewer.getRotation();
 				that.renderer.save();
