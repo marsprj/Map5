@@ -37,7 +37,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			var extent = viewer.getExtent();
 			if(isValid(map.baseLayer)){
 				var zoom = viewer.getZoom();
-				if(e.wheelDelta>0){
+				if(e.wheelDelta>0 || e.detail < 0){
 					var target_zoom = zoom + count;
 					if(target_zoom > maxZoom){
 						target_zoom = maxZoom;
@@ -58,7 +58,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 				}
 			}
 			else{
-				if(e.wheelDelta>0){
+				if(e.wheelDelta>0 || e.detail < 0){
 					map.drawLayersSnap(1/Math.pow(1.2,count));
 					var resolution = viewer.getResolution();
 					var target_res = resolution / Math.pow(1.2,count);
@@ -98,9 +98,10 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					}
 
 					var viewer = that.map.getViewer();
+					var delta = isValid(e.wheelDelta) ? (e.wheelDelta >0? 1 : -1) : (e.detail<0 ? -1:1);
 					if(wheelHandler != null){
 						var args = {
-							delta: e.wheelDelta >0 ? 1 : -1,
+							delta: delta,
 							zoom : viewer.getZoom()
 						}
 						wheelHandler(args);
@@ -109,7 +110,13 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			}, 200);
 		};
 
-		mapContainer.addEventListener('mousewheel', this.mousewheel);
+		var userAgent = navigator.userAgent;
+		if(userAgent.indexOf("Firefox") > -1){
+			mapContainer.addEventListener('DOMMouseScroll', this.mousewheel);
+		}else{
+			mapContainer.addEventListener('mousewheel', this.mousewheel);
+		}
+		
 	},
 
 	destory : function(){

@@ -235,8 +235,6 @@ GeoBeans.Source.Tile.QuadServer.prototype.makeTileURL = function(url,tid){
 		turl = url + "?" + tid;
 	}
 	return turl;
-
-	return url + "&" + tid;
 }
 
 GeoBeans.Source.Tile.QuadServer.prototype.getTilePosisiton = function(row, col, tile_size){
