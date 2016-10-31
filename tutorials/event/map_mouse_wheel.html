@@ -35,10 +35,14 @@
 	}
 
 	function registerEvent(){
+		// 事件绑定
+		// 第一个参数为事件
+		// 第二个参数为事件相应函数
 		mapObj.on(GeoBeans.Event.MOUSE_WHEEL, onWheel);
 	}
 
 	function unregisterEvent(){
+		// 事件注销，传入事件类型
 		mapObj.un(GeoBeans.Event.MOUSE_WHEEL);	
 	}
 

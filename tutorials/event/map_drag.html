@@ -35,16 +35,21 @@
 	}
 
 	function enableDrag(){
+		// 启用拖拽
 		mapObj.enableDrag(true);
 	}
 
 	function disableDrag(){
+		// 禁止拖拽
 		mapObj.enableDrag(false);
 	}
 
 	function registerDragEvent(){
+		// 注册拖拽开始事件
 		mapObj.on(GeoBeans.Event.DRAG_BEGIN, onDragBegin);
+		// 注册拖拽事件
 		mapObj.on(GeoBeans.Event.DRAGING, onDraging);
+		// 注册拖拽事件
 		mapObj.on(GeoBeans.Event.DRAG_END, onDragEnd);
 	}
 

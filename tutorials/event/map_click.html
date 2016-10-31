@@ -37,11 +37,16 @@
 	}
 
 	function registerMapClick(){
+		// 事件绑定
+		// 第一个参数为事件
+		// 第二个参数为事件相应函数
 		mapObj.on(GeoBeans.Event.CLICK, onMapClick);
 	}
 
 	function onMapClick(evt){
+		// 1、mapX和mapY 为地图坐标
 		var mapXY = evt.mapX + "," + evt.mapY;
+		// 2、X和Y为屏幕坐标
 		var srcXY = evt.X + "," + evt.Y;
 		document.getElementById("mapXY").value = mapXY;
 		document.getElementById("srcXY").value = srcXY;
