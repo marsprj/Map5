@@ -110,6 +110,8 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 				}
 
 				var pt = viewer.toScreenPointNotRotate(x,y);
+				pt.x = Math.round(pt.x);
+				pt.y = Math.round(pt.y);
 
 				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);i
 				that.renderer.drawImage(image, pt.x, pt.y, image_size, image_size);
