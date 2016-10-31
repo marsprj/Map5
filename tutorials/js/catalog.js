@@ -323,16 +323,16 @@ var g_catalog = [
 	}*/,{
 		"name" : "专题图",
 		"items":[
-			{
+			/*{
 				"name" : "(*)唯一值图",
 				"link" : "theme/theme_unique.html"
-			},{
+			},*/{
 				"name" : "分级图(前端)",
 				"link" : "theme/theme_class_c.html"
-			},{
+			}/*,{
 				"name" : "(*)分级图(后端)",
 				"link" : "theme/theme_class_s.html"
-			},{
+			}*/,{
 				"name" : "热力图",
 				"link" : "theme/theme_heatmap.html"
 			},{

@@ -40,7 +40,7 @@ GeoBeans.Source.Feature.GeoJSON.prototype.getFeatures = function(filter, success
 		if(isValid(filter)){
 			success.execute(this._features);
 		}else{
-			var target = filter(filter,this._features);
+			var target = this.filter(filter,this._features);
 			success.execute(target);
 		}
 	}
