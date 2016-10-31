@@ -51,9 +51,13 @@
 			return;
 		}
 
+		// 1、定义geojson数据转换类
 		var geoJsonFormat = new GeoBeans.Format.GeoJson();
+
+		// 2、从geojson字符串中读取要素
 		var features = geoJsonFormat.readFeatures(geoJson);
 
+		// 3、定义 一个要素图层
 		var featureLayer = new GeoBeans.Layer.FeatureLayer({
 			name : "geojson",
 			geometryType : GeoBeans.Geometry.Type.POLYGON,
@@ -62,11 +66,14 @@
 			})
 		});
 
+		// 4、添加图层
+		mapObj.addLayer(featureLayer);
+
+		// 5、图层的数据源中增加要素
 		var source = featureLayer.getSource();
 		source.addFeatures(features);
 
-		mapObj.addLayer(featureLayer);
-
+		// 6、地图刷新
 		mapObj.refresh();
 	}
 

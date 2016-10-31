@@ -53,7 +53,11 @@
 
 	function toGeometry(){
 		var wkt = $("#wkt").val();
+
+		// 1、定义一个wkt数据类
 		var wktFormat = new GeoBeans.Format.WKT();
+
+		// 2、将wkt字符串转换为Geometry对象
 		geometry = wktFormat.read(wkt);
 		if(geometry != null){
 			$("#geometry").val(geometry.type);
@@ -64,7 +68,11 @@
 		if(geometry == null){
 			return;
 		}
+
+		// 1、定义一个wkt数据类
 		var wktFormat = new GeoBeans.Format.WKT();
+
+		// 2、将geometry转换为wkt字符串
 		var wktWrite = wktFormat.write(geometry);
 		$("#wkt_write").val(wktWrite);
 	}
@@ -74,7 +82,6 @@
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-	<!-- <button onclick="wktFormat()">转换</button> -->
 	<input type="text" value="POINT (30   10)" id="wkt"><br/>
 	<button onclick="toGeometry()">wkt=>geometry</button>
 	<input type="text" id="geometry" disabled>

@@ -47,10 +47,13 @@
 	}
 
 	function readKML(kml){
+		// 1、定义KML数据转换类
 		var kmlFormat = new GeoBeans.Format.KML();
 
+		// 2、从kml字符串中读取要素
 		var features = kmlFormat.readFeatures(kml);
 
+		// 3、定义一个要素图层
 		var layer = new GeoBeans.Layer.FeatureLayer({
 			name : "point",
 			geometryType : GeoBeans.Geometry.Type.POLYGON,
@@ -59,11 +62,14 @@
 			})
 		});
 
+		// 4、添加图层
 		mapObj.addLayer(layer);
 
+		// 5、图层的数据源中增加要素
 		var source = layer.getSource();
 		source.addFeatures(features);
 
+		// 6、地图刷新
 		mapObj.refresh();
 	}
 
