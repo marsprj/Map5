@@ -61,7 +61,7 @@
 	        target : "mapDiv",
 	        name : "map",
 	        srs  : GeoBeans.Proj.WGS84,
-	        baseLayer : "label",
+	        baseLayer : "world",
 	        layers : [
 	            new GeoBeans.Layer.TileLayer({
 	                name : "world",
@@ -71,7 +71,7 @@
 	                }),
 	                opacity : 1.0,
 	                visible : true
-	            }),"visible" : true
+	            }),
 				// }),
 	            new GeoBeans.Layer.FeatureLayer({
 	                name : "country",
