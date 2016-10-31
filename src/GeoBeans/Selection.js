@@ -37,7 +37,17 @@ GeoBeans.Selection.prototype.setFeatures = function(features){
 			this._onchange(features);
 		}
 
-		this._map.refresh();
+		var that = this;
+		var dragControl = this._map.getControl(GeoBeans.Control.Type.DRAG_MAP);
+		if(dragControl.isEnabled()){
+			this._map.on(GeoBeans.Event.DRAG_END, function(){
+				that._map.refresh();
+				that._map.un(GeoBeans.Event.DRAG_END);
+			});
+		}else{
+			this._map.refresh();
+		}
+		
 	}
 }
 

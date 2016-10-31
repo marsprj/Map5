@@ -26,6 +26,10 @@ GeoBeans.Control = GeoBeans.Class({
 	
 	enable : function(f){
 		this.enabled = f;
+	},
+
+	isEnabled : function(){
+		return this.enabled;
 	}
 });
 
