@@ -468,9 +468,6 @@ var g_catalog = [
 				"name" : "鼠标移动事件",
 				"link" : "event/map_mouse_move.html"
 			},{
-				"name" : "鼠标抬起事件",
-				"link" : "event/map_mouse_up.html"
-			},{
 				"name" : "鼠标滚动事件",
 				"link" : "event/map_mouse_wheel.html"
 			},{
