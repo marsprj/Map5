@@ -334,84 +334,30 @@ GeoBeans.Map = GeoBeans.Class({
 
 	// 开始动画
 	beginAnimate : function(){
-		if(this.animateCanvas == null){
-			var canvas = this._container.find(".map5-animate-canvas");
-			if(canvas.length == 0){
-				var canvasID = this.id + "_canvas";
-				var animateCanvasID = this.id + "_animatecanvas";
-				var mapCanvasHtml = "<canvas  id='" + animateCanvasID + "' class='map5-animate-canvas' height='" 
-								+ this.canvas.height + "' width='" 
-								+ this.canvas.width + "'></canvas>";
-				// map._container.find("canvas").after(mapCanvasHtml);
-				this._container.find("#" + canvasID).after(mapCanvasHtml);
-				this.animateCanvas = document.getElementById(animateCanvasID);
-				var renderer = new GeoBeans.Renderer(this.animateCanvas);
-				this.animateRenderer = renderer;
-				window.map = this;
-				window.requestNextAnimationFrame(this.rippleLayerAnimate);
-			}			
+		if(!isValid(this.requestID)){
+			window.map = this;
+			window.requestNextAnimationFrame(this.animate);
+		}else{
+
 		}
 	},
 
-	// 波纹点动画
-	rippleLayerAnimate : function(time){
-
+	animate : function(time){
 		var map = this.map;
-		// var canvas = map._container.find(".map5-animate-canvas");
-		// if(canvas.length == 0){
-		// 	var canvasID = map.id + "_canvas";
-		// 	var animateCanvasID = map.id + "_animatecanvas";
-		// 	var mapCanvasHtml = "<canvas  id='" + animateCanvasID + "' class='map5-animate-canvas' height='" 
-		// 					+ map.canvas.height + "' width='" 
-		// 					+ map.canvas.width + "'></canvas>";
-		// 	// map._container.find("canvas").after(mapCanvasHtml);
-		// 	map._container.find("#" + canvasID).after(mapCanvasHtml);
-		// 	map.animateCanvas = document.getElementById(animateCanvasID);
-		// }
-		// // var animateCanvas = document.getElementById("mapCanvas_animate");
-		// var animateCanvas = map.animateCanvas;
-		// var context = animateCanvas.getContext("2d");
-		// context.clearRect(0,0,animateCanvas.width,animateCanvas.height);
-
-		map.animateRenderer.clearRect(0,0,this.animateCanvas.width,this.animateCanvas.height);
-		var rippleLayers = map._getRippleLayer();
-		if(rippleLayers == null){
-			return;
-		}
-		var layer = null;
-		for(var i = 0;i < rippleLayers.length;++i){
-			layer = rippleLayers[i];
-			if(layer != null && layer.visible){
-				// layer.animate(time);
+		for(var i = 0;  i < map.layers.length; ++i){
+			var layer = map.layers[i];
+			if(isDefined(layer.isAnimation) && layer.isAnimation()){
 				layer.draw(time);
-				// var layerCanvas = layer.canvas;
-				// context.drawImage(layerCanvas,0,0,map.canvas.width,map.canvas.height);
 			}
 		}
-
-
-		var requestID = window.requestNextAnimationFrame(map.rippleLayerAnimate);
+		var requestID = window.requestNextAnimationFrame(map.animate);
 		map.requestID = requestID;
 	},
+
 	// 停止动画
 	stopAnimate : function(){
-		window.cancelAnimationFrame(this.requestID);		
-	},
-
-	_getRippleLayer : function(){
-		var layers = this.getLayers();
-		var rippleLayers = [];
-		var layer = null;
-		for(var i = 0; i < layers.length;++i){
-			layer = layers[i];
-			if(layer == null){
-				continue;
-			}
-			if(layer instanceof GeoBeans.Layer.RippleLayer){
-				rippleLayers.push(layer);
-			}
-		}
-		return rippleLayers;
+		window.cancelAnimationFrame(this.requestID);
+		this.requestID = null;		
 	},
 
 
@@ -445,101 +391,101 @@ GeoBeans.Map = GeoBeans.Class({
 	// },
 
 
-	registerRippleHitEvent : function(name,content){
-		var layer = this.getLayer(name);		
-		if(layer == null || !(layer instanceof GeoBeans.Layer.RippleLayer)){
-			return;
-		}
-		layer.setHitContent(content);
+	// registerRippleHitEvent : function(name,content){
+	// 	var layer = this.getLayer(name);		
+	// 	if(layer == null || !(layer instanceof GeoBeans.Layer.RippleLayer)){
+	// 		return;
+	// 	}
+	// 	layer.setHitContent(content);
 
-		if($.inArray(layer,this.hitRippleLayers) == -1){
-			this.hitRippleLayers.push(layer);
-		}	
+	// 	if($.inArray(layer,this.hitRippleLayers) == -1){
+	// 		this.hitRippleLayers.push(layer);
+	// 	}	
 
-		if(this.hitRippleLayers.length == 0){
-			return;
-		}
+	// 	if(this.hitRippleLayers.length == 0){
+	// 		return;
+	// 	}
 
-		if(this.hitRippleEvent != null){
-			return;
-		}
+	// 	if(this.hitRippleEvent != null){
+	// 		return;
+	// 	}
 
 
-		var that = this;
-		var x_o = null;
-		var y_o = null;
-		var tolerance = 5;
+	// 	var that = this;
+	// 	var x_o = null;
+	// 	var y_o = null;
+	// 	var tolerance = 5;
 		
-		this.hitRippleEvent = function(evt){
-			if(x_o==null){
-				x_o = evt.layerX;
-				y_o = evt.layerY;
-			}
-			else{
-				var dis = Math.abs(evt.layerX-x_o) + Math.abs(evt.layerY-y_o);
-				if(dis > tolerance){
+	// 	this.hitRippleEvent = function(evt){
+	// 		if(x_o==null){
+	// 			x_o = evt.layerX;
+	// 			y_o = evt.layerY;
+	// 		}
+	// 		else{
+	// 			var dis = Math.abs(evt.layerX-x_o) + Math.abs(evt.layerY-y_o);
+	// 			if(dis > tolerance){
 					
-					x_o = evt.layerX;
-					y_o = evt.layerY;
+	// 				x_o = evt.layerX;
+	// 				y_o = evt.layerY;
 				
-					var mp = that.transformation.toMapPoint(evt.layerX, evt.layerY);
+	// 				var mp = that.transformation.toMapPoint(evt.layerX, evt.layerY);
 					
-					var result = null;
-					var index = null;
-					var layers = that.getLayers();
-					for(var i = 0; i < that.hitRippleLayers.length;++i){
-						var layer = that.hitRippleLayers[i];
-						if(layer != null){
-							var layerResult = layer.hit(mp.x,mp.y);
-							var layerIndex = layers.indexOf(layer);
-							if(result != null){
+	// 				var result = null;
+	// 				var index = null;
+	// 				var layers = that.getLayers();
+	// 				for(var i = 0; i < that.hitRippleLayers.length;++i){
+	// 					var layer = that.hitRippleLayers[i];
+	// 					if(layer != null){
+	// 						var layerResult = layer.hit(mp.x,mp.y);
+	// 						var layerIndex = layers.indexOf(layer);
+	// 						if(result != null){
 
-								if(layerIndex > index){
-									result = layerResult;
-									index = layerIndex; 
-								}
-							}else{
-								result = layerResult;
-								index = layerIndex;
-							}
-						}
-					}
-					if(result == null){
-						that.closeTooltip();
-					}else{
-						var point = new GeoBeans.Geometry.Point(mp.x, mp.y);
-						that.tooltip(point,result);
-					}
-				}
-			}
+	// 							if(layerIndex > index){
+	// 								result = layerResult;
+	// 								index = layerIndex; 
+	// 							}
+	// 						}else{
+	// 							result = layerResult;
+	// 							index = layerIndex;
+	// 						}
+	// 					}
+	// 				}
+	// 				if(result == null){
+	// 					that.closeTooltip();
+	// 				}else{
+	// 					var point = new GeoBeans.Geometry.Point(mp.x, mp.y);
+	// 					that.tooltip(point,result);
+	// 				}
+	// 			}
+	// 		}
 
-		};
-		this._container[0].addEventListener('mousemove', this.hitRippleEvent);		
-	},
+	// 	};
+	// 	this._container[0].addEventListener('mousemove', this.hitRippleEvent);		
+	// },
 
-	// 注销某个波纹图层的hit事件
-	unRegisterRippleHitEvent : function(name){
-		var layer = this.getLayer(name);		
-		if(layer == null || !(layer instanceof GeoBeans.Layer.RippleLayer)){
-			return;
-		}
-		layer.unregisterHitEvent();
+	// // 注销某个波纹图层的hit事件
+	// unRegisterRippleHitEvent : function(name){
+	// 	var layer = this.getLayer(name);		
+	// 	if(layer == null || !(layer instanceof GeoBeans.Layer.RippleLayer)){
+	// 		return;
+	// 	}
+	// 	layer.unregisterHitEvent();
 		
-		var layerIndex = this.hitRippleLayers.indexOf(layer);
-		if(layerIndex != -1){
-			this.hitRippleLayers.splice(layerIndex,1);
-		}
+	// 	var layerIndex = this.hitRippleLayers.indexOf(layer);
+	// 	if(layerIndex != -1){
+	// 		this.hitRippleLayers.splice(layerIndex,1);
+	// 	}
 
-		if(this.hitRippleLayers.length == 0){
-			this.unRegisterMapRippleHitEvent();
-		}
-	},
+	// 	if(this.hitRippleLayers.length == 0){
+	// 		this.unRegisterMapRippleHitEvent();
+	// 	}
+	// },
 
-	// 注销地图的波纹hit事件
-	unRegisterMapRippleHitEvent : function(){
-		this._container[0].removeEventListener('mousemove',this.hitRippleEvent);
-		this.hitRippleEvent = null;		
-	},
+	// // 注销地图的波纹hit事件
+	// unRegisterMapRippleHitEvent : function(){
+	// 	this._container[0].removeEventListener('mousemove',this.hitRippleEvent);
+	// 	this.hitRippleEvent = null;		
+	// },
 
 
 

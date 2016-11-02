@@ -703,3 +703,14 @@ GeoBeans.Viewer.prototype.on = function(event, handler){
 			break;
 	}
 }
+/**
+ * 注销事件
+ * @param  {GeoBeans.Event} event 事件
+ */
+GeoBeans.Viewer.prototype.un = function(event){
+	switch(event){
+		case GeoBeans.Event.CHANGE:
+			this._onChange = null;
+			break;
+	}
+}

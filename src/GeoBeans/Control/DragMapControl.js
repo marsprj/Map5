@@ -86,7 +86,11 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					var m_p = map.getViewer().toMapPoint(e.layerX, e.layerY);
 					o_x = (d_p.x - m_p.x);
 					o_y = (d_p.y - m_p.y);
-					// map.getViewer().offset(o_x, o_y);
+
+					// 不实时绘图，但是更改viewer的视口信息
+					map.getViewer().un(GeoBeans.Event.CHANGE);
+					map.getViewer().offset(o_x, o_y);
+
 
 					// var infoWindow = map.getInfoWindow();
 					// infoWindow.refresh();
@@ -119,6 +123,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			};
 			var onmouseup = function(e){
 				// console.log("drag up");
+				map.registerViewerEvent();
 				if(isValid(interaction) && interaction.getRotateStatus()){
 					return;
 				}
