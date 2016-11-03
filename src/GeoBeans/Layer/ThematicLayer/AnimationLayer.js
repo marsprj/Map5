@@ -2,112 +2,23 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 	
 	moveObjects : null,
 
-	initialize : function(){
+	initialize : function(name){
+		GeoBeans.Layer.prototype.initialize.apply(this, arguments);
 		this.moveObjects = [];
 	},
 
 	setMap : function(map){
 		GeoBeans.Layer.prototype.setMap.apply(this, arguments);
-		window.animateLayer = this;
-		window.requestNextAnimationFrame(this.animate);
+		this.map.beginAnimate();
 	},
 
 
-	addMoveObject : function(moveObject){
-		if(moveObject == null){
-			console.log("moveObject is null");
+	draw : function(time){
+		if(!isValid(time)){
 			return;
 		}
-		if(this.getMoveObject(moveObject.id) != null){
-			console.log("map has moveObject id" + moveObject.id);
-			return;
-		}
-		if(moveObject != null){
-			this.moveObjects.push(moveObject);
-		}
-	},
-
-	getMoveObject : function(id){
-		for(var i = 0; i < this.moveObjects.length;++i){
-			if(this.moveObjects[i].id == id){
-				return this.moveObjects[i];
-			}
-		}
-		return null;
-	},
-
-	removeMoveObject : function(id){
-		for(var i = 0; i < this.moveObjects.length;++i){
-			if(this.moveObjects[i].id == id){
-				this.moveObjects[i].destroy();
-				this.moveObjects.splice(i,1);
-			}
-		}
-	},
-
-	load : function(){
-		// this.renderer.clearRect();
-		this.drawStaticObjects();
-		// this.drawMoveOjbects();
-		this.flag = GeoBeans.Layer.Flag.LOADED;
-	},
-
-	animate : function(time){
-		var layer = this.animateLayer;
-		layer.renderer.clearRect();
-		// layer.drawStaticObjects();
-		layer.drawMoveOjbects(time);
-		window.requestNextAnimationFrame(layer.animate);
-	},
-
-
-	drawStaticObjects : function(){
-		for(var i = 0; i < this.moveObjects.length;++i){
-			var object = this.moveObjects[i];
-			if(object == null){
-				continue;
-			}
-			var type = object.type;
-
-			switch(type){
-				case GeoBeans.MoveType.POINT:{
-					this.drawStaticMovePoint(object);
-					break;
-				}
-				default :
-					break;
-			}
-		}
-	},
-
-	drawStaticMovePoint : function(movePoint){
-		if(movePoint == null){
-			return;
-		}
-
-		var point = movePoint.point;
-		var line = movePoint.line;
-
-		if(point == null || line == null){
-			return;
-		}
-
-		var pointSymbolizer = movePoint.option.pointSymbolizer;
-		var lineSymbolizer = movePoint.option.lineSymbolizer;
-		if(pointSymbolizer == null){
-			pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		}
-		if(lineSymbolizer == null){
-			lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
-		}
-
-		this.renderer.setSymbolizer(pointSymbolizer);
-		this.renderer.drawGeometry(point,pointSymbolizer,this.map.getMapViewer());
-
-		if(movePoint.option.showLine){
-			this.renderer.setSymbolizer(lineSymbolizer);
-			this.renderer.drawGeometry(line,lineSymbolizer,this.map.getMapViewer());
-		}
+		this.clear();
+		this.drawMoveOjbects(time);
 	},
 
 	drawMoveOjbects : function(time){
@@ -117,7 +28,7 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 				continue;
 			}
 			if(!object.flag){
-				this.drawStaticObject();
+				this.drawStaticObject(object,time);
 				continue;
 			}
 			var type = object.type;
@@ -132,7 +43,6 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 			}
 		}
 
-		this.map.drawLayersAll();
 	},
 
 	// 每次按照时间绘制，如果暂停过，按照上一次的绘制
@@ -142,7 +52,7 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 		}
 
 		// 如果只运行一次
-		var once = movePoint.option.once;
+		var once = movePoint.once;
 		if(once && movePoint.onceAnimate){
 			return;
 		}
@@ -153,9 +63,9 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 
 		var times = movePoint.points;
 
-		var allTime = movePoint.option.duration;
+		var allTime = movePoint.duration;
 
-		var once = movePoint.option.once;
+		var once = movePoint.once;
 
 		var elapsedTime = 0;
 		if(movePoint.elapsedTime != null&& movePoint.beginTime == null){
@@ -189,41 +99,37 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 		}
 
 
+		if(movePoint.showLine){
+			var line = movePoint.line;
+			var lineSymbolizer = movePoint.lineSymbolizer;
+			if(lineSymbolizer == null){
+				lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+			}
+			this.renderer.save();
+			this.renderer.setSymbolizer(lineSymbolizer);
+			this.renderer.drawGeometry(line,lineSymbolizer,this.map.getViewer());
+			this.renderer.restore();
+		}
+
 		var pointByTime = movePoint.getPoint(elapsedTime);
-
-		var pointSymbolizer = movePoint.option.pointSymbolizer;
+		this.renderer.save();
+		var pointSymbolizer = movePoint.pointSymbolizer;
 		this.renderer.setSymbolizer(pointSymbolizer);
-		// if(pointSymbolizer.symbol != null){
-		// 	if(pointSymbolizer.icon==null){
-		// 		pointSymbolizer.icon = new Image();
-		// 		pointSymbolizer.icon.crossOrigin="anonymous";
-		// 		pointSymbolizer.icon.src = pointSymbolizer.symbol.icon;			
-		// 	}
-		// 	else{
-		// 		if(pointSymbolizer.icon.src!=pointSymbolizer.symbol.icon){
-		// 			pointSymbolizer.icon = null;
-		// 			pointSymbolizer.icon = new Image();
-		// 			pointSymbolizer.icon.crossOrigin="anonymous"	
-		// 			pointSymbolizer.icon.src = pointSymbolizer.symbol.icon;
-		// 		}
-		// 	}
-		// }else{
-		// 	this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.transformation);	
-		// }
-		
-		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.getMapViewer());	
-
+		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.getViewer());	
+		this.renderer.restore();
 	},
 
-
-	drawStaticObject : function(moveObject){
+	/**
+	 * 绘制静止的运动要素
+	 */
+	drawStaticObject : function(moveObject,time){
 		if(moveObject == null){
 			return;
 		}
 		var type = moveObject.type;
 		switch(type){
 			case GeoBeans.MoveType.POINT:{
-				this.drawStaticMovePoint(object,time);
+				this.drawStaticMovePoint(moveObject,time);
 				break;
 			}
 			default :
@@ -235,48 +141,89 @@ GeoBeans.Layer.AnimationLayer = GeoBeans.Class(GeoBeans.Layer,{
 		if(movePoint == null){
 			return;
 		}
+
+		if(movePoint.showLine){
+			var line = movePoint.line;
+			var lineSymbolizer = movePoint.lineSymbolizer;
+			if(lineSymbolizer == null){
+				lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+			}
+			this.renderer.save();
+			this.renderer.setSymbolizer(lineSymbolizer);
+			this.renderer.drawGeometry(line,lineSymbolizer,this.map.getViewer());
+			this.renderer.restore();
+		}
+
 		var elapsedTime = movePoint.elapsedTime;
 		if(elapsedTime == null){
 			elapsedTime = 0;
 		}
 		var pointByTime = movePoint.getPoint(elapsedTime);
 
-		var pointSymbolizer = movePoint.option.pointSymbolizer;
+		var pointSymbolizer = movePoint.pointSymbolizer;
+		this.renderer.save();
 		this.renderer.setSymbolizer(pointSymbolizer);
-		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.getMapViewer());
-
-		// if(pointSymbolizer.symbol != null){
-		// 	if(pointSymbolizer.icon==null){
-		// 		pointSymbolizer.icon = new Image();
-		// 		pointSymbolizer.icon.crossOrigin="anonymous";
-		// 		pointSymbolizer.icon.src = pointSymbolizer.symbol.icon;			
-		// 	}
-		// 	else{
-		// 		if(pointSymbolizer.icon.src!=pointSymbolizer.symbol.icon){
-		// 			pointSymbolizer.icon = null;
-		// 			pointSymbolizer.icon = new Image();
-		// 			pointSymbolizer.icon.crossOrigin="anonymous"	
-		// 			pointSymbolizer.icon.src = pointSymbolizer.symbol.icon;
-		// 		}
-		// 	}
-		// }else{
-		// 	this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.transformation);	
-		// }
-		
-
-		if(movePoint.option.showLine){
-			var line = movePoint.line;
-			var lineSymbolizer = movePoint.option.lineSymbolizer;
-			if(lineSymbolizer == null){
-				lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
-			}
-
-			this.renderer.setSymbolizer(lineSymbolizer);
-			this.renderer.drawGeometry(line,lineSymbolizer,this.map.getMapViewer());
-		}
+		this.renderer.drawGeometry(pointByTime,pointSymbolizer,this.map.getViewer());
+		this.renderer.restore();
 	},
-
-
-
 });
 
+
+/**
+ * 是否是动画图层
+ * @private
+ * @return {Boolean} 
+ */
+GeoBeans.Layer.AnimationLayer.prototype.isAnimation = function(){
+	return true;
+};
+
+/**
+ * 添加运动要素
+ * @public
+ * @param {GeoBeans.MoveObject} moveObject 运动要素
+ * @return {boolean} 添加结果
+ */
+GeoBeans.Layer.AnimationLayer.prototype.addMoveObject = function(moveObject){
+	if(!isValid(moveObject)){
+		console.log("moveObject is null");
+		return false;
+	}
+	if(isValid(this.getMoveObject(moveObject.id))){
+		console.log("map has moveObject id" + moveObject.id);
+		return false;
+	}
+	if(moveObject != null){
+		this.moveObjects.push(moveObject);
+	}
+	return true;	
+};
+
+/**
+ * 获取运动要素
+ * @public
+ * @param  {string} id id 值
+ * @return {GeoBeans.MoveObject}    运动要素
+ */
+GeoBeans.Layer.AnimationLayer.prototype.getMoveObject = function(id){
+	for(var i = 0; i < this.moveObjects.length;++i){
+		if(this.moveObjects[i].id == id){
+			return this.moveObjects[i];
+		}
+	}
+	return null;
+};
+
+/**
+ * 删除运动要素
+ * @public
+ * @param  {string} id id值
+ */
+GeoBeans.Layer.AnimationLayer.prototype.removeMoveObject = function(id){
+	for(var i = 0; i < this.moveObjects.length;++i){
+		if(this.moveObjects[i].id == id){
+			this.moveObjects[i].destroy();
+			this.moveObjects.splice(i,1);
+		}
+	}	
+}

@@ -1,57 +1,66 @@
 GeoBeans.MovePoint = GeoBeans.Class(GeoBeans.MoveObject,{
-	point : null,
 
 	line : null,
 
-	option : {
-		duration : 2000,
-		showLine : true,
-		once 	: true  //只循环一次
-	},
-
 	onceAnimate : false,
 
+	// 运动点的样式
+	pointSymbolizer : null,
 
-	initialize : function(id,point,line,option){
-		this.id = id;
-		this.point = point;
-		this.line = line;
-		// this.option = option;
+	// 轨迹线的样式
+	lineSymbolizer : null,
 
-		if(option != null){
-			if(option.duration != null){
-				this.option.duration = option.duration;
-			}
-			if(option.showLine != null){
-				this.option.showLine = option.showLine;
-			}
-			if(option.pointSymbolizer != null){
-				this.option.pointSymbolizer = option.pointSymbolizer;
+	// 运动时间
+	duration : null,
+
+	// 是否显示运动轨迹线
+	showLine : null,
+
+	// 是否只运动一次
+	once : null,
+
+
+	initialize : function(option){
+		if(isValid(option)){
+			if(isValid(option.id)){
+				this.id = option.id;
 			}
 
-			if(option.lineSymbolizer != null){
-				this.option.lineSymbolizer = option.lineSymbolizer;
+			if(isValid(option.line)){
+				this.line = option.line;
 			}
-			if(option.once != null){
-				this.option.once = option.once;
+
+			if(isValid(option.pointSymbolizer)){
+				this.pointSymbolizer = option.pointSymbolizer;
+			}			
+
+			if(isValid(option.lineSymbolizer)){
+				this.lineSymbolizer = option.lineSymbolizer;
+			}
+
+			if(isValid(option.duration)){
+				this.duration = option.duration;
+			}else{
+				this.duration = 2000;
+			}
+
+			if(isValid(option.showLine)){
+				this.showLine = option.showLine;
+			}else{
+				this.showLine = true;
+			}
+
+			if(isValid(option.once)){
+				this.once = option.once;
+			}else{
+				this.once = true;
 			}
 		}
+
 		this.type = GeoBeans.MoveType.POINT;
 
 		this.calculate();
 	},
-
-	start : function(){
-		GeoBeans.MoveObject.prototype.start.apply(this, arguments);
-		// this.beginTime = null;
-		this.onceAnimate = false;
-	},
-
-	stop : function(){
-		GeoBeans.MoveObject.prototype.stop.apply(this, arguments);
-		this.beginTime = null;
-	},
-
 
 	calculate : function(){
 		if(this.line == null){
@@ -63,8 +72,6 @@ GeoBeans.MovePoint = GeoBeans.Class(GeoBeans.MoveObject,{
 			return;
 		}
 		var allDistance = 0;
-		// var point = points[0];
-
 		var distanceArray = [];
 		for(var i = 1; i < points.length;++i){
 			var point0 = points[i - 1];
@@ -74,7 +81,7 @@ GeoBeans.MovePoint = GeoBeans.Class(GeoBeans.MoveObject,{
 			allDistance += distance;
 		}
 
-		var duration = this.option.duration;
+		var duration = this.duration;
 		// 每毫秒走的距离
 		var mapDelta = allDistance/duration;
 		this.mapDelta = mapDelta;
@@ -93,11 +100,10 @@ GeoBeans.MovePoint = GeoBeans.Class(GeoBeans.MoveObject,{
 
 
 	getPoint : function(time){
-		if(time < 0 || time > this.option.duration){
+		if(time < 0 || time > this.duration){
 			return null;
 		}
 
-		// if(time <)/
 		var point0 = null,point1 = null,time0 = null,time1 = null;
 		var points = this.line.points;
 		var time_0 = null;
@@ -120,6 +126,22 @@ GeoBeans.MovePoint = GeoBeans.Class(GeoBeans.MoveObject,{
 		return new GeoBeans.Geometry.Point(x,y);
 	},
 
-
-
 });
+
+/**
+ * 开始运动
+ * @public
+ */
+GeoBeans.MovePoint.prototype.start = function(){
+	GeoBeans.MoveObject.prototype.start.apply(this, arguments);
+	this.onceAnimate = false;
+};
+
+/**
+ * 停止运动
+ * @return {[type]} [description]
+ */
+GeoBeans.MovePoint.prototype.stop = function(){
+	GeoBeans.MoveObject.prototype.stop.apply(this, arguments);
+	this.beginTime = null;
+};

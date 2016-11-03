@@ -130,7 +130,6 @@ GeoBeans.Map = GeoBeans.Class({
 	baseLayer : null,
 	overlayLayer : null,
 	hitRippleLayers : null,		// rippleLayer hit layers
-	animationLayer : null,		// 动画图层
 	
 	
 	renderer : null,
@@ -150,7 +149,6 @@ GeoBeans.Map = GeoBeans.Class({
 	widgets : null,
 
 	
-	animateCanvas : null,
 
 	// 授权时间
 	authTime : null,
@@ -255,7 +253,6 @@ GeoBeans.Map = GeoBeans.Class({
 		this.viewer.cleanup();
 
 		this.canvas = null;
-		this.animateCanvas = null;
 		this.renderer = null;
 		this.layers = null;
 		this.controls = null;
@@ -486,45 +483,6 @@ GeoBeans.Map = GeoBeans.Class({
 	// 	this._container[0].removeEventListener('mousemove',this.hitRippleEvent);
 	// 	this.hitRippleEvent = null;		
 	// },
-
-
-
-	// 动画
-	addMoveObject : function(moveObject){
-		var layer = this._getAnimationLayer();
-		if(layer != null){
-			layer.addMoveObject(moveObject);
-		}
-	},
-
-	// 按照id来计算
-	getMoveObject : function(id){
-		var layer = this._getAnimationLayer();
-		if(layer != null){
-			return layer.getMoveObject(id);			
-		}
-		return null;
-	},
-
-	removeMoveObject : function(id){
-		var layer = this._getAnimationLayer();
-		if(layer != null){
-			layer.removeMoveObject(id);
-		}
-	},
-
-	_getAnimationLayer : function(){
-		if(this.animationLayer!= null){
-			return this.animationLayer;
-		}
-
-		var layer = new GeoBeans.Layer.AnimationLayer();
-		// this.addLayer(layer);
-		this.layers.push(layer);
-		layer.setMap(this);
-		this.animationLayer = layer;
-                return this.animationLayer;
-	},
 
 });
 
