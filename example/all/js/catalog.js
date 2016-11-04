@@ -574,11 +574,14 @@ var g_catalog = [
 		"name" : "动画",
 		"items":[
 			{
-				"name" : "(*)动画轨迹（未全部实现）",
-				"link" : "animation.html"
+				"name" : "动画轨迹",
+				"link" : "animation/animation_layer.html"
 			},{
-				"name" : "(*)动态迁徙图",
-				"link" : "geoLineLayer.html"
+				"name" : "动态迁徙图",
+				"link" : "animation/animation_geoline_layer.html"
+			},{
+				"name" : "波纹图",
+				"link" : "animation/animation_ripple_layer.html"
 			}
 		]
 	}
