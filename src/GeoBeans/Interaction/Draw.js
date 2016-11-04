@@ -72,7 +72,7 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var _mapContainer = this._map.getContainer();
 	var onmousedown = function(evt){
 		if(that._enabled){
-			that.draw_point(evt.layerX,evt.layerY);
+			that.draw_point(evt.layerX,evt.layerY,symbolizer);
 			
 			if(isValid(that.onComplete)){
 				var viewer = that._map.getViewer();
