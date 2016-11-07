@@ -78,6 +78,22 @@ GeoBeans.Source.Feature.prototype.removeFeatures = function(filter){
 
 }
 
+
+/**
+ * 删除feature
+ * @public
+ * @param  {GeoBeans.Feature]} feature 要素
+ */
+GeoBeans.Source.Feature.prototype.removeFeature = function(feature){
+	for(var i = 0; i < this._features.length;++i){
+		if(this._features[i] == feature){
+			this._features.splice(i,1);
+			feature.destroy();
+			feature = null;
+			return;
+		}
+	}
+}
 /**
  * 更新Features的值
  * @param  {Object} properties 属性值
