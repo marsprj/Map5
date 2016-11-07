@@ -90,7 +90,7 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 				var tile_size = tile.size;
 
 				var tile_scale = tile.resolution / that.resolution;
-				var image_size = tile_size * tile_scale;
+				var image_size = Math.round((tile_size * tile_scale)+0.5);
 				
 				// var pt = that.viewer.toScreenPoint(x, y);
 				var viewer = that.viewer;
