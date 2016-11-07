@@ -6,6 +6,7 @@
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="js/initMap.js"></script>
 <script type="text/javascript" src="js/draw.js"></script>
+<script type="text/javascript" src="js/panelEvent.js"></script>
 <script type="text/javascript" src="js/pointType.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 <script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
@@ -18,13 +19,18 @@
 	var mapObj = null;
 	var drawer = null;
 	var featureLayer = null;
+	// 当前编辑的要素
+	var featureCur = null;
+
+	// 当前的绘制几何图形
+	var geometry = null;
 	function init(){
 	 	loadMap();
 	 	addDrawInteraction();
 	 	addFeatureLayer();
 	 	addDrawEvent();
-
 	 	loadPointType();
+	 	addPanelEvent();
 	}
 
 
@@ -39,11 +45,23 @@
 		<div id="left_panel">
 			<!-- 标注列表 -->
 			<div class="left_tab active" id="overlay-tab">
+				<div class="left_tab_title">
+					标绘列表
+				</div>
+				<div class="search-div">
+					<div class="input-group">
+					  	<input type="text" class="form-control">
+					  	<span class="input-group-addon">搜索</span>
+					</div>
+				</div>
+				<div class="overlay-list-div">
+				</div>
 			</div>
 			<!-- 点类型 -->
 			<div class="left_tab" id="point_type_tab">
 				<div class="left_tab_title">
 					点标注类型
+					<span class="type-next">►</span>
 				</div>
 				<div class="list-type-div">
 				</div>
@@ -51,8 +69,10 @@
 			<!-- 信息编辑 -->
 			<div class="left_tab" id="overlay-info-tab">
 				<div class="left_tab_title">
+					<span class="type-before">◄</span>
 					<span>信息编辑</span>
 					<span class="save-btn">保存</span>
+					<span class="remove-btn">删除</span>
 				</div>
 				<div class="overlay-info-div">
 					<div class="input-group">

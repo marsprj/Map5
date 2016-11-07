@@ -50,7 +50,7 @@ function loadPointType(){
 		var name = obj.name;
 		var image = obj.image;
 
-		html += '<div class="list-type">'
+		html += '<div class="list-type" ltype="' + name + '">'
 		 	+	'	<div class="col-md-4">'
 		 	+	'		<img src="' +  image +'">'
 		 	+	'	</div>'

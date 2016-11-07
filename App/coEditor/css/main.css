@@ -91,7 +91,24 @@ body{
     border-bottom: 2px solid #4b5f83;
 }
 
-.save-btn{
+.type-next{
+	font-size: 20px;
+	line-height: 20px;
+	cursor: pointer;
+	float: right;
+}
+.type-next:hover{
+	background-color: #cac9c9;
+}
+.type-before{
+	font-size: 20px;
+	line-height: 20px;
+	cursor: pointer;
+}
+.type-before:hover{
+	background-color: #cac9c9;
+}
+.save-btn,.remove-btn{
 	height: 30px;
     width: 30px;
     float: right;
@@ -111,7 +128,7 @@ body{
     cursor: pointer;
 }
 
-.list-type:hover{
+.list-type:hover,.list-type.active{
 	background-color: #cac9c9;
 }
 
@@ -138,4 +155,43 @@ body{
 
 .overlay-info-div .input-group{
 	width: 92%;
+}
+
+#overlay-tab .input-group{
+	width: 92%;
+}
+
+#overlay-tab .search-div{
+	margin: 10px;
+}
+
+#overlay-tab .overlay-list-div{
+	overflow-y: auto;
+}
+
+
+.overlay-item{
+    border: 1px solid #ccc;
+    margin: 6px;
+    height: 34px;
+    border-radius: 2px;
+}
+
+.overlay-item [class*=col-md]{
+	padding: 0px;
+	line-height: 32px;
+}
+
+.overlay-item .edit,.overlay-item .remove{
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.overlay-item .edit:hover,.overlay-item .remove:hover{
+	background-color: #ddd;
+}
+
+.overlay-item:hover{
+	background-color: #f9f9f9;
 }
