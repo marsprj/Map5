@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"> -->
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/initMap.js"></script>
+<script type="text/javascript" src="js/draw.js"></script>
+<script type="text/javascript" src="js/pointType.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="../../lib/css/Map5.min.css">
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="css/main.css"/>
+
+<script type="text/javascript">
+	var mapObj = null;
+	var drawer = null;
+	var featureLayer = null;
+	function init(){
+	 	loadMap();
+	 	addDrawInteraction();
+	 	addFeatureLayer();
+	 	addDrawEvent();
+
+	 	loadPointType();
+	}
+
+
+</script>
+<title>标绘系统</title>
+<body onload="init()">
+	<div id="header_panel">
+		<div id="logo_panel"></div>
+		<div id="title_panel" class="title_font">标绘系统</div>
+	</div>
+	<div id="main_panel">
+		<div id="left_panel">
+			<!-- 标注列表 -->
+			<div class="left_tab active" id="overlay-tab">
+			</div>
+			<!-- 点类型 -->
+			<div class="left_tab" id="point_type_tab">
+				<div class="left_tab_title">
+					点标注类型
+				</div>
+				<div class="list-type-div">
+				</div>
+			</div>
+			<!-- 信息编辑 -->
+			<div class="left_tab" id="overlay-info-tab">
+				<div class="left_tab_title">
+					<span>信息编辑</span>
+					<span class="save-btn">保存</span>
+				</div>
+				<div class="overlay-info-div">
+					<div class="input-group">
+					  	<span class="input-group-addon">名称</span>
+					  	<input type="text" class="form-control overlay-name" placeholder="请输入名称">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="right_panel">
+			<div id="map_div">
+			</div>
+			<div id="toolbar">
+				<div class="btn-group btn-group-lg">
+					<button type="button" class="btn btn-default normal" id="draw_marker">点</button>
+					<button type="button" class="btn btn-default" id="draw_line">线</button>
+					<button type="button" class="btn btn-default" id="draw_polygon">面</button>
+				</div>
+			</div>
+		</div>
+		<div class="clear">
+		</div>
+	</div>
+</body>
