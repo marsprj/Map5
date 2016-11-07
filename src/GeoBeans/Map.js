@@ -1312,6 +1312,13 @@ GeoBeans.Map.prototype.saveSnap = function(){
 },
 
 /**
+ * 保存最基础的canvas的缩略图
+ * @return {[type]} [description]
+ */
+GeoBeans.Map.prototype.saveMapSnap = function(){
+	this.snap = this.renderer.getImageData(0, 0, this.canvas.width, this.canvas.height);
+};
+/**
  * 绘制缩略图
  * @private
  */
@@ -1324,6 +1331,16 @@ GeoBeans.Map.prototype.restoreSnap = function(){
 		layer.restoreSnap();
 	}
 }
+
+/**
+ * 绘制最基础的canvas的缩略图
+ * @return {[type]} [description]
+ */
+GeoBeans.Map.prototype.restoreMapSnap = function(){
+	if(this.snap!=null){
+		this.renderer.putImageData(this.snap, 0, 0);
+	}
+};
 
 /**
  * 绘制缩略图

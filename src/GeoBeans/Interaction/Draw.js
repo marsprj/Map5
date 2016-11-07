@@ -28,6 +28,8 @@ GeoBeans.Interaction.Draw = GeoBeans.Class(GeoBeans.Interaction, {
 		if(isValid(options.onComplete)){
 			this.onComplete = options.onComplete;	
 		}
+
+		this._type = GeoBeans.Interaction.Type.DRAW;
 	},
 	
 	destory : function(){
@@ -65,7 +67,7 @@ GeoBeans.Interaction.Draw.prototype.draw = function(type,symbolizer){
  */
 GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var that = this;
-	this._map.saveSnap();
+	this._map.saveMapSnap();
 	this._map.enableDrag(false);
 	this.cleanup();
 
@@ -81,14 +83,23 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 				that.onComplete(pt);
 			}
 
+			that._isDrawing = false;
 			that._map.saveSnap();
 		}
 	};
 	
 	var onmousemove = function(evt){
 		if(that._enabled){
-			that._map.restoreSnap();
-			that.draw_point(evt.layerX,evt.layerY,symbolizer);	
+			that._isDrawing = true;
+			that._map.restoreMapSnap();
+			var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
+			that.draw_point(pt.x,pt.y,symbolizer);	
+
+			that.drawingEvent = function(){
+				that._map.restoreMapSnap();
+				var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
+				that.draw_point(pt.x,pt.y,symbolizer);	
+			};
 		}
 	};
 	
@@ -499,7 +510,8 @@ GeoBeans.Interaction.Draw.prototype.draw_point = function(x, y,symbolizer){
 	renderer.setSymbolizer(symbolizer);
 
 	var viewer = this._map.getViewer();
-	var pt = viewer.toMapPoint(x,y);
+	// var pt = viewer.toMapPoint(x,y);
+	var pt = new GeoBeans.Geometry.Point(x,y);
 	renderer.drawPoint(pt,symbolizer,viewer);
 
 }
@@ -695,4 +707,13 @@ GeoBeans.Interaction.Draw.prototype.buildRect = function(point_b,point_e){
 	var ymax = (point_b.y > point_e.y) ? point_b.y : point_e.y;
 	var envelope = new GeoBeans.Envelope(xmin,ymin,xmax,ymax);
 	return envelope;		
+}
+
+
+/**
+ * 判断是否在进行绘制
+ * @return {Boolean} 是否正在绘制
+ */
+GeoBeans.Interaction.Draw.prototype.isDrawing = function(){
+	return this._isDrawing;
 }

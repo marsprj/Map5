@@ -79,6 +79,13 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			// if(tracker != null && tracker.drawing){
 			// 	tracker.drawingEvent();
 			// }
+
+			
+			var drawInteraction = that.map.getInteraction(GeoBeans.Interaction.Type.DRAW);
+			if(isValid(drawInteraction) && drawInteraction.isDrawing()){
+				map.saveSnap();
+				drawInteraction.drawingEvent();
+			}
 		};
 
 		this.mousewheel = function(e){
