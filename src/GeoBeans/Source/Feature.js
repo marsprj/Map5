@@ -296,11 +296,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -321,11 +316,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -346,11 +336,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -371,11 +356,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -396,11 +376,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -421,11 +396,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -446,11 +416,6 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				break;
 			}
 
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -472,11 +437,7 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 			// }
 			var properyName = filter.properyName;
 			var field = properyName.name;
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
+
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
@@ -503,11 +464,7 @@ GeoBeans.Source.Feature.prototype.selectByComparsion = function(filter,features,
 				target = features;
 				break;
 			}
-			var findex = this.featureType.findField(field);
-			if(findex == -1){
-				target = features;
-				break;
-			}
+
 
 			var feature = null,fvalue = null;
 			for(var i = 0; i < features.length;++i){
