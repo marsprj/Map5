@@ -717,3 +717,16 @@ GeoBeans.Interaction.Draw.prototype.buildRect = function(point_b,point_e){
 GeoBeans.Interaction.Draw.prototype.isDrawing = function(){
 	return this._isDrawing;
 }
+
+
+/**
+ * 设置是否可用
+ * @public
+ * @param  {boolean} f 
+ */
+GeoBeans.Interaction.Draw.prototype.enable = function(f){
+	GeoBeans.Interaction.prototype.enable.apply(this,arguments);
+	if(this._enabled){
+		this._map.saveMapSnap();
+	}
+};
