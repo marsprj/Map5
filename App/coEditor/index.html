@@ -8,6 +8,8 @@
 <script type="text/javascript" src="js/draw.js"></script>
 <script type="text/javascript" src="js/panelEvent.js"></script>
 <script type="text/javascript" src="js/pointType.js"></script>
+<script type="text/javascript" src="js/lineType.js"></script>
+<script type="text/javascript" src="js/polygonType.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 <script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 
@@ -30,6 +32,8 @@
 	 	addFeatureLayer();
 	 	addDrawEvent();
 	 	loadPointType();
+	 	loadLineType();
+	 	loadPolygonType();
 	 	addPanelEvent();
 	}
 
@@ -48,10 +52,23 @@
 				<div class="left_tab_title">
 					标绘列表
 				</div>
-				<div class="search-div">
-					<div class="input-group">
-					  	<input type="text" class="form-control">
-					  	<span class="input-group-addon">搜索</span>
+				<div class="search-div row">
+					<!-- <div class="input-group">
+					  	<input type="text" class="form-control search-input">
+					  	<span class="input-group-btn">
+					  		<button class="btn btn-default search-btn" type="button">搜索</button>
+						</span>
+					</div> -->
+					<div class="col-md-10">
+						<div class="input-group">
+						  	<input type="text" class="form-control search-input">
+						  	<span class="input-group-btn">
+						  		<button class="btn btn-default search-btn" type="button"  data-toggle="tooltip" data-placement="top" title="搜索">搜索</button>
+							</span>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-default list-btn" type="button"  data-toggle="tooltip" data-placement="top" title="返回列表">&nbsp;</button>
 					</div>
 				</div>
 				<div class="overlay-list-div">
@@ -66,6 +83,24 @@
 				<div class="list-type-div">
 				</div>
 			</div>
+			<!-- 线类型 -->
+			<div class="left_tab" id="line_type_tab">
+				<div class="left_tab_title">
+					线标注类型
+					<span class="type-next">►</span>
+				</div>
+				<div class="list-type-div">
+				</div>
+			</div>	
+			<!-- 面类型 -->
+			<div class="left_tab" id="polygon_type_tab">
+				<div class="left_tab_title">
+					面标注类型
+					<span class="type-next">►</span>
+				</div>
+				<div class="list-type-div">
+				</div>
+			</div>					
 			<!-- 信息编辑 -->
 			<div class="left_tab" id="overlay-info-tab">
 				<div class="left_tab_title">

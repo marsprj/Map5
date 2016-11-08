@@ -165,6 +165,17 @@ body{
 	margin: 10px;
 }
 
+#overlay-tab .search-div [class*=col-]{
+	padding: 0px;
+}
+
+#overlay-tab .list-btn{
+	display: none;
+	width: 40px;
+	background-image: url(../images/back.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
 #overlay-tab .overlay-list-div{
 	overflow-y: auto;
 }

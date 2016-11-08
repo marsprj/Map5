@@ -51,99 +51,44 @@ function onComplete(geometry){
 		return;
 	}
 	drawer.enable(false);
-	var type = geometry.type;
-	switch(type){
-		case GeoBeans.Geometry.Type.POINT:{
-			onCompletePoint(geometry);
-			break;
-		}
-	}
+	onCompleteGeometry(geometry);
 }
 
 /**
  * 处理绘制完成点
  */
-function onCompletePoint(point){
-	if(point == null){
+function onCompleteGeometry(g){
+	if(g == null){
 		return;
 	}
 
-	geometry = point;
+	geometry = g;
 
-	$(".left_tab").removeClass("active");
-	$("#point_type_tab").addClass("active");
-	$("#point_type_tab .list-type").removeClass("active");
+	switch(geometry.type){
+		case GeoBeans.Geometry.Type.POINT:{
+			$(".left_tab").removeClass("active");
+			$("#point_type_tab").addClass("active");
+			$("#point_type_tab .list-type").removeClass("active");
+			break;
+		}
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			$(".left_tab").removeClass("active");
+			$("#line_type_tab").addClass("active");
+			$("#line_type_tab .list-type").removeClass("active");
+			break;
+		}
+		case  GeoBeans.Geometry.Type.POLYGON:{
+			$(".left_tab").removeClass("active");
+			$("#polygon_type_tab").addClass("active");
+			$("#polygon_type_tab .list-type").removeClass("active");
+			break;
+		}
+		default:
+			break;
+	}
+
 	
-	// $("#point_type_tab .list-type").click(function(){
-	// 	var image = $(this).find("img").attr("src");
-
-	// 	var symbol = new GeoBeans.Style.Symbol();
-	// 	symbol.icon = image;
-	// 	symbol.scale = 1.0;
-
-	// 	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-	// 	symbolizer.symbol = symbol;	
-
-	// 	var source = featureLayer.getSource();
-	// 	var feature = new GeoBeans.Feature({
-	// 		fid : 1,
-	// 		geometry : point,
-	// 		value : {}
-	// 	});
-
-	// 	feature.symbolizer = symbolizer;
-	// 	source.addFeature(feature);
-	// 	mapObj.draw();
-
-	// 	$(".left_tab").removeClass("active");
-	// 	$("#overlay-info-tab").addClass("active");
-
-	// 	// 保存
-	// 	$(".save-btn").click(function(){
-	// 		var name = $(".overlay-name").val();
-	// 		if(name == null || name == ""){
-	// 			alert("请输入名称");
-	// 			return;
-	// 		}
-	// 		feature.setValue("name",name);
-	// 		$(".left_tab").removeClass("active");
-	// 		$("#overlay-tab").addClass("active");
-	// 		// 刷新列表
-
-	// 		// 
-	// 		drawer.enable(true);
-	// 	});
-	// });
+	
+	
 }
 
-/**
- * 刷新列表
- */
-// function refreshFeatures(){
-// 	var source = featureLayer.getSource();
-// 	if(source == null){
-// 		return;
-// 	}
-
-// 	var success = {
-// 		target : this,
-// 		execute : function(features){
-// 			if(!isValid(features)){
-// 				return;
-// 			}
-			
-// 		}
-// 	};
-// 	source.getFeatures(null,success,null);
-// }
-
-// function showFeatures(features){
-// 	if(features == null){
-// 		return;
-// 	}
-
-// 	var feature = null;
-// 	for(var i = 0; i < features.length;++i){
-
-// 	}
-// }

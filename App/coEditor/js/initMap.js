@@ -62,3 +62,43 @@ function loadPointType(){
 
 	$("#point_type_tab .list-type-div").html(html);
 }
+
+function loadLineType(){
+	var html = "";
+	for(var i = 0; i < g_lineType.length;++i){
+		var obj = g_lineType[i];
+		var name = obj.name;
+		var image = obj.image;
+
+		html += '<div class="list-type" ltype="' + name + '">'
+		 	+	'	<div class="col-md-4">'
+		 	+	'		<img src="' +  image +'">'
+		 	+	'	</div>'
+		 	+	'	<div class="col-md-8">'
+		 	+			name
+		 	+	'	</div>'
+		 	+	'</div>';
+	}
+
+	$("#line_type_tab .list-type-div").html(html);	
+}
+
+function loadPolygonType(){
+	var html = "";
+	for(var i = 0; i < g_polygonType.length;++i){
+		var obj = g_polygonType[i];
+		var name = obj.name;
+		var image = obj.image;
+
+		html += '<div class="list-type" ltype="' + name + '">'
+		 	+	'	<div class="col-md-4">'
+		 	+	'		<img src="' +  image +'">'
+		 	+	'	</div>'
+		 	+	'	<div class="col-md-8">'
+		 	+			name
+		 	+	'	</div>'
+		 	+	'</div>';
+	}
+
+	$("#polygon_type_tab .list-type-div").html(html);		
+}

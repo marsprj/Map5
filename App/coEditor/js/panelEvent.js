@@ -1,5 +1,9 @@
 function addPanelEvent(){
 
+	$("body").find('[data-toggle="tooltip"]').tooltip({
+        container: "body"
+    }),
+
 	// 退回类型
 	$(".type-before").click(function(){
 		showTypeBefore();
@@ -11,8 +15,9 @@ function addPanelEvent(){
 	});
 
 	// 点击了某个类型
-	$("#point_type_tab .list-type").click(function(){
-		clickListType(this);
+	$("#point_type_tab .list-type,#line_type_tab .list-type,#polygon_type_tab .list-type")
+		.click(function(){
+			clickListType(this);
 	});
 
 	// 保存feature
@@ -24,6 +29,21 @@ function addPanelEvent(){
 	$(".remove-btn").click(function(){
 		removeFeature();
 	});
+
+	// 搜索
+	$(".search-btn").click(function(){
+		var name = $(".search-input").val();
+		if(name == ""){
+			alert("请输入查询名称");
+			return;
+		}
+		searchFeature(name);
+	});
+
+	// 返回列表
+	$(".list-btn").click(function(){
+		listFeatures();
+	});
 }
 
 // 显示刚才选择的类型
@@ -32,13 +52,43 @@ function showTypeBefore(){
 		return;
 	}
 
-	$(".left_tab").removeClass("active");
-	$("#point_type_tab").addClass("active");
+	var g = featureCur.geometry;
+	if(g == null){
+		return;
+	}
 
 	var type = featureCur.getValue("type");
 
-	$("#point_type_tab .list-type").removeClass("active");
-	$("#point_type_tab .list-type[ltype='" + type　+"']").addClass("active");
+	switch(g.type){
+		case GeoBeans.Geometry.Type.POINT:{
+			$(".left_tab").removeClass("active");
+			$("#point_type_tab").addClass("active");
+			$("#point_type_tab .list-type").removeClass("active");
+			$("#point_type_tab .list-type[ltype='" + type　+"']").addClass("active");
+			break;
+		}
+
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			$(".left_tab").removeClass("active");
+			$("#line_type_tab").addClass("active");
+			$("#line_type_tab .list-type").removeClass("active");
+			$("#line_type_tab .list-type[ltype='" + type　+"']").addClass("active");
+			break;
+		}
+
+		case GeoBeans.Geometry.Type.POLYGON:{
+			$(".left_tab").removeClass("active");
+			$("#polygon_type_tab").addClass("active");
+			$("#polygon_type_tab .list-type").removeClass("active");
+			$("#polygon_type_tab .list-type[ltype='" + type　+"']").addClass("active");
+			break;
+		}
+
+		default:
+			break;
+	}
+
+
 }
 
 
@@ -82,18 +132,8 @@ function removeFeature(){
 function clickListType(listTypeDiv){
 	if(featureCur == null){
 		// 添加
-		var image = $(listTypeDiv).find("img").attr("src");
-
-		// 类型
+		var symbolizer = getSymbolizer(listTypeDiv);
 		var type = $(listTypeDiv).attr("ltype");
-
-
-		var symbol = new GeoBeans.Style.Symbol();
-		symbol.icon = image;
-		symbol.scale = 1.0;
-
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.symbol = symbol;	
 
 		var source = featureLayer.getSource();
 		var fid = GeoBeans.Utility.uuid();
@@ -113,18 +153,11 @@ function clickListType(listTypeDiv){
 
 	}else{
 		// 修改
-		var image = $(listTypeDiv).find("img").attr("src");
-		// 类型
 		var type = $(listTypeDiv).attr("ltype");
 
 		featureCur.setValue("type",type);
 
-		var symbol = new GeoBeans.Style.Symbol();
-		symbol.icon = image;
-		symbol.scale = 1.0;
-
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.symbol = symbol;	
+		var symbolizer = getSymbolizer(listTypeDiv);
 
 		featureCur.symbolizer = symbolizer;
 		mapObj.refresh();
@@ -135,7 +168,7 @@ function clickListType(listTypeDiv){
 
 // 刷新列表
 function refreshFeatures(){
-		$(".left_tab").removeClass("active");
+	$(".left_tab").removeClass("active");
 	$("#overlay-tab").addClass("active");
 	var source = featureLayer.getSource();
 	if(source == null){
@@ -253,9 +286,11 @@ function getTypeImage(geometryType,name){
 			break;
 		}
 		case GeoBeans.Geometry.Type.LINESTRING:{
+			values = g_lineType;
 			break;
 		}
 		case GeoBeans.Geometry.Type.POLYGON:{
+			values = g_polygonType;
 			break;
 		}
 	}
@@ -302,4 +337,131 @@ function editFeatureHandler(features){
 	featureCur = feature;
 	showTypeBefore();
 
+}
+
+// 查询
+function searchFeature(name){
+	if(name == null){
+		return;
+	}
+
+	$("#overlay-tab .list-btn").show();
+
+	var likeName = "%"+ name + "%";
+	var operator = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprIsLike;
+
+	var prop = new GeoBeans.Expression.PropertyName();
+	prop.setName("name");
+	
+	var literal = new GeoBeans.Expression.Literal();
+	literal.setValue(likeName);
+
+	var filter = new GeoBeans.Filter.BinaryComparisionFilter(operator,prop,literal);
+
+	var query = new GeoBeans.Query({
+		typeName : featureLayer.getName(),
+		fields : null,		// 字段
+		maxFeatures : null, //返回结果数
+		offset : null,		//偏移量
+		orderby : null,		//排序类
+		filter : filter 	//查询过滤条件
+	});		
+
+	var handler = {
+		execute : searchFeatureHandler
+	}
+
+	featureLayer.query(query, handler);
+}
+
+
+function searchFeatureHandler(features){
+	showFeatures(features);
+}
+
+
+function listFeatures(){
+	$(".list-btn").hide();
+	$(".search-input").val("");
+	refreshFeatures();
+}
+
+
+// 获取样式,根据类型
+function getSymbolizer(listTypeDiv){
+	if(geometry == null || listTypeDiv == null){
+		return null;
+	}
+
+	var type = geometry.type;
+	var symbolizer = null;
+	switch(type){
+		case GeoBeans.Geometry.Type.POINT:{
+			var image = $(listTypeDiv).find("img").attr("src");
+			var symbol = new GeoBeans.Style.Symbol();
+			symbol.icon = image;
+			symbol.scale = 1.0;
+
+			symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+			symbolizer.symbol = symbol;	
+			break;
+		}
+
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			var type = $(listTypeDiv).attr("ltype");
+			var obj = null;
+			for(var i = 0; i < g_lineType.length;++i){
+				obj = g_lineType[i];
+				if(obj.name == type){
+					var style = obj.style;
+					symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+					if(style.stroke != null){
+						symbolizer.stroke.color.setHex(style.stroke);
+					}
+					if(style.opacity != null){
+						symbolizer.stroke.color.setOpacity(style.opacity);
+					}
+					if(style.width != null){
+						symbolizer.stroke.width = style.width;
+					}
+					break;
+				}
+			}
+			break;
+		}
+		case GeoBeans.Geometry.Type.POLYGON:{
+			var type = $(listTypeDiv).attr("ltype");
+			var obj = null;
+			for(var i = 0; i < g_polygonType.length;++i){
+				obj = g_polygonType[i];
+				if(obj.name == type){
+					var style = obj.style;
+					symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+					if(style.stroke != null){
+						symbolizer.stroke.color.setHex(style.stroke);
+						if(style.strokeOpacity != null){
+							symbolizer.stroke.color.setOpacity(style.strokeOpacity);
+						}
+						if(style.width != null){
+							symbolizer.stroke.width = style.width;
+						}
+					}else{
+						symbolizer.stroke = null;
+					}
+					if(style.fill != null){
+						symbolizer.fill.color.setHex(style.fill);
+
+						if(style.fillOpacity != null){
+							symbolizer.fill.color.setOpacity(style.fillOpacity);
+						}
+					}
+					break;						
+				}
+			}
+			break;
+		}
+	}
+
+	return symbolizer;
+		
 }
