@@ -42,7 +42,8 @@ GeoBeans.Control.Type = {
 	TRACKOVERLAY 	: "TrackOverlayControl",
 	HIT_FEATURE		: "FeatureHitControl",
 	NAV 			: "navControl",
-	ZOOM 			: "zoom"
+	ZOOM 			: "zoom",
+	TOUCH			: "TouchControl"
 };
 
 
