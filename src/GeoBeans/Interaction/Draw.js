@@ -73,7 +73,7 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var _mapContainer = this._map.getContainer();
 	var onmouseup = function(evt){
 		if(that._enabled){
-			var control = mapObj.getControl(GeoBeans.Control.Type.DRAG_MAP)
+			var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP)
 			if(control.draging){
 				return;
 			}
@@ -96,7 +96,7 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 		if(that._enabled){
 			that._isDrawing = true;
 			console.log("drawing");
-			var control = mapObj.getControl(GeoBeans.Control.Type.DRAG_MAP)
+			var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP)
 			if(control.draging){
 				return;
 			}
@@ -130,16 +130,19 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(symbolizer){
 	var db_points = [];
 	var addEvent_flag = false;
 	this._map.saveSnap();
-	this._map.enableDrag(false);
 	this.cleanup();
 
 	var _mapContainer = this._map.getContainer();
 
 	var viewer = this._map.getViewer();
 
-	var onmousedown = function(evt){
+	var onmouseup = function(evt){
 		if(points.length == 0){
 			that._map.saveSnap();	
+		}
+		var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP);
+		if(control.draging){
+			return;
 		}
 		
 		evt.preventDefault();
@@ -153,17 +156,17 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(symbolizer){
 				db_flag = true;
 			}
 		}
-		that.drawing = true;
+		that._isDrawing = true;
 
 		var onmousemove = function(evt){
-			that._map.restoreSnap();
+			that._map.clearMap();
 			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 			that.draw_line(points,pt.x,pt.y,symbolizer);
 			that.draw_points(points,pt.x,pt.y,symbolizer);
 			that.drawingEvent = function(){
 				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
-				that.draw_line(points,pt.x,pt.y);
-				that.draw_points(points,pt.x,pt.y);
+				that.draw_line(points,pt.x,pt.y,symbolizer);
+				that.draw_points(points,pt.x,pt.y,symbolizer);
 			};
 		};
 
@@ -192,7 +195,8 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(symbolizer){
 			db_points = [];
 			points = [];
 			addEvent_flag = false;
-			that.drawing = false;
+			that._isDrawing = false;
+			that.cleanup();
 		}
 
 		if(db_flag == false){
@@ -215,8 +219,8 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(symbolizer){
 		
 	};
 	
-	_mapContainer.addEventListener("mousedown", onmousedown);
-	this.onMouseDown = onmousedown;
+	_mapContainer.addEventListener("mouseup", onmouseup);
+	this.onMouseUp = onmouseup;	
 }
 
 /**
@@ -502,7 +506,9 @@ GeoBeans.Interaction.Draw.prototype.cleanup = function(){
 	this.onMouseDClick = null;
 	this.onMouseUp = null;
 
-	this._map.restoreSnap();
+	this.drawingEvent = null;
+
+	// this._map.restoreSnap();
 }
 
 /**

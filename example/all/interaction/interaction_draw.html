@@ -287,11 +287,11 @@
 	function onEnable(){
 		var enabled = drawer.isEnabled();
 		if(enabled){
-			document.getElementById("status").value = "禁用";
+			document.getElementById("status").innerHTML = "禁用";
 			drawer.enable(!enabled);
 		}
 		else{
-			document.getElementById("status").value = "启用";
+			document.getElementById("status").innerHTML = "启用";
 			drawer.enable(!enabled);
 		}
 	}
