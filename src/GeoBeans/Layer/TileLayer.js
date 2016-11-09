@@ -29,20 +29,6 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer,{
 });
 
 
-/**
- * 刷新图层
- * @public
- * @override
- */
-GeoBeans.Layer.TileLayer.prototype.refresh = function() {
-	if(this.visible){
-		this.draw();
-	}
-	else{
-		this.clear();
-	}
-	
-};
 
 /**
  * 重绘图层

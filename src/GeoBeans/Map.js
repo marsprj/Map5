@@ -1276,7 +1276,7 @@ GeoBeans.Map.prototype.drawLayers = function(){
 
 	for(var i = 0; i < this.layers.length;++i){
 		var layer = this.layers[i];
-		layer.draw();
+		layer.refresh(true);
 	}
 
 	// this.maplex.draw();
@@ -1373,84 +1373,6 @@ GeoBeans.Map.prototype.cleanupSnap = function(){
 }
 
 
-/**
- * 绘制有底图的snap
- * @private
- */
-GeoBeans.Map.prototype.drawBaseLayerSnap = function(level){
-
-	var center = this.viewer.getCenter();
-	if(center == null){
-		return;
-	}
-	var centerx = center.x;
-	var centery = center.y;
-
-	var x = null;
-	var y = null;
-	var width = null;
-	var height = null;
-	var zoom = level - this.getViewer().getZoom();
-	var zoomSize = Math.pow(2,zoom);
-	width = this.width * zoomSize;
-	height = this.height * zoomSize;
-
-	x = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.width);
-	y = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.height);
-
-	x = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.width);
-	y = 0 - 1/2* ((Math.pow(2,zoom) - 1) * this.height);
-
-	
-
-	if(this.snap != null){
-		var newCanvas = $("<canvas>")
-		    .attr("width", this.snap.width)
-		    .attr("height", this.snap.height)[0];
-		newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
-		this.renderer.drawImage(newCanvas,x,y,width,height);
-	}
-
-	for(var i = 0; i < this.layers.length;++i){
-		var layer = this.layers[i];
-		layer.drawLayerSnap(x,y,width,height);
-	}
-}
-
-/**
- * 绘制Layer的snap(无底图)
- * @private
- * @deprecated 
- */
-GeoBeans.Map.prototype.drawLayersSnap = function(zoom){
-	var center = this.viewer.getCenter();
-	var centerx = center.x;
-	var centery = center.y;
-	var x = null;
-	var y = null;
-	var width = null;
-	var height = null;
-
-	width = this.width / zoom;
-	height = this.height / zoom;
-
-	x = this.width/2  - 1/2* width;
-	y = this.height/2 - 1/2* height;
-
-
-	if(this.snap != null){
-		var newCanvas = $("<canvas>")
-		    .attr("width", this.snap.width)
-		    .attr("height", this.snap.height)[0];
-		newCanvas.getContext("2d").putImageData(this.snap, 0, 0);
-		this.renderer.drawImage(newCanvas,x,y,width,height);
-	}
-
-	for(var i = 0; i < this.layers.length;++i){
-		var layer = this.layers[i];
-		layer.drawLayerSnap(x,y,width,height);
-	}
-}
 
 /**
  * 绘制地图的导航条

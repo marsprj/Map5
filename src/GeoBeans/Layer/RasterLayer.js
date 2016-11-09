@@ -51,14 +51,6 @@ GeoBeans.Layer.RasterLayer = GeoBeans.Class(GeoBeans.Layer,{
 });
 
 
-/**
- * 刷新图层
- * @public
- * @override
- */
-GeoBeans.Layer.RasterLayer.prototype.refresh = function(){
-	this.draw();
-};
 
 /**
  * 重绘图层

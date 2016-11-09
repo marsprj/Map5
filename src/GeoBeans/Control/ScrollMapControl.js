@@ -43,8 +43,6 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						target_zoom = maxZoom;
 					}
 					map.saveSnap();
-					map.clear();
-					map.drawBaseLayerSnap(target_zoom);
 					map.setZoom(target_zoom);
 				}else{
 					var target_zoom = zoom - count;
@@ -52,20 +50,16 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						target_zoom = minZoom;
 					}
 					map.saveSnap();
-					map.clear();
-					map.drawBaseLayerSnap(target_zoom);
 					map.setZoom(target_zoom);
 				}
 			}
 			else{
 				if(e.wheelDelta>0 || e.detail < 0){
-					map.drawLayersSnap(1/Math.pow(1.2,count));
 					var resolution = viewer.getResolution();
 					var target_res = resolution / Math.pow(1.2,count);
 					viewer.setResolution(target_res);
 				}
 				else{
-					map.drawLayersSnap(Math.pow(1.2,count));
 					var resolution = viewer.getResolution();
 					var target_res = resolution * Math.pow(1.2,count);
 					viewer.setResolution(target_res);
@@ -132,6 +126,4 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 		mapContainer.removeEventListener('mousewheel', this.mousewheel);
 		GeoBeans.Control.prototype.destory.apply(this, arguments);
 	},
-	
-	
 });

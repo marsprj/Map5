@@ -110,7 +110,6 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			that.map.saveSnap();
 			that.map.clear();
-			that.map.drawBaseLayerSnap(zoom);			
 			viewer.setZoom(zoom);	
 			that.map.draw();
 		});	
@@ -128,7 +127,6 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			that.map.saveSnap();
 			that.map.clear();
-			that.map.drawBaseLayerSnap(zoom);			
 			viewer.setZoom(zoom);		
 			that.map.draw();
 		});

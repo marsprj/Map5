@@ -28,6 +28,8 @@ GeoBeans.Layer = GeoBeans.Class({
 	mapPoint_rb : null,
 
 	flag : null,
+
+	_snap : null,
 	
 	initialize : function(name){
 		this.name = name;
@@ -36,6 +38,8 @@ GeoBeans.Layer = GeoBeans.Class({
 		this.flag = GeoBeans.Layer.Flag.READY;
 
 		this.canvas = document.createElement("canvas");
+
+		this._snap = new GeoBeans.Snap(this);
 	},
 	
 	destroy : function(){
@@ -66,6 +70,8 @@ GeoBeans.Layer = GeoBeans.Class({
 		var mapContainer = this.map.getContainer();
 		$(mapContainer).append(this.canvas);
 		this.renderer = new GeoBeans.Renderer(this.canvas);
+
+		this._snap.attach(this.map);
 	},
 	
 	
@@ -147,9 +153,12 @@ GeoBeans.Layer.prototype.getMap = function(){
  * 刷新图层
  * @public
  */
-GeoBeans.Layer.prototype.refresh = function() {
+GeoBeans.Layer.prototype.refresh = function(flag) {
 	if(this.visible){
-		this.draw();
+		this.drawSnap();
+		if(flag){
+			this.draw();
+		}
 	}
 	else{
 		this.clear();
@@ -249,7 +258,7 @@ GeoBeans.Layer.prototype.setOpacity = function(opacity){
  * @private
  */
 GeoBeans.Layer.prototype.saveSnap = function(){
-	this.snap = this.renderer.getImageData(0,0,this.canvas.width,this.canvas.height);
+	this._snap.saveSnap();
 };
 
 
@@ -258,9 +267,7 @@ GeoBeans.Layer.prototype.saveSnap = function(){
  * @private
  */
 GeoBeans.Layer.prototype.restoreSnap = function(){
-	if(this.snap != null){
-		this.renderer.putImageData(this.snap,0,0);
-	}
+	this._snap.restoreSnap();
 };
 
 
@@ -274,33 +281,16 @@ GeoBeans.Layer.prototype.putSnap = function(x,y){
 	if(!isValid(x) || !isValid(y)){
 		return;
 	}
-	if(this.snap!=null){
-		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-		this.renderer.putImageData(this.snap, x, y);
-	}
+	this._snap.putSnap(x,y);
 };
 
+
 /**
- * 指定位置和大小放置缩略图
+ * 绘制缩略图
  * @private
- * @param  {int} x     x坐标
- * @param  {int} y      y坐标
- * @param  {int} width  放置后的宽度
- * @param  {int} height 放置后的高度
  */
-GeoBeans.Layer.prototype.drawLayerSnap = function(x,y,width,height){
-	if(this.snap == null){
-		return;
-	}
-	this.renderer.save();
-	this.renderer.setGlobalAlpha(1);	
-	var canvas = $("<canvas>")
-	    .attr("width", this.snap.width)
-	    .attr("height", this.snap.height)[0];
-	canvas.getContext("2d").putImageData(this.snap, 0, 0);
-	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-	this.renderer.drawImage(canvas,x,y,width,height);
-	this.renderer.restore();
+GeoBeans.Layer.prototype.drawSnap = function(){
+	this._snap.drawSnap();
 };
 
 /**
@@ -308,7 +298,7 @@ GeoBeans.Layer.prototype.drawLayerSnap = function(x,y,width,height){
  * @private
  */
 GeoBeans.Layer.prototype.cleanupSnap = function(){
-	this.snap = null;
+	this._snap.cleanupSnap();
 }
 
 /**
@@ -331,6 +321,23 @@ GeoBeans.Layer.prototype.resize = function(width,height){
 	this.canvas.height = height;
 };
 
+/**
+ * 获取渲染器
+ * @private
+ * @return {GeoBeans.Renderer} 渲染器
+ */
+GeoBeans.Layer.prototype.getRenderer = function(){
+	return this.renderer;
+};
+
+/**
+ * 获取canvas
+ * @private
+ * @return {HTMLCanvasElement} 
+ */
+GeoBeans.Layer.prototype.getCanvas = function(){
+	return this.canvas;
+};
 GeoBeans.Layer.Flag = {
 	READY : "ready",
 	LOADED : "loaded",

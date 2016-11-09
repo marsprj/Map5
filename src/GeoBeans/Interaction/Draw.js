@@ -68,12 +68,17 @@ GeoBeans.Interaction.Draw.prototype.draw = function(type,symbolizer){
 GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var that = this;
 	this._map.saveMapSnap();
-	this._map.enableDrag(false);
+	// this._map.enableDrag(false);
 	this.cleanup();
 
 	var _mapContainer = this._map.getContainer();
-	var onmousedown = function(evt){
+	// var onmousedown = function(evt){
+	var onmouseup = function(evt){
 		if(that._enabled){
+			var control = mapObj.getControl(GeoBeans.Control.Type.DRAG_MAP)
+			if(control.draging){
+				return;
+			}
 			that.draw_point(evt.layerX,evt.layerY,symbolizer);
 			
 			if(isValid(that.onComplete)){
@@ -85,13 +90,15 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 
 			that._isDrawing = false;
 			that._map.saveSnap();
+			that.cleanup();
 		}
 	};
 	
 	var onmousemove = function(evt){
 		if(that._enabled){
 			that._isDrawing = true;
-			that._map.restoreMapSnap();
+			// that._map.restoreMapSnap();
+			that._map.restoreSnap();
 			var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
 			that.draw_point(pt.x,pt.y,symbolizer);	
 
@@ -103,11 +110,12 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 		}
 	};
 	
-	this.onMouseDown = onmousedown;
+	// this.onMouseDown = onmousedown;
+	this.onMouseUp = onmouseup;
 	this.onMouseMove = onmousemove;
 	
 	_mapContainer.addEventListener("mousemove", onmousemove);
-	_mapContainer.addEventListener("mousedown", onmousedown);
+	_mapContainer.addEventListener("mouseup", onmouseup);
 }
 
 /**
