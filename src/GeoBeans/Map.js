@@ -1300,6 +1300,13 @@ GeoBeans.Map.prototype.clear = function(){
 }
 
 /**
+ *  清空基础的canvas
+ *  @private
+ */
+GeoBeans.Map.prototype.clearMap = function(){
+	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
+}
+/**
  * 保存缩略图
  * @private
  */
@@ -1313,7 +1320,6 @@ GeoBeans.Map.prototype.saveSnap = function(){
 
 /**
  * 保存最基础的canvas的缩略图
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.saveMapSnap = function(){
 	this.snap = this.renderer.getImageData(0, 0, this.canvas.width, this.canvas.height);
@@ -1334,7 +1340,6 @@ GeoBeans.Map.prototype.restoreSnap = function(){
 
 /**
  * 绘制最基础的canvas的缩略图
- * @return {[type]} [description]
  */
 GeoBeans.Map.prototype.restoreMapSnap = function(){
 	if(this.snap!=null){

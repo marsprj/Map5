@@ -67,12 +67,10 @@ GeoBeans.Interaction.Draw.prototype.draw = function(type,symbolizer){
  */
 GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var that = this;
-	this._map.saveMapSnap();
-	// this._map.enableDrag(false);
+	this._map.saveSnap();
 	this.cleanup();
 
 	var _mapContainer = this._map.getContainer();
-	// var onmousedown = function(evt){
 	var onmouseup = function(evt){
 		if(that._enabled){
 			var control = mapObj.getControl(GeoBeans.Control.Type.DRAG_MAP)
@@ -97,13 +95,18 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var onmousemove = function(evt){
 		if(that._enabled){
 			that._isDrawing = true;
-			// that._map.restoreMapSnap();
-			that._map.restoreSnap();
+			console.log("drawing");
+			var control = mapObj.getControl(GeoBeans.Control.Type.DRAG_MAP)
+			if(control.draging){
+				return;
+			}
+			that._map.clearMap();
 			var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
 			that.draw_point(pt.x,pt.y,symbolizer);	
 
+
 			that.drawingEvent = function(){
-				that._map.restoreMapSnap();
+				that._map.restoreSnap();
 				var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
 				that.draw_point(pt.x,pt.y,symbolizer);	
 			};
