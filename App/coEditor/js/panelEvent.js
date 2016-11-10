@@ -106,8 +106,6 @@ function saveFeature(){
 
 	// 刷新列表
 	refreshFeatures();
-	// 
-	drawer.enable(true);
 
 	featureCur = null;
 }
@@ -208,6 +206,9 @@ function showFeatures(features){
 		geometryType = geometry.type;
 		type = feature.getValue("type");
 		name = feature.getValue("name");
+		if(name == null || name == ""){
+			name = "未命名";
+		}
 		fid = feature.fid;
 		image = getTypeImage(geometryType,type);
 		html += '<div class="overlay-item" fid="' + fid+'">'

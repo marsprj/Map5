@@ -1,5 +1,15 @@
 var g_polygonType = [
 	{
+		name : "面",
+		image : "images/polygon.png",
+		style : {
+			stroke : "#0099ff",
+			width : 2,
+			strokeOpacity : 1.0,
+			fill : "#ffffff",
+			fillOpacity : 0.25
+		}
+	},{
 		name : "公园",
 		image : "images/park.png",
 		style : {

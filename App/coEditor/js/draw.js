@@ -50,7 +50,6 @@ function onComplete(geometry){
 	if(geometry == null){
 		return;
 	}
-	drawer.enable(false);
 	onCompleteGeometry(geometry);
 }
 
@@ -69,26 +68,90 @@ function onCompleteGeometry(g){
 			$(".left_tab").removeClass("active");
 			$("#point_type_tab").addClass("active");
 			$("#point_type_tab .list-type").removeClass("active");
+			addDefaultPoint();
 			break;
 		}
 		case GeoBeans.Geometry.Type.LINESTRING:{
 			$(".left_tab").removeClass("active");
 			$("#line_type_tab").addClass("active");
 			$("#line_type_tab .list-type").removeClass("active");
+			addDefaultLine();
 			break;
 		}
 		case  GeoBeans.Geometry.Type.POLYGON:{
 			$(".left_tab").removeClass("active");
 			$("#polygon_type_tab").addClass("active");
 			$("#polygon_type_tab .list-type").removeClass("active");
+			addDefaultPolygon();
 			break;
 		}
 		default:
 			break;
 	}
-
-	
-	
-	
 }
 
+// 默认加载点
+function addDefaultPoint(){
+	var type = "点";
+	var source = featureLayer.getSource();
+	var fid = GeoBeans.Utility.uuid();
+	featureCur = new GeoBeans.Feature({
+		fid : fid,
+		geometry : geometry,
+		properties : {
+			type : type
+		}
+	});
+
+	var listTypeDiv = $("#point_type_tab .list-type[ltype='" + type +"']");
+	listTypeDiv.addClass("active");
+
+	var symbolizer = getSymbolizer(listTypeDiv);
+	featureCur.symbolizer = symbolizer;
+	source.addFeature(featureCur);
+	mapObj.refresh();
+}
+
+// 默认加载线
+function addDefaultLine(){
+	var type = "线";
+	var source = featureLayer.getSource();
+	var fid = GeoBeans.Utility.uuid();
+	featureCur = new GeoBeans.Feature({
+		fid : fid,
+		geometry : geometry,
+		properties : {
+			type : type
+		}
+	});
+
+	var listTypeDiv = $("#line_type_tab .list-type[ltype='" + type +"']");
+	listTypeDiv.addClass("active");
+
+	var symbolizer = getSymbolizer(listTypeDiv);
+	featureCur.symbolizer = symbolizer;
+	source.addFeature(featureCur);
+	mapObj.refresh();	
+}
+
+// 默认加载面
+function addDefaultPolygon(){
+	var type = "面";
+	var source = featureLayer.getSource();
+	var fid = GeoBeans.Utility.uuid();
+	featureCur = new GeoBeans.Feature({
+		fid : fid,
+		geometry : geometry,
+		properties : {
+			type : type
+		}
+	});
+
+	var listTypeDiv = $("#polygon_type_tab .list-type[ltype='" + type +"']");
+	listTypeDiv.addClass("active");
+
+	var symbolizer = getSymbolizer(listTypeDiv);
+	featureCur.symbolizer = symbolizer;
+	source.addFeature(featureCur);
+	mapObj.refresh();	
+}
