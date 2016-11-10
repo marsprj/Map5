@@ -232,18 +232,22 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 	var db_points = [];
 	var addEvent_flag = false;
 	this._map.saveSnap();
-	this._map.enableDrag(false);
 	this.cleanup();
 
 	var _mapContainer = this._map.getContainer();
 	var viewer = this._map.getViewer();
 
-	var onmousedown = function(evt){
+	var onmouseup = function(evt){
 		evt.preventDefault();
-		that._map.enableDrag(false);
 		if(points.length == 0){
 			that._map.saveSnap();
 		}
+
+		var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP);
+		if(control.draging){
+			return;
+		}
+
 		var db_flag = false;
 		for(var i = 0; i < points.length; ++i){
 			var point = points[i];
@@ -259,10 +263,10 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 			points.push({x:evt.layerX,y:evt.layerY,mapX:pt.x,mapY:pt.y});
 		}
 
-		that.drawing = true;
+		that._isDrawing = true;
 
 		var onmousemove = function(evt){
-			that._map.restoreSnap();
+			that._map.clearMap();
 			var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 			if(points.length>1){
 				that.draw_polygon(points,pt.x,pt.y,symbolizer);
@@ -275,12 +279,12 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 			that.drawingEvent = function(){
 				var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 				if(points.length>1){
-					that.draw_polygon(points, pt.x,pt.y);
-					that.drawPoints(points, pt.x,pt.y);
+					that.draw_polygon(points,pt.x,pt.y,symbolizer);
+					that.draw_points(points,pt.x,pt.y,symbolizer);
 				}
 				else{
-					that.draw_line(points, pt.x,pt.y);
-					that.draw_points(points,pt.x,pt.y);
+					that.draw_line(points, pt.x,pt.y,symbolizer);
+					that.draw_points(points,pt.x,pt.y,symbolizer);
 				}
 			}
 		};
@@ -288,7 +292,6 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 		var onmousedbclick = function(evt){
 			_mapContainer.removeEventListener("mousemove", onmousemove);
 			_mapContainer.removeEventListener("dblclick",  onmousedbclick);
-			// that._map.enableDrag(true);
 
 			if(db_points.length == points.length){
 				return;
@@ -308,9 +311,9 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 
 			db_points = [];
 			points = [];
-			that.drawing = false;
+			that._isDrawing = false;
 			addEvent_flag = false;
-			
+			that.cleanup();
 		}
 		if(!addEvent_flag){ //只有第一次mousedown的时候才会触发注册事件
 			_mapContainer.addEventListener("mousemove", onmousemove);
@@ -322,8 +325,8 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 	};
 		
 	
-	_mapContainer.addEventListener("mousedown", onmousedown);
-	this.onMouseDown = onmousedown;
+	_mapContainer.addEventListener("mouseup", onmouseup);
+	this.onMouseUp = onmouseup;	
 }
 
 /**
