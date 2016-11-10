@@ -336,6 +336,7 @@ function editFeatureHandler(features){
 	}
 
 	featureCur = feature;
+	setFeatureCenter();
 	showTypeBefore();
 
 }
@@ -465,4 +466,25 @@ function getSymbolizer(listTypeDiv){
 
 	return symbolizer;
 		
+}
+
+// 当前标注居中
+function setFeatureCenter(){
+	if(featureCur == null){
+		return;
+	}
+	var geometry = featureCur.geometry;
+	if(geometry == null){
+		return;
+	}
+	var extent = null;
+	if(geometry.type == GeoBeans.Geometry.Type.POINT){
+		var x = geometry.x;
+		var y = geometry.y;
+		extent = new GeoBeans.Envelope(x-1,y-1,x+1,y+1);
+	}else{
+		extent = geometry.getExtent();
+	}
+
+	mapObj.setViewExtent(extent);
 }
