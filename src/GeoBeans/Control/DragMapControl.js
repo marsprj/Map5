@@ -35,6 +35,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			var d_x, d_y;
 			var m_x, m_y;
 			var o_x, o_y;
+			var f_x, f_y;
 			var map = that.map;
 		
 			var maskImg = map.saveSnap();
@@ -45,8 +46,11 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			
 			d_x = e.layerX;
 			d_y = e.layerY;
+			f_x = e.layerX;
+			f_y = e.layerY;
 			var d_p = map.getViewer().toMapPoint(d_x, d_y);
 			var draging = true;	
+			var moving = false;
 
 			var dragBeginHandler = null;
 			var dragBeginEvent = that.map.events.getEvent(GeoBeans.Event.DRAG_BEGIN);
@@ -74,7 +78,19 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					return;
 				}
 				e.preventDefault();
+				moving = true;
 				if(draging){
+					// 先判断是否拖动距离过短
+					var s_x = (e.layerX - f_x);
+					var s_y = (e.layerY - f_y);
+					if(Math.abs(s_x) <= 1 && Math.abs(s_y) <= 1){
+						document.body.style.cursor = 'default';
+						moving = false;
+						that.draging = false;
+						return;
+					}
+
+
 					that.draging = true;
 					document.body.style.cursor = 'pointer';
 					mask_x += (e.layerX - d_x);
@@ -123,7 +139,14 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			};
 			var onmouseup = function(e){
 				// console.log("drag up");
+				if(!moving){
+					document.body.style.cursor = 'default';
+					mapContainer.removeEventListener("mousemove", onmousemove);
+					mapContainer.removeEventListener("mouseup", onmouseup);
 
+					return;
+				}
+				moving = false;
 				map.registerViewerEvent();
 				if(isValid(interaction) && interaction.getRotateStatus()){
 					return;
