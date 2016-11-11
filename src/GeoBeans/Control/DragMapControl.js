@@ -203,6 +203,11 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 		
 		GeoBeans.Control.prototype.destory.apply(this, arguments);
 	},
+
+
+	isDragging : function(){
+		return this.draging;
+	}
 	
 	
 });

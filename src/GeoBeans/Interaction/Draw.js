@@ -74,7 +74,7 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 	var onmouseup = function(evt){
 		if(that._enabled){
 			var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP)
-			if(control.draging){
+			if(control.isDragging()){
 				return;
 			}
 			that.draw_point(evt.layerX,evt.layerY,symbolizer);
@@ -141,7 +141,7 @@ GeoBeans.Interaction.Draw.prototype.drawLine = function(symbolizer){
 			that._map.saveSnap();	
 		}
 		var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP);
-		if(control.draging){
+		if(control.isDragging()){
 			return;
 		}
 		
@@ -244,7 +244,7 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 		}
 
 		var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP);
-		if(control.draging){
+		if(control.isDragging()){
 			return;
 		}
 

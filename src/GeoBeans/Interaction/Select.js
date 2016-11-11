@@ -110,8 +110,13 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 	this.cleanup();
 
 	var mapContainer = this._map.getContainer();
-	var onmousedown = function(evt){
+	var onmouseup = function(evt){
 		//if(that._enabled){
+		var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP)
+		if(control.isDragging()){
+			return;
+		}
+
 		var viewer = that._map.getViewer();
 		var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
@@ -128,9 +133,9 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 		that._layer.getSource().query(query, handler);
 	};
 	
-	this._onMouseDown = onmousedown;
+	this.onMouseUp = onmouseup
 	
-	mapContainer.addEventListener("mousedown", onmousedown);
+	mapContainer.addEventListener("mouseup", onmouseup);
 }
 
 

@@ -71,7 +71,7 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 			tid = this.makeTileID(row, col, zoom);
 			turl = this.makeTileURL(this._url, tid);
 
-			console.log(turl);
+			// console.log(turl);
 			
 			var pos = this.getTilePosisiton(row, col, tile_size);
 
