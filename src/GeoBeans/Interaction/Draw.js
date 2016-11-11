@@ -640,7 +640,7 @@ GeoBeans.Interaction.Draw.prototype.draw_polygon = function(points, x, y,symboli
 	context.beginPath();
 	var spt = viewer.toScreenPoint(x,y);
 	context.moveTo(spt.x, spt.y);
-	for(i=0; i<len; i++){
+	for(var i=0; i<len; i++){
 		var spt = viewer.toScreenPoint(points[i].mapX,points[i].mapY);
 		context.lineTo(spt.x, spt.y);
 	}
