@@ -142,11 +142,12 @@
 			"map" : mapObj,
 			"layer" : wfsLayer
 		});
+		select.onchange(onSelectionChange);
 		mapObj.addInteraction(select);
 	}
 
 	function onSelectionChange(features){
-		//alert(features.length);
+		console.log(features.length);
 	}
 
 </script>

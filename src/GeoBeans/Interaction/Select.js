@@ -117,6 +117,10 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 			return;
 		}
 
+		var drawInteraction = that._map.getInteraction(GeoBeans.Interaction.Type.DRAW);
+		if(isValid(drawInteraction) && drawInteraction.isDrawing()){
+			return;
+		}
 		var viewer = that._map.getViewer();
 		var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
@@ -125,9 +129,9 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 		var handler = {
 			target : that,
 			execute : function(features){
-				//this.target.setSelection(features);
-				var selection = this.target._map.getSelection();
-				selection.setFeatures(features);
+				this.target.setSelection(features);
+				// var selection = this.target._map.getSelection();
+				// selection.setFeatures(features);
 			}
 		}
 		that._layer.getSource().query(query, handler);
@@ -593,12 +597,14 @@ GeoBeans.Interaction.Select.prototype.createIntersectsQuery = function(geometry)
  * @param  {Array.<GeoBeans.Feature>} features Feature集合
  */
 GeoBeans.Interaction.Select.prototype.setSelection = function(features){
-	this._selection = features;
+	// this._selection = features;
 	if(isValid(this._onchange)){
-		this._onchange(this._selection);
+		this._onchange(features);
 	}
+	var selection = this._map.getSelection();
+	selection.setFeatures(features);
 	//this.draw();
-	this._map.refresh();
+	// this._map.refresh();
 }
 
 
