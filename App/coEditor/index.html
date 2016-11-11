@@ -5,11 +5,14 @@
 <!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap-3.2.0-dist/css/bootstrap.min.css"> -->
 <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="js/initMap.js"></script>
-<script type="text/javascript" src="js/draw.js"></script>
-<script type="text/javascript" src="js/panelEvent.js"></script>
+<!-- <script type="text/javascript" src="js/draw.js"></script> -->
+<!-- <script type="text/javascript" src="js/panelEvent.js"></script> -->
 <script type="text/javascript" src="js/pointType.js"></script>
 <script type="text/javascript" src="js/lineType.js"></script>
 <script type="text/javascript" src="js/polygonType.js"></script>
+<script type="text/javascript" src="js/layers.js"></script>
+<script type="text/javascript" src="js/drawLayer.js"></script>
+<script type="text/javascript" src="js/panel.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 <script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 
@@ -20,7 +23,8 @@
 <script type="text/javascript">
 	var mapObj = null;
 	var drawer = null;
-	var featureLayer = null;
+	// var featureLayer = null;
+	var layerCur = null;
 	// 当前编辑的要素
 	var featureCur = null;
 
@@ -29,11 +33,12 @@
 	function init(){
 	 	loadMap();
 	 	addDrawInteraction();
-	 	addFeatureLayer();
-	 	addDrawEvent();
-	 	loadPointType();
-	 	loadLineType();
-	 	loadPolygonType();
+	 	loadLayersList();
+	 	// addFeatureLayer();
+	 	// addDrawEvent();
+	 	// loadPointType();
+	 	// loadLineType();
+	 	// loadPolygonType();
 	 	addPanelEvent();
 	}
 
@@ -48,8 +53,8 @@
 	<div id="main_panel">
 		<div id="left_panel">
 			<!-- 标注列表 -->
-			<div class="left_tab active" id="overlay-tab">
-				<div class="left_tab_title">
+			<div class="left-tab" id="overlay-tab">
+				<div class="left-tab_title">
 					标绘列表
 				</div>
 				<div class="search-div row">
@@ -75,8 +80,8 @@
 				</div>
 			</div>
 			<!-- 点类型 -->
-			<div class="left_tab" id="point_type_tab">
-				<div class="left_tab_title">
+			<div class="left-tab" id="point_type_tab">
+				<div class="left-tab_title">
 					点标注类型
 					<span class="type-next">►</span>
 				</div>
@@ -84,8 +89,8 @@
 				</div>
 			</div>
 			<!-- 线类型 -->
-			<div class="left_tab" id="line_type_tab">
-				<div class="left_tab_title">
+			<div class="left-tab" id="line_type_tab">
+				<div class="left-tab_title">
 					线标注类型
 					<span class="type-next">►</span>
 				</div>
@@ -93,27 +98,41 @@
 				</div>
 			</div>	
 			<!-- 面类型 -->
-			<div class="left_tab" id="polygon_type_tab">
-				<div class="left_tab_title">
+			<div class="left-tab" id="polygon_type_tab">
+				<div class="left-tab_title">
 					面标注类型
 					<span class="type-next">►</span>
 				</div>
 				<div class="list-type-div">
 				</div>
-			</div>					
+			</div>		
+			<!-- 图层列表 -->
+			<div class="left-tab active" id="layers_tab">
+				<div class="left-tab_title">
+					标注图层
+				</div>
+				<div class="list-type-div">
+				</div>
+			</div>		
+			<!-- 图层数据列表 -->
+			<div class="left-tab" id="layer_tab">
+				<div class="left-tab_title">
+					<span class="left-title-icon back-to-layers" data-toggle="tooltip" data-placement="top" title="返回图层列表">◄</span>
+					<span class="layer-name"></span>
+					<span class="right-title-btn draw-overlay">采集</span>
+					<span class="right-title-btn save-to-db">入库</span>
+				</div>
+				<div class="overlay-list-div">
+				</div>
+			</div>						
 			<!-- 信息编辑 -->
-			<div class="left_tab" id="overlay-info-tab">
-				<div class="left_tab_title">
-					<span class="type-before">◄</span>
+			<div class="left-tab" id="overlay-info-tab">
+				<div class="left-tab_title">
 					<span>信息编辑</span>
-					<span class="save-btn">保存</span>
-					<span class="remove-btn">删除</span>
+					<span class="save-btn right-title-btn">保存</span>
+					<span class="remove-btn right-title-btn">删除</span>
 				</div>
 				<div class="overlay-info-div">
-					<div class="input-group">
-					  	<span class="input-group-addon">名称</span>
-					  	<input type="text" class="form-control overlay-name" placeholder="请输入名称">
-					</div>
 				</div>
 			</div>
 		</div>
