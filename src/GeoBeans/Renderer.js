@@ -168,6 +168,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 	drawPolygon : function(polygon, symbolizer, viewer){
 
 		var pt = null;
+		var spt = null;
 		var ring = null;
 		var numRing = 0;
 		var numPoints = 0;		
@@ -253,7 +254,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 	
 	drawMultiPolygon : function(geometry, symbolizer, viewer){
-		polygons = geometry.polygons;		
+		var polygons = geometry.polygons;		
 		var polygon = null;
 		for(var i=0, len=polygons.length; i<len; i++){
 			polygon = polygons[i];

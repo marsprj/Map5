@@ -663,6 +663,10 @@ GeoBeans.Source.Feature.prototype.selectBySpatial = function(filter,features,max
 			target = this.selectByBBoxFilter(filter,features,maxFeatures,offset);
 			break;
 		}
+		case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects:{
+			target = this.selectByIntersectsFilter(filter,features,maxFeatures,offset);
+			break;
+		}
 		default:
 			break;
 	}
@@ -716,6 +720,12 @@ GeoBeans.Source.Feature.prototype.selectByBBoxFilter = function(filter,features,
 }
 
 
+GeoBeans.Source.Feature.prototype.selectByIntersectsFilter = function(filter,features,maxFeatures,offset){
+	if(filter == null){
+		return features;
+	}
+	return features;
+};
 /**
  * 获得给定字段的最大最小值
  * @param  {string} fname 给定字段

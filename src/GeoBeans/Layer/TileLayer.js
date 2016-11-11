@@ -99,7 +99,7 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 				pt.x = Math.round(pt.x);
 				pt.y = Math.round(pt.y);
 
-				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);i
+				that.renderer.clearRect(pt.x, pt.y, image_size, image_size);
 				that.renderer.drawImage(image, pt.x, pt.y, image_size, image_size);
 
 				that.renderer.restore();

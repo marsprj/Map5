@@ -163,7 +163,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			}
 			this.style = style;
 		}
-		rules = style.rules;
+		var rules = style.rules;
 		if(rules.length==0){
 			return;
 		}
@@ -257,7 +257,7 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		var viewer = this.map.getViewer();
 		this.renderer.save();		
 		for(var i=0,len=features.length; i<len; i++){
-			feature = features[i];
+			var feature = features[i];
 			
 			var s = symbolizer;
 			if(isValid(feature.symbolizer)){

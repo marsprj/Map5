@@ -17,8 +17,8 @@ GeoBeans.Proj = GeoBeans.Class({
 	}
 });
 
-EARTH_RADIUS = 6378136;	//unit: meter
-PROJ_CONSTANT= EARTH_RADIUS * Math.PI / 180.0;
+var EARTH_RADIUS = 6378136;	//unit: meter
+var PROJ_CONSTANT= EARTH_RADIUS * Math.PI / 180.0;
 
 /**
  * 经纬度(WGS84)转平面坐标(Web Mercator)

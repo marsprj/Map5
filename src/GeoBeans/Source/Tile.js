@@ -63,7 +63,7 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 	var xmin = this.FULL_EXTENT.xmin;
 	var ymin = this.FULL_EXTENT.ymin;
 
-	var row, col, tile, x, y;
+	var row, col, tile, x, y,tid,turl;
 
 	for(row=row_min; row<row_max; row++){
 		for(col=col_min; col<col_max; col++){
