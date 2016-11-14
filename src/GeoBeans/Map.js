@@ -267,12 +267,6 @@ GeoBeans.Map = GeoBeans.Class({
 		this.destroy();
 	},
 
-	//重绘，大小改变时候
-	resize : function(flag){
-		var handler = window.onresize;
-		handler.apply(window,[flag]);
-	},
-
 	/**
 	 * 删除底图，如果还有其他tileLayer则设置为底图
 	 * @deprecated 这个函数没有意义
@@ -774,7 +768,7 @@ GeoBeans.Map.prototype.registerViewerEvent = function(){
  */
 GeoBeans.Map.prototype.enableWindowResize = function(){
 	var that = this;
-	window.onresize = function(){
+	var onresize = function(){
 		clearTimeout(that._resizeId);
 		that._resizeId = setTimeout(function(){
 			var height = $(that._container).height();
@@ -824,19 +818,6 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 				that.setViewExtent(extent);
 			}	
 
-			// var overlayLayerCanvas = that.overlayLayer.canvas;
-			// if(overlayLayerCanvas != null){
-			// 	overlayLayerCanvas.height = height;
-			// 	overlayLayerCanvas.width = width;
-			// }
-
-
-/*			var panoramaLayerCanvas = that.panoramaLayer.canvas;
-			if(panoramaLayerCanvas != null){
-				panoramaLayerCanvas.height = height;
-				panoramaLayerCanvas.width = width;
-			}*/
-
 			that.draw();
 		},250);
 
@@ -857,9 +838,10 @@ GeoBeans.Map.prototype.enableWindowResize = function(){
 			handler(args);
 		}
 	};
-	var handler = window.onresize;
-	handler.apply(window,[]);
-
+	
+	$(this._container).resize(function(){
+		onresize();
+	});
 };
 
 
