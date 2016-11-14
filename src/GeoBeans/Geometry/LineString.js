@@ -158,4 +158,4 @@ GeoBeans.Geometry.LineString.prototype.distance = function(x, y){
 		}
 	}
 	return dmin;
-},
+}
