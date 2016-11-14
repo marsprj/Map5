@@ -57,28 +57,28 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		var that = this;
 		$(mapContainer).find(".map-nav-pan-N").click(function(){
 			var center = that.map.center;
-			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
+			var t_p = that.map.getMapViewer().toMapPoint(that.map.getWidth()/2,0);
 			that.map.saveSnap();
-			that.map.putSnap(0,-that.map.height/2);
+			that.map.putSnap(0,-that.map.getHeight()/2);
 			that.map.offset(0,center.y - t_p.y);
 			that.map.draw();
 		});
 		$(mapContainer).find(".map-nav-pan-S").click(function(){
 			// that.map.clear();
 			var center = that.map.center;
-			var t_p = that.map.getMapViewer().toMapPoint(that.map.width/2,0);
+			var t_p = that.map.getMapViewer().toMapPoint(that.map.getWidth()/2,0);
 			that.map.saveSnap();
 			that.map.clear();
-			that.map.putSnap(0,that.map.height/2);
+			that.map.putSnap(0,that.map.getHeight()/2);
 			that.map.offset(0,t_p.y - center.y);
 			that.map.draw();
 		});
 		$(mapContainer).find(".map-nav-pan-W").click(function(){
 			var center = that.map.center;
-			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
+			var r_p = that.map.getMapViewer().toMapPoint(that.map.getWidth(), that.map.getHeight()/2);
 			that.map.saveSnap();
 			that.map.clear();
-			that.map.putSnap(-that.map.width/2, 0);
+			that.map.putSnap(-that.map.getWidth()/2, 0);
 			that.map.offset(r_p.x - center.x,0);
 			that.map.draw();
 		});
@@ -86,10 +86,10 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 		$(mapContainer).find(".map-nav-pan-E").click(function(){
 			// that.map.clear();
 			var center = that.map.center;
-			var r_p = that.map.getMapViewer().toMapPoint(that.map.width, that.map.height/2);
+			var r_p = that.map.getMapViewer().toMapPoint(that.map.getWidth(), that.map.getHeight()/2);
 			that.map.saveSnap();
 			that.map.clear();
-			that.map.putSnap(that.map.width/2,0);
+			that.map.putSnap(that.map.getWidth()/2,0);
 			that.map.offset(center.x - r_p.x,0);
 			// that.map.offset(-10, 0);
 			that.map.draw();

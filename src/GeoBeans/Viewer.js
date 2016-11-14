@@ -359,8 +359,8 @@ GeoBeans.Viewer.prototype.getWindowHeight = function(){
 GeoBeans.Viewer.prototype.updateMapExtent = function(resolution){
 	var cx = this._center.x;
 	var cy = this._center.y;
-	var vw = this._map.width;
-	var vh = this._map.height;
+	var vw = this.getWindowWidth();
+	var vh = this.getWindowHeight();
 	
 	var mw = resolution * vw / 2; 
 	var mh = resolution * vh / 2; 	
@@ -392,7 +392,7 @@ GeoBeans.Viewer.prototype.scaleView = function(extent){
 		return  null;
 	}
 	var v_scale = extent.getWidth() / extent.getHeight();
-	var w_scale = this._map.width / this._map.height;
+	var w_scale = this.getWindowWidth() / this.getWindowHeight();
 	
 	
 	var center = extent.getCenter();
@@ -434,7 +434,7 @@ GeoBeans.Viewer.prototype.scaleViewWidth = function(extent){
 		return null;
 	}
 	this._center = extent.getCenter();
-	var w_scale = this._map.width / this._map.height;
+	var w_scale = this.getWindowWidth() / this._map.getWindowHeight();
 
 	var h_2 = extent.getHeight() / 2;
 	var w_2 = h_2 * w_scale;
@@ -458,7 +458,7 @@ GeoBeans.Viewer.prototype.scaleViewHeight = function(extent){
 		return null;
 	}
 	this._center = extent.getCenter();
-	var w_scale = this._map.width / this._map.height;
+	var w_scale = this.getWindowWidth() / this.getWindowHeight();
 
 	var w_2 = extent.getWidth() / 2;
 	var h_2 = w_2 / w_scale;
@@ -542,8 +542,8 @@ GeoBeans.Viewer.prototype.toScreenPointNotRotate = function(x,y){
 GeoBeans.Viewer.prototype.rotateViewer = function(){
 	var leftTop = this.toMapPoint(0,0);
 	var leftBottom = this.toMapPoint(0,this._map.height);
-	var rightTop = this.toMapPoint(this._map.width,0);
-	var rightBottom = this.toMapPoint(this._map.width,this._map.height);
+	var rightTop = this.toMapPoint(this.getWindowWidth(),0);
+	var rightBottom = this.toMapPoint(this.getWindowWidth(),this.getWindowHeight());
 
 	var min_x = leftTop.x;
 	var min_y = leftTop.y;
@@ -586,9 +586,11 @@ GeoBeans.Viewer.prototype.getMap = function(){
  * @private
  */
 GeoBeans.Viewer.prototype.update = function(){
+	
+	var win_width = this.getWindowWidth();
+	var win_height = this.getWindowHeight();
+	this.updateMapExtent(this._resolution);
 	var extent = this.getExtent();
-	var win_width = this._map.width;
-	var win_height = this._map.height;
 
 	this.win_w = parseFloat(win_width);
 	this.win_h = parseFloat(win_height);

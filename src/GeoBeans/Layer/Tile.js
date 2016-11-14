@@ -79,8 +79,8 @@ GeoBeans.Tile = GeoBeans.Class({
 			if(this.layer.visible){
 				this.layer.renderer.save();
 				if(rotation != 0){
-					var width = this.map.width;
-					var height = this.map.height;
+					var width = this.map.getWidth();
+					var height = this.map.getHeight();
 					
 					this.layer.renderer.translate(width/2,height/2);
 					this.layer.renderer.rotate(rotation* Math.PI/180);

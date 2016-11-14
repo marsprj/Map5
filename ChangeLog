@@ -19,3 +19,4 @@ version 1.0.0-beta
 2016.11.11  bug  修改在点击交互的时候回调函数失效的问题。
 2016.11.11  bug  修改代码，增加"use strict"，使用严厉模式处理javascript。
 2016.11.14  bug  修改resize，监听div的变化事件。
+2016.11.14  bug  删除map的width和height变量，并且修改viewer里面对于范围的更改。

@@ -111,8 +111,8 @@ GeoBeans.Map = GeoBeans.Class({
 	minScale : null,	
 	maxScale : null,
 	
-	width : null,	
-	height : null,
+	// width : null,	
+	// height : null,
 
 	/**
 	 * 选择集
@@ -155,6 +155,9 @@ GeoBeans.Map = GeoBeans.Class({
 
 	// resize的标识符
 	_resizeId : null,
+
+
+	VERSION : "1.0.100",
 
 	CLASS_NAME : "GeoBeans.Map",
 	
@@ -229,7 +232,7 @@ GeoBeans.Map = GeoBeans.Class({
 		/**************************************************************************************/
 		/* 启用Window的Resize事件
 		/**************************************************************************************/	
-		this.enableWindowResize();
+		// this.enableWindowResize();
 
 		/**************************************************************************************/
 		/* 初始化Viewer
@@ -583,13 +586,13 @@ GeoBeans.Map.prototype.createMapContainer = function(target){
 	this._container = $("#" + this.id)[0];
 
 
-	this.width = $("#" + this.id).width();
-	this.height = $("#" + this.id).height();
+	// this.width = $("#" + this.id).width();
+	// this.height = $("#" + this.id).height();
 	// canvas
 	var canvasID = this.id + "_canvas";
 	var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
-						+ this.height + "' width='" 
-						+ this.width + "'></canvas>";
+						+ this.getHeight() + "' width='" 
+						+ this.getWidth() + "'></canvas>";
 
 	this._container.innerHTML = mapCanvasHtml;
 
@@ -757,92 +760,104 @@ GeoBeans.Map.prototype.registerViewerEvent = function(){
 		var that = this;
 		//注册Viewer变化事件，Viewer发生变化时候，需要刷新地图。
 		this.viewer.on(GeoBeans.Event.CHANGE, function(){
+			// that.width = that.getWidth();
+			// that.height = that.getHeight();
+
+			that._updateCanvasSize();
 			that.refresh();
 		});
 	}
 }
-		
+/**
+ * 调整canvas大小
+ * @private
+ */
+GeoBeans.Map.prototype._updateCanvasSize = function(){
+	this.canvas.width = this.getWidth();
+	this.canvas.height = this.getHeight();
+};	
+
 /**
  * 初始化地图大小改变
  * @private
  */
-GeoBeans.Map.prototype.enableWindowResize = function(){
-	var that = this;
-	var onresize = function(){
-		clearTimeout(that._resizeId);
-		that._resizeId = setTimeout(function(){
-			var height = $(that._container).height();
-			var width = $(that._container).width();
-			if(height == 0 || width == 0){
-				return;
-			}
-			if(height == that.height &&　width == that.width){
-				return;
-			}
+// GeoBeans.Map.prototype.enableWindowResize = function(){
+// 	var that = this;
+// 	var onresize = function(){
+// 		clearTimeout(that._resizeId);
+// 		that._resizeId = setTimeout(function(){
+// 			var height = $(that._container).height();
+// 			var width = $(that._container).width();
+// 			if(height == 0 || width == 0){
+// 				return;
+// 			}
+// 			if(height == that.height &&　width == that.width){
+// 				return;
+// 			}
 
-			that.canvas.height = height;
-			that.canvas.width = width;
-
-
-			that.height = height;
-			that.width = width;
-
-			for(var i = 0; i < that.layers.length;++i){
-				var layer = that.layers[i];
-				layer.resize(width,height);
-			}
-
-			// that.overlayLayer.resize(width,height);
-
-			var viewer = that.getViewer();
-			var extent = viewer.getExtent();
-
-			if(extent == null){
-				return;
-			}
-
-			if(extent != null){
-				var xmin = extent.xmin;
-				var xmax = extent.xmax;
-				var ymin = extent.ymin;
-				var ymax = extent.ymax;
-				if(!$.isNumeric(xmin) || !$.isNumeric(xmax) || !$.isNumeric(ymin) || !$.isNumeric(ymax)){
-					return;
-				}
-			}
-
-			if(that.baseLayer != null){
-				var zoom = viewer.getZoom();
-				that.setZoom(zoom);
-			}else{
-				that.setViewExtent(extent);
-			}	
-
-			that.draw();
-		},250);
+// 			that.canvas.height = height;
+// 			that.canvas.width = width;
 
 
-		// 处理onresize注册事件
-		var event = that.events.getEvent(GeoBeans.Event.RESIZE);
-		if(event != null){
-			var viewer = that.getViewer();
-			var args = new GeoBeans.Event.MouseArgs();
-			args.buttn = null;
-			args.X = null;
-			args.Y = null;
-			args.mapX = null;
-			args.mapY = null;
-			args.zoom = viewer.getZoom();
+// 			that.height = height;
+// 			that.width = width;
 
-			var handler = event.handler;
-			handler(args);
-		}
-	};
-	
-	$(this._container).resize(function(){
-		onresize();
-	});
-};
+// 			for(var i = 0; i < that.layers.length;++i){
+// 				var layer = that.layers[i];
+// 				layer.resize(width,height);
+// 			}
+
+// 			// that.overlayLayer.resize(width,height);
+
+// 			var viewer = that.getViewer();
+// 			var extent = viewer.getExtent();
+
+// 			if(extent == null){
+// 				return;
+// 			}
+
+// 			if(extent != null){
+// 				var xmin = extent.xmin;
+// 				var xmax = extent.xmax;
+// 				var ymin = extent.ymin;
+// 				var ymax = extent.ymax;
+// 				if(!$.isNumeric(xmin) || !$.isNumeric(xmax) || !$.isNumeric(ymin) || !$.isNumeric(ymax)){
+// 					return;
+// 				}
+// 			}
+
+// 			if(that.baseLayer != null){
+// 				var zoom = viewer.getZoom();
+// 				that.setZoom(zoom);
+// 			}else{
+// 				that.setViewExtent(extent);
+// 			}	
+
+// 			that.draw();
+// 		},250);
+
+
+// 		// 处理onresize注册事件
+// 		var event = that.events.getEvent(GeoBeans.Event.RESIZE);
+// 		if(event != null){
+// 			var viewer = that.getViewer();
+// 			var args = new GeoBeans.Event.MouseArgs();
+// 			args.buttn = null;
+// 			args.X = null;
+// 			args.Y = null;
+// 			args.mapX = null;
+// 			args.mapY = null;
+// 			args.zoom = viewer.getZoom();
+
+// 			var handler = event.handler;
+// 			handler(args);
+// 		}
+// 	};
+
+// 	$(this._container).resize(function(){
+// 		onresize();
+// 	});
+// };
 
 
 /**
@@ -1231,7 +1246,6 @@ GeoBeans.Map.prototype.draw = function(){
 	// 	alert("请联系管理员进行授权");
 	// 	return;
 	// }
-
 
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 	this.drawLayers();

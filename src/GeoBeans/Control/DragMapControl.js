@@ -41,8 +41,6 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 			var maskImg = map.saveSnap();
 			var mask_x = 0;
 			var mask_y = 0;
-			var mask_w = map.width;
-			var mask_h = map.height;
 			
 			d_x = e.layerX;
 			d_y = e.layerY;

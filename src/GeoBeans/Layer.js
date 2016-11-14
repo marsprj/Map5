@@ -57,8 +57,8 @@ GeoBeans.Layer = GeoBeans.Class({
 	setMap : function(map){
 		this.map = map;
 		
-		var mapCanvasHeight = map.height;
-		var mapCanvasWidth = map.width;
+		var mapCanvasHeight = map.getHeight();
+		var mapCanvasWidth = map.getWidth();
 
 		
 		this.canvas.height = mapCanvasHeight;
@@ -154,6 +154,8 @@ GeoBeans.Layer.prototype.getMap = function(){
  * @public
  */
 GeoBeans.Layer.prototype.refresh = function(flag) {
+	this.canvas.width = this.map.getViewer().getWindowWidth();
+	this.canvas.height = this.map.getViewer().getWindowHeight();
 	if(this.visible){
 		this.drawSnap();
 		if(flag){
