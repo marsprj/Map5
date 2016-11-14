@@ -64,6 +64,37 @@ GeoBeans.Geometry.Point.prototype.getCentroid = function(){
 }
 
 /**
+ * 计算Buffer
+ * @param  {float} radius 缓冲区半径
+ * @return {GeoBeans.Geometry.Polygon|GeoBeans.Geometry.MultiPolygon} Geometry的缓冲区
+ * @public
+ * @override
+ */
+GeoBeans.Geometry.prototype.buffer = function(radius){
+
+	var theta = 0;
+	var steps = 24;
+	var span  = steps * Math.PI / 180;	//degree
+	var dx = 0.0;
+	var dy = 0.0;
+	var pts = [];
+	for(var i=0; i<steps; i++){
+		dx = radius * Math.cos(theta);
+		dy = radius * Math.sin(theta);
+
+		console.log(dx + ", " + dy);
+		pts.push(new GeoBeans.Geometry.Point(this.x+dx, this.y+dy));
+
+		theta = theta + span;
+	}
+
+	var ring = new GeoBeans.Geometry.LinearRing(pts);
+	var polygon = new GeoBeans.Geometry.Polygon([ring]);
+
+	return polygon;
+}
+
+/**
  * 判断点是否被选中。
  * @public
  * @deprecated 这个函数用法不对，要删掉。

@@ -121,10 +121,26 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 		if(isValid(drawInteraction) && drawInteraction.isDrawing()){
 			return;
 		}
-		var viewer = that._map.getViewer();
+		var viewer = that._map.getViewer();		
 		var pt = viewer.toMapPoint(evt.layerX,evt.layerY);
 
-		var query = that.createSpatialQuery(pt);
+		var query = null;
+		switch(that._layer.getGeometryType()){			
+			case GeoBeans.Geometry.Type.POINT:
+			case GeoBeans.Geometry.Type.MULTIPOINT:
+			case GeoBeans.Geometry.Type.LINESTRING:
+			case GeoBeans.Geometry.Type.MULTILINESTRING:{
+				var tolerance = 10; //viewer.getTolerance();
+				var buffer = pt.buffer(tolerance);
+				query = that.createSpatialQuery(buffer);
+			}
+			case GeoBeans.Geometry.Type.POLYGON:
+			case GeoBeans.Geometry.Type.MULTIPOLYGON:{
+				query = that.createSpatialQuery(pt);
+			}
+		}
+		
+
 		//查询结果的回调函数类，接口实现GeoBeans.Handler。
 		var handler = {
 			target : that,
@@ -134,6 +150,8 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 				// selection.setFeatures(features);
 			}
 		}
+
+
 		that._layer.getSource().query(query, handler);
 	};
 	

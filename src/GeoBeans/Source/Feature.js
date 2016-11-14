@@ -20,6 +20,9 @@ GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 		this._features = [];
 		if(isValid(options)){
 			this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";	
+			if(isValid(options.features)){
+				this._features = options.features;
+			}
 		}
 	},
 
