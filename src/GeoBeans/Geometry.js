@@ -38,7 +38,7 @@ GeoBeans.Geometry.prototype.getExtent = function(){
 /**
  * 计算Buffer
  * @param  {float} radius 缓冲区半径
- * @return {GeoBeans.Geometry.MultiPolygon|GeoBeans.Geometry.MultiPolygon} Geometry的缓冲区
+ * @return {GeoBeans.Geometry.Polygon|GeoBeans.Geometry.MultiPolygon} Geometry的缓冲区
  * @public
  */
 GeoBeans.Geometry.prototype.buffer = function(radius){
