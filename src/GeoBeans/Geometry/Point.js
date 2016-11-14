@@ -78,15 +78,15 @@ GeoBeans.Geometry.prototype.buffer = function(radius){
 	var dx = 0.0;
 	var dy = 0.0;
 	var pts = [];
-	for(var i=0; i<steps; i++){
+	for(var i=1; i<steps; i++){
 		dx = radius * Math.cos(theta);
 		dy = radius * Math.sin(theta);
 
-		console.log(dx + ", " + dy);
 		pts.push(new GeoBeans.Geometry.Point(this.x+dx, this.y+dy));
 
 		theta = theta + span;
 	}
+	pts.push(pts[0]);
 
 	var ring = new GeoBeans.Geometry.LinearRing(pts);
 	var polygon = new GeoBeans.Geometry.Polygon([ring]);

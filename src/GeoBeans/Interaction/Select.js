@@ -134,6 +134,7 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 				var buffer = pt.buffer(tolerance);
 				query = that.createSpatialQuery(buffer);
 			}
+			break;
 			case GeoBeans.Geometry.Type.POLYGON:
 			case GeoBeans.Geometry.Type.MULTIPOLYGON:{
 				query = that.createSpatialQuery(pt);
