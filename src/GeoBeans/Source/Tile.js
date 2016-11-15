@@ -21,10 +21,14 @@ GeoBeans.Source.Tile = GeoBeans.Class(GeoBeans.Source,{
 				ymax:256
 	},
 
+	_cache : null,
+
 	initialize : function(options){
 		GeoBeans.Source.prototype.initialize.apply(this, arguments);
 
 		//this._url = options.url;
+
+		this._cache = new GeoBeans.TileCache();
 	},
 
 	destroy : function(){
@@ -64,19 +68,22 @@ GeoBeans.Source.Tile.prototype.getTile = function(zoom, extent, success, failure
 	var ymin = this.FULL_EXTENT.ymin;
 
 	var row, col, tile, x, y,tid,turl;
+	var tile;
 
 	for(row=row_min; row<row_max; row++){
 		for(col=col_min; col<col_max; col++){
 
 			tid = this.makeTileID(row, col, zoom);
 			turl = this.makeTileURL(this._url, tid);
+			if(this._cache.getTile(turl)){
+				tile = this._cache.getTile(turl);
+			}else{
+				var pos = this.getTilePosisiton(row, col, tile_size);
+				tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, pos.x, pos.y, this.IMG_WIDTH, this.IMG_WIDTH, resolution);
+				this._cache.putTile(tile);
+			}
 
 			// console.log(turl);
-			
-			var pos = this.getTilePosisiton(row, col, tile_size);
-
-			//var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, pos.x, pos.y, pos.width, pos.height, resolution);
-			var tile = new GeoBeans.Tile(null, turl, null, row, col, zoom, pos.x, pos.y, this.IMG_WIDTH, this.IMG_WIDTH, resolution);
 			success.execute(tile);
 		}
 	}	
