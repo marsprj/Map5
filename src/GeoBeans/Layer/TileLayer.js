@@ -133,6 +133,8 @@ GeoBeans.Layer.TileLayer.prototype.toScreenPoint = function(x,y){
  * @private
  */
 GeoBeans.Layer.TileLayer.prototype.refresh = function(flag){
+	this.canvas.width = this.map.getViewer().getWindowWidth();
+	this.canvas.height = this.map.getViewer().getWindowHeight();
 	if(this.visible){
 		var viewer = this.map.getViewer();
 		var status = viewer.getStatus();
