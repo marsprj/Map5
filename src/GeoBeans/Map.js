@@ -1231,15 +1231,15 @@ GeoBeans.Map.prototype.getInteraction = function(type){
  * 刷新地图
  * @public
  */
-GeoBeans.Map.prototype.refresh = function(){
-	this.draw();
+GeoBeans.Map.prototype.refresh = function(flag){
+	this.draw(flag);
 }
 
 /**
  * 绘制地图
  * @private
  */
-GeoBeans.Map.prototype.draw = function(){
+GeoBeans.Map.prototype.draw = function(flag){
 	var time = new Date();
 	// var delta = time.getTime() - this.authTime.getTime();
 	// if(delta > 30*24*3600*1000){
@@ -1248,7 +1248,7 @@ GeoBeans.Map.prototype.draw = function(){
 	// }
 
 	this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
-	this.drawLayers();
+	this.drawLayers(flag);
 
 	// Draw Interactions
 	this.drawInteractions();
@@ -1266,13 +1266,13 @@ GeoBeans.Map.prototype.draw = function(){
  * 绘制所有图层
  * @private
  */
-GeoBeans.Map.prototype.drawLayers = function(){
+GeoBeans.Map.prototype.drawLayers = function(flag){
 	
 	// this.maplex.cleanup();
 
 	for(var i = 0; i < this.layers.length;++i){
 		var layer = this.layers[i];
-		layer.refresh(true);
+		layer.refresh(flag);
 	}
 
 	// this.maplex.draw();

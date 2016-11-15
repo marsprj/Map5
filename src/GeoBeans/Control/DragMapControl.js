@@ -103,7 +103,9 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 
 					// 不实时绘图，但是更改viewer的视口信息
 					map.getViewer().un(GeoBeans.Event.CHANGE);
+					map.getViewer().setStatus(GeoBeans.Viewer.Status.DRAG);
 					map.getViewer().offset(o_x, o_y);
+					map.refresh(false);
 
 
 					// var infoWindow = map.getInfoWindow();
@@ -160,6 +162,7 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 
 				map.refresh();
 				map.cleanupSnap();
+				map.getViewer().setStatus(GeoBeans.Viewer.Status.NONE);
 				
 
 				document.body.style.cursor = 'default';

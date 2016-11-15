@@ -118,10 +118,30 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 	this._source.getTile(tile_zoom, view_extent, success, failure);
 };
 
-GeoBeans.Layer.prototype.toScreenPoint = function(x,y){
+GeoBeans.Layer.TileLayer.prototype.toScreenPoint = function(x,y){
 	var viewer = this.map.getViewer();
 	var screenX = viewer.scale * (x - viewer.view_c.x) + viewer.win_cx;
 	var screenY = viewer.win_cy - viewer.scale * (y - viewer.view_c.y);
 	
 	return new GeoBeans.Geometry.Point(screenX, screenY);
+};
+
+
+
+/**
+ * 刷新，只有在滚动的时候才绘制缩略图
+ * @private
+ */
+GeoBeans.Layer.TileLayer.prototype.refresh = function(flag){
+	if(this.visible){
+		var viewer = this.map.getViewer();
+		var status = viewer.getStatus();
+		if(status == GeoBeans.Viewer.Status.SCROLL){
+			this.drawSnap();
+		}
+		this.draw();
+	}
+	else{
+		this.clear();
+	}
 };

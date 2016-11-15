@@ -156,6 +156,9 @@ GeoBeans.Layer.prototype.getMap = function(){
 GeoBeans.Layer.prototype.refresh = function(flag) {
 	this.canvas.width = this.map.getViewer().getWindowWidth();
 	this.canvas.height = this.map.getViewer().getWindowHeight();
+	if(!isValid(flag)){
+		flag = true;
+	}
 	if(this.visible){
 		this.drawSnap();
 		if(flag){

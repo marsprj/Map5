@@ -34,6 +34,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			// }
 
 			var viewer = map.getViewer();
+			viewer.setStatus(GeoBeans.Viewer.Status.SCROLL);
 			var extent = viewer.getExtent();
 			if(isValid(map.baseLayer)){
 				var zoom = viewer.getZoom();
@@ -80,6 +81,7 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 				map.saveSnap();
 				drawInteraction.drawingEvent();
 			}
+			viewer.setStatus(GeoBeans.Viewer.Status.NONE);
 		};
 
 		this.mousewheel = function(e){

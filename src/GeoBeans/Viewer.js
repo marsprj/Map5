@@ -36,6 +36,8 @@ GeoBeans.Viewer = GeoBeans.Class({
 	_maxZoom : null,
 
 	_onChange : null,
+
+	_status : null,
 	
 	
 	// initialize : function(map,options){
@@ -716,3 +718,29 @@ GeoBeans.Viewer.prototype.un = function(event){
 			break;
 	}
 }
+
+/**
+ * 设置视图状态
+ * @private
+ */
+GeoBeans.Viewer.prototype.setStatus = function(status){
+	this._status = status;
+};
+
+/**
+ * 获取视图状态
+ * @private
+ */
+GeoBeans.Viewer.prototype.getStatus = function(){
+	return this._status;
+};
+
+
+/**
+ * 视图状态
+ */
+GeoBeans.Viewer.Status = {
+	DRAG : "drag",
+	SCROLL : "scroll",
+	NONE : "none"
+};
