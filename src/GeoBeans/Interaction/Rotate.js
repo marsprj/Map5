@@ -93,7 +93,7 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 		if(evt instanceof MouseEvent){
 			if(keyCode == 16){
 				that._rotating = true;
-				console.log("begin move");
+				// console.log("begin move");
 				var rotation = viewer.getRotation();
 				var point_b = viewer.toMapPoint(evt.layerX,evt.layerY);
 				var angle_b = GeoBeans.Utility.getAngle(center.x,center.y,point_b.x,point_b.y);
@@ -146,8 +146,9 @@ GeoBeans.Interaction.Rotate.prototype.start = function(){
 					var angle_e = GeoBeans.Utility.getAngle(center.x,center.y,point_e.x,point_e.y);
 
 					var delta = angle_e - angle_b;
+					that._map.cleanupSnap();
 					viewer.setRotation(delta + rotation);
-					that._map.refresh();
+					// that._map.refresh();
 					mapContainer.removeEventListener("mouseup",onmouseup);
 					mapContainer.removeEventListener("mousemove",onmousemove);
 					

@@ -686,7 +686,7 @@ GeoBeans.Layer.FeatureLayer.prototype.draw = function(){
 	var handler = {
 		target: this,
 		execute : function(features){
-			console.log("count:" + features.length);
+			// console.log("count:" + features.length);
 			this.target.renderer.clearRect(0,0,this.target.map.getWidth(),this.target.map.getHeight());
 			this.target.drawLayerFeatures(features);
 		}

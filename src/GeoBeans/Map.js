@@ -157,7 +157,7 @@ GeoBeans.Map = GeoBeans.Class({
 	_resizeId : null,
 
 
-	VERSION : "1.0.100",
+	VERSION : "1.0.101",
 
 	CLASS_NAME : "GeoBeans.Map",
 	
