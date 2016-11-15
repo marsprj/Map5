@@ -149,7 +149,7 @@ GeoBeans.Source.Tile.WMTS.prototype.getFitZoom = function(resolution){
 	}
 	else{
 		var b,u;
-		for(i=1; i<length; i++){
+		for(var i=1; i<length; i++){
 			u = this.RESOLUTIONS[i-1];
 			b = this.RESOLUTIONS[i];
 
