@@ -104,4 +104,19 @@ GeoBeans.Geometry.Point.prototype.hit = function(x, y, t){
  	var d = Math.abs(this.x-x) + Math.abs(this.y-y);
 	return (d<t);
 }
+/**
+ * [distance description]
+ * @param  {[type]} geometry [description]
+ * @return {[type]}          [description]
+ */
+GeoBeans.Geometry.Point.prototype.distance = function(geometry){
+	if(!isValid(geometry)){
+		return null;
+	}
 
+	if(geometry.type == GeoBeans.Geometry.Type.POINT){
+		var d =  GeoBeans.Utility.getDistance(geometry.x,geometry.y,this.x,this.y);
+		return d;
+	}
+	return null;
+}

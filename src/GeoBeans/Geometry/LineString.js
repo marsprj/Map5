@@ -137,24 +137,28 @@ GeoBeans.Geometry.LineString = GeoBeans.Class(GeoBeans.Geometry,{
 });
 
 /**
- * 计算点到线的距离
- * @param  {float} x 点的x坐标
- * @param  {float} y 点的y坐标
- * @return {float}   点到线的距离
+ * 与geometry的距离，支持point
  * @public
- * @override
+ * @param  {GeoBeans.Geometry} geometry 几何图形
+ * @return {float}          距离
  */
-GeoBeans.Geometry.LineString.prototype.distance = function(x, y){
+GeoBeans.Geometry.LineString.prototype.distance = function(geometry){
 	var num = this.points.length-1;
 	var p0=null, p1=null;
-	var dmin=0,d=0;
-	for(var i=0; i<num; i++){
-		p0 = this.points[i];
-		p1 = this.points[i+1];
-		
-		d = this.distance2segment(x, y, p0.x, p0.y, p1.x, p1.y);
-		if(d<dmin){
-			d = dmin;
+	var dmin=null,d=0;
+	if(geometry.type == GeoBeans.Geometry.Type.POINT){
+		for(var i=0; i<num; i++){
+			p0 = this.points[i];
+			p1 = this.points[i+1];
+			
+			d = GeoBeans.Utility.distance2segment(geometry.x, geometry.y, p0.x, p0.y, p1.x, p1.y);
+			if(dmin == null){
+				dmin = d;
+			}else{
+				if(d<dmin){
+					dmin = d;
+				}
+			}
 		}
 	}
 	return dmin;

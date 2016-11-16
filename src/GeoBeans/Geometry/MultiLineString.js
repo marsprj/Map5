@@ -76,29 +76,36 @@ GeoBeans.Geometry.MultiLineString = GeoBeans.Class(GeoBeans.Geometry,{
 });
 
 /**
- * 计算点到线的距离
- * @param  {float} x 点的x坐标
- * @param  {float} y 点的y坐标
- * @return {float}   点到线的距离
+ * 与geometry的距离，支持point
  * @public
- * @override
+ * @param  {GeoBeans.Geometry} geometry 几何图形
+ * @return {float}          距离
  */
-GeoBeans.Geometry.MultiLineString.prototype.distance = function(x, y){
+GeoBeans.Geometry.MultiLineString.prototype.distance = function(geometry){
 
 	var len = this.lines.length;
 	var p0=null, p1=null;
-	var dmin=0,d=0;
-	for(var j = 0; j < len;++j){
-		var line = this.lines[j];
-		var points = line.points; 
-		var num = points.length-1;
-		for(var i=0; i<num; i++){
-			p0 = points[i];
-			p1 = points[i+1];
-			
-			d = GeoBeans.Utility.distance2segment(x, y, p0.x, p0.y, p1.x, p1.y);
-			if(d<dmin){
-				d = dmin;
+	var dmin=null,d=0;
+	if(geometry.type == GeoBeans.Geometry.Type.POINT){
+		for(var j = 0; j < len;++j){
+			var line = this.lines[j];
+			var points = line.points; 
+			var num = points.length-1;
+			for(var i=0; i<num; i++){
+				p0 = points[i];
+				p1 = points[i+1];
+				
+				d = GeoBeans.Utility.distance2segment(geometry.x, geometry.y, p0.x, p0.y, p1.x, p1.y);
+				console.log(d);
+				console.log(p0);
+				console.log(p1);
+				if(dmin == null){
+					dmin = d;
+				}else{
+					if(d<dmin){
+						dmin = d;
+					}
+				}
 			}
 		}
 	}
