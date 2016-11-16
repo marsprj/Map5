@@ -76,8 +76,6 @@
  */
 GeoBeans.Map = GeoBeans.Class({
 	
-	// TOLERANCE : 10,
-	TOLERANCE : 20,
 	
 	_id : null,
 	_container : null,
@@ -135,12 +133,6 @@ GeoBeans.Map = GeoBeans.Class({
 	renderer : null,
 	
 	bgColor : 'rgba(255,255,255,1)',
-	
-	/**
-	 * 点击查询拾取的误差
-	 * @type {Number}
-	 */
-	tolerance : 5,
 	
 	
 	snap : null,

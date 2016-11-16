@@ -131,7 +131,7 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 			case GeoBeans.Geometry.Type.MULTIPOINT:
 			case GeoBeans.Geometry.Type.LINESTRING:
 			case GeoBeans.Geometry.Type.MULTILINESTRING:{
-				var tolerance = 1; //viewer.getTolerance();
+				var tolerance = viewer.getTolerance();
 				//var buffer = pt.buffer(tolerance);
 				//query = that.createSpatialQuery(buffer);
 				query = that.createDwithinlQuery(pt, tolerance);

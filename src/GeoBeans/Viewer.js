@@ -38,6 +38,10 @@ GeoBeans.Viewer = GeoBeans.Class({
 	_onChange : null,
 
 	_status : null,
+
+	TOLERANCE : 20,
+
+	_tolerance : null,
 	
 	
 	// initialize : function(map,options){
@@ -608,7 +612,7 @@ GeoBeans.Viewer.prototype.update = function(){
 	var scale_y = this.win_h / this.view_h;
 	this.scale = scale_x < scale_y ? scale_x : scale_y;
 
-	this._map.tolerance = this._map.TOLERANCE / this.scale;
+	this._tolerance = this.TOLERANCE / this.scale;
 
 	if(isValid(this._onChange)){
 		this._onChange();
@@ -734,6 +738,14 @@ GeoBeans.Viewer.prototype.setStatus = function(status){
 GeoBeans.Viewer.prototype.getStatus = function(){
 	return this._status;
 };
+
+/**
+ * 获取容差
+ * @private
+ */
+GeoBeans.Viewer.prototype.getTolerance = function(){
+	return this._tolerance;
+}
 
 
 /**
