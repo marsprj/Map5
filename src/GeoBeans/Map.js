@@ -1218,13 +1218,30 @@ GeoBeans.Map.prototype.addInteraction = function(interaction){
 }
 
 /**
+ * Map上删除Interaction
+ * @public
+ * @param  {GeoBeans.Interaction} interaction 交互
+ */
+GeoBeans.Map.prototype.removeInteraction = function(interaction){
+	this._interactions.remove(interaction);
+};
+
+/**
  * 根据类型获取interaction
  * @public
  * @param  {GeoBeans.Interaction.Type} type 交互类型
  * @return {GeoBeans.Interaction}      交互
  */
 GeoBeans.Map.prototype.getInteraction = function(type){
-	return this._interactions.find(type);
+	// return this._interactions.find(type);
+	if(!isValid(type)){
+		return null;
+	}
+	var i = this._interactions.find(type);
+	if(i < 0){
+		return null;
+	}
+	return this._interactions.get(i);
 };
 
 /**

@@ -14,6 +14,7 @@ GeoBeans.Interaction = GeoBeans.Class({
 	
 	destory : function(){
 		//GeoBeans.Class.prototype.destory.apply(this, arguments);
+		this.cleanup();
 	},
 	
 	attach : function(_map){
@@ -75,9 +76,15 @@ GeoBeans.Interaction.Interactions = GeoBeans.Class({
 		this._interactions.push(c);
 	},
 	
-	remove : function(i){
-		if(i>=0&&i<this._interactions.length){
-			this._interactions[i].splice(i,1);	
+	remove : function(c){
+		if(!isValid(c)){
+			return;
+		}
+		var i = this.find(c._type);
+		if(i > 0){
+			this._interactions[i].destory();
+			this._interactions[i] = null;
+			this._interactions.splice(i,1);
 		}
 	},
 
@@ -102,9 +109,9 @@ GeoBeans.Interaction.Interactions = GeoBeans.Class({
 		var len = this._interactions.length;
 		for(var i=0; i<len; i++){
 			if(this._interactions[i]._type == type){
-				return this._interactions[i];
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 });

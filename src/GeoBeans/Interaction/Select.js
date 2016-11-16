@@ -40,10 +40,11 @@ GeoBeans.Interaction.Select = GeoBeans.Class(GeoBeans.Interaction, {
 		this.init();
 		// this.initRenderer();
 		// this.loadSymbols();
+		this._type = GeoBeans.Interaction.Type.SELECT;
 	},
 	
 	destory : function(){
-		//GeoBeans.Class.prototype.destory.apply(this, arguments);
+		GeoBeans.Interaction.prototype.destory.apply(this, arguments);
 	},
 
 	CLASS_NAME : "GeoBeans.Interaction.Select"
@@ -517,8 +518,14 @@ GeoBeans.Interaction.Select.prototype.selectByBBox = function(){
 GeoBeans.Interaction.Select.prototype.cleanup = function(){
 	var mapContainer = this._map.getContainer();
 	mapContainer.removeEventListener("mousedown", this.onMouseDown);
+	mapContainer.removeEventListener("mouseup",this.onMouseUp);
+	mapContainer.removeEventListener("mousemove",this.onMouseMove);
+	mapContainer.removeEventListener("dblclick",this.onMouseDBClick);
 
 	this.onMouseDown = null;
+	this.onMouseUp = null;
+	this.onMouseMove = null;
+	this.onMouseDBClick = null;
 }
 
 /**
