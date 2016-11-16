@@ -131,8 +131,9 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 			case GeoBeans.Geometry.Type.LINESTRING:
 			case GeoBeans.Geometry.Type.MULTILINESTRING:{
 				var tolerance = 1; //viewer.getTolerance();
-				var buffer = pt.buffer(tolerance);
-				query = that.createSpatialQuery(buffer);
+				//var buffer = pt.buffer(tolerance);
+				//query = that.createSpatialQuery(buffer);
+				query = that.createDwithinlQuery(pt, tolerance);
 			}
 			break;
 			case GeoBeans.Geometry.Type.POLYGON:
@@ -543,6 +544,30 @@ GeoBeans.Interaction.Select.prototype.createSpatialQuery = function(g){
 	var filter = new GeoBeans.Filter.SpatialFilter();
 	filter.geometry = g;
 	filter.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprIntersects;
+	var source = this._layer.getSource();
+	filter.propName = source.getGeometryName();
+
+	var query = new GeoBeans.Query({
+		/*"typeName"	: featureType.getName(),*/
+		"filter"	: filter
+	});
+
+	return query;
+}
+
+/**
+ * 创建DistanceBujffer查询Filter
+ * @private
+ * @param  {GeoBeans.Geometry} g 几何对象
+ * @param  {float} 			   d 距离
+ * @return {GeoBeans.Query}       查询条件对象
+ */
+GeoBeans.Interaction.Select.prototype.createDwithinlQuery = function(g,d){
+	// Filter
+	var filter = new GeoBeans.Filter.DistanceBufferFilter();
+	filter.geometry = g;
+	filter.distance = d;
+	filter.operator = GeoBeans.Filter.SpatialFilter.OperatorType.SpOprDWithin;
 	var source = this._layer.getSource();
 	filter.propName = source.getGeometryName();
 
