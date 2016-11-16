@@ -49,12 +49,12 @@ GeoBeans.Utility  = {
 			var maxx = x0 > x1 ? x0 : x1;
 			var miny = y0 < y1 ? y0 : y1;
 			var maxy = y0 > y1 ? y0 : y1;
-			if(((xx>minx) && (xx<maxx)) || ((yx>miny) && (yx<maxy))){
+			if((xx>minx) && (xx<maxx)){
 				d = Math.sqrt(Math.pow(y-yx, 2)+Math.pow(x-xx, 2));
 			}
 			else{
-				var d0 = Math.sqrt(Math.pow(y0-yx, 2)+Math.pow(x0-xx, 2));
-				var d1 = Math.sqrt(Math.pow(y1-yx, 2)+Math.pow(x1-xx, 2));
+				var d0 = Math.sqrt(Math.pow(y0-y, 2)+Math.pow(x0-x, 2));
+				var d1 = Math.sqrt(Math.pow(y1-y, 2)+Math.pow(x1-x, 2));
 				d = d0 < d1 ? d0 : d1;
 			}		
 		}

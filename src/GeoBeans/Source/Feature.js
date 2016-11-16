@@ -670,6 +670,10 @@ GeoBeans.Source.Feature.prototype.selectBySpatial = function(filter,features,max
 			target = this.selectByIntersectsFilter(filter,features,maxFeatures,offset);
 			break;
 		}
+		case GeoBeans.Filter.SpatialFilter.OperatorType.SpOprDWithin:{
+			target = this.selectByDWithinFilter(filter,features,maxFeatures,offset);
+			break;
+		}
 		default:
 			break;
 	}
@@ -727,7 +731,114 @@ GeoBeans.Source.Feature.prototype.selectByIntersectsFilter = function(filter,fea
 	if(filter == null){
 		return features;
 	}
-	return features;
+	var target = [];
+
+	var total =null;
+	if(maxFeatures != null){
+		total = maxFeatures;
+	}
+	if(offset != null && offset != 0){
+		total += offset;
+	}
+	var geometry = filter.geometry;
+	if(!isValid(geometry)){
+		return features;
+	}
+
+	for(var i = 0; i < features.length;++i){
+		var f = features[i];
+		if(f == null){
+			continue;
+		}
+		var g = f.geometry;
+		if(g == null){
+			continue;
+		}
+		if(g instanceof GeoBeans.Geometry.Point){
+			if(geometry instanceof GeoBeans.Geometry.Polygon 
+				|| geometry instanceof GeoBeans.Geometry.MultiPolygon){
+				var extent = geometry.extent;
+				if(!extent.contains(g.x,g.y)){
+					continue;
+				}
+				if(geometry.hit(g.x,g.y,5)){
+					target.push(f);
+				}
+			}
+		}
+		if(geometry instanceof GeoBeans.Geometry.Point){
+			if(g.hit(geometry.x,geometry.y,5)){
+				target.push(f);
+			}
+		}
+
+		if(total != null && target.length == total){
+			break;
+		}
+	}
+
+	var result = null;
+	if(maxFeatures != null && offset != null && offset != 0){
+		result = target.slice(offset,total);
+	}else if(maxFeatures != null && (offset == null || offset == 0)){
+		result = target.slice(0,maxFeatures);
+	}else if(maxFeatures == null && offset != null && offset != 0){
+		result = target.slice(offset);
+	}else{
+		result = target;
+	}
+	return result;
+};
+
+
+GeoBeans.Source.Feature.prototype.selectByDWithinFilter = function(filter,features,maxFeatures,offset){
+	if(!isValid(filter)){
+		return features;
+	}
+
+	var target = [];
+
+	var total =null;
+	if(maxFeatures != null){
+		total = maxFeatures;
+	}
+	if(offset != null && offset != 0){
+		total += offset;
+	}	
+	var distance = filter.distance;
+	var geometry = filter.geometry;
+	if(!isValid(distance) || !isValid(geometry)){
+		return features;
+	}
+
+
+	for(var i = 0; i < features.length;++i){
+		var f= features[i];
+		if(!isValid(f)){
+			continue;
+		}
+		var g = f.geometry;
+		if(!isValid(g)){
+			continue;
+		}
+		var d = g.distance(geometry);
+		if(d <= distance){
+			target.push(f);
+		}
+	}
+
+	var result = null;
+	if(maxFeatures != null && offset != null && offset != 0){
+		result = target.slice(offset,total);
+	}else if(maxFeatures != null && (offset == null || offset == 0)){
+		result = target.slice(0,maxFeatures);
+	}else if(maxFeatures == null && offset != null && offset != 0){
+		result = target.slice(offset);
+	}else{
+		result = target;
+	}
+	return result;
+
 };
 /**
  * 获得给定字段的最大最小值

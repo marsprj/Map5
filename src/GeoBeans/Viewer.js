@@ -39,7 +39,7 @@ GeoBeans.Viewer = GeoBeans.Class({
 
 	_status : null,
 
-	TOLERANCE : 20,
+	TOLERANCE : 5,
 
 	_tolerance : null,
 	

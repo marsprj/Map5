@@ -96,9 +96,6 @@ GeoBeans.Geometry.MultiLineString.prototype.distance = function(geometry){
 				p1 = points[i+1];
 				
 				d = GeoBeans.Utility.distance2segment(geometry.x, geometry.y, p0.x, p0.y, p1.x, p1.y);
-				console.log(d);
-				console.log(p0);
-				console.log(p1);
 				if(dmin == null){
 					dmin = d;
 				}else{
