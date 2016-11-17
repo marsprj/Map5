@@ -113,6 +113,9 @@ GeoBeans.Interaction.Select.prototype.selectByPoint = function(){
 	var mapContainer = this._map.getContainer();
 	var onmouseup = function(evt){
 		//if(that._enabled){
+		if(!(evt.target.tagName.toUpperCase() == "CANVAS")){
+			return;
+		}
 		var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP)
 		if(control.isDragging()){
 			return;
