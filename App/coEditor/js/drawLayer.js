@@ -82,6 +82,7 @@ function addFeature(geometry){
 
 // 采集
 function drawOverlay(){
+	removeSelectInteraction();
 	var geomType = layerCur.getGeometryType();
 	var style = layerCur.style;
 	var symbolizer = style.rules[0].symbolizer;

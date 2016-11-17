@@ -30,78 +30,6 @@ function addDrawInteraction(){
 	mapObj.addInteraction(drawer);
 }
 
-// function addFeatureLayer(){
-// 	featureLayer = new GeoBeans.Layer.FeatureLayer({
-// 		name : "features",
-// 		geometryType : GeoBeans.Geometry.Type.POINT,
-// 		source : new GeoBeans.Source.Feature({
-
-// 		})
-// 	});
-
-// 	mapObj.addLayer(featureLayer);
-// }
-
-
-// function loadPointType(){
-// 	var html = "";
-// 	for(var i = 0; i < g_pointType.length;++i){
-// 		var obj = g_pointType[i];
-// 		var name = obj.name;
-// 		var image = obj.image;
-
-// 		html += '<div class="list-type" ltype="' + name + '">'
-// 		 	+	'	<div class="col-md-4">'
-// 		 	+	'		<img src="' +  image +'">'
-// 		 	+	'	</div>'
-// 		 	+	'	<div class="col-md-8">'
-// 		 	+			name
-// 		 	+	'	</div>'
-// 		 	+	'</div>';
-// 	}
-
-// 	$("#point_type_tab .list-type-div").html(html);
-// }
-
-// function loadLineType(){
-// 	var html = "";
-// 	for(var i = 0; i < g_lineType.length;++i){
-// 		var obj = g_lineType[i];
-// 		var name = obj.name;
-// 		var image = obj.image;
-
-// 		html += '<div class="list-type" ltype="' + name + '">'
-// 		 	+	'	<div class="col-md-4">'
-// 		 	+	'		<img src="' +  image +'">'
-// 		 	+	'	</div>'
-// 		 	+	'	<div class="col-md-8">'
-// 		 	+			name
-// 		 	+	'	</div>'
-// 		 	+	'</div>';
-// 	}
-
-// 	$("#line_type_tab .list-type-div").html(html);	
-// }
-
-// function loadPolygonType(){
-// 	var html = "";
-// 	for(var i = 0; i < g_polygonType.length;++i){
-// 		var obj = g_polygonType[i];
-// 		var name = obj.name;
-// 		var image = obj.image;
-
-// 		html += '<div class="list-type" ltype="' + name + '">'
-// 		 	+	'	<div class="col-md-4">'
-// 		 	+	'		<img src="' +  image +'">'
-// 		 	+	'	</div>'
-// 		 	+	'	<div class="col-md-8">'
-// 		 	+			name
-// 		 	+	'	</div>'
-// 		 	+	'</div>';
-// 	}
-
-// 	$("#polygon_type_tab .list-type-div").html(html);		
-// }
 
 // 加载所有图层
 function loadLayersList(){
@@ -150,12 +78,7 @@ function getLayer(layerName,type){
 		})
 	});
 	mapObj.addLayer(layer);
-	var select = new GeoBeans.Interaction.Select({
-		"map" : mapObj,
-		"layer" : layer
-	});
-	select.onchange(onSelectionChange);
-	mapObj.addInteraction(select);
+	
 
 	return layer;
 }
@@ -243,4 +166,64 @@ function getStyleByLayerName(layerName){
 
 function onSelectionChange(features){
 	console.log("click:" + features.length);
+	if(features.length == 0){
+		return;
+	}
+
+	var feature = features[0];
+	featureCur = feature;
+	openInfoWindow();
+	removeSelectInteraction();
+	showFeatureInfo();
+}
+
+
+// 添加点击交互
+function addSelectInteraction(){
+	if(layerCur == null){
+		return;
+	}
+
+	removeSelectInteraction();
+	var select = new GeoBeans.Interaction.Select({
+		"map" : mapObj,
+		"layer" : layerCur
+	});
+	select.onchange(onSelectionChange);
+	mapObj.addInteraction(select);
+}
+
+// 删除点击交互
+function removeSelectInteraction(){
+	var select = mapObj.getInteraction(GeoBeans.Interaction.Type.SELECT);
+	mapObj.removeInteraction(select);
+}
+
+// 弹出弹框
+function openInfoWindow(){
+	if(featureCur == null){
+		return;
+	}
+	var geometry = featureCur.geometry;
+	if(geometry == null){
+		return;
+	}
+
+	var type = geometry.type;
+	if(type != GeoBeans.Geometry.Type.POINT){
+		return;
+	}
+
+	var infoWindow = mapObj.getWidget(GeoBeans.Widget.Type.INFO_WINDOW);
+	if(infoWindow == null){
+		return;
+	}
+
+	var name = featureCur.getValue("名称");
+	infoWindow.setPosition(geometry);
+	infoWindow.setOption({
+		title : layerCur.getName(),
+		content : "名称 : " + name
+	});
+	infoWindow.show(true);
 }

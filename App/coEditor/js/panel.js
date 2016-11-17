@@ -59,11 +59,10 @@ function removeFeature(){
 
 	var source = layerCur.getSource();
 	source.removeFeature(featureCur);
-	mapObj.refresh();
-
 	featureCur = null;
 
 	refreshFeatures();
+	mapObj.refresh();
 
 }
 
@@ -72,6 +71,7 @@ function refreshFeatures(){
 	if(layerCur == null){
 		return;
 	}
+	addSelectInteraction();
 	$(".left-tab").removeClass("active");
 	$("#layer_tab").addClass("active");
 	$("#layer_tab .left-tab_title .layer-name").html(layerCur.name);
