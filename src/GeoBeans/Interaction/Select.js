@@ -526,6 +526,9 @@ GeoBeans.Interaction.Select.prototype.cleanup = function(){
 	this.onMouseUp = null;
 	this.onMouseMove = null;
 	this.onMouseDBClick = null;
+
+	var selection = this._map.getSelection();
+	selection.setFeatures([]);
 }
 
 /**
