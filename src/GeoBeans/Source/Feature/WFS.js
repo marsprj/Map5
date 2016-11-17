@@ -27,6 +27,7 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 	_geometryName : null,
 	_outputFormat : "GML2",
 	_srsName : 'EPSG:4326', //'EPSG:3857',
+	_sourceName : null,
 
 	/**
 	 * new GeoBeans.Source.Feature.WFS({
@@ -48,6 +49,7 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 		this._featureType = options.featureType;
 		this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";
 		this._version = isValid(options.version) ? options.version : "1.0.0";
+		this._sourceName = isValid(options.sourceName) ? options.sourceName : null;
 	},
 
 	destroy : function(){
@@ -159,6 +161,7 @@ GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 	}
 	else if(query instanceof GeoBeans.Query){
 		//将query对象序列化为xml字符串
+		var sourceName = this._sourceName;
 		xml = this.serializeQuery(query, mapName,sourceName);
 	}
 	else{
@@ -311,3 +314,97 @@ GeoBeans.Source.Feature.WFS.prototype.serializeOrderby = function(orderby, xmlDo
 
 	return onode;
 }
+
+
+/**
+ * 获取字段
+ * @param  {GeoBeans.Handler} success 获取成功回调函数
+ * @param  {GeoBeans.Handler} failure 获取失败回调函数
+ */
+GeoBeans.Source.Feature.WFS.prototype.getFields = function(success,failure){
+	var params = "service=" + "wfs" 
+			+ "&version=" + this._version
+			+ "&request=describeFeatureType" 
+			+ "&typeName=" + this._featureType;
+	if(isValid(this._sourceName)){
+		params += "&sourceName=" + this._sourceName;
+	}
+	var that = this;
+	$.ajax({
+		type : "get",
+		url	 : this._url,
+		data : encodeURI(params),
+		contentType : "text/xml",
+		dataType: "xml",
+		async	: true,
+		beforeSend: function(XMLHttpRequest){
+		},
+		success	: function(xml, textStatus){
+			var fields = that.parseFields(xml);
+			handler.execute(fields);
+		},
+		error	: function(e){
+			
+		}
+	});	
+};
+
+/**
+ * 解析字段
+ * @private
+ */
+GeoBeans.Source.Feature.WFS.prototype.parseFields = function(xml){
+	if($(xml).find("ExceptionText").length != 0){
+		var text = $(xml).find("ExceptionText").text();
+		return text;
+	}
+	var that = this;
+	var f = null;
+	var fields = new Array();
+	$(xml).find("sequence").children().each(function() {
+        f = that.parseField(this);
+		fields.push(f);
+    });
+	
+	return fields;
+};
+/**
+ * 解析字段
+ * @private
+ */
+GeoBeans.Source.Feature.WFS.prototype.parseField = function(xml){
+	var name = $(xml).attr("name");
+	var nullable = $(xml).attr("nillable");
+	var xtype = $(xml).attr("type");
+	var type = this.parseFieldType(xtype);
+	var length = $(xml).attr("length");
+
+	var f = new GeoBeans.Field(name, type, null,length);
+	
+	if(type==GeoBeans.Field.Type.GEOMETRY){
+		var geomType = this.parseGeometryType(xtype);
+		f.setGeomType(geomType);
+		this.geomFieldName = name;
+	}
+	
+	return f;	
+}
+
+/**
+ * 解析字段类型
+ * @private
+ */
+GeoBeans.Source.Feature.WFS.prototype.parseFieldType = function(xtype){
+	if(xtype.substr(0,3) == "gml"){
+		return GeoBeans.Field.Type.GEOMETRY;
+	}		
+	return xtype.substring(4, xtype.length);
+};
+	
+/**
+ * 解析空间属性类型
+ * @private
+ */
+GeoBeans.Source.Feature.WFS.prototype.parseGeometryType = function(xtype){
+	return (xtype.substr(4, xtype.length-16));
+};
