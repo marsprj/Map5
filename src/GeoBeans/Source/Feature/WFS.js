@@ -341,10 +341,14 @@ GeoBeans.Source.Feature.WFS.prototype.getFields = function(success,failure){
 		},
 		success	: function(xml, textStatus){
 			var fields = that.parseFields(xml);
-			handler.execute(fields);
+			if(isValid(success)){
+				success.execute(fields);
+			}
 		},
 		error	: function(e){
-			
+			if(isValid(failure)){
+				failure.execute(e);
+			}
 		}
 	});	
 };
