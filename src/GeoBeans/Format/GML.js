@@ -20,6 +20,9 @@ GeoBeans.Format.GML = GeoBeans.Class(GeoBeans.Format,{
  * @return {GeoBeans.Geometry}     geometry
  */
 GeoBeans.Format.GML.prototype.read = function(gml){
+	if(!isValid(gml)){
+		return null;
+	}
 	var geometry = null;
 	
 	var type = gml.tagName;
