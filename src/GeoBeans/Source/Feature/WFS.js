@@ -180,10 +180,14 @@ GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 		},
 		success	: function(xml, textStatus){
 			that._features = that.parseFeatures(xml);
-			success.execute(that._features);
+			if(isValid(success)){
+				success.execute(that._features);
+			}
 		},
 		error	: function(e){
-			failure.execute(e.message);
+			if(isValid(failure)){
+				failure.execute(e.message);
+			}
 		}
 	});
 }
@@ -347,7 +351,7 @@ GeoBeans.Source.Feature.WFS.prototype.getFields = function(success,failure){
 		},
 		error	: function(e){
 			if(isValid(failure)){
-				failure.execute(e);
+				failure.execute(e.message);
 			}
 		}
 	});	
@@ -412,3 +416,269 @@ GeoBeans.Source.Feature.WFS.prototype.parseFieldType = function(xtype){
 GeoBeans.Source.Feature.WFS.prototype.parseGeometryType = function(xtype){
 	return (xtype.substr(4, xtype.length-16));
 };
+
+
+
+/**
+ * 删除要素
+ * @public
+ * @param  {GeoBeans.Feature} feature 删除的要素
+ * @param  {GeoBeans.Handler} success 删除成功回调函数
+ * @param  {GeoBeans.Handler]} failure 删除失败回调函数
+ */
+GeoBeans.Source.Feature.WFS.prototype.removeFeature = function(feature,success,failure){
+	if(!isValid(feature)){
+		return;
+	}
+
+	var str = '<?xml version="1.0" encoding="UTF-8"?>'
+			+ '<wfs:Transaction  service="WFS" version="' + this._version + '" outputFormat="' + this._outputFormat + '" ' 
+			+ 'xmlns:wfs="http://www.opengis.net/wfs" '
+			+ 'xmlns:ogc="http://www.opengis.net/ogc" '
+			+ 'xmlns:gml="http://www.opengis.net/gml" '
+			+ 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+			+ 'xsi:schemaLocation="http://www.opengis.net/wfs '
+			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
+
+	var doc = $.parseXML(str);
+	var root = $(doc).find("Transaction")[0];
+	if(isValid(this._sourceName)){
+		$(root).attr("sourceName", this._sourceName);	
+	}
+	var dnode = doc.createElement("wfs:Delete");
+	$(dnode).attr("name", this._featureType);
+	$(root).append(dnode);
+
+	var fid = feature.fid;
+	if(!isValid(fid)){
+		return;
+	}
+
+
+	var filter = new GeoBeans.Filter.IDFilter();
+	filter.addID(this._featureType + "." + fid);
+	var fw = new GeoBeans.FilterWriter();
+	var fnode = fw.write(doc,filter);
+	if(isValid(fnode)){
+		$(dnode).append(fnode);
+	}
+
+	var xml = (new XMLSerializer()).serializeToString(doc);
+	var that = this;
+	$.ajax({
+		type : "post",
+		url	 : this._url,
+		data : xml,
+		contentType : "text/xml",
+		dataType: "xml",
+		async	: true,
+		beforeSend: function(XMLHttpRequest){
+		},
+		success	: function(xml, textStatus){
+			var result = that.parseTransactionResp(xml);
+			if(isValid(success)){
+				success.execute(result);
+			}
+		},
+		error: function(e){
+			if(isValid(failure)){
+				failure.execute(e.message);
+			}
+		}
+	});
+
+};
+
+/**
+ * 解析Transaction
+ * @private
+ */
+GeoBeans.Source.Feature.WFS.prototype.parseTransactionResp = function(xml){
+	var exception = $(xml).find("ExceptionText").text();
+	if(exception != ""){
+		console.log(exception);
+		return null;
+	}
+
+
+	var insertedCount = $(xml).find("totalInserted").text();
+	var updatedCount = $(xml).find("totalUpdated").text();
+	var deletedCount = $(xml).find("totalDeleted").text();
+	return{
+		insert : parseInt(insertedCount),
+		update : parseInt(updatedCount),
+		delete : parseInt(deletedCount)
+	};
+};
+
+/**
+ * 增加要素
+ * @public
+ * @param {GeoBeans.Feature} feature 要素
+ * @param {GeoBeans.Handler} success 成功回调函数
+ * @param {GeoBeans.Handler} failure 失败回调函数
+ */
+GeoBeans.Source.Feature.WFS.prototype.addFeature = function(feature,success,failure){
+	if(!isValid(feature)){
+		return;
+	}
+
+	var str = '<?xml version="1.0" encoding="UTF-8"?>'
+			+ '<wfs:Transaction  service="WFS" version="' + this._version + '" outputFormat="' + this._outputFormat + '" ' 
+			+ 'xmlns:wfs="http://www.opengis.net/wfs" '
+			+ 'xmlns:world="http://www.openplans.org/world" '
+			+ 'xmlns:ogc="http://www.opengis.net/ogc" '
+			+ 'xmlns:gml="http://www.opengis.net/gml" '
+			+ 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+			+ 'xsi:schemaLocation="http://www.opengis.net/wfs '
+			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
+
+	var doc = $.parseXML(str);
+	var root = $(doc).find("Transaction")[0];
+
+	if(isValid(this._sourceName)){
+		$(root).attr("sourceName", this._sourceName);	
+	}
+
+	var inode = doc.createElement("wfs:Insert");
+
+	var nnode = doc.createElement("world:" + this._featureType);
+
+	var format = new GeoBeans.Format.GML();
+	var properties = feature.getProperties();
+	for(var key in properties){
+		var value = properties[key];
+		if(isValid(key)){
+			var knode = doc.createElement("world:" + key);
+			if(value instanceof GeoBeans.Geometry){
+				var gml = format.write(value);
+				$(knode).append(gml);
+			}else{
+				$(knode).text(value);	
+			}
+			$(nnode).append(knode);
+		}
+	}
+
+	$(inode).append(nnode);
+	$(root).append(inode);
+
+	var xml = (new XMLSerializer()).serializeToString(doc);
+	var that = this;
+
+	$.ajax({
+		type : "post",
+		url	 : this._url,
+		data : xml,
+		contentType : "text/xml",
+		dataType: "xml",
+		async	: true,
+		beforeSend: function(XMLHttpRequest){
+		},
+		success	: function(xml, textStatus){
+			var result = that.parseTransactionResp(xml);
+			if(isValid(success)){
+				success.execute(result);
+			}
+		},
+		error: function(e){
+			if(isValid(failure)){
+				failure.execute(e.message);
+			}
+		}
+	});
+};
+
+/**
+ * 更新要素
+ * @public
+ * @param  {GeoBeans.Feature} feature 要更新的要素
+ * @param  {GeoBeans.Handler} success 成功回调函数
+ * @param  {GeoBeans.Handler} failure 失败回调函数
+ */
+GeoBeans.Source.Feature.WFS.prototype.updateFeature = function(feature,success,failure){
+	if(!isValid(feature)){
+		return;
+	}
+
+	var str = '<?xml version="1.0" encoding="UTF-8"?>'
+			+ '<wfs:Transaction  service="WFS" version="' + this._version + '" outputFormat="' + this._outputFormat + '" ' 
+			+ 'xmlns:wfs="http://www.opengis.net/wfs" '
+			+ 'xmlns:ogc="http://www.opengis.net/ogc" '
+			+ 'xmlns:gml="http://www.opengis.net/gml" '
+			+ 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+			+ 'xsi:schemaLocation="http://www.opengis.net/wfs '
+			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';	
+	var doc = $.parseXML(str);
+	var root = $(doc).find("Transaction")[0];
+	if(isValid(this._sourceName)){
+		$(root).attr("sourceName", this._sourceName);	
+	}
+
+
+	var unode = doc.createElement("wfs:Update");
+	$(unode).attr("name", this._featureType);
+	$(root).append(unode);	
+
+	var fid = feature.fid;
+	if(!isValid(fid)){
+		return;
+	}
+
+
+	var format = new GeoBeans.Format.GML();
+	var properties = feature.getProperties();
+	for(var key in properties){
+		var value = properties[key];
+		if(isValid(key)){
+			var pnode = doc.createElement("wfs:Property");
+			var knode = doc.createElement("wfs:Name");
+			$(knode).text(key);
+			var vnode = doc.createElement("wfs:Value");
+			if(value instanceof GeoBeans.Geometry){
+				// var gml = format.write(value);
+				// $(vnode).append(gml);
+			}else{
+				$(vnode).text(value);	
+				$(pnode).append(knode);
+				$(pnode).append(vnode);
+				$(unode).append(pnode);
+			}
+
+		}
+	}
+
+	var filter = new GeoBeans.Filter.IDFilter();
+	filter.addID(this._featureType + "." + fid);
+	var fw = new GeoBeans.FilterWriter();
+	var fnode = fw.write(doc,filter);
+	if(isValid(fnode)){
+		$(unode).append(fnode);
+	}
+
+	var xml = (new XMLSerializer()).serializeToString(doc);
+	var that = this;
+
+	$.ajax({
+		type : "post",
+		url	 : this._url,
+		data : xml,
+		contentType : "text/xml",
+		dataType: "xml",
+		async	: true,
+		beforeSend: function(XMLHttpRequest){
+		},
+		success	: function(xml, textStatus){
+			var result = that.parseTransactionResp(xml);
+			if(isValid(success)){
+				success.execute(result);
+			}
+		},
+		error: function(e){
+			if(isValid(failure)){
+				failure.execute(e.message);
+			}
+		}
+	});
+
+}
