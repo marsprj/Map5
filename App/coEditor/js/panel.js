@@ -34,36 +34,78 @@ function addPanelEvent(){
 	});
 }
 
-// 保存feature
+// 区分是添加还是更新
 function saveFeature(){
-	if(featureCur == null){
+	if(featureCur == null && featureNew == null){
 		return;
 	}
 
 	$(".overlay-info-div .input-group").each(function(){
 		var field = $(this).find(".input-group-addon").html();
 		var value = $(this).find("input").val();
-
-		featureCur.setValue(field,value);
+		if(value != null && value != ""){
+			if(featureNew != null){
+				featureNew.setValue(field,value);
+			}else if(featureCur != null){
+				featureCur.setValue(field,value);
+			}
+			
+		}
+		
 	});
 
+	var source = layerCur.getSource();
+	var geometryName = source.getGeometryName();
+	if(featureNew != null){
+		featureNew.setValue(geometryName,featureNew.geometry);
+	}else if(featureCur != null){
+		featureCur.setValue(geometryName,featureCur.geometry);
+	}
+	
+	if(featureNew != null){
+		var addFeature_success = {
+			execute : addFeature_handler
+		};
+		source.addFeature(featureNew,addFeature_success);
+	}
+ 	
+ 	if(featureCur != null){
+ 		var updateFeature_success = {
+ 			execute : updateFeature_handler
+ 		};
+ 		source.updateFeature(featureCur,updateFeature_success);
+ 	}
+	
+	
+
+}
+
+function addFeature_handler(result){
+	featureNew = null;
+	console.log(result);
+	refreshFeatures();
+}
+
+function updateFeature_handler(result){
+	featureCur = null;
+	console.log(result);
 	refreshFeatures();
 
 }
 
-// 删除feature
+// 删除feature,如果是准备新添加的，则不用处理，如果是已有的，则删除
 function removeFeature(){
-	if(featureCur == null){
-		return;
+	if(featureCur != null){
+		var source = layerCur.getSource();
+		var removeFeature_success = {
+			execute : removeFeature_success_handler
+		};
+		source.removeFeature(featureCur,removeFeature_success);
 	}
 
-	var source = layerCur.getSource();
-	source.removeFeature(featureCur);
-	featureCur = null;
-
-	refreshFeatures();
-	mapObj.refresh();
-
+	if(featureNew != null){
+		refreshFeatures();
+	}
 }
 
 // 刷新列表
@@ -80,6 +122,7 @@ function refreshFeatures(){
 	if(source == null){
 		return;
 	}
+	$(".overlay-list-div").addClass("loading").empty();
 
 	var success = {
 		target : this,
@@ -90,11 +133,17 @@ function refreshFeatures(){
 			showFeatures(features);
 		}
 	};
-	source.getFeatures(null,success,null);
+	var prop = new GeoBeans.Expression.PropertyName();
+	prop.setName("name");
+
+	// 2、定义查询过滤条件，参数为查询的字段
+	var filter = new GeoBeans.Filter.IsNullFilter(prop);
+	source.getFeatures(filter,success,null);
 }
 
 // 展示列表
 function showFeatures(features){
+	$(".overlay-list-div").removeClass("loading")
 	if(features == null){
 		return;
 	}
@@ -114,7 +163,7 @@ function showFeatures(features){
 			continue;
 		}
 
-		name = feature.getValue("名称");
+		name = feature.getValue("name");
 		if(name == null || name == ""){
 			name = "未命名";
 		}
@@ -140,6 +189,7 @@ function showFeatures(features){
 		var fid = $(this).parents(".overlay-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();
+		fid += layerCur.getName() + "." + fid;
 		filter.addID(fid);
 
 		var query = new GeoBeans.Query({
@@ -159,7 +209,7 @@ function showFeatures(features){
 		var fid = $(this).parents(".overlay-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();
-		filter.addID(fid);
+		filter.addID(layerCur.getName() + "." + fid);
 
 		var query = new GeoBeans.Query({
 			typeName : layerCur.getName(),
@@ -201,12 +251,19 @@ function removeFeatureHandler(features){
 	}
 
 	var source = layerCur.getSource();
-	source.removeFeature(feature);
-	mapObj.refresh();
-
-	refreshFeatures();
+	var removeFeature_success = {
+		execute : removeFeature_success_handler
+	};
+	source.removeFeature(feature,removeFeature_success);
 }
 
+
+function removeFeature_success_handler(result){
+	console.log(result);
+	mapObj.refresh();
+	refreshFeatures();
+	featureCur = null;
+}
 
 // 返回图层列表
 function backToLayersTab(){

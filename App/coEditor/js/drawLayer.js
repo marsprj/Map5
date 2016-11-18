@@ -2,7 +2,8 @@
 function clickLayerDiv(listTypeDiv){
 	var layerName = $(listTypeDiv).attr("lname");
 	var type = $(listTypeDiv).attr("ltype");
-	layerCur = getLayer(layerName,type);
+	var db = $(listTypeDiv).attr("db");
+	layerCur = getLayer(layerName,type,db);
 
 	if(layerCur == null){
 		return;
@@ -25,40 +26,60 @@ function onComplete(geometry){
 
 // 展示具体的信息
 function showFeatureInfo(){
-	if(layerCur == null || featureCur == null){
+	if(layerCur == null){
 		return;
 	}
 
 	$(".left-tab").removeClass("active");
 	$("#overlay-info-tab").addClass("active");
 	var layerName = layerCur.getName();
-	var fields = getFields(layerName);
+	getFields(getFields_handler);
+}
+
+function getFields(getFields_handler){
+	if(layerCur == null){
+		return;
+	}
+
+	var handler = {
+		execute : getFields_handler
+	};
+
+	var source = layerCur.getSource();
+	source.getFields(handler);
+}
+
+function getFields_handler(fields){
+	var feature = null;
+	if(featureNew != null){
+		feature = featureNew;
+	}else{
+		feature = featureCur;
+	}
+	if(feature == null){
+		return;
+	}
+
 	var html = "";
 
 	for(var i = 0; i < fields.length;++i){
 		var field = fields[i];
-		var value = featureCur.getValue(field);
+		var name = field.getName();
+		var value = feature.getValue(name);
 		if(value == null){
 			value = "";
 		}
+		var type = field.getType();
+		if(type  == GeoBeans.Field.Type.GEOMETRY){
+			continue;
+		}
 		html += '<div class="input-group">'
-			+	'  	<span class="input-group-addon">' + fields[i] + '</span>'
+			+	'  	<span class="input-group-addon">' + name + '</span>'
 			+	'  	<input type="text" class="form-control" value="' + value +'">'
 			+	'</div>';
 	}
 
 	$(".overlay-info-div").html(html);
-
-
-}
-// 获取字段
-function getFields(layerName){
-	for(var i = 0;  i < g_layers.length;++i){
-		var obj = g_layers[i];
-		if(obj.name == layerName){
-			return obj.fields;
-		}
-	}
 }
 
 function addFeature(geometry){
@@ -72,11 +93,7 @@ function addFeature(geometry){
 		geometry : geometry
 	});
 
-	featureCur = feature;
-	var source = layerCur.getSource();
-	source.addFeature(feature);
-	mapObj.refresh();
-
+	featureNew = feature;
 	showFeatureInfo();
 }
 

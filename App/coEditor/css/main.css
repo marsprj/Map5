@@ -177,6 +177,15 @@ body{
 	margin: 10px 0px;
 }
 
+.overlay-info-div .input-group .input-group-addon{
+	max-width: 80px;
+	width: 80px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
+}
+
 #overlay-tab .input-group{
 	width: 92%;
 }
@@ -196,10 +205,15 @@ body{
 	background-position: center;
 	background-repeat: no-repeat;
 }
-#overlay-tab .overlay-list-div{
+#layer_tab .overlay-list-div{
 	overflow-y: auto;
+	height: calc(100% - 50px);
 }
-
+#layer_tab .overlay-list-div.loading{
+	background-image: url(../images/spin.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+}
 
 .overlay-item{
     border: 1px solid #ccc;
@@ -211,6 +225,13 @@ body{
 .overlay-item [class*=col-md]{
 	padding: 0px;
 	line-height: 32px;
+}
+.overlay-item .col-md-6{
+	width: 134px;
+	word-break: break-all;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .overlay-item .edit,.overlay-item .remove{

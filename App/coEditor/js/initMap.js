@@ -32,6 +32,31 @@ function addDrawInteraction(){
 
 
 // 加载所有图层
+// function loadLayersList(){
+// 	var html = "";
+// 	for(var i = 0; i < g_layers.length;++i){
+// 		var obj = g_layers[i];
+// 		var name = obj.name;
+// 		var image = obj.image;
+// 		var type = obj.type;
+
+// 		html += '<div class="list-type" lname="' + name + '" ltype="' + type + '">'
+// 		 	+	'	<div class="col-md-4">'
+// 		 	+	'		<img src="' +  image +'">'
+// 		 	+	'	</div>'
+// 		 	+	'	<div class="col-md-8">'
+// 		 	+			name
+// 		 	+	'	</div>'
+// 		 	+	'</div>';
+// 	}
+
+// 	$("#layers_tab .list-type-div").html(html);	
+
+// 	$("#layers_tab .list-type").click(function(){
+// 		clickLayerDiv(this);
+// 	});
+// }
+
 function loadLayersList(){
 	var html = "";
 	for(var i = 0; i < g_layers.length;++i){
@@ -39,8 +64,10 @@ function loadLayersList(){
 		var name = obj.name;
 		var image = obj.image;
 		var type = obj.type;
+		var db = obj.db;
 
-		html += '<div class="list-type" lname="' + name + '" ltype="' + type + '">'
+		html += '<div class="list-type" lname="' + name + '" ltype="' + type 
+						+ '" db="' + db + '">'
 		 	+	'	<div class="col-md-4">'
 		 	+	'		<img src="' +  image +'">'
 		 	+	'	</div>'
@@ -55,10 +82,11 @@ function loadLayersList(){
 	$("#layers_tab .list-type").click(function(){
 		clickLayerDiv(this);
 	});
+
 }
 
 // 获取图层
-function getLayer(layerName,type){
+function getLayer(layerName,type,db){
 	if(layerName == null){
 		return;
 	}
@@ -69,17 +97,23 @@ function getLayer(layerName,type){
 	}
 
 	var style = getStyleByLayerName(layerName);
-	layer = new GeoBeans.Layer.FeatureLayer({
+	var layer = new GeoBeans.Layer.FeatureLayer({			
 		name : layerName,
 		geometryType : type,
-		style : style,
-		source : new GeoBeans.Source.Feature({
-
-		})
+		source : new GeoBeans.Source.Feature.WFS({
+			url : "/ows/radi/mgr?",
+			version : "1.0.0",
+			featureNS : 'http://www.radi.ac.cn',
+			featurePrefix : "radi",
+			featureType : layerName,
+			geometryName : "shape",
+			outputFormat: "GML2",
+			sourceName : db
+		}),		
+		style : style
 	});
-	mapObj.addLayer(layer);
-	
 
+	mapObj.addLayer(layer);
 	return layer;
 }
 

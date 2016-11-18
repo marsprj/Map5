@@ -28,17 +28,15 @@
 	// 当前编辑的要素
 	var featureCur = null;
 
+	// 新增的要素
+	var featureNew = null;
+
 	// 当前的绘制几何图形
 	var geometry = null;
 	function init(){
 	 	loadMap();
 	 	addDrawInteraction();
 	 	loadLayersList();
-	 	// addFeatureLayer();
-	 	// addDrawEvent();
-	 	// loadPointType();
-	 	// loadLineType();
-	 	// loadPolygonType();
 	 	addPanelEvent();
 	}
 
