@@ -50,5 +50,27 @@ var g_layers = [
 		// 	"名称","地址","电话"
 		// ]
 		db : "gisdb"
+	},{
+		type : "LineString",
+		name : "rivers2",
+		image: "images/wave.png",
+		style : {
+			stroke : "#77d3de",
+			width : 2,
+			opacity : 1.0
+		},
+		db : "gisdb"	
+	},{
+		type : "Polygon",
+		name : "country2",
+		image: "images/home.png",
+		style : {
+			stroke : "#f6634f",
+			width : 0.3,
+			strokeOpacity : 1.0,
+			fill : "#f6634f",
+			fillOpacity : 1.0
+		},
+		db : "gisdb"	
 	}
 ];

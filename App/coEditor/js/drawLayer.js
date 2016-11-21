@@ -51,10 +51,17 @@ function getFields(getFields_handler){
 
 function getFields_handler(fields){
 	var feature = null;
+	
 	if(featureNew != null){
+		// 新建
 		feature = featureNew;
+		$("#overlay-info-tab .overlay-title").html("新建");
+		$("#overlay-info-tab .remove-btn").hide();
 	}else{
+		// 编辑
 		feature = featureCur;
+		$("#overlay-info-tab .overlay-title").html("编辑");
+		$("#overlay-info-tab .remove-btn").show();
 	}
 	if(feature == null){
 		return;

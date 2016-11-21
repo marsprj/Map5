@@ -29,6 +29,13 @@ function addPanelEvent(){
 		}
 		removeFeature();
 	});
+
+	// 取消
+	$(".cancel-btn").click(function(){
+		refreshFeatures();
+		featureNew = null;
+		featureCur = null;
+	});
 }
 
 // 区分是添加还是更新
@@ -102,6 +109,7 @@ function removeFeature(){
 
 	if(featureNew != null){
 		refreshFeatures();
+		featureNew = null;
 	}
 }
 
@@ -113,7 +121,7 @@ function refreshFeatures(){
 	addSelectInteraction();
 	$(".left-tab").removeClass("active");
 	$("#layer_tab").addClass("active");
-	$("#layer_tab .left-tab_title .layer-name").html(layerCur.name);
+	$("#layer_tab .left-tab_title .layer-name,#overlay-info-tab .left-tab_title .layer-name").html(layerCur.name);
 
 	var source = layerCur.getSource();
 	if(source == null){
