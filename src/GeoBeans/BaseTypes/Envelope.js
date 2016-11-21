@@ -142,3 +142,19 @@ GeoBeans.Envelope.prototype.intersects = function(other){
 
 	return (xmin < xmax) && (ymin < ymax) ;
 }
+
+/**
+ * 判断Envelope是否合法
+ * @return {Boolean} true  合法
+ *                   false 不合法
+ * @description Envelope合法性判断的标准是xmin<xmax && ymin<ymax
+ */
+GeoBeans.Envelope.prototype.isValid = function(){
+	if(this.xmin >= this.max){
+		return false;
+	}
+	if(this.ymin >= this.ymax){
+		return false;
+	}
+	return true;
+}
