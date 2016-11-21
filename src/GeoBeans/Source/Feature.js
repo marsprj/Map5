@@ -45,7 +45,7 @@ GeoBeans.Source.Feature.prototype.getFeatures = function(filter, success, failur
 	var query = new GeoBeans.Query({
 		"filter" : filter
 	});
-	this.query(query,success);
+	this.query(query,success,failure);
 }
 
 /**
@@ -159,12 +159,13 @@ GeoBeans.Source.Feature.prototype.selectByExtent = function(extent,features,maxF
 /************************************************************************************/
 
 /**
- * 查询
+ * 获得符合查询条件的Feature
+ * @param  {GeoBeans.Query} query  查询器
+ * @param  {GeoBeans.Handler} success 	   查询成功的回调函数
+ * @param  {GeoBeans.Handler} failure	   查询失败的回调函数
  * @public
- * @param  {GeoBeasn.Filter} filter 查询过滤器
- * @return {GeoBeans.Feature}        目标要素集合
  */
-GeoBeans.Source.Feature.prototype.query = function(query, handler){
+GeoBeans.Source.Feature.prototype.query = function(query, success, failure){
 	if(!isValid(query)){
 		if(isValid(handler)){
 			handler.execute(null);
@@ -180,7 +181,7 @@ GeoBeans.Source.Feature.prototype.query = function(query, handler){
 	var features = this._features;
 
 	var result = this.selectByFilter(filter,features,maxFeatures,offset);
-	if(isValid(handler)){
+	if(isValid(handler)){ 
 		handler.execute(result);
 	}
 }

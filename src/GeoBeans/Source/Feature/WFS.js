@@ -143,31 +143,38 @@ GeoBeans.Source.Feature.WFS.prototype.getFeaturesByExtent = function(extent, suc
  */
 GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 
-	if(!isValid(query)){
-		return;
-	}
-
 	var that = this;	
 	var mapName = null;
 	var sourceName = null;
 	var xml = null;
 
-	if(query instanceof GeoBeans.Filter){
-		var filter = query;
-		var condition = new GeoBeans.Query({
-			filter : filter
-		});
-		xml = this.serializeQuery(condition, mapName,sourceName);
-	}
-	else if(query instanceof GeoBeans.Query){
-		//将query对象序列化为xml字符串
-		var sourceName = this._sourceName;
-		xml = this.serializeQuery(query, mapName,sourceName);
+	if(isValid(query)){
+		if(query instanceof GeoBeans.Filter){
+			var filter = query;
+			var condition = new GeoBeans.Query({
+				filter : filter
+			});
+			xml = this.serializeQuery(condition, mapName,sourceName);
+		}
+		else if(query instanceof GeoBeans.Query){
+			//将query对象序列化为xml字符串
+			var sourceName = this._sourceName;
+			xml = this.serializeQuery(query, mapName,sourceName);
+		}
+		else{
+			if(isValid(failure)){
+				failure.execute("query type error");
+			}
+			return;
+		}
 	}
 	else{
-		return;
+		var condition = new GeoBeans.Query({
+			filter : null;
+		});
+		xml = this.serializeQuery(query, mapName,sourceName);
 	}
-
+	
 	$.ajax({
 		type : "post",
 		url	 : this._url,
