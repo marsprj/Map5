@@ -235,7 +235,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 	
 	drawMultiPoint : function(geometry,symbolizer, viewer){
-		points = geometry.points;
+		var points = geometry.points;
 		
 		var pt = null;
 		for(var i=0, len=points.length; i<len; i++){
@@ -245,7 +245,7 @@ GeoBeans.Renderer = GeoBeans.Class({
 	},
 	
 	drawMultiLineString : function(geometry,symbolizer, viewer){
-		lines = geometry.lines;		
+		var lines = geometry.lines;		
 		var line = null;
 		for(var i=0, len=lines.length; i<len; i++){
 			line = lines[i];
