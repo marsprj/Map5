@@ -10,16 +10,10 @@ function addPanelEvent(){
 	});
 
 
-    // 入库
-    $(".save-to-db").click(function(){
-    	alert("入库保存...");
-    });
-
     // 采集
     $(".draw-overlay").click(function(){
     	drawOverlay();
     });
-
 
 
   	// 保存feature
@@ -30,6 +24,9 @@ function addPanelEvent(){
 
 	// 删除feature
 	$(".remove-btn").click(function(){
+		if(!confirm("确认删除么？")){
+			return;
+		}
 		removeFeature();
 	});
 }
@@ -206,6 +203,9 @@ function showFeatures(features){
 
 	// 删除
 	$(".overlay-list-div .remove").click(function(){
+		if(!confirm("确认删除么？")){
+			return;
+		}
 		var fid = $(this).parents(".overlay-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();
