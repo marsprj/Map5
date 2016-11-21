@@ -1513,6 +1513,103 @@ GeoBeans.Map.prototype.setViewResolution = function(resolution){
 }
 
 /**
+ * 设置级别
+ * @public
+ * @param {int} zoom 设置地图级别
+ */
+GeoBeans.Map.prototype.zoomTo = function(zoom){
+	if(!isValid(this.baseLayer)){
+		return;
+	}
+
+	var viewer = this.getViewer();
+
+	var source = this.baseLayer.getSource();
+	var resolution = source.getResolution(zoom);
+
+	viewer.setZoomResolution(zoom,resolution);
+
+};
+
+/**
+ * 设置中心点
+ * @public
+ * @param {int} zoom 设置地图级别
+ */
+GeoBeans.Map.prototype.moveTo = function(center){
+	if(!isValid(center)){
+		return;
+	}
+
+	if(!(center instanceof GeoBeans.Geometry.Point)){
+		return;
+	}
+
+	var viewer = this.getViewer();
+	viewer.setCenter(center);
+};
+
+
+/**
+ * 放大到指定地图范围
+ * @public
+ * @param {GeoBeans.Envelope} extent 视口范围
+ */
+GeoBeans.Map.prototype.zoomToExtent = function(extent){
+	if(!isValid(extent)){
+		return;
+	}
+
+	var viewer = this.getViewer();
+	viewer.setExtent(extent);
+
+	if(isValid(this.baseLayer)){
+		var resolution = viewer.getResolution();
+		var source = this.baseLayer.getSource();
+		var zoom = source.getFitZoom(resolution);
+		viewer.setZoom(zoom);
+	}
+};
+
+/**
+ * 放大到指定分辨率
+ * @param {float} resolution 视口分辨率
+ */
+GeoBeans.Map.prototype.zoomToResolution = function(resolution){
+	if(!isValid(resolution)){
+		return;
+	}
+	this.viewer.setResolution(resolution);
+}
+
+/**
+ * 放大到指定要素集合的方位
+ * @param Array.<GeoBeans.Feature> features 视口分辨率
+ */
+GeoBeans.Map.prototype.zoomToFeatures = function(features){
+	if(!isValid(features)){
+		return;
+	}
+	if(features.length==0){
+		return;
+	}
+	var extent = new GeoBeans.Envelope();
+	features.forEach(function(f){
+		var g = f.getGeometry();
+		if(isValid(g)){
+			var e = g.getExtent();
+			if(isValid(e)){
+				extent.union(e);
+			}
+		}
+	});
+	if(extent.isValid){
+		this.zoomToExtent(extent);	
+	}
+}
+
+
+/**
  * 添加Widget
  * @public
  * @param {GeoBeans.Widget} widget widget

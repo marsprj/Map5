@@ -40,6 +40,7 @@ GeoBeans.Source.Feature.prototype.getGeometryName = function(){
  * @param  {GeoBeans.Handler} success 	   查询成功的回调函数
  * @param  {GeoBeans.Handler} failure	   查询失败的回调函数
  * @public
+ * @deprecated 功能集成到query方法上，该函数不再支持。
  */
 GeoBeans.Source.Feature.prototype.getFeatures = function(filter, success, failure){
 	var query = new GeoBeans.Query({
