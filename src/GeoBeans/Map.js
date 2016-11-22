@@ -149,7 +149,7 @@ GeoBeans.Map = GeoBeans.Class({
 	_resizeId : null,
 
 
-	VERSION : "1.0.102",
+	VERSION : "1.0.103",
 
 	CLASS_NAME : "GeoBeans.Map",
 	
@@ -1588,7 +1588,7 @@ GeoBeans.Map.prototype.zoomToResolution = function(resolution){
 
 /**
  * 放大到给定要素集合的范围
- * @param Array.<GeoBeans.Feature> features 要素集合
+ * @param {Array.<GeoBeans.Feature>} features 要素集合
  */
 GeoBeans.Map.prototype.zoomToFeatures = function(features){
 	if(!isValid(features)){
@@ -1615,7 +1615,7 @@ GeoBeans.Map.prototype.zoomToFeatures = function(features){
 
 /**
  * 放大到给定geometry范围
- * @param Array.<GeoBeans.Geometry> features 要素集合
+ * @param {GeoBeans.Geometry} geometry 几何对象
  * @public
  */
 GeoBeans.Map.prototype.zoomToGeometry = function(geometry){
