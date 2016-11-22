@@ -178,7 +178,7 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 
 	zoomInMap : function(rect){
 		this.map.clear();		
-		this.map.setViewExtent(rect);
+		this.map.zoomToExtent(rect);
 	},
 
 	zoomOutMap : function(rect){
@@ -200,7 +200,7 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 		nextent.scale(s);
 
 		this.map.clear();
-		this.map.setViewExtent(nextent);
+		this.map.zoomToExtent(nextent);
 	},
 });
 

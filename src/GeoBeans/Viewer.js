@@ -204,7 +204,7 @@ GeoBeans.Viewer.prototype.getResolution = function(){
  */
 GeoBeans.Viewer.prototype.setRotation = function(angle){
 	this._rotation = angle;
-	this._map.setZoom(this._zoom);
+	this._map.zoomTo(this._zoom);
 };
 
 

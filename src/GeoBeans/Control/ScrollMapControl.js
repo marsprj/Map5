@@ -44,14 +44,14 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 						target_zoom = maxZoom;
 					}
 					map.saveSnap();
-					map.setZoom(target_zoom);
+					map.zoomTo(target_zoom);
 				}else{
 					var target_zoom = zoom - count;
 					if(target_zoom < minZoom){
 						target_zoom = minZoom;
 					}
 					map.saveSnap();
-					map.setZoom(target_zoom);
+					map.zoomTo(target_zoom);
 				}
 			}
 			else{

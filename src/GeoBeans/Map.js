@@ -691,19 +691,19 @@ GeoBeans.Map.prototype.initViewer = function(viewer){
 			var center = viewer.center;
 
 			if((isValid(zoom))&&(isValid(center))){
-				this.setZoomCenter(zoom, center);	
+				this.zoomTo(zoom, center);	
 			}
 			else if(isValid(zoom)){
-				this.setZoom(zoom);
+				this.zoomTo(zoom);
 			}
 			else if(isValid(center)){
-				this.setCenter(center);
+				this.moveTo(center);
 			}
 			else if(isValid(viewer.extent)){
-				this.setViewExtent(viewer.extent);
+				this.zoomToExtent(viewer.extent);
 			}
 			else if(isValid(viewer.resolution)){
-				this.setViewResolution(viewer.resolution);
+				this.zoomToResolution(viewer.resolution);
 			}
 		}
 		else{
@@ -711,13 +711,13 @@ GeoBeans.Map.prototype.initViewer = function(viewer){
 			// 检查是否设置了options.extent参数，如果设置了。则利用options.extent参数更新viewer。
 			var extent = viewer.extent;
 			if(isValid(extent)){
-				this.setViewExtent(extent);
+				this.zoomToExtent(extent);
 				return;
 			}
 			// 检查是否设置了options.resolution参数，如果设置了。则利用options.resolution参数更新viewer。
 			var resolution = viewer.resolution;
 			if(isValid(resolution)){
-				this.setViewResolution(resolution);
+				this.zoomToResolution(resolution);
 			}
 		}
 	}
@@ -1425,12 +1425,12 @@ GeoBeans.Map.prototype.getControl = function(type){
 
 
 /**
- * 设置级别
+ * 设置地图级别和中心点，中心点可不设置
  * @public
- * @param {int} zoom 设置地图级别
- * @deprecated 修改为zoomTo接口
+ * @param  {integer} zoom   级别
+ * @param  {GeoBeans.Geometry.Point} center 中心点
  */
-GeoBeans.Map.prototype.setZoom = function(zoom){
+GeoBeans.Map.prototype.zoomTo = function(zoom,center){
 	if(!isValid(this.baseLayer)){
 		return;
 	}
@@ -1442,96 +1442,9 @@ GeoBeans.Map.prototype.setZoom = function(zoom){
 
 	viewer.setZoomResolution(zoom,resolution);
 
-};
-
-/**
- * 设置中心点
- * @public
- * @param {int} zoom 设置地图显示中心点
- * @deprecated　修改为zoomTo接口
- */
-GeoBeans.Map.prototype.setCenter = function(center){
-	if(!isValid(center)){
-		return;
+	if(isValid(center)){
+		viewer.setCenterResolution(center,resolution);
 	}
-
-	if(!(center instanceof GeoBeans.Geometry.Point)){
-		return;
-	}
-
-	var viewer = this.getViewer();
-	viewer.setCenter(center);
-};
-
-/**
- * 设置视口的中心点和缩放级
- * @public
- * @param {int} zoom   zoom级别
- * @param {GeoBeans.Geometry.Point} center 中心点坐标
- */
-GeoBeans.Map.prototype.setZoomCenter = function(zoom,center){
-	if(!isValid(this.baseLayer)){
-		return;
-	}
-
-	var viewer = this.getViewer();
-	viewer.setZoom(zoom);
-
-	var source = this.baseLayer.getSource();
-	var resolution = source.getResolution(zoom);
-	viewer.setCenterResolution(center,resolution);
-};
-
-/**
- * 设置视口范围
- * @public
- * @param {GeoBeans.Envelope} extent 视口范围
- * @deprecated 修改为zoomToExtent接口
- */
-GeoBeans.Map.prototype.setViewExtent = function(extent){
-	if(!isValid(extent)){
-		return;
-	}
-
-	var viewer = this.getViewer();
-	viewer.setExtent(extent);
-
-	if(isValid(this.baseLayer)){
-		var resolution = viewer.getResolution();
-		var source = this.baseLayer.getSource();
-		var zoom = source.getFitZoom(resolution);
-		viewer.setZoom(zoom);
-	}
-};
-
-/**
- * 设置视口的分辨率
- * @param {float} resolution 视口分辨率
- * @deprecated　修改为zoomToResolution接口
- */
-GeoBeans.Map.prototype.setViewResolution = function(resolution){
-	if(!isValid(resolution)){
-		return;
-	}
-	this.viewer.setResolution(resolution);
-}
-
-/**
- * 设置级别
- * @public
- * @param {int} zoom 设置地图级别
- */
-GeoBeans.Map.prototype.zoomTo = function(zoom){
-	if(!isValid(this.baseLayer)){
-		return;
-	}
-
-	var viewer = this.getViewer();
-
-	var source = this.baseLayer.getSource();
-	var resolution = source.getResolution(zoom);
-
-	viewer.setZoomResolution(zoom,resolution);
 
 };
 

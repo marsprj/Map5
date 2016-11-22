@@ -55,7 +55,7 @@ GeoBeans.Control.TouchControl = GeoBeans.Class(GeoBeans.Control, {
 					var cross_e = Math.pow(extent_e.getWidth(),2) + Math.pow(extent_e.getHeight(),2);
 					if(cross_s<cross_e){
 						//zoom in
-						that.map.setViewExtent(extent_e);
+						that.map.zoomToExtent(extent_e);
 					}
 					else{
 						//zoom out
@@ -63,7 +63,7 @@ GeoBeans.Control.TouchControl = GeoBeans.Class(GeoBeans.Control, {
 						var viewer = that.map.getViewer();
 						var mapExtent = viewer.getExtent().clone();
 						mapExtent.scale(scale);
-						that.map.setViewExtent(mapExtent);	
+						that.map.zoomToExtent(mapExtent);	
 					}
 				}
 				break;

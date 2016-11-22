@@ -110,8 +110,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			that.map.saveSnap();
 			that.map.clear();
-			viewer.setZoom(zoom);	
-			that.map.draw();
+			that.map.zoomTo(zoom);	
 		});	
 		$(mapContainer).find(".map-nav-zoom-out").click(function(){
 			var viewer = that.map.getViewer();
@@ -127,8 +126,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 			that.map.saveSnap();
 			that.map.clear();
-			viewer.setZoom(zoom);		
-			that.map.draw();
+			that.map.zoomTo(zoom);			
 		});
 		var onMouseDown = function(evt){
 			evt.preventDefault();
@@ -201,8 +199,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 				var mapZoom = viewer.getZoom();
 				if(mapZoom != zoom){
 					that.map.clear();	
-					viewer.setZoom(zoom);	
-					that.map.draw();
+					that.map.zoomTo(zoom);	
 				}
 			};
 
@@ -235,31 +232,27 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			var viewer = that.map.getViewer();
 			if(17 > viewer.getMinZoom() && 17 <= viewer.getMaxZoom()){
 				that.map.clear();	
-				viewer.setZoom(17);
-				that.map.draw();				
+				that.map.zoomTo(17);					
 			}
 		});
 		$(".map-nav-zoom-label-city").click(function(){
 			var viewer = that.map.getViewer();
 			if(12 > viewer.getMinZoom() && 12 < viewer.getMaxZoom()){
-				that.map.clear();	
-				viewer.setZoom(12);
-				that.map.draw();
+				that.map.clear();
+				that.map.zoomTo(12);		
 			}
 		});
 		$(".map-nav-zoom-label-province").click(function(){
 			var viewer = that.map.getViewer();
 			if(8 > viewer.getMinZoom() && 8 < viewer.getMaxZoom()){
 				that.map.clear();	
-				viewer.setZoom(8);
-				that.map.draw();
+				that.map.zoomTo(8);	
 			}
 		});	
 		$(".map-nav-zoom-label-country").click(function(){
 			if(4 > that.map.getMinLevel() && 4 < that.map.getMaxLevel()){
 				that.map.clear();	
-				that.map.setLevel(4);
-				that.map.draw();
+				that.map.zoomTo(4);	
 			}
 
 		});

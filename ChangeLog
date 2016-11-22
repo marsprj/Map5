@@ -37,3 +37,9 @@ version 1.0.0-beta
 2016.11.22  bug  修改对图层显示的初始化设置。
 2016.11.22  bug  修改feature查询的回调函数。
 2016.11.22  bug  修改map定位到features和geometry的问题。
+2016.11.22  功能 修改地图定位的函数，更改了一些名称，具体如下：
+		 setZoom(zoom) => zoomTo(zoom)
+		 setZoomCenter => zoomTo(zoom,center)
+		 setCenter(center) => moveTo(center)
+		 setViewExtent(extent) => zoomToExtent(extent)
+		 setViewResolution(resolution) => zoomToResolution(resolution)
