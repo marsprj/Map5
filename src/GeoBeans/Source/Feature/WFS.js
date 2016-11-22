@@ -430,8 +430,8 @@ GeoBeans.Source.Feature.WFS.prototype.parseGeometryType = function(xtype){
  * 删除要素
  * @public
  * @param  {GeoBeans.Feature} feature 删除的要素
- * @param  {GeoBeans.Handler} success 删除成功回调函数
- * @param  {GeoBeans.Handler]} failure 删除失败回调函数
+ * @param  {GeoBeans.Handler} success 删除成功的回调函数
+ * @param  {GeoBeans.Handler} failure 删除失败的回调函数
  */
 GeoBeans.Source.Feature.WFS.prototype.removeFeature = function(feature,success,failure){
 	if(!isValid(feature)){
