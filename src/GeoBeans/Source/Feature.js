@@ -86,7 +86,7 @@ GeoBeans.Source.Feature.prototype.removeFeatures = function(filter){
 /**
  * 删除feature
  * @public
- * @param  {GeoBeans.Feature]} feature 要素
+ * @param  {GeoBeans.Feature} feature 要素
  */
 GeoBeans.Source.Feature.prototype.removeFeature = function(feature){
 	for(var i = 0; i < this._features.length;++i){
