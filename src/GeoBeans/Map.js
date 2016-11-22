@@ -149,7 +149,7 @@ GeoBeans.Map = GeoBeans.Class({
 	_resizeId : null,
 
 
-	VERSION : "1.0.102",
+	VERSION : "1.0.103",
 
 	CLASS_NAME : "GeoBeans.Map",
 	
@@ -1428,6 +1428,7 @@ GeoBeans.Map.prototype.getControl = function(type){
  * 设置级别
  * @public
  * @param {int} zoom 设置地图级别
+ * @deprecated 修改为zoomTo接口
  */
 GeoBeans.Map.prototype.setZoom = function(zoom){
 	if(!isValid(this.baseLayer)){
@@ -1446,7 +1447,8 @@ GeoBeans.Map.prototype.setZoom = function(zoom){
 /**
  * 设置中心点
  * @public
- * @param {int} zoom 设置地图级别
+ * @param {int} zoom 设置地图显示中心点
+ * @deprecated　修改为zoomTo接口
  */
 GeoBeans.Map.prototype.setCenter = function(center){
 	if(!isValid(center)){
@@ -1484,6 +1486,7 @@ GeoBeans.Map.prototype.setZoomCenter = function(zoom,center){
  * 设置视口范围
  * @public
  * @param {GeoBeans.Envelope} extent 视口范围
+ * @deprecated 修改为zoomToExtent接口
  */
 GeoBeans.Map.prototype.setViewExtent = function(extent){
 	if(!isValid(extent)){
@@ -1504,6 +1507,7 @@ GeoBeans.Map.prototype.setViewExtent = function(extent){
 /**
  * 设置视口的分辨率
  * @param {float} resolution 视口分辨率
+ * @deprecated　修改为zoomToResolution接口
  */
 GeoBeans.Map.prototype.setViewResolution = function(resolution){
 	if(!isValid(resolution)){
@@ -1551,7 +1555,7 @@ GeoBeans.Map.prototype.moveTo = function(center){
 
 
 /**
- * 放大到指定地图范围
+ * 放大到给定地图范围
  * @public
  * @param {GeoBeans.Envelope} extent 视口范围
  */
@@ -1572,7 +1576,7 @@ GeoBeans.Map.prototype.zoomToExtent = function(extent){
 };
 
 /**
- * 放大到指定分辨率
+ * 放大到给定分辨率
  * @param {float} resolution 视口分辨率
  */
 GeoBeans.Map.prototype.zoomToResolution = function(resolution){
@@ -1583,8 +1587,8 @@ GeoBeans.Map.prototype.zoomToResolution = function(resolution){
 }
 
 /**
- * 放大到指定要素集合的方位
- * @param Array.<GeoBeans.Feature> features 视口分辨率
+ * 放大到给定要素集合的范围
+ * @param {Array.<GeoBeans.Feature>} features 要素集合
  */
 GeoBeans.Map.prototype.zoomToFeatures = function(features){
 	if(!isValid(features)){
@@ -1603,6 +1607,25 @@ GeoBeans.Map.prototype.zoomToFeatures = function(features){
 			}
 		}
 	});
+	if(extent.isValid){
+		this.zoomToExtent(extent);	
+	}
+}
+
+
+/**
+ * 放大到给定geometry范围
+ * @param {GeoBeans.Geometry} geometry 几何对象
+ * @public
+ */
+GeoBeans.Map.prototype.zoomToGeometry = function(geometry){
+	if(!isValid(geometry)){
+		return;
+	}
+	var extent = geoemtry.getExtent();
+	if(isValid(extent)){
+		return;
+	}
 	if(extent.isValid){
 		this.zoomToExtent(extent);	
 	}
