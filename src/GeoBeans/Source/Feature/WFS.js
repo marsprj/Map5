@@ -170,7 +170,7 @@ GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 	}
 	else{
 		var condition = new GeoBeans.Query({
-			filter : null;
+			filter : null
 		});
 		xml = this.serializeQuery(query, mapName,sourceName);
 	}
