@@ -129,8 +129,13 @@ function refreshFeatures(){
 	}
 	$(".overlay-list-div").addClass("loading").empty();
 
+	
+	var query = new GeoBeans.Query({
+		typeName : layerCur.getName(),
+		filter : null
+	});
+
 	var success = {
-		target : this,
 		execute : function(features){
 			if(!isValid(features)){
 				return;
@@ -138,12 +143,8 @@ function refreshFeatures(){
 			showFeatures(features);
 		}
 	};
-	var prop = new GeoBeans.Expression.PropertyName();
-	prop.setName("name");
 
-	// 2、定义查询过滤条件，参数为查询的字段
-	var filter = new GeoBeans.Filter.IsNullFilter(prop);
-	source.getFeatures(filter,success,null);
+	layerCur.query(query,success);
 }
 
 // 展示列表
@@ -242,6 +243,18 @@ function editFeatureHandler(features){
 	if(feature == null){
 		return;
 	}
+	var selection = mapObj.getSelection();
+	selection.setFeatures(features);
+
+
+	var zoom = mapObj.getViewer().getZoom();
+	var geometry = feature.getGeometry();
+	if(geometry instanceof GeoBeans.Geometry.Point){
+		mapObj.zoomTo(zoom,geometry);
+	}else{
+		mapObj.zoomToFeatures([feature]);
+	}
+	
 	featureCur = feature;
 
 	showFeatureInfo();

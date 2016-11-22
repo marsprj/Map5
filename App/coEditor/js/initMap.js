@@ -201,13 +201,14 @@ function getStyleByLayerName(layerName){
 function onSelectionChange(features){
 	console.log("click:" + features.length);
 	if(features.length == 0){
+		refreshFeatures();
 		return;
 	}
 
 	var feature = features[0];
 	featureCur = feature;
 	openInfoWindow();
-	removeSelectInteraction();
+	// removeSelectInteraction();
 	showFeatureInfo();
 }
 
@@ -253,7 +254,7 @@ function openInfoWindow(){
 		return;
 	}
 
-	var name = featureCur.getValue("名称");
+	var name = featureCur.getValue("name");
 	infoWindow.setPosition(geometry);
 	infoWindow.setOption({
 		title : layerCur.getName(),
