@@ -18,6 +18,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
 
 <!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Geometry-->
@@ -132,7 +133,7 @@
 	function setZoom(){
 
 		// 设置级别
-		mapObj.setZoom(10);
+		mapObj.zoomTo(10);
 	}
 
 	function getZoom(){

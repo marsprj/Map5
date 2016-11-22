@@ -29,6 +29,7 @@
 <!--Projection-->
 <script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
 <!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Stype-->
@@ -167,9 +168,7 @@
 		// 4、设置中心点和显示级别
 		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);
-		var viewer = mapObj.getViewer();	
-		// viewer.setZoomCenter(zoom,center);
-		mapObj.setZoomCenter(zoom,center);
+		mapObj.zoomTo(zoom,center);
 	}
 
 	function onZoomIn(){

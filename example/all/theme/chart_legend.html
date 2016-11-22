@@ -22,6 +22,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
 
 <!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Geometry-->
@@ -195,7 +196,7 @@
 		mapObj.addLayer(layer);
 
 		var center = new GeoBeans.Geometry.Point(117.68,39.26);
-		mapObj.setZoomCenter(10,center);
+		mapObj.zoomTo(10,center);
 	}
 
 

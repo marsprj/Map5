@@ -19,6 +19,7 @@
 
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Envelope.js"></script>
 <!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Render/Transformation.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
@@ -94,7 +95,7 @@
 		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);		
 		var viewer = mapObj.getViewer();	
-		viewer.setZoomCenter(zoom,center);
+		viewer.zoomTo(zoom,center);
 	}
 
 	function zoomIn(){

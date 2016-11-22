@@ -19,6 +19,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
 
 <!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Geometry-->
@@ -147,7 +148,7 @@
 		var viewer = mapObj.getViewer();
 
 		// 2、设置范围
-		mapObj.setViewExtent(extent);
+		mapObj.zoomToExtent(extent);
 		
 		// 3、绘图
 		// mapObj.draw();

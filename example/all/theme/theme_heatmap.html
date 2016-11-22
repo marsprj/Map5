@@ -20,6 +20,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
 
 <!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
 <!--Geometry-->
@@ -165,7 +166,6 @@
 		layer.setStyle(style);
 
 		mapObj.addLayer(layer);
-		// mapObj.getViewer().setExtent(layer.getExtent());
 		mapObj.refresh();
 	}
 
