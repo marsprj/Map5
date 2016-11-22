@@ -1607,7 +1607,7 @@ GeoBeans.Map.prototype.zoomToFeatures = function(features){
 			}
 		}
 	});
-	if(extent.isValid){
+	if(extent.isValid()){
 		this.zoomToExtent(extent);	
 	}
 }
@@ -1622,11 +1622,11 @@ GeoBeans.Map.prototype.zoomToGeometry = function(geometry){
 	if(!isValid(geometry)){
 		return;
 	}
-	var extent = geoemtry.getExtent();
-	if(isValid(extent)){
+	var extent = geometry.getExtent();
+	if(!isValid(extent)){
 		return;
 	}
-	if(extent.isValid){
+	if(extent.isValid()){
 		this.zoomToExtent(extent);	
 	}
 }
