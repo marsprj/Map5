@@ -89,6 +89,10 @@ GeoBeans.Layer.PieChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				this.opacity = 1;
 			}
 
+			if(isValid(options.visible)){
+				this.setVisible(options.visible);
+			}
+
 		}
 
 	},

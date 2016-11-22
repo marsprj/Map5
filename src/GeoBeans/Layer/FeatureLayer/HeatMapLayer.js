@@ -116,6 +116,10 @@ GeoBeans.Layer.HeatMapLayer.prototype.apply = function(options){
 	if(isValid(options.showGeometry)){
 		this.showGeometry = options.showGeometry;
 	}
+
+	if(isValid(options.visible)){
+		this.setVisible(options.visible);
+	}
 }
 
 /**

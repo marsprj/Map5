@@ -89,6 +89,10 @@ GeoBeans.Layer.RippleLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			}else{
 				this.type = "stroke";
 			}
+
+			if(isValid(options.visible)){
+				this.setVisible(options.visible);
+			}
 		}
 	},
 

@@ -94,6 +94,10 @@ GeoBeans.Layer.BarChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			}else{
 				this.y_axisLine = false;
 			}
+
+			if(isValid(options.visible)){
+				this.setVisible(options.visible);
+			}
 		}
 		
 	},

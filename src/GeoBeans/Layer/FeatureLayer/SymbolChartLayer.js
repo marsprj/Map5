@@ -85,6 +85,10 @@ GeoBeans.Layer.SymbolChartLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 			if(isValid(options.level)){
 				this.level = options.level;
 			}	
+
+			if(isValid(options.visible)){
+				this.setVisible(options.visible);
+			}
 		}
 		
 	},

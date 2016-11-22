@@ -24,6 +24,10 @@ GeoBeans.Layer.ClusterLayer = GeoBeans.Class(GeoBeans.Layer.FeatureLayer,{
 				this.showGeometry = false;
 			}
 			this.geometryType = GeoBeans.Geometry.Type.POINT;
+
+			if(isValid(options.visible)){
+				this.setVisible(options.visible);
+			}
 		}
 		this.createSymbolizer();
 		this.cluster = null;

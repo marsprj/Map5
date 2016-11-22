@@ -25,6 +25,9 @@ GeoBeans.Layer.TileLayer = GeoBeans.Class(GeoBeans.Layer,{
 		this.name = options.name;
 		this._source = options.source;
 		this.setOpacity(isValid(options.opacity) ? options.opacity : 1.0);
+		if(isValid(options.visible)){
+			this.setVisible(options.visible);
+		}
 	},
 });
 

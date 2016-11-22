@@ -56,6 +56,10 @@ GeoBeans.Layer.GeoLineLayer = GeoBeans.Class(GeoBeans.Layer,{
 			if(isValid(options.trailLength)){
 				this.trailLength = options.trailLength;
 			}
+
+			if(isValid(options.visible)){
+				this.setVisible(options.visible);
+			}
 		}
 		this.calculateLine();
 	},

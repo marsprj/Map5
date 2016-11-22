@@ -49,6 +49,10 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 		this.style = options.style;
 		this.featureType = options.featureType;
 		this.features = [];
+
+		if(isValid(options.visible)){
+			this.setVisible(options.visible);
+		}
 	},
 	
 	destroy : function(){

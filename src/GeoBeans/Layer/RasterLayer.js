@@ -43,6 +43,9 @@ GeoBeans.Layer.RasterLayer = GeoBeans.Class(GeoBeans.Layer,{
 
 		this.name = options.name;
 		this._source = options.source;
+		if(isValid(options.visible)){
+			this.setVisible(options.visible);
+		}
 	},
 
 	destroy : function(){		
