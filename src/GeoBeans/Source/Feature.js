@@ -168,8 +168,8 @@ GeoBeans.Source.Feature.prototype.selectByExtent = function(extent,features,maxF
  */
 GeoBeans.Source.Feature.prototype.query = function(query, success, failure){
 	if(!isValid(query)){
-		if(isValid(handler)){
-			handler.execute(null);
+		if(isValid(success)){
+			success.execute(this._features);
 		}
 		return;
 	}
@@ -182,8 +182,8 @@ GeoBeans.Source.Feature.prototype.query = function(query, success, failure){
 	var features = this._features;
 
 	var result = this.selectByFilter(filter,features,maxFeatures,offset);
-	if(isValid(handler)){ 
-		handler.execute(result);
+	if(isValid(success)){ 
+		success.execute(result);
 	}
 }
 
