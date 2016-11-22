@@ -582,6 +582,9 @@ var g_catalog = [
 			},{
 				"name" : "波纹图",
 				"link" : "animation/animation_ripple_layer.html"
+			},{
+				"name" : "轨迹线",
+				"link" : "animation/animation_path_layer.html"
 			}
 		]
 	}
