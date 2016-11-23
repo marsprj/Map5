@@ -33,6 +33,27 @@
 
 	// 当前的绘制几何图形
 	var geometry = null;
+
+	// 用户名称
+	var userName = "bh-test";
+
+	// 每页显示的个数
+	var listCount = 20;
+
+
+	// 是否仅获取当前用户的数据
+	var userOnly = false;
+
+
+	// 列表要素
+	var featuresList = null;
+
+	// 当前页码
+	var currentPage = 1;
+
+	// 所有页码
+	var pageCount = null;
+
 	function init(){
 	 	loadMap();
 	 	addDrawInteraction();
@@ -74,8 +95,8 @@
 						<button class="btn btn-default list-btn" type="button"  data-toggle="tooltip" data-placement="top" title="返回列表">&nbsp;</button>
 					</div>
 				</div>
-				<div class="overlay-list-div">
-				</div>
+				<!-- <div class="overlay-list-div">
+				</div> -->
 			</div>
 			<!-- 点类型 -->
 			<div class="left-tab" id="point_type_tab">
@@ -120,6 +141,15 @@
 					<span class="right-title-btn draw-overlay">采集</span>
 				</div>
 				<div class="overlay-list-div">
+				</div>
+				<div class="page-div">
+					<span class="current-page">1 / 1 页</span>
+					<ul class="pagination"> 
+						<li class="first-page">首页</li>
+						<li class="pre-page">上一页</li>
+						<li class="next-page">下一页</li>
+						<li class="last-page">末页</li>
+					</ul>
 				</div>
 			</div>						
 			<!-- 信息编辑 -->

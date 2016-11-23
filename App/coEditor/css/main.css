@@ -166,6 +166,20 @@ body{
 	margin-left: 14px;
 }
 
+
+.list-type .layer-invisible,.list-type .layer-visible{
+	background-position: center;
+	background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.list-type .layer-invisible{
+	background-image: url(../images/ok_2.png);
+}
+.list-type .layer-visible{
+	background-image: url(../images/ok.png);
+}
+
 .overlay-info-div{
 	height: calc(100% - 50px);
 	width: 100%;
@@ -207,7 +221,7 @@ body{
 }
 #layer_tab .overlay-list-div{
 	overflow-y: auto;
-	height: calc(100% - 50px);
+	height: calc(100% - 90px);
 }
 #layer_tab .overlay-list-div.loading{
 	background-image: url(../images/spin.gif);
@@ -246,4 +260,28 @@ body{
 
 .overlay-item:hover{
 	background-color: #f9f9f9;
+}
+
+.page-div{
+	height: 40px;
+    text-align: center;
+    border-top: 1px solid #4b5f83;
+    margin: 0px 10px;
+}
+.pagination{
+  margin: 12px 0px 4px 6px !important;
+}
+.pagination  li{
+  border: 1px solid #C9D9EA;
+  border-radius: 3px;
+  margin-right: 2px;
+  cursor: pointer;
+  padding: 4px;
+}
+.pagination  li:hover{
+  color: #fff;
+  background-color: #428bca;
+}
+.pagination li.current-page{
+  border: none;
 }

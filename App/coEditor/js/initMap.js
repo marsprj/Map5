@@ -71,16 +71,19 @@ function loadLayersList(){
 		 	+	'	<div class="col-md-4">'
 		 	+	'		<img src="' +  image +'">'
 		 	+	'	</div>'
-		 	+	'	<div class="col-md-8">'
+		 	+	'	<div class="col-md-6 layer-name">'
 		 	+			name
+		 	+	'	</div>'
+		 	+	'	<div class="col-md-2 layer-invisible">'
 		 	+	'	</div>'
 		 	+	'</div>';
 	}
 
 	$("#layers_tab .list-type-div").html(html);	
 
-	$("#layers_tab .list-type").click(function(){
-		clickLayerDiv(this);
+	$("#layers_tab .list-type .layer-name").click(function(){
+		var layerDiv = $(this).parents(".list-type");
+		clickLayerDiv(layerDiv);
 	});
 
 }
@@ -208,7 +211,6 @@ function onSelectionChange(features){
 	var feature = features[0];
 	featureCur = feature;
 	openInfoWindow();
-	// removeSelectInteraction();
 	showFeatureInfo();
 }
 

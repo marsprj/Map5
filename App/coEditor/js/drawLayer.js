@@ -5,12 +5,17 @@ function clickLayerDiv(listTypeDiv){
 	var db = $(listTypeDiv).attr("db");
 	layerCur = getLayer(layerName,type,db);
 
+	$(listTypeDiv).find(".layer-invisible,.layer-visible").removeClass("layer-invisible")
+		.addClass("layer-visible");
+	layerCur.setVisible(true);
+	mapObj.refresh();
+
 	if(layerCur == null){
 		return;
 	}
 
 	refreshFeatures();
-	drawOverlay();
+	// drawOverlay();
 }
 
 // 绘制结束
@@ -78,6 +83,9 @@ function getFields_handler(fields){
 		}
 		var type = field.getType();
 		if(type  == GeoBeans.Field.Type.GEOMETRY){
+			continue;
+		}
+		if(name == "gid" || name == "username"){
 			continue;
 		}
 		html += '<div class="input-group">'

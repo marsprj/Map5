@@ -4,6 +4,23 @@ function addPanelEvent(){
         container: "body"
     });
 
+    // 图层显示设置
+    $("#layers_tab .layer-visible,#layers_tab .layer-invisible").click(function(){
+    	var listTypeDiv = $(this).parents(".list-type");
+		var layerName = $(listTypeDiv).attr("lname");
+		var type = $(listTypeDiv).attr("ltype");
+		var db = $(listTypeDiv).attr("db");
+		layerCur = getLayer(layerName,type,db);
+		if($(this).hasClass("layer-visible")){
+			layerCur.setVisible(false);
+			$(this).removeClass("layer-visible").addClass("layer-invisible");
+		}else{
+			layerCur.setVisible(true);
+			$(this).removeClass("layer-invisible").addClass("layer-visible");
+		}
+		mapObj.refresh();
+    });
+
 	// 返回图层列表
 	$(".back-to-layers").click(function(){
 		backToLayersTab();
@@ -36,6 +53,29 @@ function addPanelEvent(){
 		featureNew = null;
 		featureCur = null;
 	});
+
+	// 切换页码
+	$(".page-div .pagination li").click(function(){
+		if($(this).hasClass("first-page")){
+			currentPage = 1;
+			showFeatureByPage();
+			
+		}else if($(this).hasClass("pre-page")){
+			if(currentPage > 1 && currentPage <= pageCount){
+				currentPage = currentPage - 1;
+				showFeatureByPage();
+			}
+		}else if($(this).hasClass("next-page")){
+			if(currentPage > 0 && currentPage < pageCount){
+				currentPage = currentPage + 1;
+				showFeatureByPage();
+			}
+		}else if($(this).hasClass("last-page")){
+			currentPage = pageCount;
+			showFeatureByPage();
+		}
+	});
+
 }
 
 // 区分是添加还是更新
@@ -62,6 +102,7 @@ function saveFeature(){
 	var geometryName = source.getGeometryName();
 	if(featureNew != null){
 		featureNew.setValue(geometryName,featureNew.geometry);
+		featureNew.setValue("username",userName);
 	}else if(featureCur != null){
 		featureCur.setValue(geometryName,featureCur.geometry);
 	}
@@ -80,8 +121,6 @@ function saveFeature(){
  		source.updateFeature(featureCur,updateFeature_success);
  	}
 	
-	
-
 }
 
 function addFeature_handler(result){
@@ -118,21 +157,29 @@ function refreshFeatures(){
 	if(layerCur == null){
 		return;
 	}
+
+
 	addSelectInteraction();
 	$(".left-tab").removeClass("active");
 	$("#layer_tab").addClass("active");
 	$("#layer_tab .left-tab_title .layer-name,#overlay-info-tab .left-tab_title .layer-name").html(layerCur.name);
-
-	var source = layerCur.getSource();
-	if(source == null){
-		return;
-	}
 	$(".overlay-list-div").addClass("loading").empty();
 
-	
+	var filter = null;
+	if(userOnly){
+		var oper = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.Expression.PropertyName();
+		prop.setName("username");
+		var literal = new GeoBeans.Expression.Literal();
+		literal.setValue(userName);
+		filter = new GeoBeans.Filter.BinaryComparisionFilter(
+							oper,
+							prop,
+							literal);
+	}
 	var query = new GeoBeans.Query({
 		typeName : layerCur.getName(),
-		filter : null
+		filter : filter
 	});
 
 	var success = {
@@ -154,12 +201,33 @@ function showFeatures(features){
 		return;
 	}
 
+	featuresList = features;
+
+	pageCount = Math.ceil(featuresList.length / listCount);
+	currentPage = 1;
+	showFeatureByPage();
+}
+
+
+function showFeatureByPage(){
+	var page = currentPage;
+	if(currentPage > pageCount){
+		return;
+	}
+
+	$(".current-page").html(currentPage + " / " + pageCount + "页");
+	var start = featuresList.length - (currentPage -1) * listCount -1;
+	var end = start - listCount + 1;
+	if(end < 0){
+		end = 0;
+	}
+
 	var html = "";
 	var feature = null,name = null,geometry = null,geometryType = null,image = null;
 	var fid = null,type = null;
 
-	for(var i=0; i < features.length;++i){
-		feature = features[i];
+	for(var i=start; i >= end;--i){
+		feature = featuresList[i];
 		if(feature == null){
 			continue;
 		}
@@ -185,7 +253,6 @@ function showFeatures(features){
 			+	'	<div class="col-md-2 edit">编辑</div>'
 			+	'	<div class="col-md-2 remove">删除</div>'
 			+	'</div>';
-
 	}
 
 	$(".overlay-list-div").html(html);
@@ -232,7 +299,6 @@ function showFeatures(features){
 		layerCur.query(query,success);
 	});
 }
-
 
 // 列表中编辑的feature
 function editFeatureHandler(features){
