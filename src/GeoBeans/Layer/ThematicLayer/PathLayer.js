@@ -294,3 +294,20 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 		}
 	}	
 }
+
+/**
+ * 绘制（whaterver 重新绘制)
+ * @private
+ */
+GeoBeans.Layer.PathLayer.prototype.refresh = function(flag){
+	this.canvas.width = this.map.getViewer().getWindowWidth();
+	this.canvas.height = this.map.getViewer().getWindowHeight();
+	
+	if(this.visible){
+		this.drawSnap();
+		this.draw();
+	}
+	else{
+		this.clear();
+	}
+}

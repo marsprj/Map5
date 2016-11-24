@@ -1,4 +1,4 @@
-var olx;
+// var olx;
 
 /**
  * Object literal with config options for the map.
@@ -6,7 +6,7 @@ var olx;
  *     pixelRatio: (number|undefined),
  *     logo: (boolean|string|Element|undefined)}
  */
-olx.MapOptions;
+// olx.MapOptions;
 
 /**
  * The ratio between physical pixels and device-independent pixels (dips) on the
@@ -14,7 +14,7 @@ olx.MapOptions;
  * @type {number|undefined}
  * @api
  */
-olx.MapOptions.prototype.pixelRatio;
+// olx.MapOptions.prototype.pixelRatio;
 
 /**
  * The map logo. A logo to be displayed on the map at all times. If a string is
@@ -26,4 +26,4 @@ olx.MapOptions.prototype.pixelRatio;
  * @type {boolean|string|Element|undefined}
  * @api stable
  */
-olx.MapOptions.prototype.logo;
+// olx.MapOptions.prototype.logo;
