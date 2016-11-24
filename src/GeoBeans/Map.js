@@ -1241,6 +1241,9 @@ GeoBeans.Map.prototype.getInteraction = function(type){
  * @public
  */
 GeoBeans.Map.prototype.refresh = function(flag){
+	if(!isValid(flag)){
+		flag = true;
+	}
 	this.draw(flag);
 }
 
