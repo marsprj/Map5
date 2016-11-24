@@ -45,3 +45,4 @@ version 1.0.0-beta
 		 setViewResolution(resolution) => zoomToResolution(resolution)
 2016.11.24  bug  修改动画的打包问题。
 2016.11.24  bug  修改轨迹点计算的问题。
+2016.11.24  bug  修改地图定位的中心点复制问题。

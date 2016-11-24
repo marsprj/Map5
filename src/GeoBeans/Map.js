@@ -1443,7 +1443,8 @@ GeoBeans.Map.prototype.zoomTo = function(zoom,center){
 	viewer.setZoomResolution(zoom,resolution);
 
 	if(isValid(center)){
-		viewer.setCenterResolution(center,resolution);
+		var c = new GeoBeans.Geometry.Point(center.getX(),center.getY());
+		viewer.setCenterResolution(c,resolution);
 	}
 
 };
@@ -1462,8 +1463,9 @@ GeoBeans.Map.prototype.moveTo = function(center){
 		return;
 	}
 
+	var c = new GeoBeans.Geometry.Point(center.getX(),center.getY());
 	var viewer = this.getViewer();
-	viewer.setCenter(center);
+	viewer.setCenter(c);
 };
 
 
