@@ -167,7 +167,7 @@ GeoBeans.Layer.PathLayer.prototype._drawAnimationLine = function(bPathPoint,path
 		elapsedTime = time - pathPoint.beginTime;
 		if(elapsedTime >= lineTime){
 			pathPoint.setStatus(true);
-
+			elapsedTime = lineTime;
 		}
 		var x = bPoint.x + (point.x - bPoint.x) * elapsedTime/lineTime;
 		var y = bPoint.y + (point.y - bPoint.y) * elapsedTime/lineTime;

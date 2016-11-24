@@ -92,20 +92,71 @@
 		pointSymbolizer.symbol = symbol;
 
 		// 3、随机生成坐标值
-		var x = GeoBeans.Utility.getRandom(-180,180);
-		var y = GeoBeans.Utility.getRandom(-90,90);
+		// var x = GeoBeans.Utility.getRandom(-180,180);
+		// var y = GeoBeans.Utility.getRandom(-90,90);
+
+		var x = 0;
+		var y = 0;
 
 		// 4、定义轨迹点
 		var pathPoint = new GeoBeans.PathPoint({
 			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
 			symbolizer : pointSymbolizer,				// 点样式
-			time : 1000									// 到达该点的时间
+			time : 10								// 到达该点的时间
 		});		
 
 		// 5、添加轨迹点
 		pathLine.addPathPoint(pathPoint);
 	}
 
+	function addPathPoint2(){
+		// 1、根据id获取轨迹线
+		var pathLine = pathLayer.getPathLine("1");
+
+		// 2、定义点的样式
+		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/icon_uav.png";
+		pointSymbolizer.symbol = symbol;
+
+		// 3、随机生成坐标值
+		// var x = GeoBeans.Utility.getRandom(-180,180);
+		// var y = GeoBeans.Utility.getRandom(-90,90);
+
+		var x = 90;
+		var y = 0;
+
+		// 4、定义轨迹点
+		var pathPoint = new GeoBeans.PathPoint({
+			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
+			symbolizer : pointSymbolizer,				// 点样式
+			time : 10								// 到达该点的时间
+		});		
+
+		// 5、添加轨迹点
+		pathLine.addPathPoint(pathPoint);
+	}
+
+	var a = 1;
+	// setInterval(function(){
+
+	// },1300);
+
+	var draw = function(){
+		if(a == 1){
+			addPathPoint2()
+			a = 0;
+		}else{
+			addPathPoint();
+			a = 1;
+		}	
+
+	}
+
+	var timeF = setTimeout(function(){
+		draw();
+		 setTimeout(arguments.callee,1300);
+	},1300);
 
 </script>
 <title>动画：轨迹图层</title>
