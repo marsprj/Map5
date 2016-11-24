@@ -536,7 +536,7 @@ GeoBeans.Interaction.Select.prototype.cleanup = function(){
 
 /**
  * 设置Select的onchange事件响应函数，当选择集发生变化时候，触发onchange事件，通知调用者选择集发生变化。<br>
- * onchange函数包含一个参数，该参数是一个features集合([])，即选择级。<br>
+ * onchange函数包含一个参数，该参数是一个features集合([])，即选择集。<br>
  * function onchange(features){<br>
  * }<br>
  * @public

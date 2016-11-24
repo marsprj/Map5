@@ -54,6 +54,7 @@
 <!--Format-->
 <script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
 <!--Filter-->
 <script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
@@ -164,9 +165,7 @@
 	        }
 
 		});
-		if(mapObj == null){
-			return;
-		}
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 
 	function onMouseMove(evt){
