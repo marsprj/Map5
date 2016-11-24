@@ -52,6 +52,8 @@ GeoBeans.Interaction.Type = {
 	SELECT	: "Select",
 	/** 旋转 */
 	ROTATE	: "Rotate",
+	/** 修改 */
+	MODIFY  : "Modify",
 	/** 拾取 */
 	ROTATE	: "Hit",
 };
