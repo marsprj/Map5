@@ -149,7 +149,7 @@ GeoBeans.Map = GeoBeans.Class({
 	_resizeId : null,
 
 
-	VERSION : "1.0.104",
+	VERSION : "1.0.105",
 
 	CLASS_NAME : "GeoBeans.Map",
 	
@@ -329,7 +329,7 @@ GeoBeans.Map = GeoBeans.Class({
 	},
 
 	animate : function(time){
-		var map = this.map;
+		var map = window.map;
 		for(var i = 0;  i < map.layers.length; ++i){
 			var layer = map.layers[i];
 			if(isDefined(layer.isAnimation) && layer.isAnimation()){

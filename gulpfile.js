@@ -66,6 +66,7 @@ if(platform == "win32"){
 			'src/GeoBeans/BaseTypes/Class.js',
 			'src/GeoBeans/BaseTypes/*.js',
 			'src/GeoBeans/*.js',
+			'src/GeoBeans/Animation/*.js',
 			'src/GeoBeans/Geometry/*.js',
 			'src/GeoBeans/Geometry/*/*.js',
 			'src/GeoBeans/Utility/*.js',

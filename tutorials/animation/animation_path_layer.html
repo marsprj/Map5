@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../src/depends/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../src/depends/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../src/depends/requestNextAnimationFrame.js"></script>
+
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../js/initMap.js"></script>
+<script type="text/javascript" src="../js/citiesValue.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	
+	var mapObj = null;
+
+	var pathLayer = null;
+
+	function init(){
+	 	loadTileMap();
+	 	addPathLayer();
+	 	addPathLine();
+	}
+
+	/**
+	 * 添加一个轨迹图层
+	 */
+	function addPathLayer(){
+		// 1、定义一个轨迹图层
+		pathLayer = new GeoBeans.Layer.PathLayer("path");
+
+		// 2、添加图层
+		mapObj.addLayer(pathLayer);
+
+		// 3、地图刷新
+		mapObj.refresh();
+	}
+
+	/**
+	 * 添加一条轨迹线
+	 */
+	function addPathLine(){
+
+		// 1、定义一个点样式
+		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/icon_uav.png";
+		pointSymbolizer.symbol = symbol;
+
+		// 2、定义一个轨迹点作为起始点
+		var pathPoint = new GeoBeans.PathPoint({
+			point : new GeoBeans.Geometry.Point(0,0),  	// 点坐标
+			symbolizer : pointSymbolizer  				// 点样式
+		});
+
+
+		// 3、定义一个线样式
+		var lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		lineSymbolizer.stroke.color.set(0,0,255,0.6);
+		lineSymbolizer.stroke.width = 3;
+
+		// 4、定义一条轨迹线
+		var pathLine = new GeoBeans.PathLine({
+			id : "1", 						//  id
+			point : pathPoint, 				// 起始轨迹点
+			symbolizer : lineSymbolizer  	// 轨迹线的样式
+		});
+
+		// 5、轨迹图层增加一条轨迹线
+		pathLayer.addPathLine(pathLine);
+	}
+
+
+	/**
+	 * 随机添加轨迹点
+	 */
+	function addPathPoint(){
+		// 1、根据id获取轨迹线
+		var pathLine = pathLayer.getPathLine("1");
+
+		// 2、定义点的样式
+		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/icon_uav.png";
+		pointSymbolizer.symbol = symbol;
+
+		// 3、随机生成坐标值
+		var x = GeoBeans.Utility.getRandom(-180,180);
+		var y = GeoBeans.Utility.getRandom(-90,90);
+
+		// 4、定义轨迹点
+		var pathPoint = new GeoBeans.PathPoint({
+			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
+			symbolizer : pointSymbolizer,				// 点样式
+			time : 1000									// 到达该点的时间
+		});		
+
+		// 5、添加轨迹点
+		pathLine.addPathPoint(pathPoint);
+	}
+
+
+</script>
+<title>动画：轨迹图层</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px">
+	</div>
+	<button onclick="addPathPoint()">随机添加点</button>
+</body>
+	
