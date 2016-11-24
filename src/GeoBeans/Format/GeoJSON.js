@@ -703,6 +703,6 @@ GeoBeans.Format.GeoJson.prototype.readFeature2 = function(json){
 	return (new GeoBeans.Feature({
 		"fid" : fid,
 	  	"geometry"   : geometry,
-	  	"propertis"  : properties
+	  	"properties"  : properties
 	}))
 };
