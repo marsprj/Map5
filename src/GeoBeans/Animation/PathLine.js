@@ -11,6 +11,8 @@ GeoBeans.PathLine = GeoBeans.Class({
 
 	_symbolizer : null,
 
+	_maxCount : null,
+
 	initialize : function(options){
 		if(isValid(options)){
 			if(isValid(options.id)){
@@ -24,6 +26,9 @@ GeoBeans.PathLine = GeoBeans.Class({
 
 			if(isValid(options.symbolizer)){
 				this._symbolizer = options.symbolizer;
+			}
+			if(isValid(options.maxCount)){
+				this._maxCount = options.maxCount;
 			}
 		}
 
@@ -68,4 +73,23 @@ GeoBeans.PathLine.prototype.getID = function(){
  */
 GeoBeans.PathLine.prototype.getSymbolizer = function(){
 	return this._symbolizer;
+}
+
+/**
+ * 获取最大的轨迹点个数
+ * @public
+ * @return {integer} 最大轨迹点个数
+ */
+GeoBeans.PathLine.prototype.getMaxCount = function(){
+	return this._maxCount;
+}
+
+
+/**
+ * 设置最大的轨迹点个数
+ * @public
+ * @param {integer} maxCount 最大轨迹点个数
+ */
+GeoBeans.PathLine.prototype.setMaxCount = function(maxCount){
+	this._maxCount = maxCount;
 }
