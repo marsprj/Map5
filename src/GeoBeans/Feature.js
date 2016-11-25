@@ -20,7 +20,7 @@ GeoBeans.Feature = GeoBeans.Class({
 	 * 	"featureType": featureType,
 	 * 	"fields"	 : fields,
 	 * 	"geometry"   : geometry,
-	 * 	"propertis"  : {
+	 * 	"properties"  : {
 	 * 			"name"   : name,
 	 *    	  	"value1" : value1,
 	 *    	  	"value2" : value2
