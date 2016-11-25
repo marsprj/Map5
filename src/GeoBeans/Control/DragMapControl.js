@@ -113,6 +113,12 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					map.refresh(false);
 
 
+					var drawInteraction = that.map.getInteraction(GeoBeans.Interaction.Type.DRAW);
+					if(isValid(drawInteraction) && drawInteraction.isDrawing()){
+						map.saveSnap();
+						drawInteraction.drawingEvent();
+					}
+
 					// var infoWindow = map.getInfoWindow();
 					// infoWindow.refresh();
 
