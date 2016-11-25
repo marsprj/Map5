@@ -475,19 +475,8 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}
 
 		this.save();
-		this.context.textBaseline = "middle";
-
 		var padding = Math.ceil(symbolizer.font.size/5);
 
-
-		if(symbolizer.fill != null){
-			this.context.fillText(label.text,pos.x,pos.y -padding);
-		}
-		if(symbolizer.stroke != null){
-			this.context.strokeText(label.text,pos.x,pos.y -padding);
-		}
-
-		
 		var extent = label.getExtent();
 		if(symbolizer.bgStroke != null){
 			this.context.lineWidth  = symbolizer.bgStroke.width;
@@ -501,7 +490,16 @@ GeoBeans.Renderer = GeoBeans.Class({
 			var y = extent.ymin + extent.getHeight()/2 -padding*2;
 			this.context.fillRect(pos.x,y,extent.getWidth()+2,extent.getHeight()+padding*2);
 		}
+		this.restore();
 
+		this.save();
+		this.context.textBaseline = "middle";
+		if(symbolizer.fill != null){
+			this.context.fillText(label.text,pos.x,pos.y -padding);
+		}
+		if(symbolizer.stroke != null){
+			this.context.strokeText(label.text,pos.x,pos.y -padding);
+		}
 		this.restore();
 	},
 	
