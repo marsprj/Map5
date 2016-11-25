@@ -655,11 +655,17 @@ GeoBeans.Interaction.Select.prototype.createIntersectsQuery = function(geometry)
  */
 GeoBeans.Interaction.Select.prototype.setSelection = function(features){
 	// this._selection = features;
+	this._selection.length = 0;
+	var that = this;
+	features.forEach(function(f){
+		that._selection.push(f);
+	});
+
 	if(isValid(this._onchange)){
-		this._onchange(features);
+		this._onchange(this._selection);
 	}
 	var selection = this._map.getSelection();
-	selection.setFeatures(features);
+	selection.setFeatures(this._selection);
 	//this.draw();
 	// this._map.refresh();
 }
