@@ -139,35 +139,111 @@
 	function init(){
 		
 		loadTileMap();
-		loadPointLayer();
+		addFeatureLayer();
+		addFeature();
 	}
 
-	function loadPointLayer(){
 
-		// 1、定义WFS图层
-		var layer = new GeoBeans.Layer.FeatureLayer({			
-			"name" : "cities",
-			"geometryType" : GeoBeans.Geometry.Type.POINT,
-			"source" : new GeoBeans.Source.Feature.WFS({
-				"url" : "/geoserver/radi/ows?",
-				"version" : "1.0.0",
-				"featureNS" : 'http://www.radi.ac.cn',
-				"featurePrefix" : "radi",
-				"featureType" : "cities_2",
-				"geometryName" : "shape",
-				"outputFormat": "GML2"
+	function addFeatureLayer(){
+		layer = new GeoBeans.Layer.FeatureLayer({
+			name : "point",
+			geometryType : GeoBeans.Geometry.Type.POINT,
+			source : new GeoBeans.Source.Feature({
+
 			})
-		});
+		});	
 
-		// 2、添加图层
 		mapObj.addLayer(layer);
-
-		// 3、设定样式
-		var style = createTextStyle();
-		layer.setStyle(style);
 
 		mapObj.refresh();
 	}
+
+	function addFeature(){
+		var properties = {
+			name : "北京"
+			// name : "beijing"
+			// name : "BEIJING"
+		};
+		var geometry = new GeoBeans.Geometry.Point(116.4,39.9);
+		var feature = new GeoBeans.Feature({
+			gid : "1",
+			geometry : geometry,
+			properties : properties
+		});
+
+		var source = layer.getSource();
+		source.addFeature(feature);
+
+		var symbolizer = createSymbolizer();
+		feature.symbolizer = symbolizer;
+
+		var textSymbolizer = createTextSymbolizer();
+		feature.textSymbolizer = textSymbolizer;
+
+		mapObj.refresh();
+
+	}
+
+	function createSymbolizer(){
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		symbolizer.size = 6;
+		symbolizer.fill.color.set(255, 0, 0,1);
+		symbolizer.stroke = null;
+		return symbolizer;
+	}
+
+	function createTextSymbolizer(){
+		// 1、定义一个文字样式
+		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+
+		// 2、设置文字样式的标注字段
+		textSymbolizer.labelProp = "name";
+
+		// 3、文字填充设置，不设置，则随机颜色
+		textSymbolizer.fill.color.setHex("#000000",1);
+		// textSymbolizer.fill = null;
+
+		// 4、文字边框设置，不设置，则随机颜色
+		textSymbolizer.stroke.color.set(0,126,122,1);
+		textSymbolizer.stroke.width = 0.5;
+		// textSymbolizer.stroke = null;
+		
+		// 5、文字样式的文字设置，默认大小是12
+		textSymbolizer.font.size = 30;
+		// 设置文字的字体，默认字体是Times New Roman
+		textSymbolizer.font.family = "Microsoft YaHei";
+
+		// 6、字体样式，默认是正常的，
+		// GeoBeans.Style.Font.StyleType.Normal
+		// GeoBeans.Style.Font.StyleType.Italic
+		// GeoBeans.Style.Font.StyleType.Oblique
+		textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
+
+		// 7、字体粗细，默认是正常
+		// GeoBeans.Style.Font.WeightType.Normal
+		// GeoBeans.Style.Font.WeightType.Bold
+		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+
+		// 8、设置文字标注的偏移量，x方向，向右是正
+		textSymbolizer.displaceX = 0;
+
+		// 文字标注的偏移量，y方向，向上是正
+		textSymbolizer.displaceY = 0;
+
+		// 9、设置文字的背景填充样式，默认不设置
+		textSymbolizer.bgFill = new GeoBeans.Style.Fill();
+		textSymbolizer.bgFill.color.setHex("#ff0000",0.2);
+
+
+		// 10、设置文字的背景边框样式，默认不设置
+		textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
+		textSymbolizer.bgStroke.color.setHex("#000000",0.2);
+		textSymbolizer.bgStroke.width = 1;
+
+		return textSymbolizer;
+
+	}
+
 
 	/**
 	 * 创建文字样式
@@ -207,39 +283,34 @@
 		// 9、文字样式的文字设置，默认大小是12
 		textSymbolizer.font.size = 16;
 		// 设置文字的字体，默认字体是Times New Roman
-		textSymbolizer.font.family = "Microsoft YaHei";
+		// textSymbolizer.font.family = "Microsoft YaHei";
 
 		// 10、字体样式，默认是正常的，
 		// GeoBeans.Style.Font.StyleType.Normal
 		// GeoBeans.Style.Font.StyleType.Italic
 		// GeoBeans.Style.Font.StyleType.Oblique
-		textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Italic;
+		textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
 
 		// 11、字体粗细，默认是正常
 		// GeoBeans.Style.Font.WeightType.Normal
 		// GeoBeans.Style.Font.WeightType.Bold
-		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Normal;
 
 		// 12、设置文字标注的偏移量，x方向，向右是正
 		textSymbolizer.displaceX = 0;
 
 		// 文字标注的偏移量，y方向，向上是正
-		textSymbolizer.displaceY = -20;
+		textSymbolizer.displaceY = 0;
 
-		// 13、设置文字的背景填充样式，默认不设置
+
 		textSymbolizer.bgFill = new GeoBeans.Style.Fill();
-		textSymbolizer.bgFill.color.setHex("#ff0000",0.2);
 
-
-		// 14、设置文字的背景边框样式，默认不设置
 		textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
-		textSymbolizer.bgStroke.color.setHex("#000000",0.2);
-		textSymbolizer.bgStroke.width = 1;
 
-		// 15、设置规则的文字样式。
+		// 13、设置规则的文字样式。
 		rule.textSymbolizer = textSymbolizer;
 
-		// 16、添加该规则
+		// 14、添加该规则
 		style.addRule(rule);		
 
 		return style;

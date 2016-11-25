@@ -473,12 +473,36 @@ GeoBeans.Renderer = GeoBeans.Class({
 		if(text == null || text == undefined){
 			return;
 		}
+
+		this.save();
+		this.context.textBaseline = "middle";
+
+		var padding = Math.ceil(symbolizer.font.size/5);
+
+
 		if(symbolizer.fill != null){
-			this.context.fillText(label.text,pos.x,pos.y);
+			this.context.fillText(label.text,pos.x,pos.y -padding);
 		}
 		if(symbolizer.stroke != null){
-			this.context.strokeText(label.text,pos.x,pos.y);
+			this.context.strokeText(label.text,pos.x,pos.y -padding);
 		}
+
+		
+		var extent = label.getExtent();
+		if(symbolizer.bgStroke != null){
+			this.context.lineWidth  = symbolizer.bgStroke.width;
+			this.context.strokeStyle = symbolizer.bgStroke.color.getRgba();
+			var y = extent.ymin + extent.getHeight()/2 - padding*2;
+			this.context.strokeRect(pos.x,y,extent.getWidth()+2,extent.getHeight()+padding*2);
+		}
+
+		if(symbolizer.bgFill != null){
+			this.context.fillStyle = symbolizer.bgFill.color.getRgba();
+			var y = extent.ymin + extent.getHeight()/2 -padding*2;
+			this.context.fillRect(pos.x,y,extent.getWidth()+2,extent.getHeight()+padding*2);
+		}
+
+		this.restore();
 	},
 	
 	labelLineString : function(line, text, symbolizer, viewer){
