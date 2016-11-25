@@ -91,11 +91,10 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 			that.cleanup();
 		}
 	};
-	
+	var mpt = null;
 	var onmousemove = function(evt){
 		if(that._enabled){
 			that._isDrawing = true;
-			console.log("drawing");
 			var control = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP)
 			if(control.draging){
 				return;
@@ -104,11 +103,18 @@ GeoBeans.Interaction.Draw.prototype.drawPoint = function(symbolizer){
 			var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
 			that.draw_point(pt.x,pt.y,symbolizer);	
 
+			mpt = pt;
 
 			that.drawingEvent = function(){
 				that._map.restoreSnap();
-				var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
-				that.draw_point(pt.x,pt.y,symbolizer);	
+				var viewer = that._map.getViewer();
+				var status = viewer.getStatus();
+				if(status == GeoBeans.Viewer.Status.DRAG){
+					that.draw_point(mpt.x,mpt.y,symbolizer);
+				}else if(status == GeoBeans.Viewer.Status.SCROLL){
+					var pt = that._map.getViewer().toMapPoint(evt.layerX,evt.layerY);
+					that.draw_point(pt.x,pt.y,symbolizer);
+				}
 			};
 		}
 	};
