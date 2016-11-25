@@ -475,30 +475,40 @@ GeoBeans.Renderer = GeoBeans.Class({
 		}
 
 		this.save();
+
+		var bgPadding = symbolizer.bgPadding;
+		if(!isValid(bgPadding)){
+			bgPadding = 0;
+		}
 		var padding = Math.ceil(symbolizer.font.size/5);
 
 		var extent = label.getExtent();
+		var y = extent.ymin + extent.getHeight()/2 - padding*2 - bgPadding*2;
+		var x = pos.x;
+		var width = extent.getWidth() + bgPadding*2;
+		var height = extent.getHeight() + bgPadding*2 + padding*2;
 		if(symbolizer.bgStroke != null){
 			this.context.lineWidth  = symbolizer.bgStroke.width;
 			this.context.strokeStyle = symbolizer.bgStroke.color.getRgba();
-			var y = extent.ymin + extent.getHeight()/2 - padding*2;
-			this.context.strokeRect(pos.x,y,extent.getWidth()+2,extent.getHeight()+padding*2);
+			this.context.strokeRect(x,y,width,height);
 		}
 
 		if(symbolizer.bgFill != null){
 			this.context.fillStyle = symbolizer.bgFill.color.getRgba();
-			var y = extent.ymin + extent.getHeight()/2 -padding*2;
-			this.context.fillRect(pos.x,y,extent.getWidth()+2,extent.getHeight()+padding*2);
+			this.context.fillRect(x,y,width,height);
 		}
 		this.restore();
 
 		this.save();
 		this.context.textBaseline = "middle";
+		var posX = pos.x + bgPadding;
+		var posY = pos.y - padding -bgPadding; 
 		if(symbolizer.fill != null){
-			this.context.fillText(label.text,pos.x,pos.y -padding);
+
+			this.context.fillText(label.text,posX,posY);
 		}
 		if(symbolizer.stroke != null){
-			this.context.strokeText(label.text,pos.x,pos.y -padding);
+			this.context.strokeText(label.text,posX,posY);
 		}
 		this.restore();
 	},

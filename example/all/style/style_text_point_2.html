@@ -209,7 +209,7 @@
 		// textSymbolizer.stroke = null;
 		
 		// 5、文字样式的文字设置，默认大小是12
-		textSymbolizer.font.size = 30;
+		textSymbolizer.font.size = 12;
 		// 设置文字的字体，默认字体是Times New Roman
 		textSymbolizer.font.family = "Microsoft YaHei";
 
@@ -240,81 +240,13 @@
 		textSymbolizer.bgStroke.color.setHex("#000000",0.2);
 		textSymbolizer.bgStroke.width = 1;
 
+		// 11、设置边框的padding
+		textSymbolizer.bgPadding = 3;
+
 		return textSymbolizer;
 
 	}
 
-
-	/**
-	 * 创建文字样式
-	 */
-	function createTextStyle(){
-		// 1、定义元素的样式
-		var style = new GeoBeans.Style.FeatureStyle();
-		
-		// 2、定义一个规则
-		var rule = new GeoBeans.Style.Rule();
-
-		// 3、定义一个点样式
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		symbolizer.size = 6;
-		symbolizer.fill.color.set(255, 0, 0,1);
-		symbolizer.stroke = null;
-
-		// 4、设置该规则的样式
-		rule.symbolizer = symbolizer;
-
-
-		// 5、定义一个文字样式
-		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
-
-		// 6、设置文字样式的标注字段
-		textSymbolizer.labelProp = "name";
-
-		// 7、文字填充设置，不设置，则随机颜色
-		textSymbolizer.fill.color.setHex("#000000",1);
-		// textSymbolizer.fill = null;
-
-		// 8、文字边框设置，不设置，则随机颜色
-		textSymbolizer.stroke.color.set(0,126,122,1);
-		textSymbolizer.stroke.width = 0.5;
-		// textSymbolizer.stroke = null;
-		
-		// 9、文字样式的文字设置，默认大小是12
-		textSymbolizer.font.size = 16;
-		// 设置文字的字体，默认字体是Times New Roman
-		// textSymbolizer.font.family = "Microsoft YaHei";
-
-		// 10、字体样式，默认是正常的，
-		// GeoBeans.Style.Font.StyleType.Normal
-		// GeoBeans.Style.Font.StyleType.Italic
-		// GeoBeans.Style.Font.StyleType.Oblique
-		textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
-
-		// 11、字体粗细，默认是正常
-		// GeoBeans.Style.Font.WeightType.Normal
-		// GeoBeans.Style.Font.WeightType.Bold
-		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Normal;
-
-		// 12、设置文字标注的偏移量，x方向，向右是正
-		textSymbolizer.displaceX = 0;
-
-		// 文字标注的偏移量，y方向，向上是正
-		textSymbolizer.displaceY = 0;
-
-
-		textSymbolizer.bgFill = new GeoBeans.Style.Fill();
-
-		textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
-
-		// 13、设置规则的文字样式。
-		rule.textSymbolizer = textSymbolizer;
-
-		// 14、添加该规则
-		style.addRule(rule);		
-
-		return style;
-	}
 
 </script>
 <title>要素图层：文字标注样式</title>
