@@ -73,7 +73,7 @@
 		<div id="left_panel">
 			<!-- 标注列表 -->
 			<div class="left-tab" id="overlay-tab">
-				<div class="left-tab_title">
+				<div class="left-tab-title">
 					标绘列表
 				</div>
 				<div class="search-div row">
@@ -98,36 +98,9 @@
 				<!-- <div class="overlay-list-div">
 				</div> -->
 			</div>
-			<!-- 点类型 -->
-			<div class="left-tab" id="point_type_tab">
-				<div class="left-tab_title">
-					点标注类型
-					<span class="type-next">►</span>
-				</div>
-				<div class="list-type-div">
-				</div>
-			</div>
-			<!-- 线类型 -->
-			<div class="left-tab" id="line_type_tab">
-				<div class="left-tab_title">
-					线标注类型
-					<span class="type-next">►</span>
-				</div>
-				<div class="list-type-div">
-				</div>
-			</div>	
-			<!-- 面类型 -->
-			<div class="left-tab" id="polygon_type_tab">
-				<div class="left-tab_title">
-					面标注类型
-					<span class="type-next">►</span>
-				</div>
-				<div class="list-type-div">
-				</div>
-			</div>		
 			<!-- 图层列表 -->
 			<div class="left-tab active" id="layers_tab">
-				<div class="left-tab_title">
+				<div class="left-tab-title">
 					标注图层
 				</div>
 				<div class="list-type-div">
@@ -135,10 +108,18 @@
 			</div>		
 			<!-- 图层数据列表 -->
 			<div class="left-tab" id="layer_tab">
-				<div class="left-tab_title">
+				<div class="left-tab-title">
 					<span class="left-title-icon back-to-layers" data-toggle="tooltip" data-placement="top" title="返回图层列表">◄</span>
 					<span class="layer-name"></span>
-					<span class="right-title-btn draw-overlay">采集</span>
+					<span class="right-title-btn draw-overlay pull-right" data-toggle="tooltip" data-placement="top" title="采集要素">采集</span>
+					
+				</div>
+				<div class="left-tab-title" style="border-width: 1px">
+					<span>列表</span>
+					<div class="btn-group btn-group-sm pull-right" role="group">
+						<button type="button" class="btn btn-default" id="show_all" disabled="disabled" data-toggle="tooltip" data-placement="top" title="所有的">所有</button>
+						<button type="button" class="btn btn-default" id="show_user" data-toggle="tooltip" data-placement="top" title="用户私有的">私有</button>
+					</div>
 				</div>
 				<div class="overlay-list-div">
 				</div>
@@ -154,11 +135,11 @@
 			</div>						
 			<!-- 信息编辑 -->
 			<div class="left-tab" id="overlay-info-tab">
-				<div class="left-tab_title">
+				<div class="left-tab-title">
 					<span class="layer-name"></span>
-					<span class="right-title-btn draw-overlay">采集</span>
+					<span class="right-title-btn draw-overlay" data-toggle="tooltip" data-placement="top" title="采集要素">采集</span>
 				</div>
-				<div class="left-tab_title" style="border-width:1px">
+				<div class="left-tab-title" style="border-width:1px">
 					<span class="overlay-title">信息编辑</span>
 					<span class="save-btn right-title-btn">保存</span>
 					<span class="remove-btn right-title-btn">删除</span>

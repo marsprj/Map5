@@ -82,7 +82,7 @@ body{
 	display: block;
 }
 
-.left-tab_title{
+.left-tab-title{
 	height: 30px;
     margin: 10px;
     font-size: 14px;
@@ -219,9 +219,13 @@ body{
 	background-position: center;
 	background-repeat: no-repeat;
 }
+
+#layer_tab .left-tab-title .btn-group .btn{
+	padding: 4px 8px;
+}
 #layer_tab .overlay-list-div{
 	overflow-y: auto;
-	height: calc(100% - 90px);
+	height: calc(100% - 120px);
 }
 #layer_tab .overlay-list-div.loading{
 	background-image: url(../images/spin.gif);
@@ -240,12 +244,12 @@ body{
 	padding: 0px;
 	line-height: 32px;
 }
-.overlay-item .col-md-6{
-	width: 134px;
+.overlay-item .overlay-name{
 	word-break: break-all;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	cursor: pointer;
 }
 
 .overlay-item .edit,.overlay-item .remove{
