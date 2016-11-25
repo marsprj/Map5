@@ -72,10 +72,15 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 				dragBeginHandler(args);
 			}		
 			var onmousemove = function(e){
+				e.preventDefault();
+				if(!that.enabled){
+					return;
+				}
+
 				if(isValid(interaction) && interaction.getRotateStatus()){
 					return;
 				}
-				e.preventDefault();
+				
 				moving = true;
 				if(draging){
 					// 先判断是否拖动距离过短
