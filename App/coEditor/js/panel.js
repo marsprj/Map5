@@ -27,6 +27,21 @@ function addPanelEvent(){
 	});
 
 
+	// 显示所有还是自己的
+	$("#show_all").click(function(){
+		$(this).attr("disabled","disabled");
+		$("#show_user").removeAttr("disabled");
+		userOnly = false;
+		refreshFeatures();
+	});
+
+	$("#show_user").click(function(){
+		$(this).attr("disabled","disabled");
+		$("#show_all").removeAttr("disabled");
+		userOnly = true;
+		refreshFeatures();
+	});
+
     // 采集
     $(".draw-overlay").click(function(){
     	drawOverlay();
@@ -162,7 +177,7 @@ function refreshFeatures(){
 	addSelectInteraction();
 	$(".left-tab").removeClass("active");
 	$("#layer_tab").addClass("active");
-	$("#layer_tab .left-tab_title .layer-name,#overlay-info-tab .left-tab_title .layer-name").html(layerCur.name);
+	$("#layer_tab .left-tab-title .layer-name,#overlay-info-tab .left-tab-title .layer-name").html(layerCur.name);
 	$(".overlay-list-div").addClass("loading").empty();
 
 	var filter = null;
@@ -249,8 +264,8 @@ function showFeatureByPage(){
 			+	'	<div class="col-md-2">'
 			+	'		<img src="' + image + '">'
 			+	'	</div>'
-			+	'	<div class="col-md-6">' + name + '</div>'
-			+	'	<div class="col-md-2 edit">编辑</div>'
+			+	'	<div class="col-md-8 overlay-name">' + name + '</div>'
+			// +	'	<div class="col-md-2 edit">编辑</div>'
 			+	'	<div class="col-md-2 remove">删除</div>'
 			+	'</div>';
 	}
@@ -258,7 +273,7 @@ function showFeatureByPage(){
 	$(".overlay-list-div").html(html);
 
 	// 编辑
-	$(".overlay-list-div .edit").click(function(){
+	$(".overlay-list-div .overlay-name").click(function(){
 		var fid = $(this).parents(".overlay-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();

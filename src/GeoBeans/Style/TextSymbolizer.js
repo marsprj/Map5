@@ -24,6 +24,9 @@ GeoBeans.Symbolizer.TextSymbolizer = GeoBeans.Class(GeoBeans.Symbolizer,{
 	rotationProp: null,
 	font 		: null,
 
+	bgFill 		: null,
+	bgStroke 	: null,
+
 	labelText 	: null,
 	labelProp 	: null,
 

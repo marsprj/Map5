@@ -27,8 +27,14 @@ GeoBeans.PointLabel = GeoBeans.Class(GeoBeans.Label,{
 		// 向上是正
 		this.pos.y -= this.textSymbolizer.displaceY;
 
+		// 选取中心定位
+		this.pos.y -= this.extent.getHeight()/2;
+
 		this.pos.x -= this.extent.getWidth() * this.textSymbolizer.anchorX;
 		this.pos.y += this.extent.getHeight() * this.textSymbolizer.anchorY;
+
+		this.pos.x = Math.floor(this.pos.x + 0.5);
+		this.pos.y = Math.floor(this.pos.y + 0.5);
 		this.extent.offset(this.pos.x,this.pos.y);
 		// this.extent.scale(1.1);
 	},
@@ -63,5 +69,9 @@ GeoBeans.PointLabel = GeoBeans.Class(GeoBeans.Label,{
 
 		var otherExtent = other.extent;
 		return this.extent.intersects(otherExtent);
+	},
+
+	getExtent : function(){
+		return this.extent;
 	}
 });
