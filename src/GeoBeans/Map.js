@@ -1194,6 +1194,7 @@ GeoBeans.Map.prototype.drawInteractions = function(){
 GeoBeans.Map.prototype.drawSelection = function(){
 
 	this._selection.refresh();
+	this.renderer.clearRect(0,0,this.getViewer().getWindowWidth(), this.getViewer().getWindowHeight());
 	this.renderer.drawImage(this._selection._canvas,
 							0,0,
 							this._selection._canvas.width,
