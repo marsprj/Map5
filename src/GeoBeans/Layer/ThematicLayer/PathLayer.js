@@ -208,7 +208,7 @@ GeoBeans.Layer.PathLayer.prototype._drawAnimationLine = function(bPathPoint,path
 			pathPoint.setStatus(true);
 			elapsedTime = lineTime;
 			var symbolizer = pathPoint.getSymbolizer();
-			this._animateRenderer.drawGeometry(point,symbolizer,viewer);
+			// this._animateRenderer.drawGeometry(point,symbolizer,viewer);
 			this._drawLine(bPoint,point,lineSymbolizer,this.renderer);
 			return;
 		}
