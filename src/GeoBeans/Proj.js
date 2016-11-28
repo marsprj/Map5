@@ -100,7 +100,7 @@ GeoBeans.Proj.WGS84.computeLength = function(line, unit){
 			var count = pts.length - 1;
 			for(var j=0; j<count; j++){
 				pt1 = pts[j];
-				pt2 = pts[j+１];
+				pt2 = pts[j+1];
 				len += this.distance(pt1.x, pt1,y, pt2.x, pt2.y, unit);
 			}
 
@@ -113,7 +113,7 @@ GeoBeans.Proj.WGS84.computeLength = function(line, unit){
 				var count = pts.length - 1;
 				for(var j=0; j<count; j++){
 					pt1 = pts[j];
-					pt2 = pts[j+１];
+					pt2 = pts[j+1];
 					len += this.distance(pt1.x, pt1,y, pt2.x, pt2.y, unit);
 				}
 			});

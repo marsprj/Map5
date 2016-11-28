@@ -13,6 +13,7 @@ GeoBeans.Geometry.LineString = GeoBeans.Class(GeoBeans.Geometry,{
 	initialize : function(points){
 		if(isValid(points)){
 			var that = this;
+			this.points = [];
 			this.points.length = 0;			
 			points.forEach(function(p){
 				that.points.push(p)
