@@ -689,3 +689,155 @@ GeoBeans.Source.Feature.WFS.prototype.updateFeature = function(feature,success,f
 	});
 
 }
+
+/**
+ * 获得符合查询条件的Feature个数
+ * @param  {GeoBeans.Query} query  查询器
+ * @param  {GeoBeans.Handler} success 	   查询成功的回调函数
+ * @param  {GeoBeans.Handler} failure	   查询失败的回调函数
+ * @public
+ */
+GeoBeans.Source.Feature.WFS.prototype.queryCount = function(query, success, failure){
+
+	var that = this;
+	var mapName = null;
+	var sourceName = null;
+	var xml = null;
+
+
+	if(isValid(query)){
+		if(query instanceof GeoBeans.Filter){
+			var filter = query;
+			var condition = new GeoBeans.Query({
+				filter : filter
+			});
+			xml = this.serializeQueryCount(condition, mapName,sourceName);
+		}
+		else if(query instanceof GeoBeans.Query){
+			//将query对象序列化为xml字符串
+			var sourceName = this._sourceName;
+			xml = this.serializeQueryCount(query, mapName,sourceName);
+		}
+		else{
+			if(isValid(failure)){
+				failure.execute("query type error");
+			}
+			return;
+		}
+	}
+	else{
+		var condition = new GeoBeans.Query({
+			filter : null
+		});
+		xml = this.serializeQueryCount(query, mapName,sourceName);
+	}
+
+	$.ajax({
+		type : "post",
+		url	 : this._url,
+		data : xml,
+		// contentType: "application/xml",
+		contentType : "text/xml",
+		dataType: "xml",
+		async	: true,
+		beforeSend: function(XMLHttpRequest){
+		},
+		success	: function(xml, textStatus){
+			var count = that.parseCount(xml);
+			if(isValid(success)){
+				success.execute(count);
+			}
+		},
+		error	: function(e){
+			if(isValid(failure)){
+				failure.execute(e.message);
+			}
+		}
+	});	
+}
+
+/**
+ * 生成QueryCount的XML格式
+ * @private
+ * @param  {GeoBeans.Query} query      查询对象
+ * @param  {string}			mapName    地图名称
+ * @param  {string}			sourceName 数据源名称
+ * @return {string}            		   XML格式的Query
+ */
+GeoBeans.Source.Feature.WFS.prototype.serializeQueryCount = function(query, mapName, sourceName){
+
+	var str = '<?xml version="1.0" encoding="UTF-8"?>'
+			+ '<wfs:GetCount service="WFS" version="' + this._version + '" outputFormat="' + this._outputFormat + '" ' 
+			+ 'xmlns:wfs="http://www.opengis.net/wfs" '
+			+ 'xmlns:ogc="http://www.opengis.net/ogc" '
+			+ 'xmlns:gml="http://www.opengis.net/gml" '
+			+ 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+			+ 'xsi:schemaLocation="http://www.opengis.net/wfs '
+			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
+
+	var doc = $.parseXML(str);
+	var root = $(doc).find("GetCount")[0];
+
+	// set mapName and sourceName attribute
+	if(isValid(mapName)){
+		$(root).attr("mapName", mapName);
+	}
+	if(isValid(sourceName)){
+		$(root).attr("sourceName", sourceName);	
+	}
+	// set maxFeatures
+	var maxFeatures = query.getMaxFeatures();
+	if(isValid(maxFeatures)){
+		$(root).attr("maxFeatures", maxFeatures);		
+	}
+	// set offset
+	var offset = query.getOffset();
+	if(isValid(offset)){
+		$(root).attr("offset", offset);
+	}
+
+	/**************************************************************/
+	/* Query Node
+	/**************************************************************/
+	// create query node
+	var qnode = doc.createElement("wfs:Query");
+	$(qnode).attr("typeName", this._featurePrefix + ":"  + this._featureType);
+	$(root).append(qnode);
+
+	// set fields
+	var fields = query.getFields();
+	for (f in fields){
+		fn = doc.createElement("wfs:PropertyName");
+		$(fn).text(fields[f]);
+		$(qnode).append(fn);
+	}
+
+	// set filter node
+	var fw = new GeoBeans.FilterWriter();
+	var fnode = fw.write(doc, query.getFilter());
+	if(isValid(fnode)){
+		$(qnode).append(fnode);
+	}
+
+	// set orderby
+	var orderby = query.getOrderby();
+	var onode = this.serializeOrderby(orderby, doc);
+	if(isValid(onode)){
+		$(qnode).append(onode);	
+	}
+
+	// serial xml document to string
+	var xml = (new XMLSerializer()).serializeToString(doc);
+	return xml;
+}
+
+/**
+ * 解析查询个数
+ * @private
+ * @param  {string} xml xml文档
+ * @return {string}     个数
+ */
+GeoBeans.Source.Feature.WFS.prototype.parseCount = function(xml){
+	var count = $(xml).find("Count").text();
+	return count;
+}
