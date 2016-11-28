@@ -200,6 +200,9 @@ body{
 	word-break: break-all;
 }
 
+.overlay-info-div .input-group input[type='text']{
+	background-color: #fbfbfb;
+}
 #overlay-tab .input-group{
 	width: 92%;
 }
@@ -256,10 +259,12 @@ body{
 	text-align: center;
 	cursor: pointer;
 	border: 1px solid transparent;
+	color: #fff;
 }
 
 .overlay-item .edit:hover,.overlay-item .remove:hover{
 	background-color: #ddd;
+	color: #424242;
 }
 
 .overlay-item:hover{

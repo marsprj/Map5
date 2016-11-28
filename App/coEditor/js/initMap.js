@@ -31,31 +31,6 @@ function addDrawInteraction(){
 }
 
 
-// 加载所有图层
-// function loadLayersList(){
-// 	var html = "";
-// 	for(var i = 0; i < g_layers.length;++i){
-// 		var obj = g_layers[i];
-// 		var name = obj.name;
-// 		var image = obj.image;
-// 		var type = obj.type;
-
-// 		html += '<div class="list-type" lname="' + name + '" ltype="' + type + '">'
-// 		 	+	'	<div class="col-md-4">'
-// 		 	+	'		<img src="' +  image +'">'
-// 		 	+	'	</div>'
-// 		 	+	'	<div class="col-md-8">'
-// 		 	+			name
-// 		 	+	'	</div>'
-// 		 	+	'</div>';
-// 	}
-
-// 	$("#layers_tab .list-type-div").html(html);	
-
-// 	$("#layers_tab .list-type").click(function(){
-// 		clickLayerDiv(this);
-// 	});
-// }
 
 function loadLayersList(){
 	var html = "";
@@ -103,16 +78,19 @@ function getLayer(layerName,type,db){
 	var layer = new GeoBeans.Layer.FeatureLayer({			
 		name : layerName,
 		geometryType : type,
-		source : new GeoBeans.Source.Feature.WFS({
-			url : "/ows/radi/mgr?",
-			version : "1.0.0",
-			featureNS : 'http://www.radi.ac.cn',
-			featurePrefix : "radi",
-			featureType : layerName,
+		// source : new GeoBeans.Source.Feature.WFS({
+		// 	url : "/ows/radi/mgr?",
+		// 	version : "1.0.0",
+		// 	featureNS : 'http://www.radi.ac.cn',
+		// 	featurePrefix : "radi",
+		// 	featureType : layerName,
+		// 	geometryName : "shape",
+		// 	outputFormat: "GML2",
+		// 	sourceName : db
+		// }),		
+		source : new GeoBeans.Source.Feature({
 			geometryName : "shape",
-			outputFormat: "GML2",
-			sourceName : db
-		}),		
+		}),
 		style : style
 	});
 
@@ -263,4 +241,55 @@ function openInfoWindow(){
 		content : "名称 : " + name
 	});
 	infoWindow.show(true);
+}
+
+// 根据图层名称获取wfs的source 
+function getWFSSourceByLayerName(layerName){
+	if(layerName == null){
+		return null;
+	}
+	return new GeoBeans.Source.Feature.WFS({
+		url : url,
+		version : "1.0.0",
+		featureNS : 'http://www.radi.ac.cn',
+		featurePrefix : "radi",
+		featureType : layerName,
+		geometryName : "shape",
+		outputFormat: "GML2",
+		sourceName : db
+	});	
+}
+
+// 日期格式化
+function dateFormat(date,fmt){
+	var o = {   
+		"M+" : date.getMonth()+1,                 //月份   
+		"d+" : date.getDate(),                    //日   
+		"h+" : date.getHours(),                   //小时   
+		"m+" : date.getMinutes(),                 //分   
+		"s+" : date.getSeconds(),                 //秒   
+		"q+" : Math.floor((date.getMonth()+3)/3), //季度   
+		"S"  : date.getMilliseconds()             //毫秒   
+	};   
+	if(/(y+)/.test(fmt))   
+		fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));   
+	for(var k in o)   
+		if(new RegExp("("+ k +")").test(fmt))   
+			fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+	return fmt;   	
+}
+
+// 添加地图拖动，滚动事件
+function addMapEvent(){
+	mapObj.on(GeoBeans.Event.DRAG_END, onMapEvent);
+	mapObj.on(GeoBeans.Event.MOUSE_WHEEL, onMapEvent);
+}
+
+// 暂时不考虑
+function onMapEvent(evt){
+	var viewer = mapObj.getViewer();
+	var extent = viewer.getExtent();
+	var propName = "shape";
+	var filter = new GeoBeans.Filter.BBoxFilter(propName,extent);
+	// getCount(filter);
 }

@@ -23,7 +23,13 @@
 <script type="text/javascript">
 	var mapObj = null;
 	var drawer = null;
-	// var featureLayer = null;
+
+	// wfs地址
+	var url = "/ows/radi/mgr?";
+
+	// wfs数据库
+	var db = "gisdb";
+
 	var layerCur = null;
 	// 当前编辑的要素
 	var featureCur = null;
@@ -59,6 +65,7 @@
 	 	addDrawInteraction();
 	 	loadLayersList();
 	 	addPanelEvent();
+	 	addMapEvent();
 	}
 
 

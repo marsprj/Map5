@@ -11,6 +11,7 @@ function addPanelEvent(){
 		var type = $(listTypeDiv).attr("ltype");
 		var db = $(listTypeDiv).attr("db");
 		layerCur = getLayer(layerName,type,db);
+		loadAllFeatures();
 		if($(this).hasClass("layer-visible")){
 			layerCur.setVisible(false);
 			$(this).removeClass("layer-visible").addClass("layer-invisible");
@@ -64,7 +65,7 @@ function addPanelEvent(){
 
 	// 取消
 	$(".cancel-btn").click(function(){
-		refreshFeatures();
+		getFeaturesByPage();
 		featureNew = null;
 		featureCur = null;
 	});
@@ -73,21 +74,21 @@ function addPanelEvent(){
 	$(".page-div .pagination li").click(function(){
 		if($(this).hasClass("first-page")){
 			currentPage = 1;
-			showFeatureByPage();
+			getFeaturesByPage();
 			
 		}else if($(this).hasClass("pre-page")){
 			if(currentPage > 1 && currentPage <= pageCount){
 				currentPage = currentPage - 1;
-				showFeatureByPage();
+				getFeaturesByPage();
 			}
 		}else if($(this).hasClass("next-page")){
 			if(currentPage > 0 && currentPage < pageCount){
 				currentPage = currentPage + 1;
-				showFeatureByPage();
+				getFeaturesByPage();
 			}
 		}else if($(this).hasClass("last-page")){
 			currentPage = pageCount;
-			showFeatureByPage();
+			getFeaturesByPage();
 		}
 	});
 
@@ -113,19 +114,25 @@ function saveFeature(){
 		
 	});
 
-	var source = layerCur.getSource();
+	var date = new Date();
+	var dateStr = dateFormat(date,"yyyy-MM-dd hh:mm:ss");
+
+	var source = getWFSSourceByLayerName(layerCur.getName());
 	var geometryName = source.getGeometryName();
 	if(featureNew != null){
 		featureNew.setValue(geometryName,featureNew.geometry);
 		featureNew.setValue("username",userName);
+		// featureNew.setValue("updatetime",dateStr);
 	}else if(featureCur != null){
 		featureCur.setValue(geometryName,featureCur.geometry);
+		// featureCur.setValue("updatetime",dateStr);
 	}
 	
 	if(featureNew != null){
 		var addFeature_success = {
 			execute : addFeature_handler
 		};
+
 		source.addFeature(featureNew,addFeature_success);
 	}
  	
@@ -142,6 +149,7 @@ function addFeature_handler(result){
 	featureNew = null;
 	console.log(result);
 	refreshFeatures();
+
 }
 
 function updateFeature_handler(result){
@@ -154,7 +162,7 @@ function updateFeature_handler(result){
 // 删除feature,如果是准备新添加的，则不用处理，如果是已有的，则删除
 function removeFeature(){
 	if(featureCur != null){
-		var source = layerCur.getSource();
+		var source = getWFSSourceByLayerName(layerCur.getName());
 		var removeFeature_success = {
 			execute : removeFeature_success_handler
 		};
@@ -180,6 +188,90 @@ function refreshFeatures(){
 	$("#layer_tab .left-tab-title .layer-name,#overlay-info-tab .left-tab-title .layer-name").html(layerCur.name);
 	$(".overlay-list-div").addClass("loading").empty();
 
+	
+	getCount();
+}
+
+// 获取个数
+function getCount(bboxFilter){
+	if(layerCur == null){
+		return;
+	}
+
+	var filter = null;
+	if(userOnly){
+		var oper = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
+		var prop = new GeoBeans.Expression.PropertyName();
+		prop.setName("username");
+		var literal = new GeoBeans.Expression.Literal();
+		literal.setValue(userName);
+		var userFilter = new GeoBeans.Filter.BinaryComparisionFilter(
+							oper,
+							prop,
+							literal);
+		if(bboxFilter != null){
+			var operator = GeoBeans.Filter.LogicFilter.OperatorType.LogicOprAnd;
+			var filter = new GeoBeans.Filter.BinaryLogicFilter(operator);
+			filter.addFilter(bboxFilter);
+			filter.addFilter(userFilter);
+		}else{
+			filter = userFilter;
+		}
+	}else{
+		if(bboxFilter != null){
+			filter = bboxFilter;
+		}
+	}
+
+	
+
+	var orderby = new GeoBeans.Query.OrderBy();
+	// orderby.addField("updatetime");
+	orderby.addField("gid");
+	orderby.setOrder(GeoBeans.Query.OrderBy.OrderType.OrderDesc);
+	var query = new GeoBeans.Query({
+		filter : filter,
+		orderby : orderby,
+	});
+
+	var success = {
+		execute : function(count){
+			$(".overlay-list-div").removeClass("loading");
+			if(!isValid(count)){
+				return;
+			}
+			initPage(count);
+		}
+	};
+
+	var source = getWFSSourceByLayerName(layerCur.getName());
+	if(source != null){
+		source.queryCount(query,success);
+	}	
+}
+
+// 设置页码
+function initPage(count){
+	pageCount = Math.ceil(count / listCount);
+	$(".current-page").html(currentPage + " / " + pageCount + "页");
+	currentPage = 1;
+
+	getFeaturesByPage();
+}
+
+// 根据页码获取要素
+function getFeaturesByPage(){
+	if(currentPage == null || layerCur == null){
+		return;
+	}
+
+	$(".left-tab").removeClass("active");
+	$("#layer_tab").addClass("active");
+	$(".overlay-list-div").addClass("loading").empty();
+	var offset = (currentPage - 1) * listCount;
+	$(".current-page").html(currentPage + " / " + pageCount + "页");
+	addSelectInteraction();
+
 	var filter = null;
 	if(userOnly){
 		var oper = GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual;
@@ -192,9 +284,16 @@ function refreshFeatures(){
 							prop,
 							literal);
 	}
+
+	var orderby = new GeoBeans.Query.OrderBy();
+	// orderby.addField("updatetime");
+	orderby.addField("gid");
+	orderby.setOrder(GeoBeans.Query.OrderBy.OrderType.OrderDesc);
 	var query = new GeoBeans.Query({
-		typeName : layerCur.getName(),
-		filter : filter
+		filter : filter,
+		orderby : orderby,
+		maxFeatures : listCount,
+		offset : offset
 	});
 
 	var success = {
@@ -202,47 +301,58 @@ function refreshFeatures(){
 			if(!isValid(features)){
 				return;
 			}
+			$(".overlay-list-div").removeClass("loading");
+			addFeaturesToLayer(features);
 			showFeatures(features);
 		}
 	};
 
+	var source = getWFSSourceByLayerName(layerCur.getName());
+	if(source != null){
+		source.query(query,success);
+	}	
+}
+
+
+// 添加到地图上
+function addFeaturesToLayer(features){
+	if(features == null || layerCur == null){
+		return;
+	}
+
+	// 先删除已有的，再添加新的
+	var query = new GeoBeans.Query({
+		filter: null,
+	});
+	var success = {
+		execute : function(f){
+			var source = layerCur.getSource();
+			while(f.length>0){
+				source.removeFeature(f[f.length-1]);
+			}
+			// for(var i = 0; i < f.length;++i){
+			// 	source.removeFeature(f[i]);
+			// }
+			source.addFeatures(features);
+			mapObj.refresh();
+		}
+	};
 	layerCur.query(query,success);
 }
 
-// 展示列表
+
+// 显示列表
 function showFeatures(features){
-	$(".overlay-list-div").removeClass("loading")
 	if(features == null){
 		return;
 	}
 
-	featuresList = features;
-
-	pageCount = Math.ceil(featuresList.length / listCount);
-	currentPage = 1;
-	showFeatureByPage();
-}
-
-
-function showFeatureByPage(){
-	var page = currentPage;
-	if(currentPage > pageCount){
-		return;
-	}
-
-	$(".current-page").html(currentPage + " / " + pageCount + "页");
-	var start = featuresList.length - (currentPage -1) * listCount -1;
-	var end = start - listCount + 1;
-	if(end < 0){
-		end = 0;
-	}
-
 	var html = "";
-	var feature = null,name = null,geometry = null,geometryType = null,image = null;
-	var fid = null,type = null;
+	var feature = null;
 
-	for(var i=start; i >= end;--i){
-		feature = featuresList[i];
+	var username = null;
+	for(var i=0; i < features.length;++i){
+		feature = features[i];
 		if(feature == null){
 			continue;
 		}
@@ -260,13 +370,13 @@ function showFeatureByPage(){
 		fid = feature.fid;
 		image = "images/food.png";
 		image = getLayerIconImage();
+		username = feature.getValue("username");
 		html += '<div class="overlay-item" fid="' + fid+'">'
 			+	'	<div class="col-md-2">'
 			+	'		<img src="' + image + '">'
 			+	'	</div>'
 			+	'	<div class="col-md-8 overlay-name">' + name + '</div>'
-			// +	'	<div class="col-md-2 edit">编辑</div>'
-			+	'	<div class="col-md-2 remove">删除</div>'
+			+	((username == userName)? '<div class="col-md-2 remove">删除</div>': '')
 			+	'</div>';
 	}
 
@@ -277,11 +387,12 @@ function showFeatureByPage(){
 		var fid = $(this).parents(".overlay-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();
-		fid += layerCur.getName() + "." + fid;
+		fid = layerCur.getName() + "." + fid;
 		filter.addID(fid);
 
+		var source = getWFSSourceByLayerName(layerCur.getName());
 		var query = new GeoBeans.Query({
-			typeName : layerCur.getName(),
+			// typeName : layerCur.getName(),
 			filter : filter 	//查询过滤条件
 		});
 
@@ -289,7 +400,7 @@ function showFeatureByPage(){
 			execute : editFeatureHandler
 		};
 
-		layerCur.query(query,success);
+		source.query(query,success);
 	});
 
 	// 删除
@@ -314,6 +425,112 @@ function showFeatureByPage(){
 		layerCur.query(query,success);
 	});
 }
+
+// 展示列表
+// function showFeatures(features){
+// 	$(".overlay-list-div").removeClass("loading")
+// 	if(features == null){
+// 		return;
+// 	}
+
+// 	featuresList = features;
+
+// 	pageCount = Math.ceil(featuresList.length / listCount);
+// 	currentPage = 1;
+// 	showFeatureByPage();
+// }
+
+
+// function showFeatureByPage(){
+// 	var page = currentPage;
+// 	if(currentPage > pageCount){
+// 		return;
+// 	}
+
+// 	$(".current-page").html(currentPage + " / " + pageCount + "页");
+// 	var start = featuresList.length - (currentPage -1) * listCount -1;
+// 	var end = start - listCount + 1;
+// 	if(end < 0){
+// 		end = 0;
+// 	}
+
+// 	var html = "";
+// 	var feature = null,name = null,geometry = null,geometryType = null,image = null;
+// 	var fid = null,type = null;
+
+// 	for(var i=start; i >= end;--i){
+// 		feature = featuresList[i];
+// 		if(feature == null){
+// 			continue;
+// 		}
+
+// 		geometry = feature.geometry;
+// 		if(geometry == null){
+// 			continue;
+// 		}
+
+// 		name = feature.getValue("name");
+// 		if(name == null || name == ""){
+// 			name = "未命名";
+// 		}
+
+// 		fid = feature.fid;
+// 		image = "images/food.png";
+// 		image = getLayerIconImage();
+// 		html += '<div class="overlay-item" fid="' + fid+'">'
+// 			+	'	<div class="col-md-2">'
+// 			+	'		<img src="' + image + '">'
+// 			+	'	</div>'
+// 			+	'	<div class="col-md-8 overlay-name">' + name + '</div>'
+// 			// +	'	<div class="col-md-2 edit">编辑</div>'
+// 			+	'	<div class="col-md-2 remove">删除</div>'
+// 			+	'</div>';
+// 	}
+
+// 	$(".overlay-list-div").html(html);
+
+// 	// 编辑
+// 	$(".overlay-list-div .overlay-name").click(function(){
+// 		var fid = $(this).parents(".overlay-item").attr("fid");
+
+// 		var filter = new GeoBeans.Filter.IDFilter();
+// 		fid += layerCur.getName() + "." + fid;
+// 		filter.addID(fid);
+
+// 		var query = new GeoBeans.Query({
+// 			typeName : layerCur.getName(),
+// 			filter : filter 	//查询过滤条件
+// 		});
+
+// 		var success = {
+// 			execute : editFeatureHandler
+// 		};
+
+// 		layerCur.query(query,success);
+// 	});
+
+// 	// 删除
+// 	$(".overlay-list-div .remove").click(function(){
+// 		if(!confirm("确认删除么？")){
+// 			return;
+// 		}
+// 		var fid = $(this).parents(".overlay-item").attr("fid");
+
+// 		var filter = new GeoBeans.Filter.IDFilter();
+// 		filter.addID(layerCur.getName() + "." + fid);
+
+// 		var query = new GeoBeans.Query({
+// 			typeName : layerCur.getName(),
+// 			filter : filter 	//查询过滤条件
+// 		});
+
+// 		var success = {
+// 			execute : removeFeatureHandler
+// 		};
+
+// 		layerCur.query(query,success);
+// 	});
+// }
 
 // 列表中编辑的feature
 function editFeatureHandler(features){
@@ -392,4 +609,26 @@ function getLayerIconImage(){
 		}
 	}
 	return "";
+}
+
+// 获取所有的要素
+function loadAllFeatures(){
+	if(layerCur == null){
+		return;
+	}
+	var source = getWFSSourceByLayerName(layerCur.getName());
+	var query = new GeoBeans.Query({
+
+	});
+	var success = {
+		execute : function(features){
+			if(features == null){
+				return;
+			}
+			var s = layerCur.getSource();
+			s.addFeatures(features);
+			mapObj.refresh();
+		}
+	}
+	source.query(query,success);
 }

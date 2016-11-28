@@ -50,23 +50,36 @@ function getFields(getFields_handler){
 		execute : getFields_handler
 	};
 
-	var source = layerCur.getSource();
+	var source = getWFSSourceByLayerName(layerCur.getName());
 	source.getFields(handler);
 }
 
 function getFields_handler(fields){
 	var feature = null;
-	
+	var isEdit = false;
 	if(featureNew != null){
 		// 新建
 		feature = featureNew;
 		$("#overlay-info-tab .overlay-title").html("新建");
+		$("#overlay-info-tab .save-btn").show();
 		$("#overlay-info-tab .remove-btn").hide();
+		isEdit = true;
 	}else{
 		// 编辑
 		feature = featureCur;
-		$("#overlay-info-tab .overlay-title").html("编辑");
-		$("#overlay-info-tab .remove-btn").show();
+		var username = feature.getValue("username");
+		if(username == userName){
+			// 当前用户所有，允许编辑
+			$("#overlay-info-tab .overlay-title").html("编辑");
+			isEdit = true;
+			$("#overlay-info-tab .remove-btn").show();
+			$("#overlay-info-tab .save-btn").show();
+		}else{
+			// 只允许查看
+			$("#overlay-info-tab .overlay-title").html("查看");
+			$("#overlay-info-tab .remove-btn").hide();
+			$("#overlay-info-tab .save-btn").hide();
+		}
 	}
 	if(feature == null){
 		return;
@@ -74,6 +87,10 @@ function getFields_handler(fields){
 
 	var html = "";
 
+	var disabledHtml = "";
+	if(!isEdit){
+		disabledHtml = ' disabled="disabled"';
+	}
 	for(var i = 0; i < fields.length;++i){
 		var field = fields[i];
 		var name = field.getName();
@@ -85,12 +102,12 @@ function getFields_handler(fields){
 		if(type  == GeoBeans.Field.Type.GEOMETRY){
 			continue;
 		}
-		if(name == "gid" || name == "username"){
+		if(name == "gid" || name == "username" || name == "updatetime"){
 			continue;
 		}
 		html += '<div class="input-group">'
 			+	'  	<span class="input-group-addon">' + name + '</span>'
-			+	'  	<input type="text" class="form-control" value="' + value +'">'
+			+	'  	<input type="text" class="form-control" value="' + value +'" ' + disabledHtml + '>'
 			+	'</div>';
 	}
 

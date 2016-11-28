@@ -49,7 +49,7 @@ var g_layers = [
 		// fields : [
 		// 	"名称","地址","电话"
 		// ]
-		db : "gisdb"
+		// db : "gisdb"
 	},{
 		type : "LineString",
 		name : "rivers2",
@@ -59,7 +59,7 @@ var g_layers = [
 			width : 2,
 			opacity : 1.0
 		},
-		db : "gisdb"	
+		// db : "gisdb"	
 	},{
 		type : "Polygon",
 		name : "country2",
@@ -71,6 +71,6 @@ var g_layers = [
 			fill : "#f6634f",
 			fillOpacity : 1.0
 		},
-		db : "gisdb"	
+		// db : "gisdb"	
 	}
 ];
