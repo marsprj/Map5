@@ -317,8 +317,8 @@ GeoBeans.Source.Feature.WFS.prototype.serializeOrderby = function(orderby, xmlDo
 	$(onode).attr("order", orderby.isAsc() ? "asc" : "desc");
 
 	var fields = orderby.getFields();
-	for (f in fields){
-		fnode = xmlDoc.createElement("wfs:PropertyName");
+	for (var f in fields){
+		var fnode = xmlDoc.createElement("wfs:PropertyName");
 		$(fnode).text(fields[f]);
 		$(onode).append(fnode);
 	}
