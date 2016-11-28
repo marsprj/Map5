@@ -61,6 +61,35 @@ GeoBeans.Utility  = {
 		return d;
 	},
 
+	pedal : function(x, y, x0, y0, x1, y1){
+		var pedal = {
+			x : 0,
+			y : 0
+		};
+		if(Math.abs(x0-x1)<Math.ESPLON){
+			pedal.x = x0;
+			pedal.y = y;
+
+		}
+		else if(Math.abs(y0-y1)<Math.ESPLON){
+			pedal.x = x;
+			pedal.y = y0;
+		}
+		else{
+			var k_1  = -(x1-x0) / (y1-y0);
+			var k_0 = -1 / k_1;
+			var b_0 = y0 - k_0 * x0;
+			var b_1 = y  - k_1 * x;
+
+			var k_v = (k_1 - k_0);
+			var xx  = (b_0 - b_1) / k_v;
+			var yx  = k_1 * xx + b_1;
+
+			pedal.x = xx;
+			pedal.y = xy;
+		}
+		return pedal;
+	},
 
 	// 随机数
 	getRandom : function(min,max){

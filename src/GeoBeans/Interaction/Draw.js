@@ -18,6 +18,10 @@ GeoBeans.Interaction.Draw = GeoBeans.Class(GeoBeans.Interaction, {
 	 * 绘制完成时候的事件响应函数，返回绘制好的Geometry对象。
 	 */
 	onComplete : null,
+	/**
+	 * 绘制图形时，鼠标移动时，触发事件。
+	 */
+	onMouseMove : null,
 	
 	initialize : function(options){
 		GeoBeans.Interaction.prototype.initialize.apply(this, arguments);

@@ -1134,6 +1134,15 @@ GeoBeans.Map.prototype.getViewer = function(){
 }
 
 /**
+ * 获取Map的空间参考对象
+ * @return {GeoBeans.Proj} 空间参考对象
+ * @public
+ */
+GeoBeans.Map.prototype.getSpatialReference = function(){
+	return this._srs;
+}
+
+/**
  * 启用/禁止Map拖拽
  * @public
  * @param  {boolean} flag 是否可以拖拽

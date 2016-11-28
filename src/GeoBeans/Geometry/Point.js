@@ -55,6 +55,17 @@ GeoBeans.Geometry.Point.prototype.getY = function(){
 }
 
 /**
+ * 设置Point的坐标值
+ * @param {float} x x坐标
+ * @param {float} y y坐标
+ * @public
+ */
+GeoBeans.Geometry.Point.prototype.set = function(x, y){
+	this.x = x;
+	this.y = y
+}
+
+/**
  * 计算中心点。
  * @public
  * @return {GeoBeans.Geometry.Point} 中心点。

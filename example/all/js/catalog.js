@@ -165,6 +165,9 @@ var g_catalog = [
 			},{
 				"name" : "地图旋转",
 				"link" : "interaction/interaction_rotate.html"
+			},{
+				"name" : "拾取",
+				"link" : "interaction/interaction_hit.html"
 			}
 		]
 	},{

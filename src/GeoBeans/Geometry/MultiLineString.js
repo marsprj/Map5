@@ -109,3 +109,11 @@ GeoBeans.Geometry.MultiLineString.prototype.distance = function(geometry){
 	return dmin;
 }
 
+/**
+ * 获得MultiLineString上的lines
+ * @return {Array.<GeoBeans.Geometry.LineString>} line集合
+ * ＠public
+ */
+GeoBeans.Geometry.MultiLineString.prototype.getLines = function(){
+	return this.lines;
+}

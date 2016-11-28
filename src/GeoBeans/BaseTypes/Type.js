@@ -11,6 +11,7 @@ GeoBeans.SrsType = {
 
 /**
  * Map5单位
+ * @class 
  * @type {Object}
  */
 GeoBeans.Unit = {

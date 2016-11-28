@@ -106,7 +106,11 @@ if(platform == "win32"){
 			.pipe(concat('Map5.min.js'))
 			.pipe(gulp.dest(map5Dest));		
 	});
-
+	gulp.task('map5-debug',function(){
+		return gulp.src(map5List)
+			.pipe(concat('Map5-debug.js'))
+			.pipe(gulp.dest(map5Dest));		
+	});
 
 
 	// 压缩Map5 css

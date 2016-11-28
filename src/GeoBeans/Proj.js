@@ -53,7 +53,9 @@ GeoBeans.Proj.toLonLat = function(x, y){
 }
 
 /**
+ * @classdesc
  * WGS84投影类
+ * @class 
  */
 GeoBeans.Proj.WGS84 = {
 	SRID : "EPSG:4326",
@@ -65,7 +67,66 @@ GeoBeans.Proj.WGS84 = {
 }
 
 /**
+ * 计算两点之间的距离。
+ * @param  {float} lon1 pt1的经度
+ * @param  {float} lat1 pt1的纬度
+ * @param  {float} lon2 pt2的经度
+ * @param  {float} lat2 pt2的纬度
+ * @param  {GeoBeans.Unit} unit 距离单位
+ * @return {float}      两点之间的距离两点间的距离 
+ * @public
+ */
+GeoBeans.Proj.WGS84.distance = function(lon1, lat1, lon2, lat2, unit){
+	return GeoBeans.Earth.distance(lon1, lat1, lon2, lat2, unit);
+}
+
+/**
+ * 计算线段长度
+ * @param  {GeoBeans.Geometry.LineString|GeoBeans.Geometry.MultiLineString} line 线段
+ * @param  {GeoBeans.Unit} unit 距离单位
+ * @return {float}      线段长度 
+ * @public
+ */
+GeoBeans.Proj.WGS84.computeLength = function(line, unit){
+	if(!isValid(line)){
+		return 0;
+	}
+
+	var len = 0;
+	switch(line.type){
+		case GeoBeans.Geometry.Type.LINESTRING:{
+			var pt1=null,pt2=null;
+			var pts = line.getPoints();
+			var count = pts.length - 1;
+			for(var j=0; j<count; j++){
+				pt1 = pts[j];
+				pt2 = pts[j+１];
+				len += this.distance(pt1.x, pt1,y, pt2.x, pt2.y, unit);
+			}
+
+		}
+		case GeoBeans.Geometry.Type.MULTILINESTRING:{
+			var lines = line.getLines();
+			lines.forEach(function(l){
+				var pt1=null,pt2=null;
+				var pts = l.getPoints();
+				var count = pts.length - 1;
+				for(var j=0; j<count; j++){
+					pt1 = pts[j];
+					pt2 = pts[j+１];
+					len += this.distance(pt1.x, pt1,y, pt2.x, pt2.y, unit);
+				}
+			});
+		}
+	}
+
+	return len;
+}
+
+/**
+ * @classdesc
  * WebMercator投影类
+ * @class
  */
 GeoBeans.Proj.WebMercator = {
 	/** 
@@ -88,4 +149,22 @@ GeoBeans.Proj.WebMercator = {
 	 * @type {String}
 	 */
 	UNIT : "meter"
+}
+
+/**
+ * 计算两点之间的距离。
+ * @param  {float} x1	pt1的x坐标
+ * @param  {float} y1 	pt1的y坐标
+ * @param  {float} x2	pt2的x坐标
+ * @param  {float} y2 	pt2的y坐标
+ * @param  {GeoBeans.Unit} unit 距离单位
+ * @return {float}      两点之间的距离两点间的距离 
+ * @public
+ */
+GeoBeans.Proj.WebMercator.distance = function(x1, y1, x2, y2, unit){
+
+	var pt1 = GeoBeans.Proj.toLonLat(x1,y1);
+	var pt2 = GeoBeans.Proj.toLonLat(x2,y2);
+
+	return GeoBeans.Earth.distance(pt1.x, pt1.y, pt2.x, pt2.y, unit);
 }

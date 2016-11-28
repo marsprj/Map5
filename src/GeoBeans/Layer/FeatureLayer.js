@@ -176,11 +176,11 @@ GeoBeans.Layer.FeatureLayer = GeoBeans.Class(GeoBeans.Layer, {
 			//放到selection里面干什么？
 			var selection = this._source.select(rule.filter,features);
 			if(rule.symbolizer != null){
-				if(rule.symbolizer.symbol != null){
-					this.renderer.drawIcons(selection, rule.symbolizer, this.map.getViewer());
-				}else{
+				// if(rule.symbolizer.symbol != null){
+				// 	this.renderer.drawIcons(selection, rule.symbolizer, this.map.getViewer());
+				// }else{
 					this.drawFeatures(selection, rule.symbolizer);
-				}	
+				//}	
 			}
 
 			if(rule.textSymbolizer != null){

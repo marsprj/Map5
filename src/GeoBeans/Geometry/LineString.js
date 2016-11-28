@@ -7,12 +7,18 @@
  */
 GeoBeans.Geometry.LineString = GeoBeans.Class(GeoBeans.Geometry,{
 	
-	points : null,
+	points : [],
 	type : GeoBeans.Geometry.Type.LINESTRING,
 	
 	initialize : function(points){
-		this.points = points;		
-		this.extent = this.computeExtent(this.points);
+		if(isValid(points)){
+			var that = this;
+			this.points.length = 0;			
+			points.forEach(function(p){
+				that.points.push(p)
+			});
+			this.extent = this.computeExtent(this.points);	
+		}
 	},
 	
 	destory : function(){
@@ -162,4 +168,12 @@ GeoBeans.Geometry.LineString.prototype.distance = function(geometry){
 		}
 	}
 	return dmin;
+}
+
+/**
+ * 获得
+ * @return {[type]} [description]
+ */
+GeoBeans.Geometry.LineString.prototype.getPoints = function(){
+	return this.points;
 }
