@@ -249,8 +249,8 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLinesStatic = function(){
 
 /**
  * 绘制不动的轨迹线
- * @param  {[type]} pathLine [description]
- * @return {[type]}          [description]
+ * @private
+ * @param  {GeoBeans.PathLine} pathLine 轨迹线
  */
 GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 	if(!isValid(pathLine)){
