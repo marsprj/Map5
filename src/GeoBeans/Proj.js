@@ -72,7 +72,7 @@ GeoBeans.Proj.WGS84 = {
  * @param  {float} lat1 pt1的纬度
  * @param  {float} lon2 pt2的经度
  * @param  {float} lat2 pt2的纬度
- * @param  {GeoBeans.Unit} unit 距离单位
+ * @param  {GeoBeans.Unit} unit 单位(默认为米)
  * @return {float}      两点之间的距离两点间的距离 
  * @public
  */
@@ -81,47 +81,21 @@ GeoBeans.Proj.WGS84.distance = function(lon1, lat1, lon2, lat2, unit){
 }
 
 /**
- * 计算线段长度
- * @param  {GeoBeans.Geometry.LineString|GeoBeans.Geometry.MultiLineString} line 线段
+ * 计算多边形面积
+ * @param  {GeoBeans.Geometry.Polygon|GeoBeans.Geometry.MultiPolygon} polygon 多边形
  * @param  {GeoBeans.Unit} unit 距离单位
- * @return {float}      线段长度 
+ * @return {float}         多边形面积(默认为米)
  * @public
  */
-GeoBeans.Proj.WGS84.computeLength = function(line, unit){
-	if(!isValid(line)){
-		return 0;
+GeoBeans.Proj.WGS84.area = function(polygon, unit){
+	if(isValid(unit)){
+		return GeoBeans.Earth.area(polygon, unit);	
 	}
-
-	var len = 0;
-	switch(line.type){
-		case GeoBeans.Geometry.Type.LINESTRING:{
-			var pt1=null,pt2=null;
-			var pts = line.getPoints();
-			var count = pts.length - 1;
-			for(var j=0; j<count; j++){
-				pt1 = pts[j];
-				pt2 = pts[j+1];
-				len += this.distance(pt1.x, pt1,y, pt2.x, pt2.y, unit);
-			}
-
-		}
-		case GeoBeans.Geometry.Type.MULTILINESTRING:{
-			var lines = line.getLines();
-			lines.forEach(function(l){
-				var pt1=null,pt2=null;
-				var pts = l.getPoints();
-				var count = pts.length - 1;
-				for(var j=0; j<count; j++){
-					pt1 = pts[j];
-					pt2 = pts[j+1];
-					len += this.distance(pt1.x, pt1,y, pt2.x, pt2.y, unit);
-				}
-			});
-		}
+	else{
+		return GeoBeans.Earth.area(polygon, GeoBeans.Unit.Meter);	
 	}
-
-	return len;
 }
+
 
 /**
  * @classdesc
