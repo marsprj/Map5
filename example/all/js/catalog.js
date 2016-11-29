@@ -549,6 +549,20 @@ var g_catalog = [
 			}
 		]		
 	}*/,{
+		"name" : "空间量算",
+		"items":[
+			{
+				"name" : "线长度",
+				"link" : "measure/measure_line_length.html"
+			},{
+				"name" : "多边形周长",
+				"link" : "measure/measure_polygon_perimeter.html"
+			},{
+				"name" : "多边形面积",
+				"link" : "measure/measure_polygon_area.html"
+			}
+		]
+	},{
 		"name" : "格式转换",
 		"items":[
 			{
