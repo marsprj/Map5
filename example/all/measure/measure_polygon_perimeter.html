@@ -162,13 +162,13 @@
 
 	function onSelectionChange(features){
 		if(features.length>0){
-			//计算面积
+			//计算周长
 			var polygon = features[0].getGeometry();	
 			var srs = mapObj.getSpatialReference();
-			//计算多边多边形面积
-			var area = srs.area(polygon, 	//多边形
+			//计算多边多边形周长
+			var perimeter = srs.length(polygon, 	//多边形
 								GeoBeans.Unit.Kilometer);//单位
-			document.getElementById("area").value = area;
+			document.getElementById("perimeter").value = perimeter;
 		}
 		
 	}
@@ -186,11 +186,11 @@
 	}
 
 </script>
-<title>Measure:计算面积</title>
+<title>Measure:计算多边形周长</title>
 <body onload="init()">
-	<span>面积:</span>
-	<input type="text" id="area" value="0.0" placeholder="0.0" size="20">
-	<span>平方公里</span>
+	<span>周长:</span>
+	<input type="text" id="perimeter" value="0.0" placeholder="0.0" size="20">
+	<span>公里</span>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>

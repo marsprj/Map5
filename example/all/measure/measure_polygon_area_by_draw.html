@@ -129,68 +129,45 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
-	var vector = null;
+	var drawer = null;
 	function init(){
 		loadTileMap();
-		addGeoJSONLayer();
-		createSelectInteraction();
+		createDrawInteraction();
 	}
-
-	function addGeoJSONLayer(){
-		vector = new GeoBeans.Layer.FeatureLayer({			
-			"name" : "layername", // 图层名称
-			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
-			"source" : new GeoBeans.Source.Feature.GeoJSON({
-				"url" : "../data/geojson/countries.geojson",
-				"geometryName" : "geometry",
-			}),
-			"style" : createSimplePolygonStyle()
-		});
-		mapObj.addLayer(vector);
-		mapObj.refresh();
-	}
-
 	
-	function createSelectInteraction(){
-		var select = new GeoBeans.Interaction.Select({
-			"map" : mapObj,
-			"layer" : vector
+	function createDrawInteraction(){
+		drawer = new GeoBeans.Interaction.Draw({
+			map : mapObj,
+			onComplete : onComplete
 		});
-		select.onchange(onSelectionChange);
-		mapObj.addInteraction(select);
+		mapObj.addInteraction(drawer);
 	}
 
-	function onSelectionChange(features){
-		if(features.length>0){
-			//计算面积
-			var polygon = features[0].getGeometry();	
-			var srs = mapObj.getSpatialReference();
-			//计算多边多边形面积
-			var area = srs.area(polygon, 	//多边形
-								GeoBeans.Unit.Kilometer);//单位
-			document.getElementById("area").value = area;
-		}
-		
+	function onComplete(geometry){
+		var srs = mapObj.getSpatialReference();
+		//计算多边多边形面积
+		var area = srs.area(geometry, 	//多边形
+							GeoBeans.Unit.Kilometer);//单位
+		document.getElementById("area").value = area;
 	}
 
-	function createSimplePolygonStyle(){
-		var style = new GeoBeans.Style.FeatureStyle();
-		var rule = new GeoBeans.Style.Rule();
-		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
-		symbolizer.fill.color.set(50, 60, 72,1.0);
-		symbolizer.stroke.color.set(17, 17, 17,0.6);
-		symbolizer.stroke.width = 1;
-		rule.symbolizer = symbolizer;
-		style.addRule(rule);
-		return style;
-	}
+	function onDrawPolygon(){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
 
+		drawer.draw(GeoBeans.Geometry.Type.POLYGON,symbolizer);
+	}
 </script>
 <title>Measure:计算面积</title>
 <body onload="init()">
+	<button onclick="onDrawPolygon()">量算</button>
 	<span>面积:</span>
 	<input type="text" id="area" value="0.0" placeholder="0.0" size="20">
 	<span>平方公里</span>
+
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>

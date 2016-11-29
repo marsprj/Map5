@@ -117,8 +117,8 @@ GeoBeans.Geometry.Point.prototype.hit = function(x, y, t){
 }
 /**
  * [distance description]
- * @param  {[type]} geometry [description]
- * @return {[type]}          [description]
+ * @param  {GeoBeans.Geometry} geometry 几何对象
+ * @return {float}          距离
  */
 GeoBeans.Geometry.Point.prototype.distance = function(geometry){
 	if(!isValid(geometry)){

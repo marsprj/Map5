@@ -173,7 +173,8 @@ GeoBeans.Geometry.LineString.prototype.distance = function(geometry){
 
 /**
  * 获得
- * @return {[type]} [description]
+ * @return {Array.<GeoBeans.Geometry.Point>} 点集合
+ * @public
  */
 GeoBeans.Geometry.LineString.prototype.getPoints = function(){
 	return this.points;

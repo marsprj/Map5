@@ -1,6 +1,5 @@
 /**
  * @classdesc
- * @private
  * 缩略图类
  */
 GeoBeans.Snap = GeoBeans.Class({

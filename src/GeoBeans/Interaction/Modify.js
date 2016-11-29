@@ -221,7 +221,7 @@ GeoBeans.Interaction.Modify.prototype.createDistanceBufferFilterQuery = function
 
 /**
  * 给定点pt和容差t,计算pt点击到line的那个位置
- * @param {[type]} line [description]
+ * @param {GeoBeans.Geometry.LineString} line 线
  * @description 点击位置包括线段(segment)上和顶点(vertex)上。顶点的优先级高于线段。
  * @private 
  */

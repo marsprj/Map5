@@ -560,6 +560,9 @@ var g_catalog = [
 			},{
 				"name" : "多边形面积",
 				"link" : "measure/measure_polygon_area.html"
+			},{
+				"name" : "多边形面积(交互式)",
+				"link" : "measure/measure_polygon_area_by_draw.html"
 			}
 		]
 	},{

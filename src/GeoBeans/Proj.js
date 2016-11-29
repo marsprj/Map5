@@ -67,7 +67,20 @@ GeoBeans.Proj.WGS84 = {
 }
 
 /**
- * 计算两点之间的距离。
+ * @description 计算两点之间的距离
+ * 
+ * 	<script type="text/javascript">
+ * 	
+ *		var pt1 = new GeoBeans.Geometry.Point(116,39);	//北京
+ *		var pt2 = new GeoBeans.Geometry.Point(121,31);	//上海
+ *		
+ *		var srs = mapObj.getSpatialReference();
+ *		//计算两点的距离
+ *		var dist = srs.distance(pt1.x, pt1.y,
+ *								pt2.x, pt2.y,
+ *							 	GeoBeans.Unit.Kilometer);//单位
+ *	</script>
+ * 
  * @param  {float} lon1 pt1的经度
  * @param  {float} lat1 pt1的纬度
  * @param  {float} lon2 pt2的经度
@@ -75,17 +88,52 @@ GeoBeans.Proj.WGS84 = {
  * @param  {GeoBeans.Unit} unit 单位(默认为米)
  * @return {float}      两点之间的距离两点间的距离 
  * @public
+
  */
 GeoBeans.Proj.WGS84.distance = function(lon1, lat1, lon2, lat2, unit){
 	return GeoBeans.Earth.distance(lon1, lat1, lon2, lat2, unit);
 }
 
 /**
- * 计算多边形面积
+ * @description 计算线的长度
+ * 
+ * 	<script type="text/javascript">
+ * 	
+ *		var line = feature.getGeometry();	
+ *		var srs = mapObj.getSpatialReference();
+ *		//计算多边多边形面积
+ *		var area = srs.length(polygon, 	//多边形
+ *							GeoBeans.Unit.Kilometer);//单位
+ *	</script>
+ * 
+ * @param  {GeoBeans.Geometry.LineString|GeoBeans.Geometry.MultiLineString} polygon 多边形
+ * @param  {GeoBeans.Unit} unit 距离单位
+ * @return {float}         多边形面积(默认为米)
+ * @return {float}      线的长度 
+ * @public
+
+ */
+GeoBeans.Proj.WGS84.length = function(line, unit){
+	return GeoBeans.Earth.length(line, unit);
+}
+
+/**
+ * @description 计算多边形面积
+ * 
+ * 	<script type="text/javascript">
+ * 	
+ *		var polygon = feature.getGeometry();	
+ *		var srs = mapObj.getSpatialReference();
+ *		//计算多边多边形面积
+ *		var area = srs.area(polygon, 	//多边形
+ *							GeoBeans.Unit.Kilometer);//单位
+ *	</script>
+ * 
  * @param  {GeoBeans.Geometry.Polygon|GeoBeans.Geometry.MultiPolygon} polygon 多边形
  * @param  {GeoBeans.Unit} unit 距离单位
  * @return {float}         多边形面积(默认为米)
  * @public
+ *
  */
 GeoBeans.Proj.WGS84.area = function(polygon, unit){
 	if(isValid(unit)){

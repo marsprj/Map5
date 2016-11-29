@@ -139,7 +139,7 @@ GeoBeans.MovePoint.prototype.start = function(){
 
 /**
  * 停止运动
- * @return {[type]} [description]
+ * @public
  */
 GeoBeans.MovePoint.prototype.stop = function(){
 	GeoBeans.MoveObject.prototype.stop.apply(this, arguments);
