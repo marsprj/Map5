@@ -152,3 +152,11 @@ GeoBeans.Geometry.Polygon = GeoBeans.Class(GeoBeans.Geometry,{
 	},	
 
 });
+
+/**
+ * 获得多边形的rings
+ * @return {Array.<GeoBeans.Geometry.LinearRing>} 环
+ */
+GeoBeans.Geometry.Polygon.prototype.getRings = function(){
+	return this.rings;
+}

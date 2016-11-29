@@ -21,3 +21,11 @@ GeoBeans.Geometry.LinearRing = GeoBeans.Class(GeoBeans.Geometry.LineString,{
 		return this.points.length;
 	}
 });
+
+/**
+ * 获得环上的点集合
+ * @return {Array.<GeoBeans.Geometry.Point>} 点集合
+ */
+GeoBeans.Geometry.LineString.prototype.getPoints = function(){
+	return this.points;
+}

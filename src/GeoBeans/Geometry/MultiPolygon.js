@@ -93,3 +93,12 @@ GeoBeans.Geometry.MultiPolygon = GeoBeans.Class(GeoBeans.Geometry,{
 	},
 
 });
+
+
+/**
+ * 获取MultiPolygon的polygons
+ * @return {Array.<GeoBeans.Geometry.Polygon>} 多边形集合
+ */
+GeoBeans.Geometry.MultiPolygon.prototype.getPolygons = function(){
+	return this.polygons;
+}

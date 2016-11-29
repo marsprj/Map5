@@ -40,3 +40,90 @@ GeoBeans.Earth.distance = function(lon1, lat1, lon2, lat2, unit){
 
 	return d;
 }
+
+/**
+ * 计算多边形面积
+ * @param  {GeoBeans.Geometry.Polygon|GeoBeans.Geometry.MultiPolygon} polygon 多边形
+ * @param  {GeoBeans.Unit} unit 距离单位
+ * @return {float}         多边形面积(默认为米)
+ * @public
+ */
+GeoBeans.Earth.area = function(polygon, unit){
+	if(!isValid(polygon)){
+		return 0.0;
+	}
+
+	var area = 0.0;
+	switch(polygon.type){
+		case GeoBeans.Geometry.Type.POLYGON:{
+			area = GeoBeans.Earth.computePolyonArea(polygon, unit);
+		}
+		break;
+		case GeoBeans.Geometry.Type.MULTIPOLYGON:{			
+			var polygons = polygon.getPolygons();
+			polygons.forEach(function(p){
+				area += GeoBeans.Earth.computePolyonArea(p, unit);
+			});
+		}
+		break;
+	}
+
+	return area;
+}
+
+/**
+ * 计算多边形面积
+ * @param  {GeoBeans.Geometry.Polygon} polygon 多边形
+ * @param  {GeoBeans.Unit} unit 单位(默认为米)
+ * @return {float}      多边形面积
+ * @private
+ */
+GeoBeans.Earth.computePolyonArea = function(polygon, unit){
+
+	var area = 0.0;
+
+	if(polygon.type == GeoBeans.Geometry.Type.POLYGON){
+		var rings = polygon.getRings();
+		rings.forEach(function(r){
+			area += GeoBeans.Earth.computeRingArea(r,unit);
+		});
+	}
+	return area;
+}
+
+/**
+ * 计算多边形面积
+ * @param  {GeoBeans.Geometry.LinearRing} ring 环
+ * @param  {GeoBeans.Unit} unit 单位(默认为米)
+ * @return {float}     环面积
+ * @private
+ */
+GeoBeans.Earth.computeRingArea = function(ring, unit){
+
+	var area = 0.0;
+	var pts = ring.getPoints();
+	var len = pts.length;
+	var pt1 = pts[len-1];
+	var pt2 = null;
+
+	for(var i=0; i<len; i++){
+		pt2 = pts[i];
+		area += GeoBeans.Math.toRadian(pt2.x-pt1.x)　* 
+				(2 + Math.sin(GeoBeans.Math.toRadian(pt1.y)) + Math.sin(GeoBeans.Math.toRadian(pt2.y)));
+
+		pt1 = pt2;	
+	}
+	this.RADIUS = 6378136;
+
+	area = area * this.RADIUS * this.RADIUS / 2.0;
+
+	switch(unit){
+		case GeoBeans.Unit.Meter: //meter
+		break;
+		case GeoBeans.Unit.Kilometer: //kilometer
+			area = area / 1000.0 / 1000.0;
+		break;
+	}
+
+	return area;
+}

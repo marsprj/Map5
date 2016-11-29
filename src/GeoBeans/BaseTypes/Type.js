@@ -15,7 +15,7 @@ GeoBeans.SrsType = {
  * @type {Object}
  */
 GeoBeans.Unit = {
-	degree   : "degree",
-	meter    : "meter",
-	kilometer: "kilometer"
+	Degree   : "d",
+	Meter    : "m",
+	Kilometer: "km"
 }
