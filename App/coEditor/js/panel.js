@@ -122,10 +122,10 @@ function saveFeature(){
 	if(featureNew != null){
 		featureNew.setValue(geometryName,featureNew.geometry);
 		featureNew.setValue("username",userName);
-		// featureNew.setValue("updatetime",dateStr);
+		featureNew.setValue("updatetime",dateStr);
 	}else if(featureCur != null){
 		featureCur.setValue(geometryName,featureCur.geometry);
-		// featureCur.setValue("updatetime",dateStr);
+		featureCur.setValue("updatetime",dateStr);
 	}
 	
 	if(featureNew != null){
@@ -226,8 +226,7 @@ function getCount(bboxFilter){
 	
 
 	var orderby = new GeoBeans.Query.OrderBy();
-	// orderby.addField("updatetime");
-	orderby.addField("gid");
+	orderby.addField("updatetime");
 	orderby.setOrder(GeoBeans.Query.OrderBy.OrderType.OrderDesc);
 	var query = new GeoBeans.Query({
 		filter : filter,
@@ -286,8 +285,7 @@ function getFeaturesByPage(){
 	}
 
 	var orderby = new GeoBeans.Query.OrderBy();
-	// orderby.addField("updatetime");
-	orderby.addField("gid");
+	orderby.addField("updatetime");
 	orderby.setOrder(GeoBeans.Query.OrderBy.OrderType.OrderDesc);
 	var query = new GeoBeans.Query({
 		filter : filter,
@@ -384,6 +382,9 @@ function showFeatures(features){
 
 	// 编辑
 	$(".overlay-list-div .overlay-name").click(function(){
+		$(".left-tab").removeClass("active");
+		$("#overlay-info-tab").addClass("active");
+		$(".overlay-info-div").addClass("loading").empty();
 		var fid = $(this).parents(".overlay-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();
@@ -418,11 +419,12 @@ function showFeatures(features){
 			filter : filter 	//查询过滤条件
 		});
 
+		var source = getWFSSourceByLayerName(layerCur.getName());
 		var success = {
 			execute : removeFeatureHandler
 		};
 
-		layerCur.query(query,success);
+		source.query(query,success);
 	});
 }
 
@@ -569,7 +571,8 @@ function removeFeatureHandler(features){
 		return;
 	}
 
-	var source = layerCur.getSource();
+	// var source = layerCur.getSource();
+	var source = getWFSSourceByLayerName(layerCur.getName());
 	var removeFeature_success = {
 		execute : removeFeature_success_handler
 	};

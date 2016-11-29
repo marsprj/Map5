@@ -55,6 +55,7 @@ function getFields(getFields_handler){
 }
 
 function getFields_handler(fields){
+	$(".overlay-info-div").removeClass("loading");
 	var feature = null;
 	var isEdit = false;
 	if(featureNew != null){

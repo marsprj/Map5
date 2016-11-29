@@ -185,6 +185,11 @@ body{
 	width: 100%;
 	margin: 10px;
 }
+.overlay-info-div.loading{
+	background-image: url(../images/spin.gif);
+	background-repeat: no-repeat;
+	background-position: center;	
+}
 
 .overlay-info-div .input-group{
 	width: 92%;
@@ -228,7 +233,7 @@ body{
 }
 #layer_tab .overlay-list-div{
 	overflow-y: auto;
-	height: calc(100% - 120px);
+	height: calc(100% - 128px);
 }
 #layer_tab .overlay-list-div.loading{
 	background-image: url(../images/spin.gif);
@@ -272,13 +277,13 @@ body{
 }
 
 .page-div{
-	height: 40px;
+	height: 48px;
     text-align: center;
     border-top: 1px solid #4b5f83;
     margin: 0px 10px;
 }
 .pagination{
-  margin: 12px 0px 4px 6px !important;
+  margin: 10px 0px 4px 6px !important;
 }
 .pagination  li{
   border: 1px solid #C9D9EA;
