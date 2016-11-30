@@ -1,26 +1,8 @@
 function addPanelEvent(){
-
 	$("body").find('[data-toggle="tooltip"]').tooltip({
         container: "body"
     });
 
-    // 图层显示设置
-    $("#layers_tab .layer-visible,#layers_tab .layer-invisible").click(function(){
-    	var listTypeDiv = $(this).parents(".list-type");
-		var layerName = $(listTypeDiv).attr("lname");
-		var type = $(listTypeDiv).attr("ltype");
-		var db = $(listTypeDiv).attr("db");
-		layerCur = getLayer(layerName,type,db);
-		loadAllFeatures();
-		if($(this).hasClass("layer-visible")){
-			layerCur.setVisible(false);
-			$(this).removeClass("layer-visible").addClass("layer-invisible");
-		}else{
-			layerCur.setVisible(true);
-			$(this).removeClass("layer-invisible").addClass("layer-visible");
-		}
-		mapObj.refresh();
-    });
 
 	// 返回图层列表
 	$(".back-to-layers").click(function(){

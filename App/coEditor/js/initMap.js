@@ -33,6 +33,8 @@ function addDrawInteraction(){
 
 
 function loadLayersList(){
+	$(".left-tab").removeClass("active");
+	$("#layers_tab").addClass("active");
 	var html = "";
 	for(var i = 0; i < g_layers.length;++i){
 		var obj = g_layers[i];
@@ -61,6 +63,23 @@ function loadLayersList(){
 		clickLayerDiv(layerDiv);
 	});
 
+	// 图层显示设置
+    $("#layers_tab .layer-visible,#layers_tab .layer-invisible").click(function(){
+    	var listTypeDiv = $(this).parents(".list-type");
+		var layerName = $(listTypeDiv).attr("lname");
+		var type = $(listTypeDiv).attr("ltype");
+		var db = $(listTypeDiv).attr("db");
+		layerCur = getLayer(layerName,type,db);
+		loadAllFeatures();
+		if($(this).hasClass("layer-visible")){
+			layerCur.setVisible(false);
+			$(this).removeClass("layer-visible").addClass("layer-invisible");
+		}else{
+			layerCur.setVisible(true);
+			$(this).removeClass("layer-invisible").addClass("layer-visible");
+		}
+		mapObj.refresh();
+    });
 }
 
 // 获取图层
@@ -281,8 +300,8 @@ function dateFormat(date,fmt){
 
 // 添加地图拖动，滚动事件
 function addMapEvent(){
-	mapObj.on(GeoBeans.Event.DRAG_END, onMapEvent);
-	mapObj.on(GeoBeans.Event.MOUSE_WHEEL, onMapEvent);
+	// mapObj.on(GeoBeans.Event.DRAG_END, onMapEvent);
+	// mapObj.on(GeoBeans.Event.MOUSE_WHEEL, onMapEvent);
 }
 
 // 暂时不考虑
