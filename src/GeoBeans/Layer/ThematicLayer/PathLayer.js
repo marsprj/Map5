@@ -130,8 +130,8 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineByTime = function(pathLine,time)
 		}
 		start += 1;
 		if(pathPoints.length > maxCount){
-			this.clear();
-			this._drawPathLinesStatic();
+			// this.clear();
+			// this._drawPathLinesStatic();
 		}
 	}
 	for(var i = start; i < end;++i){
@@ -150,7 +150,6 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineByTime = function(pathLine,time)
 		}else{
 			// 还未经过该点
 			this._drawAnimationLine(bPathPoint,pathPoint,lineSymbolizer,time);
-			// console.log(i + ":" + pathPoints.length);
 			break;
 		}
 	}
@@ -299,15 +298,15 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
  * 绘制（whaterver 重新绘制)
  * @private
  */
-GeoBeans.Layer.PathLayer.prototype.refresh = function(flag){
-	this.canvas.width = this.map.getViewer().getWindowWidth();
-	this.canvas.height = this.map.getViewer().getWindowHeight();
+// GeoBeans.Layer.PathLayer.prototype.refresh = function(flag){
+// 	this.canvas.width = this.map.getViewer().getWindowWidth();
+// 	this.canvas.height = this.map.getViewer().getWindowHeight();
 	
-	if(this.visible){
-		this.drawSnap();
-		this.draw();
-	}
-	else{
-		this.clear();
-	}
-}
+// 	if(this.visible){
+// 		this.drawSnap();
+// 		this.draw();
+// 	}
+// 	else{
+// 		this.clear();
+// 	}
+// }
