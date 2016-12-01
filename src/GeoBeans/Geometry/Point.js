@@ -131,3 +131,7 @@ GeoBeans.Geometry.Point.prototype.distance = function(geometry){
 	}
 	return null;
 }
+
+GeoBeans.Geometry.Point.prototype.clone = function(){
+	return (new GeoBeans.Geometry.Point(this.x, this.y));
+}
