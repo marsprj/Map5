@@ -86,7 +86,7 @@ GeoBeans.Utility  = {
 			var yx  = k_1 * xx + b_1;
 
 			pedal.x = xx;
-			pedal.y = xy;
+			pedal.y = yx;
 		}
 		return pedal;
 	},

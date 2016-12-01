@@ -141,6 +141,7 @@
 <body onload="init()">
 	<button onclick="onRefresh()">refresh</button>
 	<button onclick="onRed()">red</button>
+	<input type="text" size="30" id="xy">
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;"></div>
 </body>
 
@@ -172,26 +173,36 @@
 	                opacity : 1.0,
 	                visible : true
 	            }),
-	            new GeoBeans.Layer.FeatureLayer({
-	                name : "cities",
-	                geometryType : GeoBeans.Geometry.Type.LINESTRING,
-	                source : new GeoBeans.Source.Feature.GeoJSON({
-	                    url : "../data/geojson/lines-3.json",
-	                    geometryName : "geometry",
-	                }),
-	                visible : true,
-	                //style : createPicPointStyle()
-	            }),
 	            // new GeoBeans.Layer.FeatureLayer({
-	            //     name : "country",
-	            //     geometryType : GeoBeans.Geometry.Type.POLYGON,
+	            //     name : "cities",
+	            //     geometryType : GeoBeans.Geometry.Type.POINT,
 	            //     source : new GeoBeans.Source.Feature.GeoJSON({
-	            //         url : "../data/geojson/world.geojson",
+	            //         url : "../data/geojson/points-5.json",
 	            //         geometryName : "geometry",
 	            //     }),
 	            //     visible : true,
-	            //     style : createSimplePolygonStyle()
-	            // })        
+	            //     style : createPicPointStyle()
+	            // }),
+	            // new GeoBeans.Layer.FeatureLayer({
+	            //     name : "cities",
+	            //     geometryType : GeoBeans.Geometry.Type.LINESTRING,
+	            //     source : new GeoBeans.Source.Feature.GeoJSON({
+	            //         url : "../data/geojson/lines-3.json",
+	            //         geometryName : "geometry",
+	            //     }),
+	            //     visible : true,
+	            //     //style : createPicPointStyle()
+	            // }),
+	            new GeoBeans.Layer.FeatureLayer({
+	                name : "cities",
+	                geometryType : GeoBeans.Geometry.Type.POLYGON,
+	                source : new GeoBeans.Source.Feature.GeoJSON({
+	                    url : "../data/geojson/world.geojson",
+	                    geometryName : "geometry",
+	                }),
+	                visible : true,
+	                style : createSimplePolygonStyle()
+	            })        
 	        ],
 	        viewer : {
 	            // center : new GeoBeans.Geometry.Point(0,0),
@@ -203,6 +214,7 @@
 	    });
 
 		targetLayer = mapObj.getLayer("cities");
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 
 	    createInteractions();
 	}
@@ -226,6 +238,7 @@
 	}
 
 	function onSelectionChange(features){
+		modify.setFeatures(features);
 		console.log(modify.getFeatures().length);
 	}
 
@@ -269,7 +282,7 @@
 		var symbol = new GeoBeans.Style.Symbol();
 
 		// 5、设置图片的路径
-		symbol.icon = "../../images/circle.png";
+		symbol.icon = "../images/circle.png";
 
 		// 6、图片的大小，如果不设定则为图片本身的大小
 		symbol.icon_width = 16;
@@ -387,6 +400,11 @@
 				o_y = evt.Y;
 			}
 		}
+	}
+
+	function onMouseMove(evt){
+		var str = evt.mapX + ",  " + evt.mapY;
+		document.getElementById("xy").value = str;
 	}
 	
 </script>
