@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+	<title>Touch</title>
+	<style type="text/css" media="screen">
+		body{
+			margin: 0px;
+		}
+		#map{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			background-color: red;
+			margin: 0px;
+			padding: 0px;
+			z-index: 1;
+		}
+		#bar{
+			width: 100%;
+			height: 200px;
+			/*line-height: 50px;*/
+			padding-left: 30px;
+			position: absolute;
+			background-color: #FFFFFF;
+			opacity: 0.7;
+			margin: 0px;
+			z-index: 2;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8" async defer>
+		function init(){
+			var map = document.getElementById("map");
+			map.addEventListener("touchstart", onTouchStart, false);
+			map.addEventListener("touchend", onTouchEnd, false);
+			map.addEventListener("touchmove", onTouchMove, false);
+		}
+
+		function onTouchStart(evt){
+			//var html = "Event:onTouchStart";
+
+			//html += "<br>";
+			//html += "XY:" + evt.clientX + "," + evt.clientY;
+
+			var html = formatMessage("onTouchStart", evt);
+
+			var bar = document.getElementById("bar");
+			bar.innerHTML = html;
+		}
+
+		function onTouchEnd(evt){
+			var html = "onTouchEnd";
+			var bar = document.getElementById("bar");
+			//bar.innerHTML = html;
+		}
+
+		function onTouchMove(evt){
+			var html = "onTouchMove";
+
+			var html = formatMessage("onTouchMove",evt);
+
+			var bar = document.getElementById("bar");
+			bar.innerHTML = html;
+		}
+
+		function formatMessage(type, evt){
+			var html = "[Event]:" + type;
+
+			html += "<br>";
+			html += "[Touches]:" + evt.touches.length;
+
+			// html += "<br>";
+			// html += "[XY]:" + evt.touches[0].clientX + "," + evt.touches[0].clientY;		
+			 
+			for(var i=0; i<evt.touches.length; i++){
+				var x = evt.touches[i].clientX;
+				var y = evt.touches[i].clientY;
+
+				html += "<br>";
+				//html += "[" + i + "]:" + x.toFix(5) + "," + y.toFix(5);			
+				html += "[" + i + "]:" + x + "," + y;
+			}
+
+			return html;
+		}
+
+	</script>
+</head>
+<body onload="init()">
+	<div id="bar">发顺丰</div>
+	<div id="map"></div>
+</body>
+</html>

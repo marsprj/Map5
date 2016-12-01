@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
+
+<!--Base-->
+<script type="text/javascript" src="../../../src/GeoBeans.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Type.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
+<!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
+<!--Geometry-->
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Line/LinearRing.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
+<!--Stype-->
+<script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
+<!--Control-->
+<script type="text/javascript" src="../../../src/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/ScrollMapControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl/TrackOverlayControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
+<!--Format-->
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<!--Filter-->
+<script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+<!--Workspace-->
+<script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
+<!--Source-->
+<script type="text/javascript" src="../../../src/GeoBeans/Source.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/WFS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/AMap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/MapWorld.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
+<!--Layer-->
+<script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
+<!--Interaction-->
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Select.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Rotate.js"></script>
+<!--Events-->
+<script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
+<!--Render-->
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
+<!--Widget-->
+<script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
+<!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+	#mapDiv{
+		height:800px;
+		width:100%;
+		top:60px;
+		position:absolute;
+	}
+</style>
+
+<title>地图：加载高德地图</title>
+<body onload="init()">
+	<table>
+		<tr>
+			<td>Mercator：</td>
+			<td><input id="m_x" type="text" size="20"> - <input id="m_y" type="text" size="20"></td>
+		</tr>
+		<tr>
+			<td>WGS84：</td>
+			<td><input id="w_x" type="text" size="20"> - <input id="w_y" type="text" size="20"></td>
+		</tr>
+		
+	</table>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	</div>
+</body>
+
+<script type="text/javascript">
+	
+	var mapObj = null;
+	function  init(){
+		
+		// 1、设置地图的范围
+		var extent = new GeoBeans.Envelope(-180,-90,180,90);
+
+		mapObj = new GeoBeans.Map({
+			target : "mapDiv",
+			name : "map",
+			srs  : GeoBeans.Proj.WebMercator,
+			baseLayer : "world",
+			layers :[
+				new GeoBeans.Layer.TileLayer({
+					name   : "world",
+					source : new GeoBeans.Source.Tile.AMap({
+						srs: GeoBeans.Proj.WebMercator,
+					}),
+			 		opacity : 1.0,
+			 		visible : true
+				})
+			],
+			viewer : {
+	            center : new GeoBeans.Geometry.Point(0,0),
+	            zoom : 2,
+	        }
+		});
+		if(mapObj == null){
+			return;
+		}
+		
+
+		var amapLayer = new GeoBeans.Layer.TileLayer({
+			name   : "world",
+			source : new GeoBeans.Source.Tile.AMap({
+				srs: GeoBeans.Proj.WebMercator,
+			}),
+	 		opacity : 1.0,
+	 		visible : true
+		});
+
+
+		mapObj.addLayer(amapLayer);
+
+		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
+	}
+
+	function onMouseMove(evt){
+		
+		document.getElementById("m_x").value = evt.mapX;
+		document.getElementById("m_y").value = evt.mapY;
+
+		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
+		document.getElementById("w_x").value = pt.x;
+		document.getElementById("w_y").value = pt.y;
+	}
+</script>

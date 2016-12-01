@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../src/depends/requestNextAnimationFrame.js"></script>
+
+<!--Base-->
+<script type="text/javascript" src="../../../src/GeoBeans.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Type.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
+
+<!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
+<!--Geometry-->
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Line/LinearRing.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
+<!--Stype-->
+<script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
+<!--Control-->
+<script type="text/javascript" src="../../../src/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/ScrollMapControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl/TrackOverlayControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
+<!--Format-->
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/WKT.js"></script>
+<!--Filter-->
+<script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/PropertyName.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/Literal.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+<!--Workspace-->
+<script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
+<!--Source-->
+<script type="text/javascript" src="../../../src/GeoBeans/Source.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/WFS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/MapWorld.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
+<!--Layer-->
+<script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer/RippleLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/PathLayer.js"></script>
+<!--Interaction-->
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Select.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Rotate.js"></script>
+<!--Events-->
+<script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
+<!--Render-->
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
+<!--Widget-->
+<script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
+<!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
+
+<script type="text/javascript" src="../../../src/GeoBeans/Animation/PathLine.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Animation/PathPoint.js"></script>
+<script type="text/javascript" src="../js/initMap.js"></script>
+<script type="text/javascript" src="../js/citiesValue.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	
+	var mapObj = null;
+
+	var pathLayer = null;
+
+	function init(){
+	 	loadTileMap();
+	 	addPathLayer();
+	 	addPathLine();
+	}
+
+	/**
+	 * 添加一个轨迹图层
+	 */
+	function addPathLayer(){
+		// 1、定义一个轨迹图层
+		pathLayer = new GeoBeans.Layer.PathLayer("path");
+
+		// 2、添加图层
+		mapObj.addLayer(pathLayer);
+
+		// 3、地图刷新
+		// mapObj.refresh();
+
+		var center = new GeoBeans.Geometry.Point(113.9607,22.5309);
+		mapObj.zoomTo(17,center);
+	}
+
+	/**
+	 * 添加一条轨迹线
+	 */
+	function addPathLine(){
+
+		// 1、定义一个点样式
+		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/icon_uav.png";
+		pointSymbolizer.symbol = symbol;
+
+		// 2、定义一个轨迹点作为起始点
+		var pathPoint = new GeoBeans.PathPoint({
+			point : new GeoBeans.Geometry.Point(0,0),  	// 点坐标
+			symbolizer : pointSymbolizer  				// 点样式
+		});
+
+
+		// 3、定义一个线样式
+		var lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		lineSymbolizer.stroke.color.set(0,0,255,0.6);
+		lineSymbolizer.stroke.width = 3;
+
+		// 4、定义一条轨迹线
+		var pathLine = new GeoBeans.PathLine({
+			id : "1", 						//  id
+			point : pathPoint, 				// 起始轨迹点
+			symbolizer : lineSymbolizer,  	// 轨迹线的样式
+			maxCount : 500
+		});
+
+		// 5、轨迹图层增加一条轨迹线
+		pathLayer.addPathLine(pathLine);
+	}
+
+	var points = [{"x":22.535527066000316,"y":113.95418303518649},{"x":22.535522878586736,"y":113.9541756237014},{"x":22.53551856972734,"y":113.95416829423979},{"x":22.535514140929912,"y":113.95416104919103},{"x":22.5355095934281,"y":113.95415389081103},{"x":22.535504692554582,"y":113.95414647031392},{"x":22.535500148616645,"y":113.95413984323024},{"x":22.535495254185516,"y":113.95413295847135},{"x":22.53549024721825,"y":113.954126169332},{"x":22.535485128948487,"y":113.95411947797155},{"x":22.53547990129524,"y":113.95411288652592},{"x":22.535474565766304,"y":113.95410639715273},{"x":22.535469124280688,"y":113.95410001185978},{"x":22.53546357862032,"y":113.9540937326671},{"x":22.53545793015593,"y":113.95408756154661},{"x":22.535452180943594,"y":113.9540815004623},{"x":22.53544633262818,"y":113.9540755513772},{"x":22.53544038781405,"y":113.95406971616015},{"x":22.535434347597786,"y":113.95406399668461},{"x":22.535428522858762,"y":113.95405867200549},{"x":22.535422302666912,"y":113.95405318330265},{"x":22.535415994063605,"y":113.95404781406634},{"x":22.535409599516136,"y":113.95404256571484},{"x":22.535403119846926,"y":113.95403744130441},{"x":22.535396556289637,"y":113.95403244371909},{"x":22.53538991021498,"y":113.95402757531053},{"x":22.535383183816116,"y":113.95402283783179},{"x":22.535376379286188,"y":113.95401823251638},{"x":22.535369499229564,"y":113.95401376026025},{"x":22.53536254679891,"y":113.95400942178772},{"x":22.535355523913235,"y":113.95400521787087},{"x":22.535348433313974,"y":113.9540011494159},{"x":22.53534127746842,"y":113.95399721754261},{"x":22.535334058706805,"y":113.95399342355478},{"x":22.53532677867399,"y":113.95398976888684},{"x":22.53531943983727,"y":113.95398625501673},{"x":22.53531204438981,"y":113.95398288337918},{"x":22.535304594387668,"y":113.9539796552901},{"x":22.535296715898347,"y":113.9539764215687},{"x":22.535289540177356,"y":113.95397363426788},{"x":22.535281940766698,"y":113.95397084322022},{"x":22.53527429653349,"y":113.95396819953075},{"x":22.535266609945023,"y":113.95396570390197},{"x":22.53525888346859,"y":113.95396335700634},{"x":22.535251119571495,"y":113.9539611595047},{"x":22.5352433208581,"y":113.95395911203202},{"x":22.53523548965864,"y":113.95395721533083},{"x":22.53522762871454,"y":113.95395547002931},{"x":22.53521973994482,"y":113.95395387673032},{"x":22.535211826502138,"y":113.95395243602742},{"x":22.53520389016842,"y":113.95395114841685},{"x":22.535195934507552,"y":113.95395001433448},{"x":22.535187960890244,"y":113.95394903413737},{"x":22.535179572218812,"y":113.9539481708777},{"x":22.53517197171158,"y":113.95394753653635},{"x":22.535163961221894,"y":113.95394701955775},{"x":22.53515594250789,"y":113.95394665734081},{"x":22.53514791995586,"y":113.953946449969},{"x":22.535139893017536,"y":113.95394639751649},{"x":22.535131866079205,"y":113.95394650000641},{"x":22.535123846131548,"y":113.95394675743876},{"x":22.535115829884838,"y":113.95394716975787},{"x":22.53510782213659,"y":113.95394773684774},{"x":22.53509982453168,"y":113.9539484585056},{"x":22.535091840771038,"y":113.95394933452015},{"x":22.535083872362463,"y":113.95395036459122},{"x":22.535075921910334,"y":113.95395154837557},{"x":22.535067992841437,"y":113.95395288548363},{"x":22.53506008680064,"y":113.95395437548868},{"x":22.53505220625524,"y":113.95395601792697},{"x":22.535044354632042,"y":113.95395781226972},{"x":22.535036533301767,"y":113.95395975796046},{"x":22.535028745417065,"y":113.9539618543822},{"x":22.535020993171095,"y":113.95396410086516},{"x":22.53501327916822,"y":113.95396649670418},{"x":22.53500560601281,"y":113.95396904114327},{"x":22.534997976035086,"y":113.95397173336156},{"x":22.534990391428213,"y":113.95397457251494},{"x":22.53498285465948,"y":113.95397755769213},{"x":22.534975368607395,"y":113.95398068794817},{"x":22.534967935053903,"y":113.95398396228957},{"x":22.534960556877515,"y":113.95398737967281},{"x":22.534953235860158,"y":113.95399093901199},{"x":22.53494597501743,"y":113.95399463916566},{"x":22.53493877599419,"y":113.95399847896573},{"x":22.534931641531873,"y":113.95400245718729},{"x":22.534924573686567,"y":113.95400657256491},{"x":22.534917574514346,"y":113.95401082378078},{"x":22.534910646893735,"y":113.95401520949518},{"x":22.534903792469585,"y":113.95401972831056},{"x":22.534897013435057,"y":113.95402437879157},{"x":22.534890312394516,"y":113.95402915945635},{"x":22.534883690855754,"y":113.95403406879069},{"x":22.534877151286068,"y":113.95403910522472},{"x":22.534870695741542,"y":113.95404426715437},{"x":22.534864326552395,"y":113.95404955294178},{"x":22.534858045363496,"y":113.95405496091993},{"x":22.53485185423092,"y":113.95406048936752},{"x":22.53484575507368,"y":113.95406613648231},{"x":22.534839749947857,"y":113.95407190048702}];
+	
+	var i = 0;
+
+	/**
+	 * 随机添加轨迹点
+	 */
+	function addPathPoint(){
+		// 1、根据id获取轨迹线
+		var pathLine = pathLayer.getPathLine("1");
+
+		// 2、定义点的样式
+		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		var symbol = new GeoBeans.Style.Symbol();
+		symbol.icon = "../images/icon_uav.png";
+		pointSymbolizer.symbol = symbol;
+
+		// 3、随机生成坐标值
+		// var x = GeoBeans.Utility.getRandom(-180,180);
+		// var y = GeoBeans.Utility.getRandom(-90,90);
+		var p = points[i];
+		if(p == null){
+			return;
+		}
+		var x = p.y;
+		var y = p.x;
+
+
+
+		// 4、定义轨迹点
+		var pathPoint = new GeoBeans.PathPoint({
+			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
+			symbolizer : pointSymbolizer,				// 点样式
+			time : 10						// 到达该点的时间
+		});		
+
+		// 5、添加轨迹点
+		pathLine.addPathPoint(pathPoint);
+	}
+
+
+	var timeF = setTimeout(function(){
+		addPathPoint();
+		i++;
+		setTimeout(arguments.callee,1000);
+	},1000);
+</script>
+<title>动画：轨迹图层</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px">
+	</div>
+</body>
+	
