@@ -134,7 +134,8 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineByTime = function(pathLine,time)
 			// this._drawPathLinesStatic();
 		}
 	}
-	for(var i = start; i < end;++i){
+	// for(var i = start; i < end;++i){
+	for(var i = end -1 ; i >= start;--i){
 		pathPoint = pathPoints[i];
 		bPathPoint = pathPoints[i - 1];
 		// 已经经过该点
@@ -147,6 +148,7 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineByTime = function(pathLine,time)
 				symbolizer.symbol.rotation = rotation;
 				this._animateRenderer.drawGeometry(point,symbolizer,viewer);
 			}
+			break;
 		}else{
 			// 还未经过该点
 			this._drawAnimationLine(bPathPoint,pathPoint,lineSymbolizer,time);
@@ -282,16 +284,21 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 		}
 		start += 1;
 	}
+	// var date = new Date();
+	this.renderer.setSymbolizer(lineSymbolizer);
+	var points = [];
+	points.push(pathPoints[start -1].getPoint());
 	for(var i = start; i < end;++i){
 		pathPoint = pathPoints[i];
 		bPathPoint = pathPoints[i - 1];
 		// 已经经过该点
 		if(pathPoint.getStatus()){
-			var point = pathPoint.getPoint();
-			var symbolizer = pathPoint.getSymbolizer();
-			this._drawLine(bPathPoint.getPoint(),pathPoint.getPoint(),lineSymbolizer,this.renderer);
+			points.push(pathPoint.getPoint());
 		}
-	}	
+	}
+	var line = new GeoBeans.Geometry.LineString(points);
+	this.renderer.drawGeometry(line,symbolizer,this.map.getViewer());
+	// console.log(new Date() - date);
 }
 
 /**
@@ -303,10 +310,11 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 // 	this.canvas.height = this.map.getViewer().getWindowHeight();
 	
 // 	if(this.visible){
-// 		this.drawSnap();
+// 		// this.drawSnap();
 // 		this.draw();
 // 	}
 // 	else{
 // 		this.clear();
 // 	}
 // }
+
