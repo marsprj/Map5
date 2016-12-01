@@ -66,6 +66,9 @@ GeoBeans.Interaction.Modify.prototype.initMouseListener = function(){
 	var drag = that._map.getControl(GeoBeans.Control.Type.DRAG_MAP);
 	var modifying = false;
 
+	var m_x0 = 0;
+	var m_y0 = 0;
+
 	this._mousedown = function(evt){
 		evt.preventDefault();
 
@@ -113,35 +116,37 @@ GeoBeans.Interaction.Modify.prototype.initMouseListener = function(){
 			return;
 		}
 
-		if(modifying){
-			//当前处于编辑状态
-			var geometry = target.getGeometry();
-			switch(geometry.type){
-				case GeoBeans.Geometry.Type.POINT:{
-					var pt = that._map.getViewer().toMapPoint(evt.layerX, evt.layerY);
-					geometry.set(pt.x, pt.y);
+		
 
-					that._layer.refresh(true);
-					that._map.drawSelection();
-				}
-				break;
-				case GeoBeans.Geometry.Type.LINESTRING:{
-					var info = this.hitLine(geometry);
-					console.log(geometry.type);
-				}
-				break;
-				case GeoBeans.Geometry.Type.MULTILINESTRING:{
-					//SnapMultiLine();
-					console.log(geometry.type);
-				}
-				break;
-				case GeoBeans.Geometry.Type.POLYGON:
-				case GeoBeans.Geometry.Type.MULTIPOLYGON:{
+		// if(modifying){
+		// 	//当前处于编辑状态
+		// 	var geometry = target.getGeometry();
+		// 	switch(geometry.type){
+		// 		case GeoBeans.Geometry.Type.POINT:{
+		// 			var pt = that._map.getViewer().toMapPoint(evt.layerX, evt.layerY);
+		// 			geometry.set(pt.x, pt.y);
+
+		// 			that._layer.refresh(true);
+		// 			that._map.drawSelection();
+		// 		}
+		// 		break;
+		// 		case GeoBeans.Geometry.Type.LINESTRING:{
+		// 			var info = this.hitLine(geometry);
+		// 			console.log(geometry.type);
+		// 		}
+		// 		break;
+		// 		case GeoBeans.Geometry.Type.MULTILINESTRING:{
+		// 			//SnapMultiLine();
+		// 			console.log(geometry.type);
+		// 		}
+		// 		break;
+		// 		case GeoBeans.Geometry.Type.POLYGON:
+		// 		case GeoBeans.Geometry.Type.MULTIPOLYGON:{
 					
-					console.log(geometry.type);
-				}
-			}
-		}
+		// 			console.log(geometry.type);
+		// 		}
+		// 	}
+		// }
 		
 	}
 

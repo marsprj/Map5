@@ -135,19 +135,39 @@ GeoBeans.Selection.prototype.onchange = function(handler){
  */
 GeoBeans.Selection.prototype.loadSymbols = function(){
 
-	var point = new GeoBeans.Symbolizer.PointSymbolizer();
-	point.size = 6;
-	point.fill.color.set(255, 0, 0,0.6);
-	point.stroke.color.set(0,255, 0,0.6);
+	var symbol = new GeoBeans.Style.Symbol();
+	symbol.icon = "../images/pin.png";
+	symbol.rotation = 45;
+	symbol.scale = 1.0;
 
-	var line  = new GeoBeans.Symbolizer.LineSymbolizer();
-	line.stroke.color.set(0,0,255,0.6);
-	line.stroke.width = 3;
+	var point = new GeoBeans.Symbolizer.PointSymbolizer();
+	point.symbol = symbol;
+
+	
+
+	var line = 	 new GeoBeans.Symbolizer.LineSymbolizer();
+	var stroke = line.stroke;
+	stroke.color.set(0,153,255,1);
 
 	var polygon = new GeoBeans.Symbolizer.PolygonSymbolizer();
-	polygon.fill.color.set(0, 255, 0,0.6);
-	polygon.stroke.color.set(255, 0, 0,0.6);
-	polygon.stroke.width = 1;;
+	var stroke = polygon.stroke;
+	stroke.color.set(0,153,255,1);
+	var fill = polygon.fill;
+	fill.color.set(255,255,255,0.25);
+
+	// var point = new GeoBeans.Symbolizer.PointSymbolizer();
+	// point.size = 6;
+	// point.fill.color.set(255, 0, 0,0.6);
+	// point.stroke.color.set(0,255, 0,0.6);
+
+	// var line  = new GeoBeans.Symbolizer.LineSymbolizer();
+	// line.stroke.color.set(0,0,255,0.6);
+	// line.stroke.width = 3;
+
+	// var polygon = new GeoBeans.Symbolizer.PolygonSymbolizer();
+	// polygon.fill.color.set(0, 255, 0,0.6);
+	// polygon.stroke.color.set(255, 0, 0,0.6);
+	// polygon.stroke.width = 1;;
 
 	// this._symbolizers = {
 	// 	GeoBeans.Geometry.Type.POINT 		: point,
