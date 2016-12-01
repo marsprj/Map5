@@ -45,7 +45,7 @@ function loadLayersList(){
 
 		html += '<div class="list-type" lname="' + name + '" ltype="' + type 
 						+ '" db="' + db + '">'
-		 	+	'	<div class="col-md-4">'
+		 	+	'	<div class="col-md-4 layer-style" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">'
 		 	+	'		<img src="' +  image +'">'
 		 	+	'	</div>'
 		 	+	'	<div class="col-md-6 layer-name">'
@@ -58,6 +58,7 @@ function loadLayersList(){
 
 	$("#layers_tab .list-type-div").html(html);	
 
+	// 进入图层
 	$("#layers_tab .list-type .layer-name").click(function(){
 		var layerDiv = $(this).parents(".list-type");
 		clickLayerDiv(layerDiv);
@@ -80,6 +81,45 @@ function loadLayersList(){
 		}
 		mapObj.refresh();
     });
+
+
+    // 设置样式
+    $("#layers_tab .layer-style").click(function(){
+    	var layerDiv = $(this).parents(".list-type");
+    	showStylePanel(layerDiv);
+    });
+
+    $("#layers_tab .layer-style").popover({
+    	html : true
+    });
+
+    $('#layers_tab .layer-style').on('shown.bs.popover', function(){
+    	var that = this;
+    	$(".popover-content li").click(function(){
+    		var listTypeDiv = $(that).parents(".list-type");
+			var layerName = $(listTypeDiv).attr("lname");
+			var type = $(listTypeDiv).attr("ltype");
+			var db = $(listTypeDiv).attr("db");
+			layerCur = getLayer(layerName,type,db);
+
+    		var image = $(this).attr("pimage");
+
+    		// 设置新的样式
+    		$(that).find("img").attr("src",image);
+    		$(that).popover("hide");
+    		var style = new GeoBeans.Style.FeatureStyle();
+    		var symbol = new GeoBeans.Style.Symbol();
+			symbol.icon = image;
+			symbol.scale = 1.0;
+			var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+			symbolizer.symbol = symbol;
+			var rule = new GeoBeans.Style.Rule();
+			rule.symbolizer = symbolizer;
+			style.addRule(rule);
+			layerCur.setStyle(style);
+    		mapObj.refresh();
+    	});
+	});
 }
 
 // 获取图层

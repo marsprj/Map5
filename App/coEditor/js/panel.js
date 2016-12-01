@@ -348,7 +348,6 @@ function showFeatures(features){
 		}
 
 		fid = feature.fid;
-		image = "images/food.png";
 		image = getLayerIconImage();
 		username = feature.getValue("username");
 		html += '<div class="overlay-item" fid="' + fid+'">'
@@ -585,6 +584,10 @@ function getLayerIconImage(){
 	if(layerCur == null){
 		return "";
 	}
+	var geometryType = layerCur.getGeometryType();
+	if(geometryType == GeoBeans.Geometry.Type.POINT){
+		return layerCur.style.rules[0].symbolizer.symbol.icon;
+	}
 	var obj = null;
 	var layerName = layerCur.getName();
 	for(var i = 0; i < g_layers.length;++i){
@@ -617,3 +620,38 @@ function loadAllFeatures(){
 	}
 	source.query(query,success);
 }
+
+// 加载点样式
+function loadPointStyle(){
+	var html = "<ul>";
+	var obj = null,image = null;
+	for(var i = 0; i < g_pointType.length;++i){
+		obj = g_pointType[i];
+		image = obj.image;
+		html += '<li pimage="' + image + '">'
+			+	'	<a href="javascript:void(0)" class="point-style-thumb"'
+			+	' style="background-image:url('+ image + ')"></a>'
+			+ 	'</li>';
+	}
+	html += "</ul>";
+	return html;
+}
+
+
+// 加载样式面板
+function showStylePanel(layerDiv){
+	if(layerDiv == null){
+		return;
+	}
+	var type = $(layerDiv).attr("ltype");
+	switch(type){
+		case "Point":{
+			var html = loadPointStyle();
+			$(layerDiv).find(".layer-style").attr("data-content",html);
+			break;
+		}
+		default:
+			break;
+	}
+}
+

@@ -12,6 +12,13 @@ body{
 	bottom: 0px;
 }
 
+ul{
+    display: block;
+    padding-left: 0;
+    margin: 5px;	
+    list-style-type: none;
+}
+
 #header_panel {
     height: 60px;
     box-shadow: 1px 2px 10px 0 #828e9a;
@@ -432,4 +439,17 @@ body{
 
 #user_register_panel{
 	transform: rotateY(-180deg);
+}
+
+/*-------------point style-----------*/
+.popover-content li{
+	float: left;
+	margin: 4px;	
+}
+.point-style-thumb{
+	width: 40px;
+	height: 36px;
+	background-position: center;
+	display: inline-block;
+	background-repeat: no-repeat;
 }
