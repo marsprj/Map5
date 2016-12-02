@@ -441,7 +441,10 @@ ul{
 	transform: rotateY(-180deg);
 }
 
-/*-------------point style-----------*/
+/*-------------style popover panel-----------*/
+.popover{
+	max-width: 400px !important;
+}
 .popover-content li{
 	float: left;
 	margin: 4px;	
@@ -452,4 +455,59 @@ ul{
 	background-position: center;
 	display: inline-block;
 	background-repeat: no-repeat;
+}
+
+
+.style-panel{
+	overflow: hidden;
+}
+.line-style-panel{
+    padding: 10px 2px;
+    width: 300px;
+}
+.polygon-style-panel{
+	width: 360px;
+}
+
+.colorSelector{
+	width: 32px;
+	height: 32px;
+	padding: 13px 2px;
+}
+
+.colpick{
+	z-index: 10001 !important;
+}
+.style-div{
+	height: 6px;
+	background-color: #ccc;
+}
+
+.slider{
+	width: 80%  !important;
+	margin-top: 6px;
+	margin-left: 10px;
+}
+
+.style-panel .row{
+	margin: 0px;
+}
+.style-panel [class*=col-] {
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 2px;
+}
+.style-panel input{
+	text-align: center;
+	padding: 0px;
+}
+.style-panel input[type="checkbox"]{
+	margin-top: 10px;	
+}
+
+.style-panel .fill-row.style-div{
+	height: 16px;
+	width: 16px;
+    margin-top: -6px;
+    margin-left: 5px;	
 }

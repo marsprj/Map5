@@ -65,9 +65,9 @@ var g_layers = [
 		name : "country2",
 		image: "images/home.png",
 		style : {
-			stroke : "#f6634f",
-			width : 0.3,
-			strokeOpacity : 1.0,
+			// stroke : "#f6634f",
+			// width : 0.3,
+			// strokeOpacity : 1.0,
 			fill : "#f6634f",
 			fillOpacity : 1.0
 		},

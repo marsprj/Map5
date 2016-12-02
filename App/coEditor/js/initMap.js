@@ -95,6 +95,11 @@ function loadLayersList(){
 
     $('#layers_tab .layer-style').on('shown.bs.popover', function(){
     	var that = this;
+	    $(".style-panel").find('[data-toggle="tooltip"]').tooltip({
+	        container: "body"
+	    });
+
+    	// 点样式的事件
     	$(".popover-content li").click(function(){
     		var listTypeDiv = $(that).parents(".list-type");
 			var layerName = $(listTypeDiv).attr("lname");
@@ -119,6 +124,129 @@ function loadLayersList(){
 			layerCur.setStyle(style);
     		mapObj.refresh();
     	});
+
+    	// 线样式事件
+	    $(".line-style-panel .colorSelector").colpick({
+			color:'cccccc',
+			onChange:function(hsb,hex,rgb,el,bySetColor) {
+				$(el).children().css("background-color","#" + hex);
+				changeLineStyle_color(hex);
+
+			},
+			onSubmit:function(hsb,hex,rgb,el,bySetColor){
+				$(el).children().css("background-color","#" + hex);
+				$(el).colpickHide();
+				changeLineStyle_color(hex);
+			}
+		});
+
+		$(".line-style-panel .slider").slider({
+			tooltip : 'hide'
+		});
+		$(".line-style-panel .slider").on("slide",function(slideEvt){
+			var parent = $(this).parents(".row");
+			var input = parent.find(".slider-value")
+							.val(slideEvt.value + "%");
+			parent.find(".colorSelector div").css("opacity",
+						slideEvt.value/100);	
+			changeLineStyle_colorOpacity(slideEvt.value/100);
+		});
+		$(".line-style-panel .stroke-width").change(function(){
+			var value = $(this).val();
+			value = parseFloat(value);
+			changeLineStyle_width(value);
+		});
+
+		// 面样式事件
+		$(".polygon-style-panel input[type='checkbox']").change(function(){
+			var item = $(this).parents(".row");
+			var checked = $(this).prop("checked");
+			setStyleItemEnabled(item,checked);
+		});
+
+		// 线段颜色
+	    $(".polygon-style-panel .stroke-row .colorSelector").colpick({
+			color:'cccccc',
+			onChange:function(hsb,hex,rgb,el,bySetColor) {
+				$(el).children().css("background-color","#" + hex);
+				changePolygonStyle_strokeColor(hex);
+
+			},
+			onSubmit:function(hsb,hex,rgb,el,bySetColor){
+				$(el).children().css("background-color","#" + hex);
+				$(el).colpickHide();
+				changePolygonStyle_strokeColor(hex);
+			}
+		});	
+
+		$(".polygon-style-panel .slider").slider({
+			tooltip : 'hide'
+		});
+		$(".polygon-style-panel .stroke-row .slider").on("slide",function(slideEvt){
+			var parent = $(this).parents(".row");
+			var input = parent.find(".slider-value")
+							.val(slideEvt.value + "%");
+			parent.find(".colorSelector div").css("opacity",
+						slideEvt.value/100);	
+			changePolygonStyle_colorOpacity(slideEvt.value/100);
+		});
+
+		$(".polygon-style-panel .stroke-width").change(function(){
+			var value = $(this).val();
+			value = parseFloat(value);
+			changePolygonStyle_width(value);
+		});
+
+		// 填充颜色
+		$(".polygon-style-panel .fill-row .colorSelector").colpick({
+			color:'cccccc',
+			onChange:function(hsb,hex,rgb,el,bySetColor) {
+				$(el).children().css("background-color","#" + hex);
+				changePolygonStyle_fillColor(hex);
+
+			},
+			onSubmit:function(hsb,hex,rgb,el,bySetColor){
+				$(el).children().css("background-color","#" + hex);
+				$(el).colpickHide();
+				changePolygonStyle_fillColor(hex);
+			}
+		});	
+		// 填充颜色透明度
+		$(".polygon-style-panel .fill-row .slider").on("slide",function(slideEvt){
+			var parent = $(this).parents(".row");
+			var input = parent.find(".slider-value")
+							.val(slideEvt.value + "%");
+			parent.find(".colorSelector div").css("opacity",
+						slideEvt.value/100);	
+			changePolygonStyle_fillColorOpacity(slideEvt.value/100);
+		});		
+
+		// 设置面样式stroke
+		$(".polygon-style-panel .stroke-row .style-enable").change(function(){
+			var checked = $(this).prop("checked");
+			changePolygonStyle_stroke(checked);
+		});
+
+		// 设置面样式fill
+		$(".polygon-style-panel .fill-row .style-enable").change(function(){
+			var checked = $(this).prop("checked");
+			changePolygonStyle_fill(checked);
+		});		
+
+
+		// 获取样式
+    	var listTypeDiv = $(that).parents(".list-type");
+		var layerName = $(listTypeDiv).attr("lname");
+		var type = $(listTypeDiv).attr("ltype");
+		var db = $(listTypeDiv).attr("db");
+		layerCur = getLayer(layerName,type,db);
+		var style = layerCur.style;
+		var symbolizer = style.rules[0].symbolizer;
+		if(symbolizer instanceof GeoBeans.Symbolizer.LineSymbolizer){
+			initLineSymbolizer(symbolizer);
+		}else if(symbolizer instanceof GeoBeans.Symbolizer.PolygonSymbolizer){
+			initPolygonSymbolizer(symbolizer);
+		}
 	});
 }
 
