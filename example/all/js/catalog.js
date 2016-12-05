@@ -40,6 +40,9 @@ var g_catalog = [
 			},{
 				"name" : "图层面板",
 				"link" : "control/control_layerpanel.html"	
+			},{
+				"name" : "弹窗",
+				"link" : "control/control_infowindow.html"	
 			}
 		]
 	},{

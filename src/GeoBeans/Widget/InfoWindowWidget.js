@@ -31,17 +31,11 @@ GeoBeans.Widget.InfoWindowWidget.prototype.createContainer = function(){
 
 	this._container = $(mapContainer).find(".infoWindow")[0];
 
-	$(this._container).popover({
-		animation: false,
-		trigger: 'manual',
-		placement : 'top',
-		html : true
-	});			
-
 };
 
 /**
  * 设置位置
+ * @public
  * @param {GeoBeans.Geometry.Point} mp 地图上的点坐标
  */
 GeoBeans.Widget.InfoWindowWidget.prototype.setPosition = function(mp){
@@ -60,70 +54,22 @@ GeoBeans.Widget.InfoWindowWidget.prototype.setPosition = function(mp){
 
 /**
  * 设置参数
+ * @public
  * @param {Object} option 参数，包括content 、title
  */
 GeoBeans.Widget.InfoWindowWidget.prototype.setOption = function(option){
 	var content = option.content;
 	var title = option.title;
 	
-	$(this._container).popover("hide")
+	$(this._container)
 			.attr("data-content",content)
 			.attr("data-original-title",title);
 };
 
 
 /**
- * 设置Widget是否显示
- * @param  {boolean} v 显示标志
- */
-GeoBeans.Widget.InfoWindowWidget.prototype.show  = function(v){
-	this._visible = v;
-	var mapContainer = this._map.getContainer();
-	var viewer = this._map.getViewer();
-
-	if(this._visible){
-		$(this._container).popover("show");
-
-		// 超过地图范围，则不显示
-		var left = $(this._container).css("left");
-		var top = $(this._container).css("top");
-		left = parseInt(left.slice(0,left.indexOf("px")));
-		top = parseInt(top.slice(0,top.indexOf("px")));
-
-		var width = viewer.getWindowWidth();
-		var height = viewer.getWindowHeight();
-
-		var popover = $(mapContainer).find(".popover");
-		var popoverWidth = popover.css("width");
-		var popoverHeihgt = popover.css("height");
-		popoverWidth = parseInt(popoverWidth.slice(0,popoverWidth.indexOf("px")));
-		popoverHeihgt = parseInt(popoverHeihgt.slice(0,popoverHeihgt.indexOf("px")));
-
-		// 超出地图范围
-		if((left- popoverWidth/2) < 0 || (left + popoverWidth/2) > width || (top - popoverHeihgt) < 0 || (top) > height){
-			$(this._container).popover('hide');
-		}else{
-
-			$(this._container).popover("show");
-
-			var mapContainer = this._map.getContainer();
-
-			$(mapContainer).find(".popover-title")
-				.append('<button type="button" class="close">&times;</button>');
-			$(mapContainer).find(".popover-title .close").click(function(){
-				$(this).parents(".popover").popover('hide');
-			});
-		}
-		
-	}else{
-		$(this._container).popover("hide");
-	}
-};
-
-
-
-/**
  * 地图视口更新时，更新infowindow
+ * @private
  */
 GeoBeans.Widget.InfoWindowWidget.prototype.refresh = function(){
 	var mapContainer = this._map.getContainer();
@@ -140,3 +86,47 @@ GeoBeans.Widget.InfoWindowWidget.prototype.refresh = function(){
 	this.setPosition(point);	
 	this.show(true);
 };
+
+/**
+ * 设置Widget是否显示
+ * @public
+ * @param  {boolean} v 显示标志
+ */
+GeoBeans.Widget.InfoWindowWidget.prototype.show  = function(v){
+	this._visible = v;
+	var mapContainer = this._map.getContainer();
+	var viewer = this._map.getViewer();
+	if(this._visible){
+		$(mapContainer).find(".popover").remove();
+		var content = $(this._container).attr("data-content");
+		var title = $(this._container).attr("data-original-title");
+		var html = '<div class="popover top in">'
+			+ '<div class="arrow" style="left: 50%;"></div>'
+			+ '<h3 class="popover-title">' + title + '<button type="button" class="close">×</button></h3>'
+			+ '<div class="popover-content">' + content + '</div>'
+			+ '</div>';
+		$(mapContainer).append(html);
+		var popoverHtml = $(mapContainer).find(".popover");
+		popoverHtml.css("display","block");
+		var width = popoverHtml.css("width");
+		var height = popoverHtml.css("height");
+		width = parseFloat(width.slice(0,width.lastIndexOf("px")));
+		height = parseFloat(height.slice(0,height.lastIndexOf("px")));
+
+		var left = $(this._container).css("left");
+		var top = $(this._container).css("top");
+		left = parseFloat(left.slice(0,left.lastIndexOf("px")));
+		top = parseFloat(top.slice(0,top.lastIndexOf("px")));
+
+		left = left - width/2;
+		top = top - height;
+		$(popoverHtml).css("left",left + "px").css("top",top + "px");
+
+
+		$(mapContainer).find(".popover-title .close").click(function(){
+			$(mapContainer).find(".popover").remove();
+		});
+	}else{
+		$(mapContainer).find(".popover").remove();
+	}
+}
