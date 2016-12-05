@@ -142,8 +142,12 @@
 		
 		loadMap();
 
-		// 5、根据control类型获取control
+		// 根据control类型获取control
 		zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
+
+		var viewer = mapObj.getViewer();
+		viewer.setMinZoom(3);
+		viewer.setMaxZoom(10);
 	}
 
 

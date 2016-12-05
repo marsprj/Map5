@@ -60,7 +60,9 @@ GeoBeans.Layer.TileLayer.prototype.draw = function() {
 	 */
 	var tile_zoom, tile_resolution;
 	tile_zoom  = this._source.getFitZoom(view_resolution);
-	if(!isValid(tile_zoom)){
+	var maxZoom = viewer.getMaxZoom();
+	var minZoom = viewer.getMinZoom();
+	if(!isValid(tile_zoom) || maxZoom < tile_zoom || minZoom > tile_zoom){
 		return;
 	}
 	tile_resolution  = this._source.getResolution(tile_zoom);

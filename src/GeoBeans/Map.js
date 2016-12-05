@@ -140,6 +140,9 @@ GeoBeans.Map = GeoBeans.Class({
 
 	widgets : null,
 
+	// 地图范围
+	_extent : null,
+
 	
 
 	// 授权时间
@@ -230,6 +233,11 @@ GeoBeans.Map = GeoBeans.Class({
 		/* 初始化Viewer
 		/**************************************************************************************/	
 		this.initViewer(options.viewer);
+
+		/**************************************************************************************/
+		/* 初始化地图范围
+		/**************************************************************************************/		
+		this.initExtent(options.extent);
 	
 		// this.maplex = new GeoBeans.Maplex(this);
 
@@ -733,6 +741,36 @@ GeoBeans.Map.prototype.initViewer = function(viewer){
 	}
 }
 
+/**
+ * 初始化地图范围
+ * @private
+ * @param  {GeoBeans.Envelope} extent 范围
+ */
+GeoBeans.Map.prototype.initExtent = function(extent){
+	if(!isValid(extent)){
+		return;
+	}
+
+	this._extent = extent;
+
+	var viewer = this.getViewer();
+
+	if(isValid(this.baseLayer)){
+		var resolution = viewer.getResolution();
+		var source = this.baseLayer.getSource();
+		var zoom = source.getFitZoom(resolution);
+		viewer.setMinZoom(zoom);
+	}
+}
+
+/**
+ * 获取地图的范围
+ * @private
+ * @return {GeoBeans.Envelope} 地图设定的范围
+ */
+GeoBeans.Map.prototype.getExtent = function(){
+	return this._extent;
+}
 /**
  * 初始化选择集
  * @private
@@ -1457,6 +1495,9 @@ GeoBeans.Map.prototype.zoomTo = function(zoom,center){
 
 	var viewer = this.getViewer();
 
+	viewer.setZoom(zoom);
+	zoom = viewer.getZoom();
+
 	var source = this.baseLayer.getSource();
 	var resolution = source.getResolution(zoom);
 
@@ -1507,6 +1548,9 @@ GeoBeans.Map.prototype.zoomToExtent = function(extent){
 		var source = this.baseLayer.getSource();
 		var zoom = source.getFitZoom(resolution);
 		viewer.setZoom(zoom);
+		zoom = viewer.getZoom();
+		resolution = source.getResolution(zoom);
+		viewer.setZoomResolution(zoom,resolution);
 	}
 };
 

@@ -233,11 +233,18 @@ GeoBeans.Viewer.prototype.getZoom = function(){
  * @param {int} zoom 地图的级别
  */
 GeoBeans.Viewer.prototype.setZoom = function(zoom){
-	this._zoom = zoom;
+	if(isValid(this._minZoom) && zoom < this._minZoom){
+		this._zoom = this._minZoom;
+	}else if(isValid(this._maxZoom) && zoom > this._maxZoom){
+		this._zoom = this._maxZoom;
+	}else{
+		this._zoom = zoom;
+	}
 };
 
 GeoBeans.Viewer.prototype.setZoomResolution = function(zoom,resolution){
-	this._zoom = zoom;
+	// this._zoom = zoom;
+	this.setZoom(zoom);
 
 	this._resolution = resolution;
 	this.updateMapExtent(resolution);
