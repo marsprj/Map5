@@ -149,7 +149,7 @@ GeoBeans.Map = GeoBeans.Class({
 	_resizeId : null,
 
 
-	VERSION : "1.0.108",
+	VERSION : "1.0.109",
 
 	CLASS_NAME : "GeoBeans.Map",
 	
@@ -704,6 +704,13 @@ GeoBeans.Map.prototype.initViewer = function(viewer){
 			}
 			else if(isValid(viewer.resolution)){
 				this.zoomToResolution(viewer.resolution);
+			}
+
+			if(isValid(viewer.minZoom)){
+				this.viewer.setMinZoom(viewer.minZoom);
+			}
+			if(isValid(viewer.maxZoom)){
+				this.viewer.setMaxZoom(viewer.maxZoom);
 			}
 		}
 		else{
