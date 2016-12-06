@@ -98,8 +98,8 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					document.body.style.cursor = 'pointer';
 					mask_x += (e.layerX - d_x);
 					mask_y += (e.layerY - d_y);
-					map.clear();
-					map.putSnap(mask_x, mask_y);
+					// map.clear();
+					// map.putSnap(mask_x, mask_y);
 
 					// 新增
 					var m_p = map.getViewer().toMapPoint(e.layerX, e.layerY);
@@ -109,8 +109,13 @@ GeoBeans.Control.DragMapControl = GeoBeans.Class(GeoBeans.Control, {
 					// 不实时绘图，但是更改viewer的视口信息
 					map.getViewer().un(GeoBeans.Event.CHANGE);
 					map.getViewer().setStatus(GeoBeans.Viewer.Status.DRAG);
-					map.getViewer().offset(o_x, o_y);
-					map.refresh(false);
+					if(map.getViewer().offset(o_x, o_y)){
+						map.clear();
+						map.putSnap(mask_x, mask_y);
+						map.refresh(false);
+					}
+					// map.getViewer().offset(o_x, o_y);
+					// map.refresh(false);
 
 
 					var drawInteraction = that.map.getInteraction(GeoBeans.Interaction.Type.DRAW);

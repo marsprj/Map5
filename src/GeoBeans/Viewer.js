@@ -490,6 +490,17 @@ GeoBeans.Viewer.prototype.scaleViewHeight = function(extent){
  */
 GeoBeans.Viewer.prototype.offset = function(offset_x,offset_y){
 	if(this._extent != null){
+		var mapExtent = this._map.getExtent();
+		if(isValid(mapExtent)){
+			var extent = this._extent.clone();
+			extent.offset(offset_x,offset_y);
+			if(extent.xmin < mapExtent.xmin 
+				|| extent.xmax > mapExtent.xmax
+				|| extent.ymin < mapExtent.ymin
+				|| extent.ymax > mapExtent.ymax){
+				return false;
+			}
+		}
 		this._extent.offset(offset_x,offset_y);
 		this._center.x += offset_x;
 		this._center.y += offset_y;
@@ -498,6 +509,7 @@ GeoBeans.Viewer.prototype.offset = function(offset_x,offset_y){
 		this._center.x += offset_x;
 		this._center.y += offset_y;
 	}
+	return true;
 };
 
 

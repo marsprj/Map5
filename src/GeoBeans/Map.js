@@ -759,7 +759,12 @@ GeoBeans.Map.prototype.initExtent = function(extent){
 		var resolution = viewer.getResolution();
 		var source = this.baseLayer.getSource();
 		var zoom = source.getFitZoom(resolution);
+		// 保证不超过范围
+		zoom += 1;
 		viewer.setMinZoom(zoom);
+		if(zoom > viewer.getZoom()){
+			this.zoomTo(zoom);
+		}
 	}
 }
 
@@ -1491,6 +1496,21 @@ GeoBeans.Map.prototype.getControl = function(type){
 GeoBeans.Map.prototype.zoomTo = function(zoom,center){
 	if(!isValid(this.baseLayer)){
 		return;
+	}
+	var mapExtent = this.getExtent();
+	if(isValid(mapExtent)){
+		var minZoom = this.viewer.getMinZoom();
+		if(minZoom >= zoom){
+			var mapCenter = mapExtent.getCenter();
+			if(center == null){
+				center = this.viewer.getCenter();
+			}
+			var distance = GeoBeans.Utility.getDistance(mapCenter.getX(),mapCenter.getY(),
+				center.getX(),center.getY());
+			if(distance > Math.ESPLON){
+				return;
+			}
+		}
 	}
 
 	var viewer = this.getViewer();

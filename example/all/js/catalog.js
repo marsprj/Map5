@@ -60,6 +60,9 @@ var g_catalog = [
 			},{
 				"name" : "地图旋转",
 				"link" : "map/map_view_rotate.html"
+			},{
+				"name" : "设定地图范围",
+				"link" : "map/map_extent.html"
 			}
 		]
 	},{
