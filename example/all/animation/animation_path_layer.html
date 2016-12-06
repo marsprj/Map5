@@ -22,6 +22,9 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Label.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/PointLabel.js"></script>
 <!--Geometry-->
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Geometry/Point.js"></script>
@@ -43,6 +46,7 @@
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/TextSymbolizer.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
@@ -161,10 +165,14 @@
 		symbol.icon = "../images/icon_uav.png";
 		pointSymbolizer.symbol = symbol;
 
+		var textSymbolizer = createTextSymbolizer();
+
 		// 2、定义一个轨迹点作为起始点
 		var pathPoint = new GeoBeans.PathPoint({
 			point : new GeoBeans.Geometry.Point(0,0),  	// 点坐标
-			symbolizer : pointSymbolizer  				// 点样式
+			symbolizer : pointSymbolizer,  				// 点样式
+			textSymbolizer : textSymbolizer,
+			name : "起始点"
 		});
 
 
@@ -172,6 +180,8 @@
 		var lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 		lineSymbolizer.stroke.color.set(0,0,255,0.6);
 		lineSymbolizer.stroke.width = 3;
+
+
 
 		// 4、定义一条轨迹线
 		var pathLine = new GeoBeans.PathLine({
@@ -206,11 +216,15 @@
 		// var x = 0;
 		// var y = 0;
 
+		var textSymbolizer = createTextSymbolizer();
+
 		// 4、定义轨迹点
 		var pathPoint = new GeoBeans.PathPoint({
 			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
 			symbolizer : pointSymbolizer,				// 点样式
-			time : 10						// 到达该点的时间
+			time : 10,						// 到达该点的时间
+			textSymbolizer : textSymbolizer,
+			name : "经过点"+x
 		});		
 
 		// 5、添加轨迹点
@@ -218,10 +232,65 @@
 	}
 
 
+	function createTextSymbolizer(){
+		// 1、定义一个文字样式
+		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+
+		// 2、设置文字样式的标注字段
+		textSymbolizer.labelProp = "name";
+
+		// 3、文字填充设置，不设置，则随机颜色
+		textSymbolizer.fill.color.setHex("#000000",1);
+		// textSymbolizer.fill = null;
+
+		// 4、文字边框设置，不设置，则随机颜色
+		textSymbolizer.stroke.color.set(0,126,122,1);
+		textSymbolizer.stroke.width = 0.5;
+		// textSymbolizer.stroke = null;
+		
+		// 5、文字样式的文字设置，默认大小是12
+		textSymbolizer.font.size = 12;
+		// 设置文字的字体，默认字体是Times New Roman
+		textSymbolizer.font.family = "Microsoft YaHei";
+
+		// 6、字体样式，默认是正常的，
+		// GeoBeans.Style.Font.StyleType.Normal
+		// GeoBeans.Style.Font.StyleType.Italic
+		// GeoBeans.Style.Font.StyleType.Oblique
+		textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
+
+		// 7、字体粗细，默认是正常
+		// GeoBeans.Style.Font.WeightType.Normal
+		// GeoBeans.Style.Font.WeightType.Bold
+		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+
+		// 8、设置文字标注的偏移量，x方向，向右是正
+		textSymbolizer.displaceX = 0;
+
+		// 文字标注的偏移量，y方向，向上是正
+		textSymbolizer.displaceY = 0;
+
+		// 9、设置文字的背景填充样式，默认不设置
+		textSymbolizer.bgFill = new GeoBeans.Style.Fill();
+		textSymbolizer.bgFill.color.setHex("#ff0000",0.2);
+
+
+		// 10、设置文字的背景边框样式，默认不设置
+		textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
+		textSymbolizer.bgStroke.color.setHex("#000000",0.2);
+		textSymbolizer.bgStroke.width = 1;
+
+		// 11、设置边框的padding
+		textSymbolizer.bgPadding = 3;
+
+		return textSymbolizer;
+
+	}
+
 	var timeF = setTimeout(function(){
 		addPathPoint();
-		setTimeout(arguments.callee,100);
-	},100);
+		setTimeout(arguments.callee,1000);
+	},1000);
 </script>
 <title>动画：轨迹图层</title>
 <body onload="init()">

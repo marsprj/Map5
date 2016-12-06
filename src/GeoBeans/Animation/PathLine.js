@@ -21,6 +21,7 @@ GeoBeans.PathLine = GeoBeans.Class({
 
 			if(isValid(options.point)){
 				this._points = [];
+				options.point.setStatus(true);
 				this.addPathPoint(options.point);
 			}
 

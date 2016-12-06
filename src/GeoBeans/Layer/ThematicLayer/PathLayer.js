@@ -114,6 +114,15 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineByTime = function(pathLine,time)
 	if(!isValid(pathPoints)){
 		return;
 	}
+	if(pathPoints.length == 1){
+		this.clear();
+		this._drawPathLinesStatic();
+		return;
+	}
+	if(pathPoints.length == 2){
+		this.clear();
+		this._drawPathLinesStatic();
+	}
 
 	var viewer = this.map.getViewer();
 
@@ -134,7 +143,6 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineByTime = function(pathLine,time)
 			// this._drawPathLinesStatic();
 		}
 	}
-	// for(var i = start; i < end;++i){
 	for(var i = end -1 ; i >= start;--i){
 		pathPoint = pathPoints[i];
 		bPathPoint = pathPoints[i - 1];
@@ -211,6 +219,7 @@ GeoBeans.Layer.PathLayer.prototype._drawAnimationLine = function(bPathPoint,path
 			var symbolizer = pathPoint.getSymbolizer();
 			// this._animateRenderer.drawGeometry(point,symbolizer,viewer);
 			this._drawLine(bPoint,point,lineSymbolizer,this.renderer);
+			this.drawLabel(pathPoint);
 			return;
 		}
 		var x = bPoint.x + (point.x - bPoint.x) * elapsedTime/lineTime;
@@ -272,6 +281,7 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 		var symbolizer = beginPoint.getSymbolizer();
 		var point = beginPoint.getPoint();
 		this.renderer.drawGeometry(point,symbolizer,viewer);
+		this.drawLabel(beginPoint);
 	}
 
 	var start = 1;
@@ -288,11 +298,13 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 	this.renderer.setSymbolizer(lineSymbolizer);
 	var points = [];
 	points.push(pathPoints[start -1].getPoint());
+	this.drawLabel(pathPoints[start -1]);
 	for(var i = start; i < end;++i){
 		pathPoint = pathPoints[i];
 		bPathPoint = pathPoints[i - 1];
 		// 已经经过该点
 		if(pathPoint.getStatus()){
+			this.drawLabel(pathPoint);
 			points.push(pathPoint.getPoint());
 		}
 	}
@@ -318,3 +330,29 @@ GeoBeans.Layer.PathLayer.prototype._drawPathLineStatic = function(pathLine){
 // 	}
 // }
 
+/**
+ * 绘制文字样式
+ * @private
+ */
+GeoBeans.Layer.PathLayer.prototype.drawLabel = function(pathPoint){
+	if(!isValid(pathPoint)){
+		return;
+	}
+
+	var textSymbolizer = pathPoint.getTextSymbolizer();
+	var name = pathPoint.getName();
+	if(!isValid(textSymbolizer) || !isValid(name)){
+		return;
+	}
+
+	this.renderer.save();
+	this.renderer.setSymbolizer(textSymbolizer);
+	var label = new GeoBeans.PointLabel();
+	label.geometry = pathPoint.getPoint();
+	label.textSymbolizer = textSymbolizer;
+	label.text = name;
+	label.computePosition(this.renderer,this.map.getViewer());
+	this.renderer.drawLabel(label);	
+	this.renderer.restore();
+
+}
