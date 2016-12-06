@@ -483,6 +483,9 @@ var g_catalog = [
 			},{
 				"name" : "地图拖拽事件",
 				"link" : "event/map_drag.html"
+			},{
+				"name" : "地图级别改变事件",
+				"link" : "event/map_zoom.html"
 			}
 		]
 	}/*,{

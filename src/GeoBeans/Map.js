@@ -942,6 +942,9 @@ GeoBeans.Map.prototype.on = function(event, handler){
 		case GeoBeans.Event.DRAG_END:
 			this.onMapDragEvent(event, handler);
 			break;
+		case GeoBeans.Event.ZOOM_CHANGE:
+			this.onMapViewerEvent(event,handler);
+			break;
 		default:
 			ret = false;
 	}
@@ -1102,6 +1105,21 @@ GeoBeans.Map.prototype.onMapDragEvent = function(event, handler){
 	this.events.addEvent(event,handler,eventHandler);
 }
 
+/**
+ * 注册视图事件
+ * @private
+ * @param  {GeoBeans.Event} event   事件
+ * @param  {function} handler 事件响应函数
+ */
+GeoBeans.Map.prototype.onMapViewerEvent = function(event,handler){
+	var map = this;
+	var eventHandler = function(evt){
+		evt.preventDefault();
+	};
+	var mapContainer = this.getContainer();
+	mapContainer.addEventListener(event,eventHandler);
+	this.events.addEvent(event,handler,eventHandler);	
+}
 
 /**
  * 注册Mouse事件

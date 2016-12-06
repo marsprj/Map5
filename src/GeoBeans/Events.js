@@ -14,6 +14,8 @@ GeoBeans.Event = {
 
 	/** @type {string} 状态发生变化*/
 	CHANGE		: "change",
+	/** @type {string} zoom状态发生变化*/
+	ZOOM_CHANGE : "zoomchange",
 	/** @type {string} 开始拖动*/
 	DRAG_BEGIN	: "dragbegin",
 	/** @type {string} 拖动地图*/

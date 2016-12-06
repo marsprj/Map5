@@ -233,12 +233,26 @@ GeoBeans.Viewer.prototype.getZoom = function(){
  * @param {int} zoom 地图的级别
  */
 GeoBeans.Viewer.prototype.setZoom = function(zoom){
+	var zoom_b = this._zoom;
 	if(isValid(this._minZoom) && zoom < this._minZoom){
 		this._zoom = this._minZoom;
 	}else if(isValid(this._maxZoom) && zoom > this._maxZoom){
 		this._zoom = this._maxZoom;
 	}else{
 		this._zoom = zoom;
+	}
+	// console.log(this._zoom + "," + zoom);
+	var zoomChangeEvent = this._map.events.getEvent(GeoBeans.Event.ZOOM_CHANGE);
+	if(isValid(zoomChangeEvent)){
+		if(this._zoom != zoom_b){
+			var zoomChangeHandler = zoomChangeEvent.handler;
+			if(isValid(zoomChangeHandler)){
+				var args = {
+					zoom : this._zoom
+				}
+				zoomChangeHandler(args);
+			}
+		}
 	}
 };
 
