@@ -1578,6 +1578,15 @@ GeoBeans.Map.prototype.zoomToExtent = function(extent){
 		return;
 	}
 
+	var mapExtent = this.getExtent();
+	if(isValid(mapExtent)){
+		if(!mapExtent.containOther(extent)){
+			if(!extent.containOther(mapExtent) || extent.intersects(mapExtent)){
+				return;
+			}
+		}
+	}
+
 	var viewer = this.getViewer();
 	viewer.setExtent(extent);
 

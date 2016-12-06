@@ -199,7 +199,7 @@ GeoBeans.Control.ZoomControl = GeoBeans.Class(GeoBeans.Control, {
 		nextent.moveTo(tr_c.x, tr_c.y);
 		nextent.scale(s);
 
-		this.map.clear();
+		// this.map.clear();
 		this.map.zoomToExtent(nextent);
 	},
 });
