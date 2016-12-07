@@ -21,7 +21,11 @@ GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 		if(isValid(options)){
 			this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";	
 			if(isValid(options.features)){
-				this._features = options.features;
+				this._features.length = 0;
+				var that = this;
+				options.features.forEach(function(f){
+					this._features.push(f);
+				});
 			}
 		}
 	},
@@ -32,6 +36,21 @@ GeoBeans.Source.Feature = GeoBeans.Class(GeoBeans.Source, {
 
 GeoBeans.Source.Feature.prototype.getGeometryName = function(){
 	return this._geometryName;
+}
+
+/**
+ * 设置Source的Features
+ * @param {Array.<GeoBeans.Feature>} features 要素集合
+ * @public
+ */
+GeoBeans.Source.Feature.prototype.setFeatures = function(features){
+	this._features.length = 0;
+	if(features){
+		var that = this;
+		features.forEach(function(f){
+			that._features.push(f);
+		});
+	}
 }
 
 /**
