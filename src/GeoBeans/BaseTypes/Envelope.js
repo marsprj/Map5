@@ -143,6 +143,145 @@ GeoBeans.Envelope.prototype.intersects = function(other){
 	return (xmin < xmax) && (ymin < ymax) ;
 }
 
+GeoBeans.Envelope.prototype.intersectSegment = function(x0, y0, x1, y1){
+	if(this.contains(x0, y0)){
+		return true;
+	}
+
+	if(this.contains(x1, y1)){
+		return true;
+	}
+
+	if(Math.abs(y0-y1)<GeoBeans.Math.EPSILON){
+		var v1,v2;
+		v1 = y0 < this.ymin ? -1 : 1;
+		v2 = y1 < this.ymin ? -1 : 1;
+		if(v1!=v2){
+			return true;
+		}
+		else{
+			v1 = y0 < this.ymax ? -1 : 1;
+			v2 = y1 < this.ymax ? -1 : 1;
+			if(v1!=v2){
+				return true;
+			}	
+			else{
+				return false;
+			}
+		}
+	}
+	else if(Math.abs(x0-x1)<GeoBeans.Math.EPSILON){
+		var h1,h2;
+		h1 = x0 < this.xmin ? -1 : 1;
+		h2 = x1 < this.xmin ? -1 : 1;
+		if(h1!=h2){
+			return true;
+		}
+		else{
+			h1 = x0 < this.xmax ? -1 : 1;
+			h2 = x1 < this.xmax ? -1 : 1;
+			if(h1!=h2){
+				return true;
+			}	
+			else{
+				return false;
+			}
+		}
+	}
+	else{
+		var x,y;
+		var k = (y1-y0) / (x1-x0);
+		//左边界
+		y = k * (this.xmin - x0) + y0;
+		if( (y>=this.ymin) && (y<this.ymax)){
+			return true;
+		}
+
+		//右边界
+		y = k * (this.xmax - x0) + y0;
+		if( (y>=this.ymin) && (y<this.ymax)){
+			return true;
+		}		
+
+		//上边界
+		x = (this.ymin - y0) / k + x0;
+		if( (x>=this.xmin) && (x<this.xmax)){
+			return true;
+		}
+
+		//下边界
+		x = (this.ymax - y0) / k + x0;
+		if( (x>=this.xmin) && (x<this.xmax)){
+			return true;
+		}		
+
+	}
+
+	return false;
+}
+
+// GeoBeans.Envelope.prototype.intersectSegment = function(x0, y0, x1, y1){
+// 	var h1,h2,v1,v2;
+// 	var intersects = false;
+// 	//左边界
+// 	h1 = x0 < this.xmin ? -1 : 1;
+// 	h2 = x1 < this.xmin ? -1 : 1;
+// 	//判断h1和h2的符号。
+// 	//1）如果h1和h2符号不同，说明线段[x0,y0]-[x1,y1]位于左边界两侧，可能相交。
+// 	//   此时需要判断与上下便边界是否相交
+// 	//2）如果h1和h2符号不同，说明位于左边界同侧，不可能相交。
+// 	if(h1!=h2){
+// 		//判断与上边界的符号。
+// 		v1 = y0 < this.ymin ? -1 : 1;
+// 		v2 = y1 < this.ymin ? -1 : 1;
+// 		if(v1!=v2){
+// 			intersects = true;
+// 		}
+// 		else{
+// 			//位于上边界的同侧，则判断与下边界是否相交
+// 			if(h1<0){
+// 				//这种情况说明,segment位于上边界上方，无需处理
+// 			}
+// 			else{
+// 				v1 = y0 < this.ymax ? -1 : 1;
+// 				v2 = y1 < this.ymax ? -1 : 1;
+// 				if(v1!=v2){
+// 					intersects = true;		
+// 				}
+// 			}
+// 		}
+// 	}
+// 	else{
+// 		//处理右边界的情况
+// 		if(h1>0){
+// 			h1 = x0 < this.xmax ? -1 : 1;
+// 			h2 = x1 < this.xmax ? -1 : 1;
+// 			if(h1!=h2){
+// 				//判断与上边界的符号。
+// 				v1 = y0 < this.ymin ? -1 : 1;
+// 				v2 = y1 < this.ymin ? -1 : 1;
+// 				if(v1!=v2){
+// 					intersects = true;
+// 				}
+// 				else{
+// 					//位于上边界的同侧，则判断与下边界是否相交
+// 					if(h1<0){
+// 						//这种情况说明,segment位于上边界上方，无需处理
+// 					}
+// 					else{
+// 						v1 = y0 < this.ymax ? -1 : 1;
+// 						v2 = y1 < this.ymax ? -1 : 1;
+// 						if(v1!=v2){
+// 							intersects = true;		
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return intersects;
+// }
+
 /**
  * 判断Envelope是否合法
  * @return {Boolean} true  合法
