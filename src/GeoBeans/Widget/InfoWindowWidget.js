@@ -10,6 +10,7 @@ GeoBeans.Widget.InfoWindowWidget = GeoBeans.Class(GeoBeans.Widget,{
 		this.type = GeoBeans.Widget.Type.INFO_WINDOW;
 		this.attach(map);
 		this.createContainer();
+		this._visible = false;
 	},
 });
 
@@ -125,8 +126,18 @@ GeoBeans.Widget.InfoWindowWidget.prototype.show  = function(v){
 
 		$(mapContainer).find(".popover-title .close").click(function(){
 			$(mapContainer).find(".popover").remove();
+			this._visible = false;
 		});
 	}else{
 		$(mapContainer).find(".popover").remove();
 	}
+}
+
+/**
+ * 判断是否是显示状态
+ * @public
+ * @return {Boolean} 显示状态
+ */
+GeoBeans.Widget.InfoWindowWidget.prototype.isVisible = function(){
+	return this._visible;
 }

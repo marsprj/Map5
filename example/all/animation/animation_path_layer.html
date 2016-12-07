@@ -134,10 +134,15 @@
 
 	var pathLayer = null;
 
+	var index = 1;
+
 	function init(){
 	 	loadTileMap();
 	 	addPathLayer();
 	 	addPathLine();
+
+	 	registerClickEvent();
+	 	registerPathChangeEvent();
 	}
 
 	/**
@@ -165,13 +170,12 @@
 		symbol.icon = "../images/icon_uav.png";
 		pointSymbolizer.symbol = symbol;
 
-		var textSymbolizer = createTextSymbolizer();
+		
 
 		// 2、定义一个轨迹点作为起始点
 		var pathPoint = new GeoBeans.PathPoint({
 			point : new GeoBeans.Geometry.Point(0,0),  	// 点坐标
 			symbolizer : pointSymbolizer,  				// 点样式
-			textSymbolizer : textSymbolizer,
 			name : "起始点"
 		});
 
@@ -181,17 +185,19 @@
 		lineSymbolizer.stroke.color.set(0,0,255,0.6);
 		lineSymbolizer.stroke.width = 3;
 
+		// 4、定义一个文字样式
+		var textSymbolizer = createTextSymbolizer();
 
-
-		// 4、定义一条轨迹线
+		// 5、定义一条轨迹线
 		var pathLine = new GeoBeans.PathLine({
 			id : "1", 						//  id
 			point : pathPoint, 				// 起始轨迹点
 			symbolizer : lineSymbolizer,  	// 轨迹线的样式
 			// maxCount : 500
+			textSymbolizer : textSymbolizer
 		});
 
-		// 5、轨迹图层增加一条轨迹线
+		// 6、轨迹图层增加一条轨迹线
 		pathLayer.addPathLine(pathLine);
 	}
 
@@ -216,15 +222,12 @@
 		// var x = 0;
 		// var y = 0;
 
-		var textSymbolizer = createTextSymbolizer();
-
 		// 4、定义轨迹点
 		var pathPoint = new GeoBeans.PathPoint({
 			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
 			symbolizer : pointSymbolizer,				// 点样式
-			time : 10,						// 到达该点的时间
-			textSymbolizer : textSymbolizer,
-			name : "经过点"+x
+			time : 100,						// 到达该点的时间
+			name : "经过点" + index
 		});		
 
 		// 5、添加轨迹点
@@ -284,11 +287,68 @@
 		textSymbolizer.bgPadding = 3;
 
 		return textSymbolizer;
+	}
 
+	// 注册轨迹点的点击事件
+	function registerClickEvent(){
+		pathLayer.registerClickEvent(clickEventHandler);
+	}
+
+
+	// 返回的格式，数组[],
+	// pathLine : pathLine,
+	// pathPoint : pathPoint,
+	// index : j
+	// 备注： 根据序号，你需要自己判断是否是最后一个点，来设置是否弹窗
+	function clickEventHandler(results){
+		if(results.length == 0){
+			return;
+		}
+		var obj = results[results.length-1];
+
+		var pathPoint = obj.pathPoint;
+		var point = pathPoint.getPoint();
+
+		var infoWindow = mapObj.getWidget(GeoBeans.Widget.Type.INFO_WINDOW);
+
+		infoWindow.setPosition(point);
+
+		infoWindow.setOption({
+			title : "到达点",    // 标题
+			content : pathPoint.getName()	// 弹窗内容
+		});
+
+		infoWindow.show(true);
+	}
+
+	// 注册轨迹点的移动事件
+	function registerPathChangeEvent(){
+		pathLayer.registerPathChangeEvent(change_handler);
+	}
+
+	// 返回的是轨迹点移动的当前位置
+	function change_handler(point){
+		if(point == null){
+			return;
+		}
+
+		var infoWindow = mapObj.getWidget(GeoBeans.Widget.Type.INFO_WINDOW);
+		if(infoWindow.isVisible()){
+			infoWindow.setPosition(point);
+			// 内容不变，可以不设置
+			infoWindow.setOption({
+				title : "到达点",    // 标题
+				content : point.getX() + "," + point.getY()	// 弹窗内容
+			});
+
+			infoWindow.show(false);
+			infoWindow.show(true);
+		}
 	}
 
 	var timeF = setTimeout(function(){
 		addPathPoint();
+		index++;
 		setTimeout(arguments.callee,1000);
 	},1000);
 </script>

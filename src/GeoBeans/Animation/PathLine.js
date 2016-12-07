@@ -13,6 +13,8 @@ GeoBeans.PathLine = GeoBeans.Class({
 
 	_maxCount : null,
 
+	_textSymbolizer : null,
+
 	initialize : function(options){
 		if(isValid(options)){
 			if(isValid(options.id)){
@@ -30,6 +32,10 @@ GeoBeans.PathLine = GeoBeans.Class({
 			}
 			if(isValid(options.maxCount)){
 				this._maxCount = options.maxCount;
+			}
+
+			if(isValid(options.textSymbolizer)){
+				this._textSymbolizer = options.textSymbolizer;
 			}
 		}
 
@@ -93,4 +99,13 @@ GeoBeans.PathLine.prototype.getMaxCount = function(){
  */
 GeoBeans.PathLine.prototype.setMaxCount = function(maxCount){
 	this._maxCount = maxCount;
+}
+
+/**
+ * 获取文字样式
+ * @public
+ * @return {GeoBeans.Symbolizer.TextSymbolizer} 文字样式
+ */
+GeoBeans.PathLine.prototype.getTextSymbolizer = function(){
+	return this._textSymbolizer;
 }
