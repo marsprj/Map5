@@ -32,6 +32,10 @@ GeoBeans.Feature = GeoBeans.Class({
 		this.fid = isValid(options.fid) ? options.fid : GeoBeans.Utility.uuid();	
 		this._properties = isValid(options.properties) ? options.properties : {};
 
+		if(options.symbolizer){
+			this.symbolizer = options.symbolizer;
+		}
+
 		this.featureType = options.featureType;
 		if(isValid(this.featureType)){
 			this._fields = this.featureType.getFields();
@@ -128,3 +132,21 @@ GeoBeans.Feature.prototype.getValue = function(field){
 GeoBeans.Feature.prototype.getProperties = function(){
 	return this._properties;
 };
+
+/**
+ * 设置Feature的渲染样式
+ * @param {GeoBeans.Style.Symbolizer} s 渲染样式
+ * @public
+ */
+GeoBeans.Feature.prototype.setSymbolizer = function(s){
+	this.symbolizer = s;
+}
+
+/**
+ * 获取Feature的渲染样式
+ * @return {GeoBeans.Style.Symbolizer} 渲染样式
+ * @public
+ */
+GeoBeans.Feature.prototype.getSymbolizer = function(){
+	return this.symbolizer;
+}
