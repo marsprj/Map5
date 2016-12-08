@@ -136,8 +136,32 @@
 
 	var index = 1;
 
+
+	function getRandom(pre, next) {
+		return pre + (Math.random() * (next - pre)) * 0.01;
+	}
+	var num = 200,arr = [] , x = getRandom(113.953640, 116.953640),y = getRandom(22.537018, 25.537018);
+
+	arr.push({x:x,y:y});
+
+	//阿基米德螺旋
+	var a =1,b =0.1,fix = 0.001;
+
+	for(var i=0;i<num;i++){
+		var angle = 0.1 * i;
+		var _x = x + (a + b * angle) * Math.cos(angle) * fix;
+		var _y = y + (a + b * angle) * Math.sin(angle) * fix;
+		arr.push({x:_x,y:_y });
+	}
+
+	console.log(JSON.stringify(arr));
+
+
 	function init(){
 	 	loadTileMap();
+
+	 	var point = new GeoBeans.Geometry.Point(113.980994185, 22.53894883);
+	 	mapObj.zoomTo(15,point);
 	 	addPathLayer();
 	 	addPathLine();
 
@@ -216,8 +240,11 @@
 		pointSymbolizer.symbol = symbol;
 
 		// 3、随机生成坐标值
-		var x = GeoBeans.Utility.getRandom(-180,180);
-		var y = GeoBeans.Utility.getRandom(-90,90);
+		// var x = GeoBeans.Utility.getRandom(-180,180);
+		// var y = GeoBeans.Utility.getRandom(-90,90);
+
+		var x = arr[index].x;
+		var y = arr[index].y;
 
 		// var x = 0;
 		// var y = 0;
@@ -226,68 +253,122 @@
 		var pathPoint = new GeoBeans.PathPoint({
 			point : new GeoBeans.Geometry.Point(x,y),  	// 点坐标
 			symbolizer : pointSymbolizer,				// 点样式
-			time : 100,						// 到达该点的时间
+			time : 25,						// 到达该点的时间
 			name : "经过点" + index
 		});		
 
 		// 5、添加轨迹点
 		pathLine.addPathPoint(pathPoint);
+
+
+
 	}
 
 
-	function createTextSymbolizer(){
-		// 1、定义一个文字样式
-		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+	// function createTextSymbolizer(){
+	// 	// 1、定义一个文字样式
+	// 	var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
 
-		// 2、设置文字样式的标注字段
-		textSymbolizer.labelProp = "name";
+	// 	// 2、设置文字样式的标注字段
+	// 	textSymbolizer.labelProp = "name";
 
-		// 3、文字填充设置，不设置，则随机颜色
-		textSymbolizer.fill.color.setHex("#000000",1);
-		// textSymbolizer.fill = null;
+	// 	// 3、文字填充设置，不设置，则随机颜色
+	// 	textSymbolizer.fill.color.setHex("#000000",1);
+	// 	// textSymbolizer.fill = null;
 
-		// 4、文字边框设置，不设置，则随机颜色
-		textSymbolizer.stroke.color.set(0,126,122,1);
-		textSymbolizer.stroke.width = 0.5;
-		// textSymbolizer.stroke = null;
+	// 	// 4、文字边框设置，不设置，则随机颜色
+	// 	textSymbolizer.stroke.color.set(0,126,122,1);
+	// 	textSymbolizer.stroke.width = 0.5;
+	// 	// textSymbolizer.stroke = null;
 		
-		// 5、文字样式的文字设置，默认大小是12
-		textSymbolizer.font.size = 12;
-		// 设置文字的字体，默认字体是Times New Roman
-		textSymbolizer.font.family = "Microsoft YaHei";
+	// 	// 5、文字样式的文字设置，默认大小是12
+	// 	textSymbolizer.font.size = 12;
+	// 	// 设置文字的字体，默认字体是Times New Roman
+	// 	textSymbolizer.font.family = "Microsoft YaHei";
 
-		// 6、字体样式，默认是正常的，
-		// GeoBeans.Style.Font.StyleType.Normal
-		// GeoBeans.Style.Font.StyleType.Italic
-		// GeoBeans.Style.Font.StyleType.Oblique
-		textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
+	// 	// 6、字体样式，默认是正常的，
+	// 	// GeoBeans.Style.Font.StyleType.Normal
+	// 	// GeoBeans.Style.Font.StyleType.Italic
+	// 	// GeoBeans.Style.Font.StyleType.Oblique
+	// 	textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
 
-		// 7、字体粗细，默认是正常
-		// GeoBeans.Style.Font.WeightType.Normal
-		// GeoBeans.Style.Font.WeightType.Bold
-		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
+	// 	// 7、字体粗细，默认是正常
+	// 	// GeoBeans.Style.Font.WeightType.Normal
+	// 	// GeoBeans.Style.Font.WeightType.Bold
+	// 	textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
 
-		// 8、设置文字标注的偏移量，x方向，向右是正
-		textSymbolizer.displaceX = 0;
+	// 	// 8、设置文字标注的偏移量，x方向，向右是正
+	// 	textSymbolizer.displaceX = 0;
 
-		// 文字标注的偏移量，y方向，向上是正
-		textSymbolizer.displaceY = 0;
+	// 	// 文字标注的偏移量，y方向，向上是正
+	// 	textSymbolizer.displaceY = 0;
 
-		// 9、设置文字的背景填充样式，默认不设置
-		textSymbolizer.bgFill = new GeoBeans.Style.Fill();
-		textSymbolizer.bgFill.color.setHex("#ff0000",0.2);
+	// 	// 9、设置文字的背景填充样式，默认不设置
+	// 	textSymbolizer.bgFill = new GeoBeans.Style.Fill();
+	// 	textSymbolizer.bgFill.color.setHex("#ff0000",0.2);
 
 
-		// 10、设置文字的背景边框样式，默认不设置
-		textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
-		textSymbolizer.bgStroke.color.setHex("#000000",0.2);
-		textSymbolizer.bgStroke.width = 1;
+	// 	// 10、设置文字的背景边框样式，默认不设置
+	// 	textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
+	// 	textSymbolizer.bgStroke.color.setHex("#000000",0.2);
+	// 	textSymbolizer.bgStroke.width = 1;
 
-		// 11、设置边框的padding
-		textSymbolizer.bgPadding = 3;
+	// 	// 11、设置边框的padding
+	// 	textSymbolizer.bgPadding = 3;
 
-		return textSymbolizer;
-	}
+	// 	return textSymbolizer;
+	// }
+function createTextSymbolizer() {
+
+  // 5、定义一个文字样式
+  var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+
+  // 6、设置文字样式的标注字段
+  textSymbolizer.labelProp = "name";
+
+  // 7、文字填充设置，不设置，则随机颜色
+  textSymbolizer.fill.color.setHex("#ffffff", 1);
+  // textSymbolizer.fill = null;
+
+  // 8、文字边框设置，不设置，则随机颜色
+  textSymbolizer.stroke.color.setHex("#ffffff", 1);
+  textSymbolizer.stroke.width = 0.5;
+  // textSymbolizer.stroke = null;
+
+  // 9、文字样式的文字设置，默认大小是12
+  textSymbolizer.font.size = 12;
+  // 设置文字的字体，默认字体是Times New Roman
+  textSymbolizer.font.family = "Microsoft YaHei";
+
+  // 10、字体样式，默认是正常的，
+  // GeoBeans.Style.Font.StyleType.Normal
+  // GeoBeans.Style.Font.StyleType.Italic
+  // GeoBeans.Style.Font.StyleType.Oblique
+  textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
+
+  // 11、字体粗细，默认是正常
+  // GeoBeans.Style.Font.WeightType.Normal
+  // GeoBeans.Style.Font.WeightType.Bold
+  textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Normal;
+
+  // 12、设置文字标注的偏移量，x方向，向右是正
+  textSymbolizer.displaceX = 5;
+
+  // 文字标注的偏移量，y方向，向上是正
+  textSymbolizer.displaceY = -15;
+
+  //背景色
+  textSymbolizer.bgFill = new GeoBeans.Style.Fill();
+  textSymbolizer.bgFill.color.setHex('#ff0000', 0.8);
+  //边框
+  textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
+  textSymbolizer.bgStroke.color.setHex('#ff0000', 0.8);
+  textSymbolizer.bgStroke.width = 1;
+  textSymbolizer.bgPadding = 3;
+
+
+  return textSymbolizer;
+}
 
 	// 注册轨迹点的点击事件
 	function registerClickEvent(){
@@ -347,10 +428,13 @@
 	}
 
 	var timeF = setTimeout(function(){
+		if(index > 200){
+			return;
+		}
 		addPathPoint();
 		index++;
-		setTimeout(arguments.callee,1000);
-	},1000);
+		setTimeout(arguments.callee,130);
+	},130);
 </script>
 <title>动画：轨迹图层</title>
 <body onload="init()">
