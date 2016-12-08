@@ -24,14 +24,10 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 			var viewer = map.getViewer();
 			var maxZoom = viewer.getMaxZoom();
 			var minZoom = viewer.getMinZoom();
-			// var trackOverlayControl = map._getTrackOverlayControl();
-			// if(trackOverlayControl.drawing){
-			// 	map.restoreSnap();
-			// }
-			// var tracker = map.tracker;
-			// if(tracker != null && tracker.drawing){
-			// 	map.restoreSnap();
-			// }
+
+			var point = new GeoBeans.Geometry.Point(e.layerX,e.layerY);
+			var point_m = viewer.toMapPoint(point.x,point.y);		
+			map.getViewer().un(GeoBeans.Event.CHANGE);
 
 			var viewer = map.getViewer();
 			viewer.setStatus(GeoBeans.Viewer.Status.SCROLL);
@@ -66,14 +62,15 @@ GeoBeans.Control.ScrollMapControl = GeoBeans.Class(GeoBeans.Control, {
 					viewer.setResolution(target_res);
 				}
 			}
-			// // 保存snap,为了绘制使用
-			// map.saveSnap();
-			// if(trackOverlayControl.drawing){
-			// 	trackOverlayControl.drawingEvent();
-			// }
-			// if(tracker != null && tracker.drawing){
-			// 	tracker.drawingEvent();
-			// }
+
+			map.registerViewerEvent();
+			var point_m_after = viewer.toMapPoint(point.x,point.y);	
+			var offset_x = point_m.x - point_m_after.x;
+			var offset_y = point_m.y - point_m_after.y;
+			var extent = viewer.getExtent();
+			var extent_c = extent.clone();
+			extent_c.offset(offset_x,offset_y);
+			that.map.zoomToExtent(extent_c);
 
 			
 			var drawInteraction = that.map.getInteraction(GeoBeans.Interaction.Type.DRAW);
