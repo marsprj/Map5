@@ -752,11 +752,24 @@ GeoBeans.Map.prototype.initExtent = function(extent){
 	}
 
 	this._extent = extent;
-
 	var viewer = this.getViewer();
 
+
+	var cx = extent.getCenter().x;
+	var cy = extent.getCenter().y;	
+
+	var vw = viewer.getWindowWidth();
+	var vh = viewer.getWindowHeight();
+
+	var mw = cx - extent.xmin;
+	var mh = cy - extent.ymin;
+
+	var resolution_w = mw*2/vw;
+	var resolution_h = mh*2/vh;
+
+	var resolution = (resolution_w>resolution_h) ? resolution_w : resolution_h;
+
 	if(isValid(this.baseLayer)){
-		var resolution = viewer.getResolution();
 		var source = this.baseLayer.getSource();
 		var zoom = source.getFitZoom(resolution);
 		// 保证不超过范围
