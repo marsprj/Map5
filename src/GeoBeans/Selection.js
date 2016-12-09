@@ -206,7 +206,13 @@ GeoBeans.Selection.prototype.draw = function(){
 		return;
 	}
 	
-	var symbolizer = this.getSymbolizer(this._features[0].geometry.type);
+
+	var symbolizer = null;
+	if(isValid(this._symbolizer)){
+		symbolizer = this._symbolizer;
+	}else{
+		symbolizer = this.getSymbolizer(this._features[0].geometry.type);
+	}
 	this._renderer.setSymbolizer(symbolizer);
 	
 	var count = this._features.length;
