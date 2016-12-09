@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/3rd/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/layers.js"></script>
+<script type="text/javascript" src="js/admin-initMap.js"></script>
+<script type="text/javascript" src="js/admin-panel.js"></script>
+
+<link type="text/css" rel="stylesheet" href="../../lib/css/Map5.min.css">
+<link type="text/css" rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="css/bootstrap-slider.css"/>
+<link type="text/css" rel="stylesheet" href="css/admin.css"/>
+<link type="text/css" rel="stylesheet" href="css/colpick.css"/>
+
+
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+
+	// 当前用户
+	var userName = null;
+
+	// 当前图层
+	// var layerName = null;
+	var layerCur = null;
+
+	// wfs地址
+	var url = "/ows/radi/mgr?";
+
+	// wfs数据库
+	var db = "gisdb";
+
+	// 每页显示的个数
+	var listCount = 20;
+
+	// 当前页码
+	var currentPage = 1;
+
+	// 所有页码
+	var pageCount = null;
+
+	// 当前编辑的要素
+	var featureCur = null;
+
+	function init(){
+		registerPanelEvent();
+		loadMap();
+		loadUser();
+		loadLayers();
+	}
+</script>
+<title>标绘系统--管理页面</title>
+<body onload="init()">
+	<div id="content_panel">
+		<div id="header_panel">
+			<div id="logo_panel"></div>
+			<div id="title_panel" class="title_font">标绘系统</div>
+		</div>
+		<div id="main_panel">
+			<div id="user_panel" class="left-panel">
+				<div class="left-panel-title">
+					<span class="glyphicon glyphicon-user"></span><span>用户列表</span>
+				</div>
+				<div class="left-panel-content">
+				</div>
+			</div>
+			<div id="layers_panel" class="left-panel">
+				<div class="left-panel-title">
+					<span class="glyphicon glyphicon-globe"></span><span>图层列表</span>
+				</div>
+				<div class="left-panel-content">
+					<div class="left-panel-content-item active">
+						cities
+					</div>
+					<div class="left-panel-content-item">
+						country
+					</div>
+					<div class="left-panel-content-item">
+						rivers2
+					</div>
+				</div>
+			</div>
+			<div id="overlays_panel" class="left-panel">
+				<div class="left-panel-title">
+					<span class="glyphicon glyphicon-align-justify"></span>
+					<span>标绘列表</span>
+					<span class="pull-right return-overlay-list" data-toggle="tooltip" data-placement="top" title="返回列表">返回</span>
+				</div>
+				<div class="left-panel-content">
+					<div class="content-tab active" id="overlay_list_tab">
+						<div class="overlay-list-div">
+						</div>
+						<div class="page-div">
+							<span class="current-page">1 /  1页</span>
+							<ul class="pagination"> 
+								<li class="first-page">首页</li>
+								<li class="pre-page">上一页</li>
+								<li class="next-page">下一页</li>
+								<li class="last-page">末页</li>
+							</ul>
+						</div>
+					</div>
+					<div class="content-tab" id="overlay_info_tab">
+						<div class="overlay-info">
+						</div>
+					</div>
+
+					
+				</div>
+			</div>
+			<div class="right-panel" id="map_div">
+			</div>
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	
+</body>

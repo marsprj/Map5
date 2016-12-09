@@ -118,6 +118,10 @@ function register(){
 
 // 初始化用户
 function initUser(username){
+	if(username == "admin"){
+		window.location.href = "./admin.html";
+		return;
+	}
 	userName = username;
 	$("#user_title_name").html(userName);
 	$(".tab-panel").removeClass("active");
