@@ -50,7 +50,7 @@
 		registerPanelEvent();
 		loadMap();
 		loadUser();
-		loadLayers();
+		// loadLayers();
 	}
 </script>
 <title>标绘系统--管理页面</title>
@@ -64,6 +64,7 @@
 			<div id="user_panel" class="left-panel">
 				<div class="left-panel-title">
 					<span class="glyphicon glyphicon-user"></span><span>用户列表</span>
+					<span class="pull-right glyphicon glyphicon-refresh glyphicon-oper" data-toggle="tooltip" data-placement="top" title="刷新"></span>
 				</div>
 				<div class="left-panel-content">
 				</div>
@@ -71,24 +72,19 @@
 			<div id="layers_panel" class="left-panel">
 				<div class="left-panel-title">
 					<span class="glyphicon glyphicon-globe"></span><span>图层列表</span>
+					<span class="pull-right glyphicon glyphicon-refresh glyphicon-oper" data-toggle="tooltip" data-placement="top" title="刷新"></span>
 				</div>
 				<div class="left-panel-content">
-					<div class="left-panel-content-item active">
-						cities
-					</div>
-					<div class="left-panel-content-item">
-						country
-					</div>
-					<div class="left-panel-content-item">
-						rivers2
-					</div>
 				</div>
 			</div>
 			<div id="overlays_panel" class="left-panel">
 				<div class="left-panel-title">
 					<span class="glyphicon glyphicon-align-justify"></span>
 					<span>标绘列表</span>
-					<span class="pull-right return-overlay-list" data-toggle="tooltip" data-placement="top" title="返回列表">返回</span>
+					<span class="pull-right glyphicon glyphicon-refresh glyphicon-oper active" data-toggle="tooltip" data-placement="top" title="刷新"></span>
+					<span class="pull-right save-overlay title-oper" data-toggle="tooltip" data-placement="top" title="保存">保存</span>
+					<span class="pull-right remove-overlay title-oper" data-toggle="tooltip" data-placement="top" title="删除">删除</span>
+					<span class="pull-right return-overlay-list title-oper" data-toggle="tooltip" data-placement="top" title="返回列表">返回</span>
 				</div>
 				<div class="left-panel-content">
 					<div class="content-tab active" id="overlay_list_tab">

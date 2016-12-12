@@ -10,6 +10,19 @@ function registerPanelEvent(){
 		refreshFeatures();
 	});
 
+	// 保存标绘
+	$(".save-overlay").click(function(){
+		saveFeature();
+	});
+
+	// 删除标绘
+	$(".remove-overlay").click(function(){
+		if(!confirm("确定要删除当前要素?")){
+			return;
+		}
+		removeFeature();
+	});
+
 	// 切换页码
 	$(".page-div .pagination li").click(function(){
 		if($(this).hasClass("first-page")){
@@ -31,6 +44,19 @@ function registerPanelEvent(){
 			getFeaturesByPage();
 		}
 	});	
+
+	// 刷新
+	$("#user_panel .glyphicon-refresh").click(function(){
+		loadUser();
+	});
+
+	$("#layers_panel .glyphicon-refresh").click(function(){
+		loadLayers();
+	});
+
+	$("#overlays_panel .glyphicon-refresh").click(function(){
+		refreshFeatures();
+	});
 }
 
 
@@ -38,32 +64,69 @@ var g_users = ["a","b","c"];
 
 // 加载用户
 function loadUser(){
+	layerCur = null;
+	userName = null;
+	// 清空面板
+	$("#user_panel .left-panel-content").empty();
+	$("#layers_panel .left-panel-content").empty();
+	$("#overlays_panel .overlay-list-div").empty();
+
 	var html = '';
 	for(var i = 0; i < g_users.length;++i){
 		html += '<div class="left-panel-content-item">'
-			+ g_users[i] + "</div>";
+			+ '<span class="username">' + g_users[i] + '</span>'
+			+ '<span class="item-oper remove-user pull-right">删除</span>'
+			+ "</div>";
 	}
 	$("#user_panel .left-panel-content").html(html);
 
 	var firstChild = $("#user_panel .left-panel-content .left-panel-content-item:first");
-	var name = firstChild.html();
+	var name = firstChild.find(".username").html();
 	if(name != null || name == ""){
 		userName = name;
 		firstChild.addClass("active");
 	}
+	loadLayers();
 
 	// 切换用户
-	$("#user_panel .left-panel-content .left-panel-content-item").click(function(){
+	$("#user_panel .left-panel-content .left-panel-content-item .username").click(function(){
 		$("#user_panel .left-panel-content .left-panel-content-item").removeClass("active");
-		$(this).addClass("active");
+		$(this).parents(".left-panel-content-item").addClass("active");
 		var name = $(this).html();
 		userName = name;
 		loadLayers();
 	});
+
+	// 删除用户
+	$("#user_panel .left-panel-content .left-panel-content-item .remove-user").click(function(){
+		var name = $(this).prev().html();
+		if(!confirm("要删除用户[" + name + "]?")){
+			return;
+		}
+		removeUser(name);
+	});
+}
+
+// 删除用户
+function removeUser(username){
+	if(username == null){
+		return;
+	}
+	for(var i = 0; i < g_users.length;++i){
+		if(g_users[i] == username){
+			g_users.splice(i,1);
+		}
+	}
+
+	loadUser();
 }
 
 // 加载图层
 function loadLayers(){
+	// 清空面板
+	$("#layers_panel .left-panel-content").empty();
+	$("#overlays_panel .overlay-list-div").empty();
+
 	var html = '';
 	var obj = null;
 	var name = null,type = null;
@@ -81,29 +144,59 @@ function loadLayers(){
 		}
 		html += '<div class="left-panel-content-item" ltype="' + type +'">' 
 			  +	 '<i class="layer-type-icon ' + typeClass + '"></i>'			
-			  + '	<span>' + name + '</span>'
+			  + '	<span class="layer-name">' + name + '</span>'
+			  + '	<span class="item-oper remove-layer pull-right">删除</span>'
 			  + "</div>";
 	}
 
 	$("#layers_panel .left-panel-content").html(html);
 
 	var firstChild = $("#layers_panel .left-panel-content .left-panel-content-item:first");
-	var name = firstChild.find("span").html();
+	var name = firstChild.find("span.layer-name").html();
 	if(name != null || name == ""){
-		
 		var type =firstChild.attr("ltype");
 		firstChild.addClass("active");
 		initLayer(name,type);
 	}
 
 	// 切换图层
-	$("#layers_panel .left-panel-content .left-panel-content-item").click(function(){
+	$("#layers_panel .left-panel-content .left-panel-content-item .layer-name").click(function(){
 		$("#layers_panel .left-panel-content .left-panel-content-item").removeClass("active");
-		$(this).addClass("active");
-		var name = $(this).find("span").html();
-		var type = $(this).attr("ltype");
+		$(this).parents(".left-panel-content-item").addClass("active");
+		var name = $(this).html();
+		var type = $(this).parents(".left-panel-content-item").attr("ltype");
 		initLayer(name,type);
 	});
+
+	// 删除图层
+	$("#layers_panel .left-panel-content .left-panel-content-item .remove-layer").click(function(){
+		var name = $(this).prev().html();
+		if(!confirm("确定要删除图层[" + name + "]?")){
+			return;
+		}
+		removeLayer(name);
+	});
+}
+
+// 删除图层
+function removeLayer(layerName){
+	if(layerName == null){
+		return;
+	}
+
+	for(var i = 0; i < g_layers.length;++i){
+		if(g_layers[i].name == layerName){
+			g_layers.splice(i,1);
+		}
+	}
+	if(layerCur != null){
+		if(layerCur.getName() == layerName){
+			mapObj.removeLayer(layerName);
+			mapObj.refresh();
+			layerCur = null;
+		}
+	}
+	loadLayers();
 }
 
 
@@ -144,7 +237,8 @@ function refreshFeatures(){
 	$("#overlays_panel .content-tab").removeClass("active");
 	$("#overlay_list_tab").addClass("active");
 	$(".overlay-list-div").addClass("loading").empty();
-	$(".return-overlay-list").removeClass("active");
+	$("#overlays_panel .title-oper").removeClass("active");
+	$("#overlays_panel .glyphicon-refresh").addClass("active");
 	var selection = mapObj.getSelection();
 	selection.setFeatures([]);
 	mapObj.refresh();
@@ -357,19 +451,22 @@ function showFeatures(features){
 		fid = f.fid;
 
 		html += "<div class='left-panel-content-item' fid='" + fid + "'>"
-			+ name + "</div>";
+			+	"	<span class='overlay-name'>" + name +"</span>"
+			+  	"	<span class='item-oper remove-overlay pull-right'>删除</span>"
+			+   "</div>";
 
 	}
 	$(".overlay-list-div").html(html);
 
 	// 查看信息
-	$(".overlay-list-div .left-panel-content-item").click(function(){
+	$(".overlay-list-div .left-panel-content-item .overlay-name").click(function(){
 		$("#overlays_panel .content-tab").removeClass("active");
 		$("#overlay_info_tab").addClass("active").addClass("loading");
 		$("#overlay_info_tab .overlay-info").empty();
-		$(".return-overlay-list").addClass("active");
+		$("#overlays_panel .title-oper").addClass("active");
+		$("#overlays_panel .glyphicon-refresh").removeClass("active");
 
-		var fid = $(this).attr("fid");
+		var fid = $(this).parents(".left-panel-content-item").attr("fid");
 
 		var filter = new GeoBeans.Filter.IDFilter();
 		fid = layerCur.getName() + "." + fid;
@@ -386,6 +483,29 @@ function showFeatures(features){
 		};
 
 		source.query(query,success);
+	});
+
+	// 删除
+	$(".overlay-list-div .left-panel-content-item .remove-overlay").click(function(){
+		var name = $(this).prev().html();
+		if(!confirm("确认删除[" + name + "]?")){
+			return;
+		}
+		var fid = $(this).parents(".left-panel-content-item").attr("fid");
+		var filter = new GeoBeans.Filter.IDFilter();
+		filter.addID(layerCur.getName() + "." + fid);
+
+		var query = new GeoBeans.Query({
+			typeName : layerCur.getName(),
+			filter : filter 	//查询过滤条件
+		});
+
+		var source = getWFSSourceByLayerName(layerCur.getName());
+		var success = {
+			execute : removeFeatureHandler
+		};
+
+		source.query(query,success);		
 	});
 }
 
@@ -430,7 +550,7 @@ function showFeatureInfo(){
 	$("#overlays_panel .content-tab").removeClass("active");
 	$("#overlay_info_tab").addClass("active").addClass("loading");
 	$("#overlay_info_tab .overlay-info").empty();
-	$(".return-overlay-list").addClass("active");
+	$("#overlays_panel .title-oper").addClass("active");
 	getFields(getFields_handler);
 }
 
@@ -479,8 +599,82 @@ function getFields_handler(fields){
 		}
 		html += '<div class="input-group">'
 			+	'  	<span class="input-group-addon">' + name + '</span>'
-			+	'  	<input type="text" class="form-control" value="' + value +'" disabled="disabled">'
+			+	'  	<input type="text" class="form-control" value="' + value +'">'
 			+	'</div>';
 	}
 	$("#overlay_info_tab .overlay-info").html(html);
+}
+
+// 删除列表中feature
+function removeFeatureHandler(features){
+	if(features == null){
+		return;
+	}
+
+	var feature = features[0];
+	if(feature == null){
+		return;
+	}
+
+	var source = getWFSSourceByLayerName(layerCur.getName());
+	var removeFeature_success = {
+		execute : removeFeature_success_handler
+	};
+	source.removeFeature(feature,removeFeature_success);
+}
+
+function removeFeature_success_handler(result){
+	console.log(result);
+	mapObj.refresh();
+	refreshFeatures();
+	featureCur = null;
+}
+
+// 删除标绘
+function removeFeature(){
+	if(featureCur == null){
+		return;
+	}
+
+	var source = getWFSSourceByLayerName(layerCur.getName());
+	var removeFeature_success = {
+		execute : removeFeature_success_handler
+	};
+	source.removeFeature(featureCur,removeFeature_success);
+}
+
+
+// 保存标绘
+function saveFeature(){
+	if(featureCur == null){
+		return;
+	}
+
+	$(".overlay-info .input-group").each(function(){
+		var field = $(this).find(".input-group-addon").html();
+		var value = $(this).find("input").val();
+		if(value != null && value != ""){
+			featureCur.setValue(field,value);
+		}
+	});
+
+	var date = new Date();
+	var dateStr = dateFormat(date,"yyyy-MM-dd hh:mm:ss");
+
+	var source = getWFSSourceByLayerName(layerCur.getName());
+	var geometryName = source.getGeometryName();
+	featureCur.setValue(geometryName,featureCur.geometry);
+	featureCur.setValue("updatetime",dateStr);
+
+	var updateFeature_success = {
+		execute : updateFeature_handler
+	};
+	source.updateFeature(featureCur,updateFeature_success);
+}
+
+function updateFeature_handler(result){
+	featureCur = null;
+	console.log(result);
+	refreshFeatures();
+
 }

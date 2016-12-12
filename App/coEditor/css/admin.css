@@ -91,6 +91,14 @@ ul{
 }
 .left-panel-title span.glyphicon{
     margin-right: 6px;
+    margin-top: 6px;
+}
+
+.left-panel-title span.glyphicon-oper{
+    cursor: pointer;
+}
+.left-panel-title span.glyphicon-oper:hover{
+    color: #428bca;
 }
 
 .left-panel-content{
@@ -198,15 +206,25 @@ ul{
   border: none;
 }
 
-.return-overlay-list{
+#overlays_panel .glyphicon-refresh.active{
+    display: block;
+}
+#overlays_panel .glyphicon-refresh{
+    display: none;
+}
+
+.title-oper{
     cursor: pointer;
     margin-right: 4px;
     color: #fff;
     display: none;
 }
 
-.return-overlay-list.active{
+.title-oper.active{
     display: block;
+}
+.title-oper:hover{
+    color: #428bca;
 }
 
 .layer-type-icon{
@@ -227,4 +245,41 @@ ul{
 
 .layer-polygon-type{
     background-image: url(../images/polygon-16.png);
+}
+
+.item-oper{
+    color: #fff;
+    cursor: pointer;
+}
+.item-oper:hover{
+    color: #8697b5 !important;
+}
+.left-panel-content-item.active .item-oper{
+    color: #f9f9f9;
+}
+
+.username{
+    display: inline-block;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+.layer-name{
+    display: inline-block;
+    width: 130px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
+.overlay-name{
+    display: inline-block;
+    width: 220px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;    
 }
