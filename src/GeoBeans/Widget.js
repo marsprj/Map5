@@ -153,7 +153,7 @@ GeoBeans.Widget.Widgets.prototype.remove = function(w){
 		return;
 	}
 	var i = this.find(w.type);
-	if(i > 0){
+	if(i >= 0){
 		this._widgets[i].destory();
 		this._widgets[i] = null;
 		this._widgets.splice(i,1);

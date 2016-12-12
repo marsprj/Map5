@@ -85,7 +85,7 @@ GeoBeans.Interaction.Interactions = GeoBeans.Class({
 			return;
 		}
 		var i = this.find(c._type);
-		if(i > 0){
+		if(i >= 0){
 			this._interactions[i].destory();
 			this._interactions[i] = null;
 			this._interactions.splice(i,1);
