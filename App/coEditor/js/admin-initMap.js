@@ -68,6 +68,9 @@ function addSelectInteraction(){
 		var selection = mapObj.getSelection();
 		var symbolizer = createPointSymbolizer();
 		selection.setSymbolizer(symbolizer);
+	}else{
+		var selection = mapObj.getSelection();
+		selection.setSymbolizer(null);
 	}
 	mapObj.addInteraction(select);
 }

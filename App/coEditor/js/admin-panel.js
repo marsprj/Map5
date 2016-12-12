@@ -1,5 +1,10 @@
 // 注册页面事件
 function registerPanelEvent(){
+
+	$("body").find('[data-toggle="tooltip"]').tooltip({
+        container: "body"
+    });
+
 	// 返回标绘列表
 	$(".return-overlay-list").click(function(){
 		refreshFeatures();
@@ -62,18 +67,28 @@ function loadLayers(){
 	var html = '';
 	var obj = null;
 	var name = null,type = null;
+	var typeClass = "";
 	for(var i = 0; i < g_layers.length;++i){
 		obj = g_layers[i];
 		name = obj.name;
 		type = obj.type;
+		if(type == GeoBeans.Geometry.Type.POINT){
+			typeClass = "layer-point-type";
+		}else if(type == GeoBeans.Geometry.Type.LINESTRING){
+			typeClass = "layer-line-type";
+		}else if(type == GeoBeans.Geometry.Type.POLYGON){
+			typeClass = "layer-polygon-type";
+		}
 		html += '<div class="left-panel-content-item" ltype="' + type +'">' 
-			+ name + "</div>";
+			  +	 '<i class="layer-type-icon ' + typeClass + '"></i>'			
+			  + '	<span>' + name + '</span>'
+			  + "</div>";
 	}
 
 	$("#layers_panel .left-panel-content").html(html);
 
 	var firstChild = $("#layers_panel .left-panel-content .left-panel-content-item:first");
-	var name = firstChild.html();
+	var name = firstChild.find("span").html();
 	if(name != null || name == ""){
 		
 		var type =firstChild.attr("ltype");
@@ -85,7 +100,7 @@ function loadLayers(){
 	$("#layers_panel .left-panel-content .left-panel-content-item").click(function(){
 		$("#layers_panel .left-panel-content .left-panel-content-item").removeClass("active");
 		$(this).addClass("active");
-		var name = $(this).html();
+		var name = $(this).find("span").html();
 		var type = $(this).attr("ltype");
 		initLayer(name,type);
 	});

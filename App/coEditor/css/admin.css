@@ -208,3 +208,23 @@ ul{
 .return-overlay-list.active{
     display: block;
 }
+
+.layer-type-icon{
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+}
+
+.layer-point-type{
+    background-image: url(../images/marker_16.png);
+}
+
+.layer-line-type{
+    background-image: url(../images/polyline_16.png);
+}
+
+.layer-polygon-type{
+    background-image: url(../images/polygon-16.png);
+}

@@ -379,6 +379,17 @@ function onSelectionChange(features){
 	showFeatureInfo();
 }
 
+// 设置点样式
+function createPointSymbolizer(){
+	var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+
+	var symbol = new GeoBeans.Style.Symbol();
+	symbol.icon = "../coEditor/images/marker-hit.png";
+	symbolizer.symbol = symbol;		
+
+	return symbolizer;
+}
+
 
 // 添加点击交互
 function addSelectInteraction(){
@@ -392,6 +403,14 @@ function addSelectInteraction(){
 		"layer" : layerCur
 	});
 	select.onchange(onSelectionChange);
+	if(layerCur.getGeometryType() == GeoBeans.Geometry.Type.POINT){
+		var selection = mapObj.getSelection();
+		var symbolizer = createPointSymbolizer();
+		selection.setSymbolizer(symbolizer);
+	}else{
+		var selection = mapObj.getSelection();
+		selection.setSymbolizer(null);
+	}
 	mapObj.addInteraction(select);
 }
 
