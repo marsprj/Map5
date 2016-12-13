@@ -46,23 +46,23 @@ GeoBeans.User = GeoBeans.Class({
 		this.server = "/ows/" + this.name + "/mgr";
 		var server = "/ows/" + this.name;
 
-		this.mapManager = new GeoBeans.MapManager(server);
-		this.styleManager = new GeoBeans.StyleManager(server);
-		this.dbsManager = new GeoBeans.DBSManager(server);
-		this.fileManager = new GeoBeans.FileManager(server);
+		// this.mapManager = new GeoBeans.MapManager(server);
+		// this.styleManager = new GeoBeans.StyleManager(server);
+		// this.dbsManager = new GeoBeans.DBSManager(server);
+		// this.fileManager = new GeoBeans.FileManager(server);
 
-		this.tileDBManager = new GeoBeans.TileDBManager(server);
+		// this.tileDBManager = new GeoBeans.TileDBManager(server);
 
-		this.rasterDBManager = new GeoBeans.RasterDBManager(server);
-		this.gpsManager = new GeoBeans.GPSManager(server);
+		// this.rasterDBManager = new GeoBeans.RasterDBManager(server);
+		// this.gpsManager = new GeoBeans.GPSManager(server);
 
-		this.poiManager = new GeoBeans.PoiManager(this.name);
+		// this.poiManager = new GeoBeans.PoiManager(this.name);
 
-		this.subManager = new GeoBeans.SubManager(server);
+		// this.subManager = new GeoBeans.SubManager(server);
 
-		this.serviceManager = new GeoBeans.ServiceManager(server);
+		// this.serviceManager = new GeoBeans.ServiceManager(server);
 
-		this.jobManager = new GeoBeans.JobManager(server);
+		// this.jobManager = new GeoBeans.JobManager(server);
 
 	},
 

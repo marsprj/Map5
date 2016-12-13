@@ -134,22 +134,37 @@
 
 	function addWfsLayer(){
 
+		// wfsLayer = new GeoBeans.Layer.FeatureLayer({			
+		// 	"name" : "country",
+		// 	"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+		// 	"source" : new GeoBeans.Source.Feature.WFS({
+		// 		"url" : "/ows/radi/mgr?",
+		// 		"version" : "1.0.0",
+		// 		"featureNS" : 'http://www.radi.ac.cn',
+		// 		"featurePrefix" : "radi",
+		// 		"featureType" : "country",
+		// 		"geometryName" : "shape",
+		// 		"outputFormat": "GML2",
+		// 		// "sourceName" : "gisdb"
+		// 		mapName : "1117"
+		// 	}),		
+		// 	"style" : createSimplePolygonStyle()
+		// });
 		wfsLayer = new GeoBeans.Layer.FeatureLayer({			
 			"name" : "country",
 			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
 			"source" : new GeoBeans.Source.Feature.WFS({
-				"url" : "/ows/radi/mgr?",
+				"url" : "/ows/user1/mgr?",
 				"version" : "1.0.0",
 				"featureNS" : 'http://www.radi.ac.cn',
 				"featurePrefix" : "radi",
-				"featureType" : "country",
+				"featureType" : "tianjinqu",
 				"geometryName" : "shape",
 				"outputFormat": "GML2",
-				"sourceName" : "gisdb"
+				mapName : "1117"
 			}),		
 			"style" : createSimplePolygonStyle()
 		});
-
 		mapObj.addLayer(wfsLayer);
 
 		var zoom = 3;

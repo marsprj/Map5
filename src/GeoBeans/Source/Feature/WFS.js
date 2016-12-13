@@ -28,6 +28,7 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 	_outputFormat : "GML2",
 	_srsName : 'EPSG:4326', //'EPSG:3857',
 	_sourceName : null,
+	_mapName : null,
 
 	/**
 	 * new GeoBeans.Source.Feature.WFS({
@@ -50,6 +51,7 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 		this._geometryName = isValid(options.geometryName) ? options.geometryName : "geometry";
 		this._version = isValid(options.version) ? options.version : "1.0.0";
 		this._sourceName = isValid(options.sourceName) ? options.sourceName : null;
+		this._mapName = isValid(options.mapName) ? options.mapName : null;
 	},
 
 	destroy : function(){
@@ -159,6 +161,7 @@ GeoBeans.Source.Feature.WFS.prototype.query = function(query, success, failure){
 		else if(query instanceof GeoBeans.Query){
 			//将query对象序列化为xml字符串
 			var sourceName = this._sourceName;
+			var mapName = this._mapName;
 			xml = this.serializeQuery(query, mapName,sourceName);
 		}
 		else{
@@ -340,6 +343,9 @@ GeoBeans.Source.Feature.WFS.prototype.getFields = function(success,failure){
 	if(isValid(this._sourceName)){
 		params += "&sourceName=" + this._sourceName;
 	}
+	if(isValid(this._mapName)){
+		params += "&mapName=" + this._mapName;	
+	}
 	var that = this;
 	$.ajax({
 		type : "get",
@@ -452,6 +458,9 @@ GeoBeans.Source.Feature.WFS.prototype.removeFeature = function(feature,success,f
 	if(isValid(this._sourceName)){
 		$(root).attr("sourceName", this._sourceName);	
 	}
+	if(isValid(this._mapName)){
+		$(root).attr("mapName", this._mapName);	
+	}
 	var dnode = doc.createElement("wfs:Delete");
 	$(dnode).attr("name", this._featureType);
 	$(root).append(dnode);
@@ -546,6 +555,9 @@ GeoBeans.Source.Feature.WFS.prototype.addFeature = function(feature,success,fail
 	if(isValid(this._sourceName)){
 		$(root).attr("sourceName", this._sourceName);	
 	}
+	if(isValid(this._mapName)){
+		$(root).attr("mapName", this._mapName);	
+	}
 
 	var inode = doc.createElement("wfs:Insert");
 
@@ -621,7 +633,9 @@ GeoBeans.Source.Feature.WFS.prototype.updateFeature = function(feature,success,f
 	if(isValid(this._sourceName)){
 		$(root).attr("sourceName", this._sourceName);	
 	}
-
+	if(isValid(this._mapName)){
+		$(root).attr("mapName", this._mapName);	
+	}
 
 	var unode = doc.createElement("wfs:Update");
 	$(unode).attr("name", this._featureType);
@@ -716,6 +730,7 @@ GeoBeans.Source.Feature.WFS.prototype.queryCount = function(query, success, fail
 		else if(query instanceof GeoBeans.Query){
 			//将query对象序列化为xml字符串
 			var sourceName = this._sourceName;
+			var mapName = this._mapName;
 			xml = this.serializeQueryCount(query, mapName,sourceName);
 		}
 		else{
