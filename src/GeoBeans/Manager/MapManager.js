@@ -357,11 +357,25 @@ GeoBeans.MapManager = GeoBeans.Class({
 		var extent = this.parseBoundingBox(extentXML);
 		var layer = null;
 		if(type == "QuadServer"){
-			layer = new GeoBeans.Layer.QSLayer(name,url);
+			var source_url = url.slice(0,url.indexOf("?"));
+			var imageSet = url.slice(url.lastIndexOf("=")+1,url.length);
+			var source = new GeoBeans.Source.Tile.QuadServer({
+                url : source_url,
+                imageSet : imageSet
+            });
+
+			// layer = new GeoBeans.Layer.TileLayer(name,url);
+			// layer.extent = extent;
+			// layer.visible = visible;
+			// layer.queryable = queryable;
+			// layer.id = id;
+			layer = new GeoBeans.Layer.TileLayer({
+				name : name,
+				source : source,
+				visible : visible
+			});
 			layer.extent = extent;
-			layer.visible = visible;
-			layer.queryable = queryable;
-			layer.id = id;
+            layer.id = id;
 		}else if(type == "WMTS"){
 			layer = this.getWMTSLayer(name,url);
 			if(layer != null){

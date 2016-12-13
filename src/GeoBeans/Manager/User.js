@@ -46,7 +46,7 @@ GeoBeans.User = GeoBeans.Class({
 		this.server = "/ows/" + this.name + "/mgr";
 		var server = "/ows/" + this.name;
 
-		// this.mapManager = new GeoBeans.MapManager(server);
+		this.mapManager = new GeoBeans.MapManager(server);
 		// this.styleManager = new GeoBeans.StyleManager(server);
 		// this.dbsManager = new GeoBeans.DBSManager(server);
 		// this.fileManager = new GeoBeans.FileManager(server);
@@ -127,5 +127,9 @@ GeoBeans.User = GeoBeans.Class({
 	getJobManager : function(){
 		return this.jobManager;
 	},
+
+	getServer : function(){
+		return this.server;
+	}
 
 });
