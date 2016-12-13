@@ -8,11 +8,10 @@
 
 <script type="text/javascript" src="js/3rd/colpick.js"></script>
 <script type="text/javascript" src="js/3rd/bootstrap-slider.js"></script>
-<!-- <script type="text/javascript" src="js/jquery-1.11.1.js"></script> -->
+<script type="text/javascript" src="js/CoEditor.js"></script>
+<script type="text/javascript" src="js/Class.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
 <script type="text/javascript" src="js/initMap.js"></script>
-<!-- <script type="text/javascript" src="js/draw.js"></script> -->
-<!-- <script type="text/javascript" src="js/panelEvent.js"></script> -->
 <script type="text/javascript" src="js/pointType.js"></script>
 <script type="text/javascript" src="js/lineType.js"></script>
 <script type="text/javascript" src="js/polygonType.js"></script>
@@ -20,10 +19,21 @@
 <script type="text/javascript" src="js/drawLayer.js"></script>
 <script type="text/javascript" src="js/panel.js"></script>
 <script type="text/javascript" src="js/style.js"></script>
+<script type="text/javascript" src="js/MapsPanel.js"></script>
+<script type="text/javascript" src="js/MapPanel.js"></script>
+
+
+<script type="text/javascript" src="../../src/GeoBeans/Manager/Auth/AuthManager.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Manager/User.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Manager/MapManager.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Layer/RasterDBLayer.js"></script>
 
 
 <link type="text/css" rel="stylesheet" href="../../lib/css/Map5.min.css">
-<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css"/>
 <link type="text/css" rel="stylesheet" href="css/bootstrap-slider.css"/>
 <link type="text/css" rel="stylesheet" href="css/main.css"/>
 <link type="text/css" rel="stylesheet" href="css/colpick.css"/>
@@ -50,6 +60,8 @@
 
 	// 用户名称
 	var userName = "bh-test";
+	// 用户
+	var user = null;
 
 	// 每页显示的个数
 	var listCount = 20;
@@ -68,13 +80,23 @@
 	// 所有页码
 	var pageCount = null;
 
+	
+	
+
+	// 管理员
+	var authServer = "/ows/admin/mgr";
+	var authManager = new GeoBeans.AuthManager(authServer);
 	function init(){
+		CoEditor.mapPanel = new CoEditor.MapPanel("main_panel");
+		CoEditor.mapsPanel = new CoEditor.MapsPanel("maps_panel");
+		
 		addAccountEvent();
 	 	// loadMap();
 	 	// addDrawInteraction();
 	 	// loadLayersList();
 	 	addPanelEvent();
 	 	// addMapEvent();
+
 	}
 
 
@@ -91,7 +113,8 @@
 				<a href="javascript:void(0)" id="user_logout">退出</a>
 			</div>
 		</div>
-		<div id="main_panel">
+		<!-- 标绘面板 -->
+		<div id="main_panel" class="content-panel">
 			<div id="left_panel">
 				<!-- 标注列表 -->
 				<div class="left-tab" id="overlay-tab">
@@ -171,6 +194,7 @@
 					</div>
 				</div>
 			</div>
+			<!-- 右侧地图 -->
 			<div id="right_panel">
 				<div id="map_div">
 				</div>
@@ -183,6 +207,66 @@
 				</div>
 			</div>
 			<div class="clear">
+			</div>
+		</div>
+		<!-- 地图列表面板 -->
+		<div id="maps_panel" class="content-panel active">
+			<div id="maps_panel_title">
+<!-- 				<div id="home_ribbon" class="ribbon_panel">
+					<div class="home_ribbon_tool">
+						<button type="button" class="btn btn-default btn-success btn-new-map">新建地图</button>
+						<input type="text" class="query-map-name">
+						
+						<div class="pull-right map-page-div">
+							<div class="maps-count">
+								<p class="text-primary">地图总数：<span>0</span></p>
+							</div>
+							<div class="maps-page">
+								<ul class="pagination" style="margin:1px 0px">
+								</ul>
+							</div>
+						</div>
+					</div>	
+				</div> -->
+				<div class="pull-right map-page-div">
+					<div class="maps-count">
+						<p class="text-primary">地图总数：<span>0</span></p>
+					</div>
+					<div class="maps-page">
+						<ul class="pagination" style="margin:1px 0px">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="maps_main_panel">
+				<div id="maps_left_panel">
+					<ul id="maps_list_ul">
+					</ul>
+				</div>
+				<div id="maps_right_panel">
+					<div class="page-heading">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						<span style="font-size:14px">基本信息</span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">名称：</span>
+						<span class="map-info-name"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">空间参考：</span>
+						<span class="map-info-srid"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">范围：</span>
+						<span class="map-info-extent"></span>
+					</div>
+					<div class="page-heading">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						<span style="font-size:14px">图层</span>
+					</div>
+					<div class="map-info-layers">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -234,6 +318,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
+
 </body>

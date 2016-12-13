@@ -79,14 +79,26 @@ function login(){
 
 	var password = $("#user_login_panel input[name='password']").val();
 	if(password == ""){
-		$("#user_login_panel input[name='password']").next().addClass("active");
+		$("#user_login_panel input[name='password']").next().html("请输入密码").addClass("active");
 		$("#user_login_panel input[name='password']").focus();
 		return;
 	}
 
-	// 登录成功
-	initUser(name);
+	authManager.login(name,password,login_callback);
 
+
+}
+
+function login_callback(result){
+	console.log(result);
+
+	var name = $("#user_login_panel input[name='username']").val();
+	if(result == "success"){
+		initUser(name);
+	}else{
+		$("#user_login_panel input[name='password']").next().html(result).addClass("active");
+		$("#user_login_panel input[name='password']").focus();
+	}
 }
 
 // 注册
@@ -123,14 +135,16 @@ function initUser(username){
 		return;
 	}
 	userName = username;
+	user = new GeoBeans.User(username);
 	$("#user_title_name").html(userName);
 	$(".tab-panel").removeClass("active");
 	$("#content_panel").addClass("active");
 
-	loadMap();
- 	addDrawInteraction();
- 	loadLayersList();
- 	addMapEvent();
+	// loadMap();
+ // 	addDrawInteraction();
+ // 	loadLayersList();
+ // 	addMapEvent();
+ 	CoEditor.mapsPanel.getMaps();
 }
 
 
