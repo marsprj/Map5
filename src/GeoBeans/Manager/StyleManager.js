@@ -437,10 +437,10 @@ GeoBeans.StyleManager = GeoBeans.Class({
 		}
 		var colors = [];
 		var beginColor = new GeoBeans.Color();
-		beginColor.setByHex(begin,1);
+		beginColor.setHex(begin,1);
 		var beginColor_hsl = beginColor.getHsl();
 		var endColor = new GeoBeans.Color();
-		endColor.setByHex(end,1);
+		endColor.setHex(end,1);
 		var endColor_hsl = endColor.getHsl();
 
 		if(center == null){
@@ -454,7 +454,7 @@ GeoBeans.StyleManager = GeoBeans.Class({
 			}
 		}else{
 			var centerColor = new GeoBeans.Color();
-			centerColor.setByHex(center,1);
+			centerColor.setHex(center,1);
 			var centerColor_hsl = centerColor.getHsl();
 			if(count/2 != 0){
 				var center = Math.round(count/2) - 1;

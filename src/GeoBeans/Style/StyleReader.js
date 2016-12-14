@@ -136,8 +136,8 @@ GeoBeans.StyleReader = GeoBeans.Class({
 			}else if(tagName == "Geometry"){
 				//未完待续
 			}else if(tagName == "WellKnownName"){
-				var symbol = that.parseSymbol($(this));
-				lineSymbolizer.symbol = symbol;
+				// var symbol = that.parseSymbol($(this));
+				// lineSymbolizer.symbol = symbol;
 			}else if(tagName == "Fill"){
 				var fill = that.parseFill($(this));
 				lineSymbolizer.fill = fill;
@@ -165,8 +165,8 @@ GeoBeans.StyleReader = GeoBeans.Class({
 				var geomName = that.parseGeometry($(this));
 				polygonSymbolizer.geomName = geomName;
 			}else if(tagName == "WellKnownName"){
-				var symbol = that.parseSymbol($(this));
-				polygonSymbolizer.symbol = symbol;
+				// var symbol = that.parseSymbol($(this));
+				// polygonSymbolizer.symbol = symbol;
 			}
 		});
 		return polygonSymbolizer;
@@ -261,7 +261,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 			}
 		});
 		var color = new GeoBeans.Color();
-		color.setByHex(strokeColr,opacity);
+		color.setHex(strokeColr,opacity);
 		stroke.color = color;
 		stroke.width = strokeWidth;
 		return stroke;
@@ -281,7 +281,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 		});
 
 		var color = new GeoBeans.Color();
-		color.setByHex(value,opacity);
+		color.setHex(value,opacity);
 		fill.color = color;
 		return fill;
 	},
