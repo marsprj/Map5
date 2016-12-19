@@ -7,10 +7,10 @@ GeoBeans.MapManager = GeoBeans.Class({
 	getMap_u_id : null,
 	getMap_u_map : null,
 
-	createMap_u_id : null,
-	createMap_u_name : null,
-	createMap_u_extent : null,
-	createMap_u_srid : null,
+	// createMap_u_id : null,
+	// createMap_u_name : null,
+	// createMap_u_extent : null,
+	// createMap_u_srid : null,
 
 	removeMap_u_callback : null,
 
@@ -75,16 +75,16 @@ GeoBeans.MapManager = GeoBeans.Class({
 	},
 
 	// 创建地图
-	createMap : function(id,name,extent,srid,callback){
+	createMap : function(name,extent,srid,callback){
 		if(name == null || extent == null 
 			|| srid == null){
 			return;
 		}
-		this.createMap_u_id = id;
-		this.createMap_u_name = name;
-		this.createMap_u_extent = extent;
-		this.createMap_u_srid = srid;
-		this.createMap_u_callback = callback;
+		// this.createMap_u_id = id;
+		// this.createMap_u_name = name;
+		// this.createMap_u_extent = extent;
+		// this.createMap_u_srid = srid;
+		// this.createMap_u_callback = callback;
 		var extentStr = extent.toString();
 		var that = this;
 		var params = "service=" + this.service + "&version="
@@ -101,7 +101,10 @@ GeoBeans.MapManager = GeoBeans.Class({
 			},
 			success	: function(xml, textStatus){
 				var result = that.parseCreateMap(xml);
-				that.createMap_callback(result);
+				// that.createMap_callback(result);
+				if(isValid(callback)){
+					callback(result);
+				}
 			},			 
 			complete: function(XMLHttpRequest, textStatus){
 			},
@@ -468,21 +471,21 @@ GeoBeans.MapManager = GeoBeans.Class({
 		return exception;
 	},
 
-	createMap_callback : function(result){
-		if(this.createMap_u_callback == null){
-			return;
-		}
-		if(result != "success"){
-			this.createMap_u_callback(null,result);
-			return;
-		}
-		var map = new GeoBeans.Map(this.server,
-					this.createMap_u_id,
-					this.createMap_u_name,
-					this.createMap_u_extent,
-					this.createMap_u_srid);
-		this.createMap_u_callback(map,result);
-	},
+	// createMap_callback : function(result){
+	// 	if(this.createMap_u_callback == null){
+	// 		return;
+	// 	}
+	// 	if(result != "success"){
+	// 		this.createMap_u_callback(null,result);
+	// 		return;
+	// 	}
+	// 	var map = new GeoBeans.Map(this.server,
+	// 				this.createMap_u_id,
+	// 				this.createMap_u_name,
+	// 				this.createMap_u_extent,
+	// 				this.createMap_u_srid);
+	// 	this.createMap_u_callback(map,result);
+	// },
 
 	parseRemoveMap : function(xml){
 		var result = $(xml).find("RemoveMap")

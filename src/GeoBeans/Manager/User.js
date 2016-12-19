@@ -48,7 +48,7 @@ GeoBeans.User = GeoBeans.Class({
 
 		this.mapManager = new GeoBeans.MapManager(server);
 		this.styleManager = new GeoBeans.StyleManager(server);
-		// this.dbsManager = new GeoBeans.DBSManager(server);
+		this.dbsManager = new GeoBeans.DBSManager(server);
 		// this.fileManager = new GeoBeans.FileManager(server);
 
 		// this.tileDBManager = new GeoBeans.TileDBManager(server);

@@ -133,7 +133,7 @@ GeoBeans.StyleManager = GeoBeans.Class({
 			},
 			success	: function(xml, textStatus){
 				var result = that.parseAddStyleXml(xml);
-				that.getStyles();
+				// that.getStyles();
 				if(callback != undefined){
 					callback(result);
 				}
@@ -162,7 +162,7 @@ GeoBeans.StyleManager = GeoBeans.Class({
 			},
 			success	: function(resultXml, textStatus){
 				var result = that.parseUpdateStyleXml(resultXml);
-				that.getStyles();
+				// that.getStyles();
 				if(callback != undefined){
 					callback(result);
 				}

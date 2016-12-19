@@ -652,6 +652,9 @@ GeoBeans.Source.Feature.WFS.prototype.updateFeature = function(feature,success,f
 	for(var key in properties){
 		var value = properties[key];
 		if(isValid(key)){
+			if(key.toLowerCase() == "gid"){
+				continue;
+			}
 			var pnode = doc.createElement("wfs:Property");
 			var knode = doc.createElement("wfs:Name");
 			$(knode).text(key);

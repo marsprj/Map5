@@ -130,7 +130,9 @@ GeoBeans.StyleWriter = GeoBeans.Class({
 		var markXML = xml.createElement("sld:Mark");
 		var symbol = pointSymbolizer.symbol;
 		if(symbol != null){
-			var symbolXML = this.writeSymbol(xml,symbol);
+			// var symbolXML = this.writeSymbol(xml,symbol);
+			// $(markXML).append(symbolXML);
+			var symbolXML = this.writePointSymbol(xml,symbol);
 			$(markXML).append(symbolXML);
 		}
 		var fill = pointSymbolizer.fill;
@@ -322,12 +324,22 @@ GeoBeans.StyleWriter = GeoBeans.Class({
 		return fontXML;
 	},
 
-	writeSymbol : function(xml,symbol){
+	writeSymbol: function(xml,symbol){
 		if(symbol == null){
 			return null;
 		}
 		var symbolXML = xml.createElement("sld:WellKnownName");
 		$(symbolXML).text(symbol.name);
+		return symbolXML;
+	},
+
+	writePointSymbol : function(xml,symbol){
+		if(symbol == null){
+			return null;
+		}
+		var symbolXML = xml.createElement("sld:IconImage");
+		var icon = symbol.icon;
+		$(symbolXML).text(icon);
 		return symbolXML;
 	}
 

@@ -558,6 +558,25 @@ GeoBeans.DBSManager = GeoBeans.Class({
 					xml += "<Length>" + length + "</Length>";
 				}
 
+				if(type.toLowerCase() == "geometry"){
+					var geometryDef = field.geometryDef;
+					if(geometryDef != null){
+						xml += "<GeometryDef>"
+							+  "<Type>" +　geometryDef.type + "</Type>"
+							+  "<SRID>" +  geometryDef.srid + "</SRID>";
+						var extent  = geometryDef.extent;
+						if(extent != null){
+							xml += "<Extent>"
+						 		+ "<XMin>" +  extent.xmin + "</XMin>"
+						 		+ "<XMax>" +  extent.xmax + "</XMax>"
+						 		+ "<YMin>" +  extent.ymin + "</YMin>"
+						 		+ "<YMax>" +  extent.ymax + "</YMax>"
+						 		+ "</Extent>";
+						}
+						xml += "</GeometryDef>";
+					}
+				}
+
 				xml += "</Field>";
 			}
 

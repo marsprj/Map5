@@ -3,10 +3,13 @@ GeoBeans.GField = GeoBeans.Class({
 	type : null,
 	length : null,
 
-	initialize : function(name,type,length){
+	geometryDef : null,
+
+	initialize : function(name,type,length,geometryDef){
 		this.name = name;
 		this.type = type;
 		this.length = length;
+		this.geometryDef = geometryDef;
 	},
 
 });
