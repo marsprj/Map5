@@ -312,7 +312,7 @@ GeoBeans.Interaction.Draw.prototype.drawPolygon = function(symbolizer){
 				});
 			}
 
-			if(isValid(onComplete)){
+			if(isValid(that.onComplete)){
 				if(points.length>=3){
 					var geometry = that.buildPolygon(points);
 					that.onComplete(geometry);
