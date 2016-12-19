@@ -10,7 +10,7 @@ GeoBeans.AuthManager = GeoBeans.Class({
 
 
 	createUser : function(name,alias,password,email,role,callback){
-		if(name == null || alias == null || password == null || email == null
+		if(name == null || alias == null || password == null 
 			|| role == null){
 			if(callback == null){
 				callback("params is invalid");
@@ -21,8 +21,11 @@ GeoBeans.AuthManager = GeoBeans.Class({
 		var params = "service=" + this.service + "&version=" + this.version
 				+ "&request=createUser&name=" + name
 				+ "&alias=" + alias + "&password="
-				+ password + "&email=" + email
+				+ password
 				+ "&role=" + role;
+		if(isValid(email)){
+			params += "&email=" + email;
+		}
 
 		$.ajax({
 			type 	: "get",

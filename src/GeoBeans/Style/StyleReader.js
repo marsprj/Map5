@@ -220,6 +220,11 @@ GeoBeans.StyleReader = GeoBeans.Class({
 				tagName.length);
 			if(tagName == "WellKnownName"){
 				var symbol = that.parseSymbol($(this));
+				// pointSymbolizer.symbol = symbol;
+			}else if(tagName == "IconImage"){
+				var image = $(this).text();
+				var symbol = new GeoBeans.Style.Symbol();
+				symbol.icon = image;
 				pointSymbolizer.symbol = symbol;
 			}
 			if(tagName == "Fill"){
