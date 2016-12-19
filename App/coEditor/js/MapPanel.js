@@ -24,6 +24,22 @@ CoEditor.MapPanel = CoEditor.Class({
 // 页面点击事件
 CoEditor.MapPanel.prototype.registerPanelEvent = function(){
 	var that = this;
+
+	this._panel.find('[data-toggle="tooltip"]').tooltip({
+        container: "body"
+    });
+
+    // 返回地图列表
+    this._panel.find(".back-to-maps").click(function(){
+    	that.backToMapsPanel();
+    });
+
+	// 新建图层
+	this._panel.find(".create-layer").click(function(){
+		CoEditor.create_dataset_dlg.show();
+	});
+
+
 	// 返回图层列表
 	this._panel.find(".back-to-layers").click(function(){
 		that.backToLayersTab();
@@ -90,6 +106,25 @@ CoEditor.MapPanel.prototype.registerPanelEvent = function(){
 			that.getFeaturesByPage();
 		}
 	});	
+
+	// 底图切换
+	this._panel.find(".map-base-div").click(function(){
+		if($(this).hasClass("active")){
+			return;
+		}
+
+		that._panel.find(".map-base-div").removeClass("active");
+		$(this).addClass("active");
+
+		var imageSetName = null;
+		if($(this).hasClass("map-vector-div")){
+			imageSetName = "world_vector";
+		}else if($(this).hasClass("map-image-div")){
+			imageSetName = "world_image";
+		}
+
+		that.setBaseLayer(imageSetName);
+	});
 }	
 
 // 增加绘制交互
@@ -99,6 +134,14 @@ CoEditor.MapPanel.prototype.addDrawInteraction = function(){
 		onComplete : this.drawComplete
 	});
 	mapObj.addInteraction(this._drawer);
+}
+
+// 返回到地图页面
+CoEditor.MapPanel.prototype.backToMapsPanel = function(){
+	this._panel.removeClass("active");
+	$("#maps_panel").addClass("active");
+	var that = CoEditor.mapsPanel;
+	that.getMaps();
 }
 
 // 返回图层列表
@@ -124,17 +167,20 @@ CoEditor.MapPanel.prototype.initMap = function(map){
 		return;
 	}
 
-	var baseLayer = map.baseLayer;
-	var baselayerName = null;
-	if(baseLayer != null){
-		baselayerName = baseLayer.getName();
-	}
-	var baselayerName = 
+	var baseLayer = new GeoBeans.Layer.TileLayer({
+				"name" : "base",
+				"source" : new GeoBeans.Source.Tile.QuadServer({
+		 			"url" : "/QuadServer/maprequest",
+		 			"imageSet" : "world_vector"
+		 		}),
+		 		"opacity" : 1.0,
+		 		"visible" : true
+			});
 	mapObj = new GeoBeans.Map({
 		target : "map_div",
 		name : map.name,
 		srs  : GeoBeans.Proj.WGS84,
-		baselayer : baselayerName,
+		baselayer : "base",
 		layers : [
 			baseLayer
 		],
@@ -247,6 +293,7 @@ CoEditor.MapPanel.prototype.setDefaultStyle = function(layer){
 	}
 	var geometryType = layer.getGeometryType();
 	var style = new GeoBeans.Style.FeatureStyle();
+	style.name = "default";
 	switch(geometryType){
 		case GeoBeans.Geometry.Type.POINT:{
 			var image = "images/food.png";
@@ -316,9 +363,7 @@ CoEditor.MapPanel.prototype.refreshLayersList = function(){
 		 	+	'	<div class="col-md-4 layer-style" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">'
 		 	+	'		<img src="' +  icon +'">'
 		 	+	'	</div>'
-		 	+	'	<div class="col-md-6 layer-name">'
-		 	+			name
-		 	+	'	</div>'
+		 	+	'	<div class="col-md-6 layer-name">' + name + "</div>"
 		 	+	'	<div class="col-md-2 layer-visible">'
 		 	+	'	</div>'
 		 	+	'</div>';
@@ -349,7 +394,10 @@ CoEditor.MapPanel.prototype.refreshLayersList = function(){
 	});
 
 	// 样式设置
-
+	this._panel.find("#layers_tab .layer-style").each(function(){
+		var layerDiv = $(this).parents(".list-type");
+		CoEditor.styleControl.set(layerDiv);
+	});
 };
 
 // 根据几何类型获取图标
@@ -800,6 +848,13 @@ CoEditor.MapPanel.prototype.drawOverlay = function(){
 	var style = layerCur.style;
 	var symbolizer = style.rules[0].symbolizer;
 
+	if(geomType == GeoBeans.Geometry.Type.MULTILINESTRING){
+		geomType = GeoBeans.Geometry.Type.LINESTRING;
+	}else if(geomType == GeoBeans.Geometry.Type.MULTIPOLYGON){
+		geomType = GeoBeans.Geometry.Type.POLYGON;
+	}else if(geomType == GeoBeans.Geometry.Type.MULTIPOINT){
+		geomType = GeoBeans.Geometry.Type.POINT;
+	}
 	this._drawer.draw(geomType,symbolizer);
 }
 
@@ -934,4 +989,31 @@ CoEditor.MapPanel.prototype.removeFeature_success_handler = function(result){
 	var that = CoEditor.mapPanel;
 	that.refreshFeatures();
 	featureCur = null;
+}
+
+// 设置底图
+CoEditor.MapPanel.prototype.setBaseLayer = function(imageSetName){
+	mapObj.removeLayer("base");
+
+	var baseLayer = new GeoBeans.Layer.TileLayer({
+				"name" : "base",
+				"source" : new GeoBeans.Source.Tile.QuadServer({
+		 			"url" : "/QuadServer/maprequest",
+		 			"imageSet" : imageSetName
+		 		}),
+		 		"opacity" : 1.0,
+		 		"visible" : true
+			});	
+	mapObj.addLayer(baseLayer);
+	mapObj.refresh();
+}
+
+// 选中底图div
+CoEditor.MapPanel.prototype.setBaseLayerDivChoose = function(imageSetName){
+	this._panel.find(".map-base-div").removeClass("active");
+	if(imageSetName == "world_vector"){
+		this._panel.find(".map-vector-div").addClass("active");
+	}else if(imageSetName == "world_image"){
+		this._panel.find(".map-image-div").addClass("active");
+	}
 }

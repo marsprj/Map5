@@ -21,11 +21,19 @@ CoEditor.MapsPanel = CoEditor.Class({
 	}
 });
 
-
+// 页面事件
 CoEditor.MapsPanel.prototype.registerPanelEvent = function(){
-	
+	var that = this;
+	this._panel.find(".btn-new-map").click(function(){
+		that.createMap();
+	});
 };
 
+
+// 创建地图
+CoEditor.MapsPanel.prototype.createMap = function(){
+	CoEditor.create_map_dialog.show();
+};
 
 // 获取地图列表
 CoEditor.MapsPanel.prototype.getMaps = function(){
@@ -34,6 +42,9 @@ CoEditor.MapsPanel.prototype.getMaps = function(){
 	}
 	var mapManager = user.getMapManager();
 
+	this._panel.find("#maps_list_ul").empty();
+	this._panel.find("#maps_right_panel").removeClass("active");
+	this._panel.find(".pagination").empty();
 	mapManager.getMaps(this.getMaps_callback);
 }
 
@@ -208,7 +219,7 @@ CoEditor.MapsPanel.prototype.registerPageEvent = function(){
 			currentPage = parseInt($(this).html());
 		}
 		
-		that.initPageControl(currentPage,that.pageCount);
+		that.initPageControl(currentPage,that._pageCount);
 	});	
 }
 
@@ -252,7 +263,6 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 
 // 展示地图的具体信息
 CoEditor.MapsPanel.prototype.showMapInfo = function(map){
-	console.log(map);
 	$("#maps_right_panel").addClass("active");
 	if(map == null){
 		return;
@@ -400,7 +410,6 @@ CoEditor.MapsPanel.prototype.initMap_callback = function(map){
 	var that = CoEditor.mapPanel;
 	that.showMapPanel();
 	that.initMap(map);
-
 }
 
 

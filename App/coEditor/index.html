@@ -4,10 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="js/3rd/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="../../lib/bootstrap.min.js"></script> -->
 
 <script type="text/javascript" src="js/3rd/colpick.js"></script>
 <script type="text/javascript" src="js/3rd/bootstrap-slider.js"></script>
+<script type="text/javascript" src="js/3rd/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/CoEditor.js"></script>
 <script type="text/javascript" src="js/Class.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
@@ -19,19 +20,25 @@
 <script type="text/javascript" src="js/layers.js"></script>
 <!-- <script type="text/javascript" src="js/drawLayer.js"></script> -->
 <!-- <script type="text/javascript" src="js/panel.js"></script> -->
-<script type="text/javascript" src="js/style.js"></script>
+<!-- <script type="text/javascript" src="js/style.js"></script> -->
 <script type="text/javascript" src="js/MapsPanel.js"></script>
 <script type="text/javascript" src="js/MapPanel.js"></script>
+<script type="text/javascript" src="js/CreateDataSetDialog.js"></script>
+<script type="text/javascript" src="js/CreateMapDialog.js"></script>
+<script type="text/javascript" src="js/StyleControl.js"></script>
 
 
 <script type="text/javascript" src="../../src/GeoBeans/Manager/Auth/AuthManager.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Manager/User.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Manager/MapManager.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Manager/MapWorkspace.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Manager/StyleManager.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Layer/GroupLayer.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Layer/DBLayer.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Layer/FeatureDBLayer.js"></script>
 <script type="text/javascript" src="../../src/GeoBeans/Layer/RasterDBLayer.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Manager/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../../src/GeoBeans/Manager/DBS/GField.js"></script>
 
 
 <link type="text/css" rel="stylesheet" href="../../lib/css/Map5.min.css">
@@ -91,7 +98,9 @@
 	function init(){
 		CoEditor.mapPanel = new CoEditor.MapPanel("main_panel");
 		CoEditor.mapsPanel = new CoEditor.MapsPanel("maps_panel");
-		
+		CoEditor.create_dataset_dlg = new CoEditor.CreateDataSetDialog("create_dataset_dialog");
+		CoEditor.create_map_dialog = new CoEditor.CreateMapDialog("create_map_dialog");
+		CoEditor.styleControl = new CoEditor.StyleControl();
 		addAccountEvent();
 	 	// loadMap();
 	 	// addDrawInteraction();
@@ -148,7 +157,9 @@
 				<!-- 图层列表 -->
 				<div class="left-tab active" id="layers_tab">
 					<div class="left-tab-title">
-						标注图层
+						<span class="left-title-icon back-to-maps" data-toggle="tooltip" data-placement="top" title="返回地图列表">◄</span>
+						<span>标注图层</span>
+						<span class="right-title-btn pull-right create-layer" data-toggle="tooltip" data-placement="top" title="新建图层">新建</span>
 					</div>
 					<div class="list-type-div">
 					</div>
@@ -207,6 +218,10 @@
 						<button type="button" class="btn btn-default" id="draw_polygon">面</button>
 					</div>
 				</div>
+				<div id="map_base_div">
+					<div class="map-vector-div map-base-div active" data-toggle="tooltip" data-placement="top" title="矢量图层"></div>
+					<div class="map-image-div map-base-div" data-toggle="tooltip" data-placement="top" title="影像图层"></div>
+				</div>
 			</div>
 			<div class="clear">
 			</div>
@@ -214,22 +229,9 @@
 		<!-- 地图列表面板 -->
 		<div id="maps_panel" class="content-panel active">
 			<div id="maps_panel_title">
-<!-- 				<div id="home_ribbon" class="ribbon_panel">
-					<div class="home_ribbon_tool">
-						<button type="button" class="btn btn-default btn-success btn-new-map">新建地图</button>
-						<input type="text" class="query-map-name">
-						
-						<div class="pull-right map-page-div">
-							<div class="maps-count">
-								<p class="text-primary">地图总数：<span>0</span></p>
-							</div>
-							<div class="maps-page">
-								<ul class="pagination" style="margin:1px 0px">
-								</ul>
-							</div>
-						</div>
-					</div>	
-				</div> -->
+				<div class="left-title-div">
+					<button type="button" class="btn btn-default btn-success btn-new-map">新建地图</button>
+				</div>
 				<div class="pull-right map-page-div">
 					<div class="maps-count">
 						<p class="text-primary">地图总数：<span>0</span></p>
@@ -322,4 +324,116 @@
 		</div>
 	</div>
 
+	<!-- 新建图层对话框 -->
+	<div class="modal fade" id="create_dataset_dialog" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="true">
+	  	<div class="modal-dialog">
+	    	<div class="modal-content">
+	     		<div class="modal-header">
+	       			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">新建图层</h4>
+	      		</div>
+	      		<div class="modal-body">
+	      			<form class="form-horizontal" role="form" onsubmit="return false">
+	      				<div class="form-group" >
+	      					<label class="control-label col-md-3 col-xs-3">图层名称:</label>
+	      					<div class="col-md-7 col-xs-7">
+	      						<input type="text" class="form-control" id="dataset_name">
+	      					</div>
+	      				</div>
+	      				<div class="form-group">
+	      					<label class="control-label col-md-3 col-xs-3">图层类型:</label>
+	      					<div class="col-md-7 col-xs-7">
+	      						<select class="form-control" id="dataset_type">
+	      							<option value="Point">点</option>
+	      							<option value="LineString">线</option>
+	      							<option value="Polygon">面</option>
+	      						</select>
+	      					</div>
+	      				</div>
+	      				<div class="form-group">
+	      					<label class="control-label col-md-3 col-xs-3">图层字段:</label>
+	      					<div class="col-md-7 col-xs-7">
+	      						<button class="btn btn-default btn-success create-field-btn">新建字段</button>
+	      					</div>
+	      				</div>
+
+	      			</form>
+	      			<form class="form-horizontal" id="dataset_fields_form"  role="form" onsubmit="return false">
+	      				<div class="form-group form-group-header">
+	      					<div class="col-md-4 col-xs-4">名称</div>
+	      					<div class="col-md-4 col-xs-4">类型</div>
+	      					<div class="col-md-2 col-xs-2">长度</div>
+	      					<div class="col-md-2 col-xs-2">操作</div>
+	      				</div>
+	      				<div class="form-group form-group-sm form-field">
+  							<div class="col-md-4 col-xs-4">
+  								<input class="form-control field-name" type="text">
+  							</div>
+  							<div class="col-md-4 col-xs-4">
+  								<select class="form-control field-type">
+  									<option>int</option>
+  									<option>string</option>
+  									<option>double</option>
+  								</select>
+  							</div>
+  							<div class="col-md-2 col-xs-2">
+  								<input class="form-control field-length" value="32" type="text" readonly="">
+  							</div>
+  							<div class="col-md-2 col-xs-2">
+  								<button class="btn btn-link btn-remove-field">删除</button>
+  							</div>
+  						</div>
+	      			</form>
+	      		</div>
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        		<button type="button" class="btn btn-primary create-dataset-btn">新建</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+
+	<!-- 新建地图对话框 -->
+	<div class="modal fade" id="create_map_dialog" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="true">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	     		<div class="modal-header">
+	       			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">新建图层</h4>
+	      		</div>
+	      		<div class="modal-body">
+	      			<form class="form-horizontal" role="form" onsubmit="return false">
+	      				<div class="form-group" >
+	      					<label class="control-label col-md-3 col-xs-3">地图名称:</label>
+	      					<div class="col-md-7 col-xs-7">
+	      						<input type="text" class="form-control" id="new_map_name">
+	      					</div>
+	      				</div>
+	      			</form>
+	      			<ul id="base_map_list">
+	      				<li class="base-map-thumb">
+							<a href="javascript:void(0)" class="thumbnail selected" bname="vector">
+								<img src="images/map-vector-thumb.png" alt="vector">
+							</a>
+							<div class="caption text-center">
+								<h6>矢量地图</h6>
+							</div>
+						</li>
+						<li class="base-map-thumb">
+							<a href="javascript:void(0)" class="thumbnail" bname="image">
+								<img src="images/map-image-thumb.png" alt="image">
+							</a>
+							<div class="caption text-center">
+								<h6>影像地图</h6>
+							</div>
+						</li>
+	      			</ul>
+	      		</div>
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        		<button type="button" class="btn btn-primary btn-confirm">确定</button>
+	      		</div>
+	      	</div>
+	    </div>
+	</div>
 </body>

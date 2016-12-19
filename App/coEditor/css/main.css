@@ -18,6 +18,9 @@ ul{
     margin: 5px;	
     list-style-type: none;
 }
+.modal-backdrop.in{
+	z-index: -1;
+}
 
 #header_panel {
     height: 60px;
@@ -99,6 +102,40 @@ ul{
     z-index: 2;
 }
 
+#map_base_div{
+    position: absolute;
+    right: 60px;
+    top: 20px;
+    z-index: 2;
+    height: 60px;
+}
+
+.map-base-div{
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    background-position: center;
+    float: left;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+.map-vector-div{
+    background-image: url(../images/map-vector-thumb.png);
+}
+
+.map-image-div{
+    background-image: url(../images/map-image-thumb.png);
+}
+
+.map-base-div.active{
+    border: 2px solid red !important;   
+}
+.map-base-div:hover{
+    border: 1px solid red; 
+    width: 62px;
+    height: 62px;  
+}
 .left-tab{
 	position: relative;;
 	width: 100%;
@@ -512,7 +549,12 @@ ul{
     margin-left: 5px;	
 }
 
-
+.style-panel .save-style-btn{
+	float: right;
+    right: 15px;
+    position: relative;
+    margin-top: 10px;
+}
 /*----------Maps Panel---------------*/
 .content-panel{
 	display: none;
@@ -529,6 +571,13 @@ ul{
 #maps_panel_title{
 	height: 60px;
 }
+
+#maps_panel_title .left-title-div{
+    margin-top: 16px;
+    float: left;
+    margin-left: 30px;
+}
+
 #maps_panel_title .maps-count {
     min-width: 100px;
     display: inline-block;
@@ -647,4 +696,48 @@ ul{
 
 .map-info-row span {
     display: inline-block
+}
+
+/*-------create dataset dialog--------*/
+#dataset_fields_form{
+	border: 1px dotted #ccc;
+	height: 400px;
+}
+#create_dataset_dialog #dataset_fields_form .form-group {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 6px 0px;
+    margin: 0px;
+}
+#create_dataset_dialog .form-group-header{
+	text-align: center;
+	font-weight: bold;
+}
+
+
+/*-------create map dialog--------*/
+#create_map_dialog .modal-dialog{
+    width: 460px;
+}
+
+#base_map_list{
+    height: 200px;
+}
+
+.base-map-thumb {
+    position: relative;
+    float: left;
+    display: block;
+    width: 160px;
+    /*height: 110px;*/
+    margin: 20px
+}
+.map-check {
+    position: absolute;
+    top: 40px;
+    left: 36px;
+    text-align: center;
+    display: none
+}
+#create_map_dialog .thumbnail.selected {
+    border: 4px solid #428bca;
 }

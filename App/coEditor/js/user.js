@@ -124,8 +124,9 @@ function register(){
 		return;
 	}
 
+	authManager.createUser(name,name,password,null,"normal",register_callbacks);
 	// 注册成功
-	initUser(name);
+	// initUser(name);
 }
 
 // 初始化用户
@@ -156,4 +157,15 @@ function logout(){
 	showLoginPanel();
 	$("#user_panel input[type='text'],#user_panel input[type='password']").val("");
 	$("#user_login_panel input[name='username']").focus();
+}
+
+function register_callbacks(result){
+	console.log(result);
+	var name = $("#user_register_panel input[name='username']").val();
+	if(result == "success"){
+		initUser(name);
+	}else{
+		$("#user_register_panel input[name='username']").next().html(result).addClass("active");
+		$("#user_register_panel input[name='username']").focus();
+	}
 }
