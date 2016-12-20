@@ -247,22 +247,33 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	destroy : function(){
 
-		$(this._container).find("canvas").remove();
+		$(this._container).empty();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.enableNavControl(false);
 		this.controls.cleanup();
-		this.unRegisterMapRippleHitEvent();
-		this.controls.cleanup();
+		this._interactions.cleanup();
+		this.widgets.cleanup();
 		this.viewer.cleanup();
+		this._selection.destroy();
+		for(var i = 0; i < this.layers.length;++i){
+			var layer = this.layers[i];
+			layer.cleanup();
+			layer = null;
+		}
+		if(isValid(this.baseLayer)){
+			this.baseLayer.cleanup();
+			this.baseLayer = null;
+		}
 
 		this.canvas = null;
 		this.renderer = null;
 		this.layers = null;
 		this.controls = null;
-		this._infoWindowWidget = null;
+		this._interactions = null;
+		this.widgets = null;
 		this.stopAnimate();
 		this._container = null;
-		
+		this.viewer = null;
 	},
 
 	// 关闭地图

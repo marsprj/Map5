@@ -65,6 +65,7 @@ GeoBeans.Interaction.Interactions = GeoBeans.Class({
 	
 	initialize : function(map){
 		this.map = map;
+		this._interactions = [];
 	},
 
 	destory : function(){

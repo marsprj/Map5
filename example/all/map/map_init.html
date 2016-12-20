@@ -150,12 +150,12 @@
 				// }),
 	            new GeoBeans.Layer.FeatureLayer({
 	                name : "country",
-	                geometryType : GeoBeans.Geometry.Type.POINT,
+	                geometryType : GeoBeans.Geometry.Type.POLYGON,
 	                source : new GeoBeans.Source.Feature.GeoJSON({
 	                    url : "/Map5/example/all/data/geojson/countries.geojson",
 	                    geometryName : "geometry",
 	                }),
-	                visible : false
+	                visible : true
 	                // style : createSimplePolygonStyle()
 	            })        
 	        ],

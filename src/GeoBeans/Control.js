@@ -76,6 +76,7 @@ GeoBeans.Control.Controls = GeoBeans.Class({
 	},
 
 	destory : function(){
+		this.cleanup();
 		this.controls = null;
 	},
 	
