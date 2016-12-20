@@ -152,3 +152,12 @@ GeoBeans.Layer.TileLayer.prototype.refresh = function(flag){
 		this.clear();
 	}
 };
+
+/**
+ * 设置数据源
+ * @public
+ * @param {GeoBeans.Source.Tile} source 数据源
+ */
+GeoBeans.Layer.TileLayer.prototype.setSource = function(source){
+	this._source = source;
+}
