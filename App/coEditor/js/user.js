@@ -163,9 +163,26 @@ function register_callbacks(result){
 	console.log(result);
 	var name = $("#user_register_panel input[name='username']").val();
 	if(result == "success"){
+		// 注册数据源
 		initUser(name);
+		registerDBSource();
 	}else{
 		$("#user_register_panel input[name='username']").next().html(result).addClass("active");
 		$("#user_register_panel input[name='username']").focus();
 	}
+}
+
+// 注册gisdb数据源
+function registerDBSource(){
+	var dbsManager = user.getDBSManager();
+	var name = "gisdb";
+	var engine = "Postgres";
+	var constr = "server=192.168.111.160;instance=5432;database=gisdb;user=postgres;password=qwer1234;encoding=GBK"
+	var type = "feature";
+	dbsManager.registerDataSource(name,engine,constr,type,registerDBSource_callback);
+}
+
+// 注册数据源回调函数
+function registerDBSource_callback(result){
+	console.log(result);
 }
