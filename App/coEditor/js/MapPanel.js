@@ -176,6 +176,10 @@ CoEditor.MapPanel.prototype.initMap = function(map){
 		 		"opacity" : 1.0,
 		 		"visible" : true
 			});
+	if(mapObj != null){
+		mapObj.close();
+		mapObj = null;
+	}
 	mapObj = new GeoBeans.Map({
 		target : "map_div",
 		name : map.name,
@@ -993,18 +997,12 @@ CoEditor.MapPanel.prototype.removeFeature_success_handler = function(result){
 
 // 设置底图
 CoEditor.MapPanel.prototype.setBaseLayer = function(imageSetName){
-	mapObj.removeLayer("base");
-
-	var baseLayer = new GeoBeans.Layer.TileLayer({
-				"name" : "base",
-				"source" : new GeoBeans.Source.Tile.QuadServer({
+	var source = new GeoBeans.Source.Tile.QuadServer({
 		 			"url" : "/QuadServer/maprequest",
 		 			"imageSet" : imageSetName
-		 		}),
-		 		"opacity" : 1.0,
-		 		"visible" : true
-			});	
-	mapObj.addLayer(baseLayer);
+		 		});
+	var layer = mapObj.getLayer("base");
+	layer.setSource(source);
 	mapObj.refresh();
 }
 

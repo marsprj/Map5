@@ -94,7 +94,9 @@ CoEditor.CreateMapDialog.prototype.initNewMap = function(){
 	 		"opacity" : 1.0,
 	 		"visible" : true
 		});
-
+	if(mapObj != null){
+		mapObj.close();
+	}
 	mapObj = new GeoBeans.Map({
 		target : "map_div",
 		name : name,
