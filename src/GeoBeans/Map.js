@@ -1266,7 +1266,9 @@ GeoBeans.Map.prototype.enableScroll = function(flag){
 GeoBeans.Map.prototype.enableNavControl = function(flag){
 	var index = this.controls.find(GeoBeans.Control.Type.NAV);
 	var mapNavControl = this.controls.get(index);
-	mapNavControl.enable(flag);
+	if(isValid(mapNavControl)){
+		mapNavControl.enable(flag);
+	}
 },
 
 
@@ -1496,6 +1498,9 @@ GeoBeans.Map.prototype.cleanupSnap = function(){
 GeoBeans.Map.prototype.drawNavControl = function(){
 	var index = this.controls.find(GeoBeans.Control.Type.NAV);
 	var mapNavControl = this.controls.get(index);
+	if(!isValid(mapNavControl)){
+		return;
+	}
 	var zoom = this.getViewer().getZoom();
 	mapNavControl.setZoomSlider(zoom);
 };
