@@ -646,6 +646,7 @@ CoEditor.StyleControl.prototype.addStyle = function(style){
 		geometryType == GeoBeans.Geometry.Type.MULTIPOLYGON){
 		type = "polygon";
 	}
+	CoEditor.notify.loading();
 	styleManager.addStyle(xml,name,type,this.addStyle_callback);
 }
 
@@ -658,15 +659,15 @@ CoEditor.StyleControl.prototype.updateStyle = function(style){
 	var styleWriter = new GeoBeans.StyleWriter();
 	var xml = styleWriter.write(style);
 	var name = style.name;
+	CoEditor.notify.loading();
 	styleManager.updateStyle(xml,name,this.updateStyle_callback);
 }
 
 
 // 增加样式回调
 CoEditor.StyleControl.prototype.addStyle_callback = function(result){
-	console.log(result);
+	CoEditor.notify.showInfo("更新样式",result.toString());	
 	if(result != "success"){
-		alert(result);
 		return;
 	}
 	var that = CoEditor.styleControl;
@@ -688,13 +689,11 @@ CoEditor.StyleControl.prototype.setLayerStyle = function(){
 
 // 设置样式回调
 CoEditor.StyleControl.prototype.setLayerStyle_callback = function(result){
-	console.log(result);
 	// 关闭弹窗
 	$(".popover").hide()
-
 }
 
 CoEditor.StyleControl.prototype.updateStyle_callback = function(result){
-	console.log(result);
+	CoEditor.notify.showInfo("更新样式",result.toString());
 	$(".popover").hide()
 }

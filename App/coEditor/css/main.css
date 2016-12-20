@@ -741,3 +741,34 @@ ul{
 #create_map_dialog .thumbnail.selected {
     border: 4px solid #428bca;
 }
+
+/*------------loading panel ------------*/
+.screen-alert {
+    position: fixed;
+    top: 0;
+    width: 260px;
+    background-color: rgba(249,223,94,.71);
+    padding: 5px;
+    left: 50%;
+    margin-left: -130px;
+    z-index: 1080;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,.67);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: none;
+}
+/*------------notify panel ------------*/
+#container {
+    z-index: 1080
+}
+
+#container span {
+    color: #fff;
+    font-size: 14px;
+    display: inline-block;
+    line-height: 26px
+}

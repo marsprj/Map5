@@ -728,6 +728,10 @@ CoEditor.MapPanel.prototype.getFields = function(){
 }
 
 CoEditor.MapPanel.prototype.getFields_handler = function(fields){
+	if(!$.isArray(fields)){
+		console.log(fields);
+		return;
+	}
 	var that = CoEditor.mapPanel;
 	that._panel.find(".overlay-info-div").removeClass("loading");
 	var feature = null;

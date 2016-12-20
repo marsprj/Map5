@@ -16,10 +16,9 @@ CoEditor.CreateMapDialog.prototype.registerPanelEvent = function(){
 	this._panel.find(".btn-confirm").click(function(){
 		var mapName = that._panel.find("#new_map_name").val();
 		if(mapName == null || mapName == ""){
-			alert("请输入地图名称");
+			CoEditor.notify.showInfo("提示","请输入地图名称");
 			return;
 		}
-
 		that.createMap(mapName);
 	});
 
@@ -44,7 +43,7 @@ CoEditor.CreateMapDialog.prototype.hide =function(){
 
 
 CoEditor.CreateMapDialog.prototype.cleanup = function(){
-
+	this._panel.find("#new_map_name").val("");
 }
 
 // 创建地图
@@ -56,13 +55,13 @@ CoEditor.CreateMapDialog.prototype.createMap = function(mapName){
 	var mapManager = user.getMapManager();
 	var srid = 4326;
 	var extent = new GeoBeans.Envelope(-180,-90,180,90);
+	CoEditor.notify.loading();
 	mapManager.createMap(mapName,extent,srid,this.createMap_callback);
 };
 
 CoEditor.CreateMapDialog.prototype.createMap_callback = function(result){
-	console.log(result);
+	CoEditor.notify.showInfo("新建地图",result.toString());
 	if(result != "success"){
-		alert(result);
 		return;
 	}
 	var that = CoEditor.create_map_dialog;

@@ -9,6 +9,9 @@
 <script type="text/javascript" src="js/3rd/colpick.js"></script>
 <script type="text/javascript" src="js/3rd/bootstrap-slider.js"></script>
 <script type="text/javascript" src="js/3rd/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/3rd/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/3rd/jquery-ui/jquery.notify.min.js"></script>
+
 <script type="text/javascript" src="js/CoEditor.js"></script>
 <script type="text/javascript" src="js/Class.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
@@ -26,6 +29,7 @@
 <script type="text/javascript" src="js/CreateDataSetDialog.js"></script>
 <script type="text/javascript" src="js/CreateMapDialog.js"></script>
 <script type="text/javascript" src="js/StyleControl.js"></script>
+<script type="text/javascript" src="js/Notify.js"></script>
 
 
 <script type="text/javascript" src="../../src/GeoBeans/Manager/Auth/AuthManager.js"></script>
@@ -46,6 +50,9 @@
 <link type="text/css" rel="stylesheet" href="css/bootstrap-slider.css"/>
 <link type="text/css" rel="stylesheet" href="css/main.css"/>
 <link type="text/css" rel="stylesheet" href="css/colpick.css"/>
+<link type="text/css" rel="stylesheet" href="css/jquery-ui/ui.notify.css"/>
+<link type="text/css" rel="stylesheet" href="css/jquery-ui/jquery-ui.min.css"/>
+
 
 <script type="text/javascript">
 	var mapObj = null;
@@ -96,6 +103,7 @@
 	var authServer = "/ows/admin/mgr";
 	var authManager = new GeoBeans.AuthManager(authServer);
 	function init(){
+		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
 		CoEditor.mapPanel = new CoEditor.MapPanel("main_panel");
 		CoEditor.mapsPanel = new CoEditor.MapsPanel("maps_panel");
 		CoEditor.create_dataset_dlg = new CoEditor.CreateDataSetDialog("create_dataset_dialog");
@@ -436,4 +444,19 @@
 	      	</div>
 	    </div>
 	</div>
+
+
+	<!-- Notify  -->
+	<div id="container" style="display:none">
+		<div id="default">
+			<a class="ui-notify-close ui-notify-cross" href="javascript:void(0)">x</a>
+			<span>#{title}</span>
+			<span>:</span>
+			<span>#{text}</span>
+		</div>
+	</div>
+	<!-- loading panel -->
+	<div class="screen-alert" id="alert_loading">
+		<span>Please wait ...</span>
+	</div>	
 </body>

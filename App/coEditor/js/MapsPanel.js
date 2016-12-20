@@ -45,11 +45,17 @@ CoEditor.MapsPanel.prototype.getMaps = function(){
 	this._panel.find("#maps_list_ul").empty();
 	this._panel.find("#maps_right_panel").removeClass("active");
 	this._panel.find(".pagination").empty();
+	CoEditor.notify.loading();
 	mapManager.getMaps(this.getMaps_callback);
 }
 
 
 CoEditor.MapsPanel.prototype.getMaps_callback = function(maps){
+	if(!$.isArray(maps)){
+		CoEditor.notify.hideLoading();
+		return;
+	}
+	CoEditor.notify.showInfo("获取地图列表",maps.length.toString());
 	CoEditor.mapsPanel.setMaps(maps);
 }
 
@@ -90,7 +96,6 @@ CoEditor.MapsPanel.prototype.setMaps = function(maps){
 
 	// 页数
 	this._pageCount = pageCount;
-	console.log(this._pageCount);
 
 	this.initPageControl(1,this._pageCount);
 
@@ -373,26 +378,8 @@ CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
 			console.log("Double Click");  //perform double-click action
 			var name = $(this).parent().attr("name");
 			var mapManager = user.getMapManager();
+			CoEditor.notify.loading();
 			mapManager.getMapObj(name,that.initMap_callback);
-			// if(mapObj != null){
-			// 	mapObj.close();
-			// }
-			// mapObj = null;
-			// that.showMapPanel();
-			// that.showMapTab();
-			// var info = "打开地图[" + name + "]";
-			// mapObj = mapManager.getMap("mapCanvas_wrapper",name);
-			// if(mapObj == null){
-			// 	MapCloud.notify.showInfo("Warning",info + "失败");
-			// }else{
-			// 	mapObj.setNavControl(false);
-			// 	$(".mc-panel").css("display","none");
-			// 	mapObj.draw();
-			// 	mapObj.addEventListener(GeoBeans.Event.MOUSE_MOVE, MapCloud.tools.onMapMove);
-			// 	MapCloud.refresh_panel.refreshPanel();
-			// 	MapCloud.dataGrid.cleanup();
-			// 	MapCloud.notify.showInfo("success",info);
-			// }
 			clicks = 0;  
 		}
 	}).dblclick(function(e){
@@ -404,9 +391,10 @@ CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
 CoEditor.MapsPanel.prototype.initMap_callback = function(map){
 
 	if(map == null){
+		CoEditor.notify.showInfo("刷新地图","失败");
 		return;
 	}
-
+	CoEditor.notify.showInfo("刷新地图","success");
 	var that = CoEditor.mapPanel;
 	that.showMapPanel();
 	that.initMap(map);

@@ -2,7 +2,7 @@ CoEditor.CreateDataSetDialog = CoEditor.Class({
 	
 	_panel : null,
 
-	_db : "gisdb",
+	_db : "bhdb",
 
 
 	initialize : function(id){
@@ -83,7 +83,15 @@ CoEditor.CreateDataSetDialog.prototype.createFieldDiv = function(){
 CoEditor.CreateDataSetDialog.prototype.createDataSet = function(){
 	var dataSetName = this._panel.find("#dataset_name").val();
 	if(dataSetName == null || dataSetName == ""){
-		alert("请输入图层名称");
+		CoEditor.notify.showInfo("提示","请输入图层名称");
+		this._panel.find("#dataset_name").focus();
+		return;
+	}
+
+	var nameReg = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+	if(!nameReg.test(dataSetName)){
+		CoEditor.notify.showInfo("提示","请输入有效的图层名称");
+		this._panel.find("#dataset_name").focus();
 		return;
 	}
 
@@ -91,6 +99,7 @@ CoEditor.CreateDataSetDialog.prototype.createDataSet = function(){
 	var fields = this.getFields();
 
 	var dbsManager = user.getDBSManager();
+	CoEditor.notify.loading();
 	dbsManager.createDataSet(this._db,dataSetName,fields,this.createDataset_callback)
 }
 
@@ -131,9 +140,8 @@ CoEditor.CreateDataSetDialog.prototype.getFields = function(){
 }
 
 CoEditor.CreateDataSetDialog.prototype.createDataset_callback = function(result){
-	console.log(result);
 	if(result != "success"){
-		alert(result);
+		CoEditor.notify.showInfo("创建表格",result);
 		return;
 	}
 
@@ -154,13 +162,14 @@ CoEditor.CreateDataSetDialog.prototype.registerLayer = function(){
 
 // 注册图层回调
 CoEditor.CreateDataSetDialog.prototype.registerLayer_callback = function(result){
-	console.log(result);
+
 	if(result instanceof GeoBeans.Layer.FeatureDBLayer){
+		CoEditor.notify.showInfo("新建图层","success");
 		var mapManager = user.getMapManager();
 		var that = CoEditor.mapsPanel;
 		mapManager.getMapObj(mapObj.name,that.initMap_callback);
 		CoEditor.create_dataset_dlg.hide();
 	}else{
-		alert(result);
+		CoEditor.notify.showInfo("新建图层",result.toString());
 	}
 }

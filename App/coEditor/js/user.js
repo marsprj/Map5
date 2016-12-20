@@ -84,13 +84,12 @@ function login(){
 		return;
 	}
 
+	CoEditor.notify.loading();
 	authManager.login(name,password,login_callback);
-
-
 }
 
 function login_callback(result){
-	console.log(result);
+	CoEditor.notify.showInfo("用户登录",result);
 
 	var name = $("#user_login_panel input[name='username']").val();
 	if(result == "success"){
@@ -123,10 +122,8 @@ function register(){
 		$("#user_register_panel input[name='repassword']").focus();
 		return;
 	}
-
+	CoEditor.notify.loading();
 	authManager.createUser(name,name,password,null,"normal",register_callbacks);
-	// 注册成功
-	// initUser(name);
 }
 
 // 初始化用户
@@ -140,6 +137,8 @@ function initUser(username){
 	$("#user_title_name").html(userName);
 	$(".tab-panel").removeClass("active");
 	$("#content_panel").addClass("active");
+	$(".content-panel").removeClass("active");
+	$("#maps_panel").addClass("active");
 
 	// loadMap();
  // 	addDrawInteraction();
@@ -160,7 +159,7 @@ function logout(){
 }
 
 function register_callbacks(result){
-	console.log(result);
+	CoEditor.notify.showInfo("注册用户",result);
 	var name = $("#user_register_panel input[name='username']").val();
 	if(result == "success"){
 		// 注册数据源
@@ -172,12 +171,12 @@ function register_callbacks(result){
 	}
 }
 
-// 注册gisdb数据源
+// 注册数据源
 function registerDBSource(){
 	var dbsManager = user.getDBSManager();
-	var name = "gisdb";
+	var name = "bhdb";
 	var engine = "Postgres";
-	var constr = "server=192.168.111.160;instance=5432;database=gisdb;user=postgres;password=qwer1234;encoding=GBK"
+	var constr = "server=192.168.111.160;instance=5432;database=bhdb;user=postgres;password=qwer1234;encoding=GBK"
 	var type = "feature";
 	dbsManager.registerDataSource(name,engine,constr,type,registerDBSource_callback);
 }
