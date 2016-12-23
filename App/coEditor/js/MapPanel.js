@@ -782,7 +782,7 @@ CoEditor.MapPanel.prototype.getFields_handler = function(fields){
 		if(type  == GeoBeans.Field.Type.GEOMETRY){
 			continue;
 		}
-		if(name == "gid" || name == "username" || name == "updatetime"){
+		if(name == "gid" || name == "username" || name == "updatetime" || name == "checked"){
 			continue;
 		}
 		html += '<div class="input-group">'
@@ -918,9 +918,11 @@ CoEditor.MapPanel.prototype.saveFeature = function(){
 		featureNew.setValue(geometryName,featureNew.geometry);
 		featureNew.setValue("username",userName);
 		featureNew.setValue("updatetime",dateStr);
+		featureNew.setValue("checked","0");
 	}else if(featureCur != null){
 		featureCur.setValue(geometryName,featureCur.geometry);
 		featureCur.setValue("updatetime",dateStr);
+		featureCur.setValue("checked","0");
 	}
 	
 	if(featureNew != null){

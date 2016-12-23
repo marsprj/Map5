@@ -136,6 +136,9 @@ CoEditor.CreateDataSetDialog.prototype.getFields = function(){
 
 	var updatetimeField = new GeoBeans.GField("updatetime","timestamp",null);
 	fields.push(updatetimeField);
+
+	var checkedField = new GeoBeans.GField("checked","int",null,null);
+	fields.push(checkedField);
 	return fields;
 }
 

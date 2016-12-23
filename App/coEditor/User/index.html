@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="../../../lib/css/Map5.min.css">
+<link type="text/css" rel="stylesheet" href="../css/bootstrap/css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="../css/bootstrap/css/bootstrap-switch.min.css"/>
+<link type="text/css" rel="stylesheet" href="../css/common.css"/>
+
+<link type="text/css" rel="stylesheet" href="css/user.css"/>
+
+<script type="text/javascript" src="../js/3rd/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../js/3rd/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/3rd/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="../js/3rd/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../js/3rd/jquery-ui/jquery.notify.min.js"></script>
+<script type="text/javascript" src="../../../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../js/CoEditor.js"></script>
+<script type="text/javascript" src="../js/Class.js"></script>
+<script type="text/javascript" src="../js/Notify.js"></script>
+<script type="text/javascript" src="../js/global.js"></script>
+
+
+<script type="text/javascript" src="js/user.js"></script>
+<script type="text/javascript" src="js/UserCatalogPanel.js"></script>
+<script type="text/javascript" src="js/UserInfoPanel.js"></script>
+<script type="text/javascript" src="js/UserTaskPanel.js"></script>
+
+
+
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/Auth/AuthManager.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/User.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/MapManager.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/MapWorkspace.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/StyleManager.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/GroupLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/DBLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureDBLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/RasterDBLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/DBS/DBSManager.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Manager/DBS/GField.js"></script>
+
+<script type="text/javascript">
+	var mapObj = null;
+
+	var user = null;
+
+	var layerCur = null;
+
+	var featureCur = null;
+
+	// 管理员
+	var authServer = "/ows/admin/mgr";
+	var authManager = new GeoBeans.AuthManager(authServer);
+	function init(){
+		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
+		CoEditor.userCatalogPanel = new CoEditor.UserCatalogPanel("catalog_panel"); 
+		CoEditor.userInfoPanel = new CoEditor.UserInfoPanel("user_content_panel"); 
+		CoEditor.userTaskPanel = new CoEditor.UserTaskPanel("task_content_panel"); 
+		addAccountEvent();
+	}
+
+
+</script>
+<title>管理系统</title>
+<body onload="init()">
+	<!-- 用户面板 -->
+	<div class="tab-panel active" id="user_panel">
+		<div class="user-panel-title">
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7">
+				</div>
+				<div class="col-md-5">
+					<div class="user-tab-panel active" id="user_login_panel">
+						<div class="user-tab-panel-title">用户登录</div>
+						<form>
+							<input class="login-form-input" type="text" name="username" placeholder="用户名">
+							<span class="user-tab-info">请输入用户名</span>
+							<input class="login-form-input" type="password" name="password" placeholder="密码">
+							<span class="user-tab-info">请输入密码</span>
+							<div class="form-group">
+								<div class="col-md-6">
+									<a href="javascript:void(0)" class="login-btn"></a>
+								</div>
+								<div class="col-md-6">
+									<a href="javascript:void(0)" class="register-btn"></a>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="user-tab-panel" id="user_register_panel">
+						<div class="user-tab-panel-title">用户注册</div>
+						<form>
+							<input class="register-form-input" type="text" name="username" placeholder="用户名">
+							<span class="user-tab-info">请输入用户名</span>
+							<input class="register-form-input" type="password" name="password" placeholder="密码">
+							<span class="user-tab-info">请输入密码</span>
+							<input class="register-form-input" type="password" name="repassword" placeholder="再次输入密码">
+							<span class="user-tab-info">请再次输入密码</span>
+							<div class="form-group">
+								<div class="col-md-6 col-md-offset-3">
+									<a href="javascript:void(0)" class="register-btn"></a>
+								</div>
+								<div class="col-md-2">
+									<a href="javascript:void(0)" class="return-login">返回</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 用户信息面板 -->
+	<div class="tab-panel" id="info_panel">
+		<div id="header_panel">
+			<div id="logo_panel"></div>
+			<div id="title_panel" class="title_font"><span class="user-name-title">[radi]</span>管理系统</div>
+			<div id="user_title">
+				用户：<span id="user_title_name"></span>
+				<a href="javascript:void(0)" id="user_logout">退出</a>
+			</div>
+		</div>
+		<div id="main_panel">
+			<div id="catalog_panel">
+				<div class="catalog-item active" iname="用户管理">
+					<img src="../images/user.png">
+					<h5>用户管理</h5>
+				</div>
+				<div class="catalog-item" iname="任务管理">
+					<img src="../images/map-mgr.png">
+					<h5>任务管理</h5>
+				</div>
+			</div>
+			<div id="content_panel">
+				<!-- 用户管理 -->
+				<div class="content-tab-panel active" id="user_content_panel">
+					<div class="title-wrapper">
+						<div class="title_box">用户管理</div>
+					</div>
+					<div class="content-main-panel">
+						<div id="user_info_tab">
+							<div class="row">
+								<div class="col-md-5 col-xs-5" id="info_list" style="width:450px">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h2>
+												<i class="glyphicon glyphicon-list"></i>
+												<strong>个人信息</strong>
+											</h2>
+										</div>
+										<div class="panel-body">
+											<div class="user-info">
+												<div class="col-md-4 col-xs-4" style="text-align:center">
+													<span class="glyphicon glyphicon-user info-icon"></span>
+												</div>
+											
+												<div class="col-md-8 col-xs-8">
+													<div class="info-list-item">
+														<span class="item-label">用户:</span>
+														<span class="user-name"></span>
+													</div>
+													<div class="info-list-item">
+														<span class="item-label">昵称:</span>
+														<span class="user-alias"></span>
+													</div>
+													<div class="info-list-item">
+														<span class="item-label">角色:</span>
+														<span class="user-role"></span>
+													</div>
+													<div class="info-list-item">
+														<span class="item-label">密码:</span>
+														<span class="user-passwd">******</span>
+														<span class="info-edit" data-toggle="tooltip" data-placement="top" data-original-title="修改密码">
+															<i class="glyphicon glyphicon-edit"></i>
+														</span>
+													</div>									
+													<div class="info-list-item">
+														<span class="item-label">邮箱:</span>
+														<span class="user-email"></span>
+													</div>
+												</div>
+											</div>
+											<div class="user-password">
+												<form class="form-horizontal" style="">
+													<div class="form-group form-group-sm">
+														<label class="col-md-3 col-xs-3 control-label">密码:</label>
+														<div class="col-md-8 col-xs-8">
+															<input class="form-control user-passwd" type="password">
+														</div>
+													</div>
+													<div class="form-group form-group-sm">
+														<label class="col-md-3 col-xs-3 control-label">再次输入:</label>
+														<div class="col-md-8 col-xs-8">
+															<input class="form-control user-repasswd" type="password">
+														</div>
+													</div>
+													<div class="form-group form-group-sm">	
+														<button class="btn btn-default btn-change-password" type="button">修改密码</button>
+														<button class="btn btn-default btn-return" type="button">返回</button>
+													</div>
+												</form>									
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 任务管理 -->
+				<div class="content-tab-panel" id="task_content_panel">
+					<div class="title-wrapper">
+						<div class="title_box">任务管理</div>
+					</div>
+					<div class="content-main-panel">
+						<div class="content-left-panel">
+							<div id="maps_list_panel">
+								<div class="content-title">
+									<span class="glyphicon glyphicon-globe"></span>
+									<span>地图列表</span>
+									<span class="glyphicon glyphicon-chevron-down maps-coll-icon" data-toggle="tooltip" data-placement="top" data-original-title="收起"></span>
+								</div>
+								<div class="list-main-panel">
+								</div>
+							</div>
+							<div id="layers_list_panel">
+								<div class="content-title">
+									<span class="glyphicon glyphicon-globe"></span>
+									<span>图层列表</span>
+								</div>
+								<div class="list-main-panel">
+
+								</div>
+							</div>
+						</div>
+						<div class="content-center-panel" id="map_div">
+
+						</div>
+						<div class="content-right-panel" id="feature_div">
+							<!-- 要素列表 -->
+							<div class="right-panel-tab active" id="features_list_div">
+								<div class="content-title">
+									<span class="glyphicon glyphicon-align-justify"></span>
+									<span>标绘列表</span>
+									<div class="btn-group btn-group-sm pull-right btn-group-checked" role="group">
+										<button type="button" class="btn btn-default btn-unchecked" data-toggle="tooltip" data-placement="top" title="" data-original-title="未审核" disabled="disabled">未审核</button>
+										<button type="button" class="btn btn-default btn-checked" data-toggle="tooltip" data-placement="top" title="" data-original-title="已审核">已审核</button>
+									</div>
+								</div>
+								<div class="list-main-panel">
+									<div class="overlay-list-div">
+									</div>
+									<div class="page-div">
+										<span class="current-page">1 / 1 页</span>
+										<ul class="pagination"> 
+											<li class="first-page">首页</li>
+											<li class="pre-page">上一页</li>
+											<li class="next-page">下一页</li>
+											<li class="last-page">末页</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<!-- 要素信息 -->
+							<div class="right-panel-tab" id="feature_info_div">
+								<div class="content-title">
+									<span class="glyphicon glyphicon-align-justify"></span>
+									<span>审核</span>
+									<span class="pull-right save-overlay title-oper" data-toggle="tooltip" data-placement="top" title="保存">保存</span>
+									<span class="pull-right remove-overlay title-oper" data-toggle="tooltip" data-placement="top" title="删除">删除</span>
+									<span class="pull-right return-overlay-list title-oper" data-toggle="tooltip" data-placement="top" title="返回列表">返回</span>
+								</div>
+								<div class="overlay-info-div">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Notify  -->
+	<div id="container" style="display:none">
+		<div id="default">
+			<a class="ui-notify-close ui-notify-cross" href="javascript:void(0)">x</a>
+			<span>#{title}</span>
+			<span>:</span>
+			<span>#{text}</span>
+		</div>
+	</div>
+	<!-- loading panel -->
+	<div class="screen-alert" id="alert_loading">
+		<span>Please wait ...</span>
+	</div>	
+</body>
