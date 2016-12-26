@@ -138,7 +138,7 @@ function register(){
 		return;
 	}
 	CoEditor.notify.loading();
-	authManager.createUser(name,name,password,null,"normal",register_callbacks);
+	authManager.createUser(name,name,password,null,"bh",register_callbacks);
 }
 
 // 初始化用户
