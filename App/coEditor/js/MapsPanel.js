@@ -379,6 +379,7 @@ CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
 			var name = $(this).parent().attr("name");
 			var mapManager = user.getMapManager();
 			CoEditor.notify.loading();
+			$("#layers_tab .list-type-div").empty();
 			mapManager.getMapObj(name,that.initMap_callback);
 			clicks = 0;  
 		}

@@ -762,7 +762,9 @@ CoEditor.UserTaskPanel.prototype.getFields_handler = function(fields){
 
 // 返回标绘列表
 CoEditor.UserTaskPanel.prototype.backToOverlayList = function(){
-
+	featureCur = null;
+	var selection = mapObj.getSelection();
+	selection.setFeatures([]);
 	this.refreshFeatures();
 }
 
@@ -802,6 +804,8 @@ CoEditor.UserTaskPanel.prototype.saveFeature = function(){
 
 CoEditor.UserTaskPanel.prototype.updateFeature_handler = function(result){
 	console.log(result);
+	var selection = mapObj.getSelection();
+	selection.setFeatures([]);
 	var that = CoEditor.userTaskPanel;
 	that.refreshFeatures();
 }
@@ -819,6 +823,8 @@ CoEditor.UserTaskPanel.prototype.removeFeature = function(){
 }
 
 CoEditor.UserTaskPanel.prototype.removeFeature_success_handler = function(result){
+	var selection = mapObj.getSelection();
+	selection.setFeatures([]);
 	console.log(result);
 	var that = CoEditor.userTaskPanel;
 	that.refreshFeatures();
