@@ -94,6 +94,13 @@ if(platform == "win32"){
 			'src/GeoBeans/Interaction/*.js',
 			'src/GeoBeans/Widget/*.js',
 			'src/GeoBeans/Map.js',
+			// manager
+			'src/GeoBeans/Manager/*.js',
+			'src/GeoBeans/Manager/*/*.js',
+			'src/GeoBeans/Layer/GroupLayer.js',
+			'src/GeoBeans/Layer/DBLayer.js',
+			'src/GeoBeans/Layer/FeatureDBLayer.js',
+			'src/GeoBeans/Layer/RasterDBLayer.js',
 	];			
 	var map5Dest = 'lib/';	
 	if(platform == "linux"){
