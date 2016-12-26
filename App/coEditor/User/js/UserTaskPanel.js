@@ -96,6 +96,22 @@ CoEditor.UserTaskPanel.prototype.registerPanelEvent = function(){
 		}
 		that.removeFeature();
 	});
+
+	// 关闭右侧面板
+	this._panel.find(".close-right-icon").click(function(){
+		that._panel.find(".content-right-panel").animate({
+			width : "0px"
+		},function(){
+			that._panel.find(".btn-group-checked").css("display","none");
+		});
+
+		var width = that._panel.find(".content-main-panel").width() - 260;
+		that._panel.find(".content-center-panel").animate({
+			width : width
+		},function(){
+			mapObj.getViewer().update();
+		});
+	});
 }
 
 // 初始化任务页面
@@ -114,6 +130,9 @@ CoEditor.UserTaskPanel.prototype.getMaps = function(){
 	}
 	var mapManager = user.getMapManager();
 	CoEditor.notify.loading();
+	this._panel.find("#maps_list_panel .list-main-panel").empty();
+	this._panel.find("#layers_list_panel .list-main-panel").empty();
+	this._panel.find(".overlay-list-div").empty();
 	mapManager.getMaps(this.getMaps_callback);
 }
 
@@ -254,16 +273,19 @@ CoEditor.UserTaskPanel.prototype.refreshLayersList = function(){
 			continue;
 		}
 		name = layer.getName();
-		html += "<div class='list-item'>" + name + "</div>";
+		html += "<div class='list-item'>" 
+				+  '<span class="layer-name">' + name + '</span>'
+				+ '<i class="glyphicon glyphicon-ok layer-visible"></i>'
+				+ "</div>";
 	}	
 
 	this._panel.find("#layers_list_panel .list-main-panel").html(html);
 
 	var that = this;
 	// 点击图层列表
-	this._panel.find("#layers_list_panel .list-item").click(function(){
+	this._panel.find("#layers_list_panel .list-item .layer-name").click(function(){
 		that._panel.find("#layers_list_panel .list-item").removeClass("active");
-		$(this).addClass("active");
+		$(this).parents(".list-item").addClass("active");
 		var name = $(this).html();
 
 		var layer = mapObj.getLayer(name);
@@ -272,6 +294,24 @@ CoEditor.UserTaskPanel.prototype.refreshLayersList = function(){
 		} 
 		layerCur = layer;
 		that.refreshFeatures();
+	});
+
+	// 图层显示
+	this._panel.find("#layers_list_panel .list-item .layer-visible,"
+		+"#layers_list_panel .list-item .layer-invisible").click(function(){
+		var name = $(this).prev().html();
+		var layer = mapObj.getLayer(name);
+		if(layer == null){
+			return;
+		} 
+		if($(this).hasClass("layer-invisible")){
+			$(this).removeClass("layer-invisible")
+			layer.setVisible(true);
+		}else{
+			$(this).addClass("layer-invisible");
+			layer.setVisible(false);
+		}
+		mapObj.refresh();
 	});
 }
 

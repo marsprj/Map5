@@ -280,7 +280,25 @@ body {
 .list-item:hover,.list-item.active{
     background-color: #f9f9f9;
 }
+.layer-name{
+    width: calc(100% - 20px);
+    display: inline-block;
+}
+.layer-visible{
+    position: relative;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    float: right;
+    margin: 0px !important;
+}
+.layer-invisible{
+    color: #ccc;
+}
 
+.layer-visible:hover{
+    color :#8697b5;
+}
 .content-title .glyphicon{
     margin: 0 6px;
 }
@@ -315,12 +333,15 @@ body {
 .right-panel-tab.active{
     display: block;
 }
-.btn-group-checked{
-    display: none;
-}
+
 
 
 /*---------------right-panel--------------*/
+.btn-group-checked{
+    display: none;
+    margin-top: -4px;
+}
+
 .overlay-list-div{
     height: calc(100% - 48px);
     overflow-y: auto;;
@@ -330,7 +351,17 @@ body {
     background-repeat: no-repeat;
     background-position: center;
 }
-
+.close-right-icon{
+    position: relative;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    float: right;
+    margin: 0px !important;
+}
+.close-right-icon:hover{
+    color: #8697b5;
+}
 .page-div{
     height: 48px;
     text-align: center;

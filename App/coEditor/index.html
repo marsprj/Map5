@@ -16,6 +16,7 @@
 <script type="text/javascript" src="js/Class.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
 <script type="text/javascript" src="js/global.js"></script>
+<script type="text/javascript" src="js/Cookie.js"></script>
 <!-- <script type="text/javascript" src="js/initMap.js"></script> -->
 <script type="text/javascript" src="js/pointType.js"></script>
 <script type="text/javascript" src="js/lineType.js"></script>
@@ -30,6 +31,7 @@
 <script type="text/javascript" src="js/CreateMapDialog.js"></script>
 <script type="text/javascript" src="js/StyleControl.js"></script>
 <script type="text/javascript" src="js/Notify.js"></script>
+
 
 
 <script type="text/javascript" src="../../src/GeoBeans/Manager/Auth/AuthManager.js"></script>
@@ -104,6 +106,7 @@
 	var authServer = "/ows/admin/mgr";
 	var authManager = new GeoBeans.AuthManager(authServer);
 	function init(){
+		CoEditor.cookie = new CoEditor.Cookie();
 		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
 		CoEditor.mapPanel = new CoEditor.MapPanel("main_panel");
 		CoEditor.mapsPanel = new CoEditor.MapsPanel("maps_panel");

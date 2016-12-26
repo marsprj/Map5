@@ -1,4 +1,6 @@
 function addAccountEvent(){
+	// 查看cookie
+	initUserByCookie();
 
 	$("#user_login_panel input[name='username']").focus();
 
@@ -48,6 +50,18 @@ function addAccountEvent(){
 			register();
 		}
 	});
+}
+
+// 查看cookie
+function initUserByCookie(){
+	var username = CoEditor.cookie.getCookie("username");
+	if(username != null){
+		initUser(username);
+	}else{
+		$(".tab-panel").removeClass("active");
+		$("#user_panel").addClass("active");
+		showLoginPanel();
+	}
 }
 
 // 显示注册页面
@@ -128,10 +142,10 @@ function register(){
 
 // 初始化用户
 function initUser(username){
-	if(username == "admin"){
-		window.location.href = "./admin.html";
-		return;
-	}
+	// if(username == "admin"){
+	// 	window.location.href = "./admin.html";
+	// 	return;
+	// }
 	userName = username;
 	user = new GeoBeans.User(username);
 	$("#user_title_name").html(userName);
@@ -140,22 +154,33 @@ function initUser(username){
 	$(".content-panel").removeClass("active");
 	$("#maps_panel").addClass("active");
 
-	// loadMap();
- // 	addDrawInteraction();
- // 	loadLayersList();
- // 	addMapEvent();
+	CoEditor.cookie.setCookie("username",username,"/Map5/App/coEditor/");
+
  	CoEditor.mapsPanel.getMaps();
 }
 
 
 // 退出
 function logout(){
-	userName = null;
-	$(".tab-panel").removeClass("active");
-	$("#user_panel").addClass("active");
-	showLoginPanel();
-	$("#user_panel input[type='text'],#user_panel input[type='password']").val("");
-	$("#user_login_panel input[name='username']").focus();
+	if(!confirm("确定退出当前账户么?")){
+		return;
+	}
+	authManager.logout(user.name,logout_callback);
+
+}
+
+function logout_callback(result){
+	CoEditor.notify.showInfo("注销",result);
+	if(result == "success"){
+		user = null;
+		$(".tab-panel").removeClass("active");
+		$("#user_panel").addClass("active");
+		showLoginPanel();
+		$("#user_panel input[type='text'],#user_panel input[type='password']").val("");
+		$("#user_login_panel input[name='username']").focus();
+		CoEditor.cookie.delCookie("username","/Map5/App/coEditor/");
+	}
+		
 }
 
 function register_callbacks(result){

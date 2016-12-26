@@ -1,4 +1,6 @@
 function addAccountEvent(){
+	// 查看cookie
+	initUserByCookie();
 
 	$("#user_login_panel input[name='username']").focus();
 
@@ -49,6 +51,19 @@ function addAccountEvent(){
 		}
 	});
 }
+
+// 查看cookie
+function initUserByCookie(){
+	var username = CoEditor.cookie.getCookie("username");
+	if(username != null){
+		initUser(username);
+	}else{
+		$(".tab-panel").removeClass("active");
+		$("#user_panel").addClass("active");
+		showLoginPanel();
+	}
+}
+
 
 // 显示注册页面
 function showRegisterPanel(){
@@ -132,9 +147,14 @@ function initUser(username){
 		window.location.href = "./admin.html";
 		return;
 	}
+
 	user = new GeoBeans.User(username);
 	$(".tab-panel").removeClass("active");
 	$("#info_panel").addClass("active");
+	$("#user_title_name").html(username);
+
+
+	CoEditor.cookie.setCookie("username",username,"/Map5/App/coEditor/");
 
 	CoEditor.userCatalogPanel.setUserTabShow();
 
@@ -143,12 +163,24 @@ function initUser(username){
 
 // 退出
 function logout(){
-	userName = null;
-	$(".tab-panel").removeClass("active");
-	$("#user_panel").addClass("active");
-	showLoginPanel();
-	$("#user_panel input[type='text'],#user_panel input[type='password']").val("");
-	$("#user_login_panel input[name='username']").focus();
+	if(!confirm("确定退出当前账户么?")){
+		return;
+	}
+	authManager.logout(user.name,logout_callback);
+}
+
+function logout_callback(result){
+	CoEditor.notify.showInfo("注销",result);
+	if(result == "success"){
+		user = null;
+		$(".tab-panel").removeClass("active");
+		$("#user_panel").addClass("active");
+		showLoginPanel();
+		$("#user_panel input[type='text'],#user_panel input[type='password']").val("");
+		$("#user_login_panel input[name='username']").focus();
+
+		CoEditor.cookie.delCookie("username","/Map5/App/coEditor/");		
+	}
 }
 
 function register_callbacks(result){
