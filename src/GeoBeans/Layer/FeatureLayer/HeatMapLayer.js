@@ -56,7 +56,10 @@ GeoBeans.Layer.HeatMapLayer.prototype.refresh = function(){
  * @private
  */
 GeoBeans.Layer.HeatMapLayer.prototype.drawHeatMap = function(){	
-
+	if(!this.isVisible()){
+		this.clear();
+		return;
+	}
 	if(!isValid(this.features)){
 		return;
 	}
@@ -76,7 +79,7 @@ GeoBeans.Layer.HeatMapLayer.prototype.drawHeatMap = function(){
 	var handler = {
 		target: this,
 		execute : function(features){
-			console.log("count:" + features.length);
+			// console.log("count:" + features.length);
 			this.target.setData(features);
 
 			if(this.target.showGeometry){
@@ -167,7 +170,7 @@ GeoBeans.Layer.HeatMapLayer.prototype.setData = function(features){
 
 	var point_s = null,point = null;
 	var f = null, geometry = null;
-	var max = null,min = null,points = [];
+	var max = null,min = null,points = [],value = null;
 	var that = this;
 
 
