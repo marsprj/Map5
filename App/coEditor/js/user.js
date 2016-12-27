@@ -50,6 +50,13 @@ function addAccountEvent(){
 			register();
 		}
 	});
+
+	// 登陆
+	$("#user_login").click(function(){
+		$(".tab-panel").removeClass("active");
+		$("#user_panel").addClass("active");
+		showLoginPanel();
+	});
 }
 
 // 查看cookie
@@ -58,9 +65,10 @@ function initUserByCookie(){
 	if(username != null){
 		initUser(username);
 	}else{
-		$(".tab-panel").removeClass("active");
-		$("#user_panel").addClass("active");
-		showLoginPanel();
+		// $(".tab-panel").removeClass("active");
+		// $("#user_panel").addClass("active");
+		// showLoginPanel();
+		CoEditor.allMapsPanel.show();
 	}
 }
 
@@ -148,6 +156,8 @@ function initUser(username){
 	// }
 	userName = username;
 	user = new GeoBeans.User(username);
+	$("#user_title").show();
+	$("#user_login").hide();
 	$("#user_title_name").html(userName);
 	$(".tab-panel").removeClass("active");
 	$("#content_panel").addClass("active");

@@ -258,6 +258,31 @@ CoEditor.MapPanel.prototype.loadAllFeatures = function(layer){
 			}
 			var s = layer.getSource();
 			s.setFeatures(features);
+
+			// 初始化热力图
+			var geometryType = layer.getGeometryType();
+			if(geometryType == GeoBeans.Geometry.Type.POINT){
+				var heatMapName = layer.getName() + "-heatmap";
+				if(mapObj.getLayer(heatMapName) == null){
+					var heatMapLayer = new GeoBeans.Layer.HeatMapLayer({
+						name : heatMapName,
+						radius : 30,
+						showGeometry :false,
+						visible: false,
+						source : new GeoBeans.Source.Feature({
+							geometryName : "shape"
+						})
+					});
+					mapObj.addLayer(heatMapLayer);
+					var source = heatMapLayer.getSource();
+					source.setFeatures(features);
+				}else{
+					var heatMapLayer = mapObj.getLayer(heatMapName);
+					var source = heatMapLayer.getSource();
+					source.setFeatures(features);
+				}
+				
+			}
 			mapObj.refresh();
 		}
 	}
@@ -366,13 +391,24 @@ CoEditor.MapPanel.prototype.refreshLayersList = function(){
 						+ '">'
 		 	+	'	<div class="col-md-4 layer-style" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">'
 		 	+	'		<img src="' +  icon +'">'
-		 	+	'	</div>'
-		 	+	'	<div class="col-md-6 layer-name">' + name + "</div>"
-		 	+	'	<div class="col-md-2 layer-visible">'
+		 	+	'	</div>';
+		if(geometryType == GeoBeans.Geometry.Type.POINT){
+		 	html+=	'	<div class="col-md-4 layer-name">' + name + "</div>"
+		 		+   '	<div class="col-md-2 layer-heatmap" data-toggle="tooltip" data-placement="top" title="热力图">'
+		 		+	'		<span class="glyphicon glyphicon-fire"></span>'
+		 		+	'	</div>'
+		}else{
+			html+=	'	<div class="col-md-6 layer-name">' + name + "</div>";
+		}
+
+		html +=	'	<div class="col-md-2 layer-visible" data-toggle="tooltip" data-placement="top" title="图层显示">'
 		 	+	'	</div>'
 		 	+	'</div>';
 	}
 	this._panel.find("#layers_tab .list-type-div").html(html);
+	this._panel.find('[data-toggle="tooltip"]').tooltip({
+        container: "body"
+    });
 
 	var that = this;
 	// 进入图层
@@ -401,6 +437,26 @@ CoEditor.MapPanel.prototype.refreshLayersList = function(){
 	this._panel.find("#layers_tab .layer-style").each(function(){
 		var layerDiv = $(this).parents(".list-type");
 		CoEditor.styleControl.set(layerDiv);
+	});
+
+	// 热力图设置
+	this._panel.find(".layer-heatmap").click(function(){
+		var listTypeDiv = $(this).parents(".list-type");
+		var name = listTypeDiv.attr("lname");
+		var heatMapName = name + "-heatmap";
+		var heatMapLayer = mapObj.getLayer(heatMapName);
+		if(heatMapLayer != null){
+			if($(this).hasClass("heatmap-visible")){
+				heatMapLayer.setVisible(false);
+				$(this).removeClass("heatmap-visible");
+			}else{
+				var layer = mapObj.getLayer(name);
+				that.loadAllFeatures(layer);
+				heatMapLayer.setVisible(true);
+				$(this).addClass("heatmap-visible");
+			}
+			mapObj.refresh();
+		}
 	});
 };
 
@@ -440,6 +496,14 @@ CoEditor.MapPanel.prototype.selectLayer = function(layerDiv){
 	}
 	$(layerDiv).find(".layer-invisible,.layer-visible").removeClass("layer-invisible")
 		.addClass("layer-visible");
+
+	// 热力图不显示
+	$(layerDiv).find(".layer-heatmap").removeClass("heatmap-visible");
+	var heatMapName = layerName + "-heatmap";
+	var heatMapLayer = mapObj.getLayer(heatMapName);
+	if(heatMapLayer != null){
+		heatMapLayer.setVisible(false);
+	}
 	layer.setFeatures([]);
 	layer.setVisible(true);
 	mapObj.refresh();

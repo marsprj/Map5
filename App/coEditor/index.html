@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="js/3rd/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../../lib/heatmap.min.js"></script>
 
 <script type="text/javascript" src="js/3rd/colpick.js"></script>
 <script type="text/javascript" src="js/3rd/bootstrap-slider.js"></script>
@@ -22,6 +23,7 @@
 <script type="text/javascript" src="js/layers.js"></script>
 <script type="text/javascript" src="js/MapsPanel.js"></script>
 <script type="text/javascript" src="js/MapPanel.js"></script>
+<script type="text/javascript" src="js/AllMapsPanel.js"></script>
 <script type="text/javascript" src="js/CreateDataSetDialog.js"></script>
 <script type="text/javascript" src="js/CreateMapDialog.js"></script>
 <script type="text/javascript" src="js/StyleControl.js"></script>
@@ -91,6 +93,7 @@
 		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
 		CoEditor.mapPanel = new CoEditor.MapPanel("main_panel");
 		CoEditor.mapsPanel = new CoEditor.MapsPanel("maps_panel");
+		CoEditor.allMapsPanel = new CoEditor.AllMapsPanel("all_maps_panel");
 		CoEditor.create_dataset_dlg = new CoEditor.CreateDataSetDialog("create_dataset_dialog");
 		CoEditor.create_map_dialog = new CoEditor.CreateMapDialog("create_map_dialog");
 		CoEditor.styleControl = new CoEditor.StyleControl();
@@ -113,8 +116,11 @@
 			<div id="logo_panel"></div>
 			<div id="title_panel" class="title_font">标绘系统</div>
 			<div id="user_title">
-				用户：<span id="user_title_name"></span>
+				用户：<a href="./User" target="_blank" id="user_title_name"></span>
 				<a href="javascript:void(0)" id="user_logout">退出</a>
+			</div>
+			<div id="login_title">
+				<a href="javascript:void(0)" id="user_login">登陆</a>
 			</div>
 		</div>
 		<!-- 标绘面板 -->
@@ -126,12 +132,6 @@
 						标绘列表
 					</div>
 					<div class="search-div row">
-						<!-- <div class="input-group">
-						  	<input type="text" class="form-control search-input">
-						  	<span class="input-group-btn">
-						  		<button class="btn btn-default search-btn" type="button">搜索</button>
-							</span>
-						</div> -->
 						<div class="col-md-10">
 							<div class="input-group">
 							  	<input type="text" class="form-control search-input">
@@ -144,8 +144,6 @@
 							<button class="btn btn-default list-btn" type="button"  data-toggle="tooltip" data-placement="top" title="返回列表">&nbsp;</button>
 						</div>
 					</div>
-					<!-- <div class="overlay-list-div">
-					</div> -->
 				</div>
 				<!-- 图层列表 -->
 				<div class="left-tab active" id="layers_tab">
@@ -266,9 +264,53 @@
 				</div>
 			</div>
 		</div>
+		<!-- 未登陆状态下的地图列表面板 -->
+		<div id="all_maps_panel" class="content-panel">
+			<div id="maps_panel_title">
+				<div class="pull-right map-page-div">
+					<div class="maps-count">
+						<p class="text-primary">地图总数：<span>0</span></p>
+					</div>
+					<div class="maps-page">
+						<ul class="pagination" style="margin:1px 0px">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="maps_main_panel">
+				<div id="maps_left_panel">
+					<ul id="maps_list_ul">
+					</ul>
+				</div>
+				<div id="maps_right_panel">
+					<div class="page-heading">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						<span style="font-size:14px">基本信息</span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">名称：</span>
+						<span class="map-info-name"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">空间参考：</span>
+						<span class="map-info-srid"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">范围：</span>
+						<span class="map-info-extent"></span>
+					</div>
+					<div class="page-heading">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						<span style="font-size:14px">图层</span>
+					</div>
+					<div class="map-info-layers">
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- 用户面板 -->
-	<div class="tab-panel active" id="user_panel">
+	<div class="tab-panel" id="user_panel">
 		<div class="user-panel-title">
 		</div>
 		<div class="container">

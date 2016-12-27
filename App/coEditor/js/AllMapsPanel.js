@@ -1,5 +1,4 @@
-CoEditor.MapsPanel = CoEditor.Class({
-
+CoEditor.AllMapsPanel = CoEditor.Class({
 	_panel : null,
 
 	// 每页显示的个数
@@ -14,33 +13,37 @@ CoEditor.MapsPanel = CoEditor.Class({
 	// 地图列表
 	_maps : null,
 
+	// 模拟用户
+	_user : null,
+
 
 	initialize : function(id){
+		this._user = new GeoBeans.User("radi");
 		this._panel = $("#"+ id);
 		this.registerPanelEvent();
 	}
 });
 
+
 // 页面事件
-CoEditor.MapsPanel.prototype.registerPanelEvent = function(){
+CoEditor.AllMapsPanel.prototype.registerPanelEvent = function(){
 	var that = this;
-	this._panel.find(".btn-new-map").click(function(){
-		that.createMap();
-	});
 };
 
+CoEditor.AllMapsPanel.prototype.show = function(){
+	$(".tab-panel").removeClass("active");
+	$("#content_panel").addClass("active");
+	$(".content-panel").removeClass("active");
+	this._panel.addClass("active");
+	$("#user_title").hide();
+	$("#user_login").show();
+	this.getMaps();
+}
 
-// 创建地图
-CoEditor.MapsPanel.prototype.createMap = function(){
-	CoEditor.create_map_dialog.show();
-};
 
 // 获取地图列表
-CoEditor.MapsPanel.prototype.getMaps = function(){
-	if(user == null){
-		return;
-	}
-	var mapManager = user.getMapManager();
+CoEditor.AllMapsPanel.prototype.getMaps = function(){
+	var mapManager = this._user.getMapManager();
 
 	this._panel.find("#maps_list_ul").empty();
 	this._panel.find("#maps_right_panel").removeClass("active");
@@ -49,18 +52,16 @@ CoEditor.MapsPanel.prototype.getMaps = function(){
 	mapManager.getMaps(this.getMaps_callback);
 }
 
-
-CoEditor.MapsPanel.prototype.getMaps_callback = function(maps){
+CoEditor.AllMapsPanel.prototype.getMaps_callback = function(maps){
 	if(!$.isArray(maps)){
 		CoEditor.notify.hideLoading();
 		return;
 	}
 	CoEditor.notify.showInfo("获取地图列表",maps.length.toString());
-	CoEditor.mapsPanel.setMaps(maps);
+	CoEditor.allMapsPanel.setMaps(maps);
 }
 
-
-CoEditor.MapsPanel.prototype.setMaps = function(maps){
+CoEditor.AllMapsPanel.prototype.setMaps = function(maps){
 	if(maps == null){
 		return;
 	}
@@ -114,7 +115,7 @@ CoEditor.MapsPanel.prototype.setMaps = function(maps){
 }
 
 // 初始化页码
-CoEditor.MapsPanel.prototype.initPageControl = function(currentPage,pageCount){
+CoEditor.AllMapsPanel.prototype.initPageControl = function(currentPage,pageCount){
 	if(currentPage <=0 || currentPage > pageCount){
 		return;
 	}
@@ -209,7 +210,7 @@ CoEditor.MapsPanel.prototype.initPageControl = function(currentPage,pageCount){
 }
 
 // 注册翻页事件
-CoEditor.MapsPanel.prototype.registerPageEvent = function(){
+CoEditor.AllMapsPanel.prototype.registerPageEvent = function(){
 	var that = this;
 	this._panel.find(".pagination li a").click(function(){
 		var active = that._panel.find(".pagination li.active a").html();
@@ -229,7 +230,7 @@ CoEditor.MapsPanel.prototype.registerPageEvent = function(){
 }
 
 // 展示地图列表
-CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
+CoEditor.AllMapsPanel.prototype.showMaps = function(startIndex,endIndex){
 	if(this._maps == null || startIndex == null || endIndex == null){
 		return;
 	}
@@ -251,6 +252,7 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 			+ 	"	<div class='caption text-center'>"
 			+ 	"		<h6>" + name + "</h6>"
 			+ 	"	</div>"
+			+	"	<div class='join-map-div'>加入</div>"
 			+ 	"</li>";	
 	}
 	this._panel.find("#maps_list_ul").html(html);
@@ -259,16 +261,22 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 	var firstMap = this._panel.find("#maps_list_ul").find("li").first();
 	firstMap.find("a").addClass("selected");
 	var name = firstMap.attr("name");
-	var mapManager = user.getMapManager();
+
+	var mapManager = this._user.getMapManager();
 	mapManager.getMapObj(name,this.showMapInfo);
+
+	// 点击加入
+	this._panel.find(".join-map-div").click(function(){
+		alert("加入");
+	});
 
 	// 列表点击事件
 	this.registerMapListClickEvent();
 }
 
 // 展示地图的具体信息
-CoEditor.MapsPanel.prototype.showMapInfo = function(map){
-	var that = CoEditor.mapsPanel;
+CoEditor.AllMapsPanel.prototype.showMapInfo = function(map){
+	var that = CoEditor.allMapsPanel;
 	that._panel.find("#maps_right_panel").addClass("active");
 	if(map == null){
 		return;
@@ -357,7 +365,7 @@ CoEditor.MapsPanel.prototype.showMapInfo = function(map){
 }
 
 
-CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
+CoEditor.AllMapsPanel.prototype.registerMapListClickEvent = function(){
 	var that = this;
 	var DELAY = 300, clicks = 0, timer = null;
 	this._panel.find("#maps_list_ul").find(".map-thumb").click(function(){
@@ -369,7 +377,7 @@ CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
 		        that._panel.find("#maps_list_ul").find(".map-thumb").removeClass("selected");
 				$(node).addClass("selected");
 				var name = $(node).parent().attr("name");
-				var mapManager = user.getMapManager();
+				var mapManager = that._user.getMapManager();
 				mapManager.getMapObj(name,that.showMapInfo);
 
 		        clicks = 0;             //after action performed, reset counter
@@ -378,10 +386,10 @@ CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
 			clearTimeout(timer);    //prevent single-click action
 			console.log("Double Click");  //perform double-click action
 			var name = $(this).parent().attr("name");
-			var mapManager = user.getMapManager();
-			CoEditor.notify.loading();
+			var mapManager = that._user.getMapManager();
+			// CoEditor.notify.loading();
 			that._panel.find("#layers_tab .list-type-div").empty();
-			mapManager.getMapObj(name,that.initMap_callback);
+			// mapManager.getMapObj(name,that.initMap_callback);
 			clicks = 0;  
 		}
 	}).dblclick(function(e){
@@ -390,7 +398,7 @@ CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
 }
 
 
-CoEditor.MapsPanel.prototype.initMap_callback = function(map){
+CoEditor.AllMapsPanel.prototype.initMap_callback = function(map){
 
 	if(map == null){
 		CoEditor.notify.showInfo("刷新地图","失败");

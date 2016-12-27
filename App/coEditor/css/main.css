@@ -50,7 +50,7 @@ ul{
     text-shadow: 2px 0 0 #000;
 }
 
-#user_title{
+#user_title,#user_login{
 	float: right;
     height: 20px;
     line-height: 20px;
@@ -221,18 +221,19 @@ ul{
 	height: 100%;
     padding-top: 4px;
 }
-.list-type .col-md-4{
+.list-type .layer-style{
 	border-right: 1px solid #fff;
 
 }
 
-.list-type .col-md-4 img{
+.list-type .layer-style img{
 	background-position: center;
 	margin-left: 14px;
 }
 
 
-.list-type .layer-invisible,.list-type .layer-visible{
+.list-type .layer-invisible,.list-type .layer-visible,
+.list-type .layer-heatmap{
 	background-position: center;
 	background-repeat: no-repeat;
     cursor: pointer;
@@ -244,7 +245,17 @@ ul{
 .list-type .layer-visible{
 	background-image: url(../images/ok.png);
 }
+.list-type .layer-heatmap span{
+    height: 40px;
+    line-height: 30px;
+    font-size: 16px;
+    text-align: center;
+    color: #dfdfe2;
+}
 
+.list-type .layer-heatmap.heatmap-visible span{
+    color: #000;
+}
 .overlay-info-div{
 	height: calc(100% - 50px);
 	width: 100%;
@@ -569,6 +580,20 @@ ul{
 .map-thumb.enter,.map-thumb:hover {
     border: 1px solid #428bca
 }
+
+.join-map-div{
+    width: 60px;
+    height: 30px;
+    background-color: #9dc2e2;
+    margin-top: -64px;
+    margin-left: 140px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    cursor: pointer;  
+    color: #fff;
+}
+
 .page-heading {
     margin-bottom: 20px;
     border-bottom: 1px solid #428bca;
