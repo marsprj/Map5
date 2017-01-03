@@ -38,7 +38,14 @@ GeoBeans.Color.prototype.set = function(r,g,b,a){
  * @param {float} a    alpha
  */
 GeoBeans.Color. prototype.setHex = function(hex,a){
-		if(hex != null){
+	if(hex != null){
+		if(hex.length == 4){
+			var hexNew = "#";
+			for(var i = 1; i < 4;++i){
+				hexNew += hex.slice(i,i+1).concat(hex.slice(i,i+1));
+			}
+			hex = hexNew;
+		}
 	    hex = hex.replace('#','');
 	    var r = parseInt(hex.substring(0,2), 16);
 	    var g = parseInt(hex.substring(2,4), 16);
