@@ -20,6 +20,14 @@ GeoBeans.Selection = GeoBeans.Class({
 	},
 	
 	destroy : function(){
+		this._renderer.clearRect(0,0,this._canvas.width,this._canvas.height);
+
+		this._canvas = null;
+		this._renderer = null;
+		this._symbolizers = null;
+		this._symbolizer = null;
+		this._onchange = null;
+		this._features = null;
 	}
 });
 

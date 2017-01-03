@@ -265,6 +265,8 @@ GeoBeans.Map = GeoBeans.Class({
 		this.stopAnimate();
 		this._container = null;
 		this.viewer = null;
+		this._selection = null;
+		this._srs = null;
 	},
 
 	// 关闭地图

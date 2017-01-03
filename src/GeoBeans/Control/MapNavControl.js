@@ -56,43 +56,37 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 
 		var that = this;
 		$(mapContainer).find(".map-nav-pan-N").click(function(){
-			var center = that.map.center;
-			var t_p = that.map.getMapViewer().toMapPoint(that.map.getWidth()/2,0);
+			var viewer = that.map.getViewer();
+			var center = viewer.getCenter();
+			var t_p = viewer.toMapPoint(that.map.getWidth()/2,0);
 			that.map.saveSnap();
 			that.map.putSnap(0,-that.map.getHeight()/2);
-			that.map.offset(0,center.y - t_p.y);
-			that.map.draw();
+			viewer.offset(0,center.y - t_p.y);
 		});
 		$(mapContainer).find(".map-nav-pan-S").click(function(){
-			// that.map.clear();
-			var center = that.map.center;
-			var t_p = that.map.getMapViewer().toMapPoint(that.map.getWidth()/2,0);
+			var viewer = that.map.getViewer();
+			var center = viewer.getCenter();
+			var t_p = viewer.toMapPoint(that.map.getWidth()/2,0);
 			that.map.saveSnap();
-			that.map.clear();
 			that.map.putSnap(0,that.map.getHeight()/2);
-			that.map.offset(0,t_p.y - center.y);
-			that.map.draw();
+			viewer.offset(0,t_p.y - center.y);
 		});
 		$(mapContainer).find(".map-nav-pan-W").click(function(){
-			var center = that.map.center;
-			var r_p = that.map.getMapViewer().toMapPoint(that.map.getWidth(), that.map.getHeight()/2);
+			var viewer = that.map.getViewer();
+			var center = viewer.getCenter();
+			var t_p = viewer.toMapPoint(that.map.getWidth(), that.map.getHeight()/2);
 			that.map.saveSnap();
-			that.map.clear();
 			that.map.putSnap(-that.map.getWidth()/2, 0);
-			that.map.offset(r_p.x - center.x,0);
-			that.map.draw();
+			viewer.offset(t_p.x - center.x,0);
 		});
 
 		$(mapContainer).find(".map-nav-pan-E").click(function(){
-			// that.map.clear();
-			var center = that.map.center;
-			var r_p = that.map.getMapViewer().toMapPoint(that.map.getWidth(), that.map.getHeight()/2);
+			var viewer = that.map.getViewer();
+			var center = viewer.getCenter();
+			var t_p = viewer.toMapPoint(that.map.getWidth(), that.map.getHeight()/2);
 			that.map.saveSnap();
-			that.map.clear();
-			that.map.putSnap(that.map.getWidth()/2,0);
-			that.map.offset(center.x - r_p.x,0);
-			// that.map.offset(-10, 0);
-			that.map.draw();
+			that.map.putSnap(that.map.getWidth()/2, 0);
+			viewer.offset(center.x - t_p.x,0);
 		});	
 
 		$(mapContainer).find(".map-nav-zoom-in").click(function(){
@@ -137,12 +131,9 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			var onMouseMove = function(evt){
 				evt.preventDefault();
 				if(sliderDragging){
-					console.log("brefore Y :" + iY);
-					console.log("current Y :" + evt.clientY);
 
 					var offsetX = evt.clientX - iX;
 					var offsetY = evt.clientY - iY;
-					console.log("offsetY Y :" + offsetY);			
 					var top = $(".map-nav-zoom-slider-bar").css("top");
 					var topN = parseFloat(top.slice(0,top.lastIndexOf("px"))); 
 
@@ -152,7 +143,6 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 					iX = evt.clientX;
 					iY = evt.clientY;
 				
-					console.log("topMove:" + topMove);	
 					var sliderHeight = $(".map-nav-zoom-slider").height();
 					var bottomHeight = sliderHeight - topMove  + 10;
 
@@ -171,8 +161,7 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 						$(".map-nav-zoom-slider-bottom").css("top",maxZoomPosition + "px");
 						$(".map-nav-zoom-slider-bottom").css("height",maxZoomBottomHeight + "px");
 					}else if(topMove > minZoomPosition){
-						console.log('topMove > minZoomPosition' + topMove);
-						var minZoomBottomHeight = section * (that.map.baseLayer.MIN_ZOOM_LEVEL - 1) + 10;
+						var minZoomBottomHeight = section * (minZoom - 1) + 10;
 						$(".map-nav-zoom-slider-bar").css("top",minZoomPosition + "px");	
 						$(".map-nav-zoom-slider-bottom").css("top",minZoomPosition + "px");
 						$(".map-nav-zoom-slider-bottom").css("height",minZoomBottomHeight + "px");
@@ -250,7 +239,8 @@ GeoBeans.Control.MapNavControl = GeoBeans.Class(GeoBeans.Control, {
 			}
 		});	
 		$(".map-nav-zoom-label-country").click(function(){
-			if(4 > that.map.getMinLevel() && 4 < that.map.getMaxLevel()){
+			var viewer = that.map.getViewer();
+			if(4 > viewer.getMinZoom() && 4 < viewer.getMaxZoom()){
 				that.map.clear();	
 				that.map.zoomTo(4);	
 			}
