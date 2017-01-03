@@ -63,10 +63,6 @@ GeoBeans.Control.Controls = GeoBeans.Class({
 		scrollControl.enable(true);
 		this.add(scrollControl);
 
-		var tracker = new GeoBeans.Control.TrackControl();
-		this.map.tracker = tracker;
-		this.add(tracker);
-
 		var zoomControl = new GeoBeans.Control.ZoomControl();
 		this.add(zoomControl);
 
