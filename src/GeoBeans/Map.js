@@ -22,7 +22,7 @@
  *    			}
  *    			#mapDiv{
  *    				height:100%;
- *    				width:
+ *    				width: 100%;
  *    				position:absolute;
  *    			}
  *    		</style>
@@ -53,7 +53,7 @@
  *				}),
  *				new GeoBeans.Layer.FeatureLayer({
  *					name : "country",
- *					geometryType : GeoBeans.Geometry.Type.POINT,
+ *					geometryType : GeoBeans.Geometry.Type.POLYGON,
  *					source : new GeoBeans.Source.Feature.GeoJSON({
  * 						url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
  * 						geometryName : "geometry",
@@ -109,8 +109,6 @@ GeoBeans.Map = GeoBeans.Class({
 	minScale : null,	
 	maxScale : null,
 	
-	// width : null,	
-	// height : null,
 
 	/**
 	 * 选择集
@@ -118,17 +116,9 @@ GeoBeans.Map = GeoBeans.Class({
 	 **/
 	_selection : null,
 	
-	/**
-	 * level有默认值null
-	 **/
-	level  : null,	
-	resolution : null,
 	
 	layers : [],	
 	baseLayer : null,
-	overlayLayer : null,
-	hitRippleLayers : null,		// rippleLayer hit layers
-	
 	
 	renderer : null,
 	
@@ -136,7 +126,6 @@ GeoBeans.Map = GeoBeans.Class({
 	
 	
 	snap : null,
-	baseLayerSnap : null,
 
 	widgets : null,
 
@@ -297,7 +286,6 @@ GeoBeans.Map = GeoBeans.Class({
 	 	}
 	 	if(this.baseLayer.name == baseLayerName){
 	 		this.baseLayer = null;
-	 		this.level = null;
 	 	}
 	},
 	
@@ -597,8 +585,6 @@ GeoBeans.Map.prototype.createMapContainer = function(target){
 	this._container = $("#" + this.id)[0];
 
 
-	// this.width = $("#" + this.id).width();
-	// this.height = $("#" + this.id).height();
 	// canvas
 	var canvasID = this.id + "_canvas";
 	var mapCanvasHtml = "<canvas id='" + canvasID + "' class='mapCanvas' height='" 
@@ -660,9 +646,6 @@ GeoBeans.Map.prototype.initInteractions = function(){
 GeoBeans.Map.prototype.initLayers = function(layers){
 	this.layers = [];
 	this.addLayers(layers);
-
-	// this.overlayLayer = new GeoBeans.Layer.OverlayLayer("overlay");
-	// this.overlayLayer.setMap(this);
 }
 
 /**
@@ -826,9 +809,6 @@ GeoBeans.Map.prototype.registerViewerEvent = function(){
 		var that = this;
 		//注册Viewer变化事件，Viewer发生变化时候，需要刷新地图。
 		this.viewer.on(GeoBeans.Event.CHANGE, function(){
-			// that.width = that.getWidth();
-			// that.height = that.getHeight();
-
 			that._updateCanvasSize();
 			that.refresh();
 		});
