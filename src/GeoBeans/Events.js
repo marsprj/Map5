@@ -111,12 +111,19 @@ GeoBeans.Event.WhellEvent = {
 GeoBeans.Events = GeoBeans.Class({
 	
 	events : null,
+
+	map : null,
 	
-	initialize : function(){
+	initialize : function(map){
 		this.events = [];
+		this.map = map;
 	},
 	
-	destory : function(){
+	destroy : function(){
+		for(var i = 0; i < this.events.length;++i){
+			var event = this.events[i].event;
+			this.map.un(event);
+		}
 		this.events = null;
 	},
 

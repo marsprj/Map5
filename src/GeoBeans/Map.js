@@ -239,6 +239,7 @@ GeoBeans.Map = GeoBeans.Class({
 		$(this._container).empty();
 		this.renderer.clearRect(0,0,this.canvas.width,this.canvas.height);
 		this.enableNavControl(false);
+		this.events.destroy();
 		this.controls.cleanup();
 		this._interactions.cleanup();
 		this.widgets.cleanup();
@@ -257,6 +258,7 @@ GeoBeans.Map = GeoBeans.Class({
 		this.canvas = null;
 		this.renderer = null;
 		this.layers = null;
+		this.events = null;
 		this.controls = null;
 		this._interactions = null;
 		this.widgets = null;
@@ -628,7 +630,7 @@ GeoBeans.Map.prototype.initWidgets = function(){
  * @private
  */
 GeoBeans.Map.prototype.initEvents = function(){
-	this.events = new GeoBeans.Events();
+	this.events = new GeoBeans.Events(this);
 }
 
 /**
