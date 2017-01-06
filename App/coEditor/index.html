@@ -28,6 +28,7 @@
 <script type="text/javascript" src="js/CreateMapDialog.js"></script>
 <script type="text/javascript" src="js/StyleControl.js"></script>
 <script type="text/javascript" src="js/Notify.js"></script>
+<script type="text/javascript" src="js/TaskManager.js"></script>
 
 
 <link type="text/css" rel="stylesheet" href="../../lib/css/Map5.min.css">
@@ -88,6 +89,8 @@
 	// 管理员
 	var authServer = "/ows/admin/mgr";
 	var authManager = new GeoBeans.AuthManager(authServer);
+
+	var taskManager = new CoEditor.TaskManager();
 	function init(){
 		CoEditor.cookie = new CoEditor.Cookie();
 		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
@@ -120,7 +123,7 @@
 				<a href="javascript:void(0)" id="user_logout">退出</a>
 			</div>
 			<div id="login_title">
-				<a href="javascript:void(0)" id="user_login">登陆</a>
+				<a href="javascript:void(0)" id="user_login">登录</a>
 			</div>
 		</div>
 		<!-- 标绘面板 -->
@@ -148,7 +151,7 @@
 				<!-- 图层列表 -->
 				<div class="left-tab active" id="layers_tab">
 					<div class="left-tab-title">
-						<span class="left-title-icon back-to-maps" data-toggle="tooltip" data-placement="top" title="返回地图列表">◄</span>
+						<span class="left-title-icon back-to-maps" data-toggle="tooltip" data-placement="top" title="返回任务列表">◄</span>
 						<span>标注图层</span>
 						<span class="right-title-btn pull-right create-layer" data-toggle="tooltip" data-placement="top" title="新建图层">新建</span>
 					</div>
@@ -221,11 +224,11 @@
 		<div id="maps_panel" class="content-panel active">
 			<div id="maps_panel_title">
 				<div class="left-title-div">
-					<button type="button" class="btn btn-default btn-success btn-new-map">新建地图</button>
+					<button type="button" class="btn btn-default btn-success btn-new-map">新建任务</button>
 				</div>
 				<div class="pull-right map-page-div">
 					<div class="maps-count">
-						<p class="text-primary">地图总数：<span>0</span></p>
+						<p class="text-primary">任务总数：<span>0</span></p>
 					</div>
 					<div class="maps-page">
 						<ul class="pagination" style="margin:1px 0px">
@@ -242,6 +245,22 @@
 					<div class="page-heading">
 						<span class="glyphicon glyphicon-info-sign"></span>
 						<span style="font-size:14px">基本信息</span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">任务名称：</span>
+						<span class="task-name"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">创建者：</span>
+						<span class="task-owner"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">描述：</span>
+						<span class="task-description"></span>
+					</div>
+					<div class="page-heading">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						<span style="font-size:14px">地图</span>
 					</div>
 					<div class="map-info-row">
 						<span class="map-info-item">名称：</span>
@@ -269,7 +288,7 @@
 			<div id="maps_panel_title">
 				<div class="pull-right map-page-div">
 					<div class="maps-count">
-						<p class="text-primary">地图总数：<span>0</span></p>
+						<p class="text-primary">任务总数：<span>0</span></p>
 					</div>
 					<div class="maps-page">
 						<ul class="pagination" style="margin:1px 0px">
@@ -286,6 +305,22 @@
 					<div class="page-heading">
 						<span class="glyphicon glyphicon-info-sign"></span>
 						<span style="font-size:14px">基本信息</span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">任务名称：</span>
+						<span class="task-name"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">创建者：</span>
+						<span class="task-owner"></span>
+					</div>
+					<div class="map-info-row">
+						<span class="map-info-item">描述：</span>
+						<span class="task-description"></span>
+					</div>
+					<div class="page-heading">
+						<span class="glyphicon glyphicon-info-sign"></span>
+						<span style="font-size:14px">地图</span>
 					</div>
 					<div class="map-info-row">
 						<span class="map-info-item">名称：</span>
@@ -434,14 +469,20 @@
 	    	<div class="modal-content">
 	     		<div class="modal-header">
 	       			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	       			<h4 class="modal-title">新建图层</h4>
+	       			<h4 class="modal-title">新建任务</h4>
 	      		</div>
 	      		<div class="modal-body">
 	      			<form class="form-horizontal" role="form" onsubmit="return false">
 	      				<div class="form-group" >
-	      					<label class="control-label col-md-3 col-xs-3">地图名称:</label>
+	      					<label class="control-label col-md-3 col-xs-3">任务名称:</label>
 	      					<div class="col-md-7 col-xs-7">
-	      						<input type="text" class="form-control" id="new_map_name">
+	      						<input type="text" class="form-control" id="task_name">
+	      					</div>
+	      				</div>
+	      				<div class="form-group" >
+	      					<label class="control-label col-md-3 col-xs-3">任务描述:</label>
+	      					<div class="col-md-7 col-xs-7">
+	      						<input type="text" class="form-control" id="task_description">
 	      					</div>
 	      				</div>
 	      			</form>

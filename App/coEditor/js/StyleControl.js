@@ -628,7 +628,7 @@ CoEditor.StyleControl.prototype.addStyle = function(style){
 		return;
 	}
 
-	var styleManager = user.getStyleManager();
+	var styleManager = CoEditor.mapPanel.getStyleManager();
 	var styleWriter = new GeoBeans.StyleWriter();
 	var name = GeoBeans.Utility.uuid(6);
 	style.name = name;
@@ -655,7 +655,7 @@ CoEditor.StyleControl.prototype.updateStyle = function(style){
 	if(style == null){
 		return;
 	}
-	var styleManager = user.getStyleManager();
+	var styleManager = CoEditor.mapPanel.getStyleManager();
 	var styleWriter = new GeoBeans.StyleWriter();
 	var xml = styleWriter.write(style);
 	var name = style.name;

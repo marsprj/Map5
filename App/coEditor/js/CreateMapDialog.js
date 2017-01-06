@@ -14,7 +14,7 @@ CoEditor.CreateMapDialog.prototype.registerPanelEvent = function(){
 	var that = this;
 	// 确定
 	this._panel.find(".btn-confirm").click(function(){
-		var mapName = that._panel.find("#new_map_name").val();
+		var mapName = that._panel.find("#task_name").val();
 		if(mapName == null || mapName == ""){
 			CoEditor.notify.showInfo("提示","请输入地图名称");
 			return;
@@ -32,7 +32,7 @@ CoEditor.CreateMapDialog.prototype.registerPanelEvent = function(){
 // 显示
 CoEditor.CreateMapDialog.prototype.show = function(){
 	this.cleanup();
-	this._panel.find("#new_map_name").focus();
+	this._panel.find("#task_name").focus();
 	this._panel.modal();
 }
 
@@ -43,7 +43,8 @@ CoEditor.CreateMapDialog.prototype.hide =function(){
 
 
 CoEditor.CreateMapDialog.prototype.cleanup = function(){
-	this._panel.find("#new_map_name").val("");
+	this._panel.find("#task_name").val("");
+	this._panel.find("#task_description").val("");
 }
 
 // 创建地图
@@ -57,15 +58,23 @@ CoEditor.CreateMapDialog.prototype.createMap = function(mapName){
 	var extent = new GeoBeans.Envelope(-180,-90,180,90);
 	CoEditor.notify.loading();
 	mapManager.createMap(mapName,extent,srid,this.createMap_callback);
+	
 };
 
 CoEditor.CreateMapDialog.prototype.createMap_callback = function(result){
-	CoEditor.notify.showInfo("新建地图",result.toString());
+	// CoEditor.notify.showInfo("新建地图",result.toString());
 	if(result != "success"){
 		return;
 	}
 	var that = CoEditor.create_map_dialog;
-	that.initNewMap();
+	// that.initNewMap();
+	that.createTask();
+}
+
+CoEditor.CreateMapDialog.prototype.createTask = function(){
+	var taskName = this._panel.find("#task_name").val();
+	var description = this._panel.find("#task_description").val();
+	taskManager.createTask(user.name,taskName,taskName,description,this.createTask_callback);
 }
 
 CoEditor.CreateMapDialog.prototype.initNewMap = function(){
@@ -113,4 +122,11 @@ CoEditor.CreateMapDialog.prototype.initNewMap = function(){
 	that.setBaseLayerDivChoose(imageSetName);
 
 	
+}
+
+
+CoEditor.CreateMapDialog.prototype.createTask_callback = function(result){
+	console.log(result);
+	var that = CoEditor.create_map_dialog;
+	that.initNewMap();
 }

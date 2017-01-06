@@ -618,7 +618,13 @@ ul{
 }
 
 .map-info-row span {
-    display: inline-block
+    display: inline-block;
+}
+
+.map-info-item {
+    width: 60px;
+    text-align: right;
+    margin-right: 6px;
 }
 
 /*-------create dataset dialog--------*/

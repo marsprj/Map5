@@ -53,8 +53,7 @@ function addAccountEvent(){
 
 	// 登陆
 	$("#user_login").click(function(){
-		$(".tab-panel").removeClass("active");
-		$("#user_panel").addClass("active");
+
 		showLoginPanel();
 	});
 }
@@ -65,9 +64,6 @@ function initUserByCookie(){
 	if(username != null){
 		initUser(username);
 	}else{
-		// $(".tab-panel").removeClass("active");
-		// $("#user_panel").addClass("active");
-		// showLoginPanel();
 		CoEditor.allMapsPanel.show();
 	}
 }
@@ -83,6 +79,9 @@ function showRegisterPanel(){
 
 // 显示登录页面
 function showLoginPanel(){
+	$(".tab-panel").removeClass("active");
+	$("#user_panel").addClass("active");
+
 	$(".user-tab-panel").removeClass("active");	
 	$("#user_login_panel").addClass("active");
 	$("#user_login_panel input[name='username']").focus();
@@ -166,7 +165,15 @@ function initUser(username){
 
 	CoEditor.cookie.setCookie("username",username,"/Map5/App/coEditor/");
 
- 	CoEditor.mapsPanel.getMaps();
+	// 区分是展示所有任务，还是加入某个任务
+	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
+	if(taskObj == null){
+		CoEditor.mapsPanel.getMaps();
+	}else{
+		var taskID = taskObj.taskID;
+		taskManager.joinTask(userName,taskID,joinTask_callback);
+	}
+ 	
 }
 
 
@@ -183,9 +190,7 @@ function logout_callback(result){
 	CoEditor.notify.showInfo("注销",result);
 	if(result == "success"){
 		user = null;
-		$(".tab-panel").removeClass("active");
-		$("#user_panel").addClass("active");
-		showLoginPanel();
+		CoEditor.allMapsPanel.show();
 		$("#user_panel input[type='text'],#user_panel input[type='password']").val("");
 		$("#user_login_panel input[name='username']").focus();
 		CoEditor.cookie.delCookie("username","/Map5/App/coEditor/");
@@ -219,4 +224,27 @@ function registerDBSource(){
 // 注册数据源回调函数
 function registerDBSource_callback(result){
 	console.log(result);
+}
+
+
+// 加入任务回调
+function joinTask_callback(result){
+	CoEditor.notify.showInfo("加入任务",result);
+	if(result != "success"){
+		return;
+	}
+	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
+	if(taskObj == null){
+		return;
+	}
+	var mapName = taskObj.mapName;
+	var userName = taskObj.owner;
+	CoEditor.allMapsPanel.clearJoinTaskObj();
+
+	var owner = new GeoBeans.User(userName);
+	var mapManager = owner.getMapManager();
+	var that = CoEditor.mapsPanel;
+	var mapPanel = CoEditor.mapPanel;
+	mapPanel.setOwner(userName);
+	mapManager.getMapObj(mapName,that.initMap_callback);
 }

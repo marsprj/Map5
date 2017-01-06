@@ -15,6 +15,10 @@ CoEditor.MapPanel = CoEditor.Class({
 	// 绘制交互
 	_drawer : null,
 
+
+	// 任务的拥有者
+	_owner : null,
+
 	initialize : function(id){
 		this._panel = $("#"+ id);
 		this.registerPanelEvent();
@@ -159,6 +163,7 @@ CoEditor.MapPanel.prototype.backToLayersTab = function(){
 CoEditor.MapPanel.prototype.showMapPanel = function(){
 	$(".content-panel").removeClass("active");
 	$("#main_panel").addClass("active");	
+	this.backToLayersTab();
 }
 
 // 初始化地图
@@ -223,10 +228,15 @@ CoEditor.MapPanel.prototype.initMap = function(map){
 // 获取wfs数据源
 CoEditor.MapPanel.prototype.getLayerSource = function(layerName){
 	if(layerName == null){
-		return;
+		return null;
 	}
+	if(this._owner == null){
+		return null;
+	}
+	var owner = new GeoBeans.User(this._owner);
+
 	return new GeoBeans.Source.Feature.WFS({
-		url : user.getServer(),
+		url : owner.getServer(),
 		version : "1.0.0",
 		featureNS : 'http://www.radi.ac.cn',
 		featurePrefix : "radi",
@@ -299,7 +309,7 @@ CoEditor.MapPanel.prototype.setLayerStyle = function(styleName,layer){
 		return;
 	}
 
-	var styleManager = user.getStyleManager();
+	var styleManager = this.getStyleManager();
 	styleManager.getStyleXML(styleName,this.getStyle_callback,layer);
 }
 
@@ -1084,4 +1094,18 @@ CoEditor.MapPanel.prototype.setBaseLayerDivChoose = function(imageSetName){
 	}else if(imageSetName == "world_image"){
 		this._panel.find(".map-image-div").addClass("active");
 	}
+}
+
+
+// 设置任务的拥有者
+CoEditor.MapPanel.prototype.setOwner = function(userName){
+	this._owner = userName;
+}
+
+
+// 返回样式管理器
+CoEditor.MapPanel.prototype.getStyleManager = function(){
+	var owner = new GeoBeans.User(this._owner);
+	var styleManager = owner.getStyleManager();
+	return styleManager;
 }

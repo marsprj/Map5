@@ -11,8 +11,8 @@ CoEditor.MapsPanel = CoEditor.Class({
 	// 显示的页数
 	_pageNumber : 5,
 
-	// 地图列表
-	_maps : null,
+	// 任务列表
+	_tasks : null,
 
 
 	initialize : function(id){
@@ -40,32 +40,33 @@ CoEditor.MapsPanel.prototype.getMaps = function(){
 	if(user == null){
 		return;
 	}
-	var mapManager = user.getMapManager();
+	// var mapManager = user.getMapManager();
 
 	this._panel.find("#maps_list_ul").empty();
 	this._panel.find("#maps_right_panel").removeClass("active");
 	this._panel.find(".pagination").empty();
 	CoEditor.notify.loading();
-	mapManager.getMaps(this.getMaps_callback);
+	taskManager.describeTask(user.name,null,this.describeTask_callback);
+
 }
 
-
-CoEditor.MapsPanel.prototype.getMaps_callback = function(maps){
-	if(!$.isArray(maps)){
+CoEditor.MapsPanel.prototype.describeTask_callback = function(tasks){
+	if(!$.isArray(tasks)){
 		CoEditor.notify.hideLoading();
 		return;
 	}
-	CoEditor.notify.showInfo("获取地图列表",maps.length.toString());
-	CoEditor.mapsPanel.setMaps(maps);
+	CoEditor.notify.showInfo("获取任务列表",tasks.length.toString());
+	CoEditor.mapsPanel.setTasks(tasks);
 }
 
 
-CoEditor.MapsPanel.prototype.setMaps = function(maps){
-	if(maps == null){
+// 设置任务
+CoEditor.MapsPanel.prototype.setTasks = function(tasks){
+	if(tasks == null){
 		return;
 	}
 
-	this._maps = maps;
+	this._tasks = tasks;
 
 	var mapSize = 210;
 	var rowCount = Math.floor(this._panel.find("#maps_left_panel").height()/mapSize);
@@ -89,10 +90,10 @@ CoEditor.MapsPanel.prototype.setMaps = function(maps){
 
 	var count = rowCount * colCountFloor;
 	this._maxCount = count;
-	var pageCount = Math.ceil(maps.length / this._maxCount);
+	var pageCount = Math.ceil(tasks.length / this._maxCount);
 
 	// 设置总个数
-	this._panel.find(".maps-count span").html(maps.length);
+	this._panel.find(".maps-count span").html(tasks.length);
 
 	// 页数
 	this._pageCount = pageCount;
@@ -230,14 +231,17 @@ CoEditor.MapsPanel.prototype.registerPageEvent = function(){
 
 // 展示地图列表
 CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
-	if(this._maps == null || startIndex == null || endIndex == null){
+	if(this._tasks == null || startIndex == null || endIndex == null){
 		return;
 	}
 
 	var html = "";
-	for(var i = startIndex; i <= endIndex && i < this._maps.length; ++i){
-		var map = this._maps[i];
-		var name = map.name;
+	for(var i = startIndex; i <= endIndex && i < this._tasks.length; ++i){
+		var task = this._tasks[i];
+		var map = task.map;
+		var owner = task.owner; 
+		var taskName = task.name;
+		var mapName = map.name;
 		var thumbnail = map.thumbnail;
 		var aHtml = "";
 		if(thumbnail != null){
@@ -246,10 +250,10 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 		}else{
 			aHtml = 	"	<a href='javascript:void(0)' class='map-thumb'></a>";
 		}
-		html += "<li class='maps-thumb' name='" + name + "'>"
+		html += "<li class='maps-thumb' tname='" + taskName + "' mname='" + mapName + "' owner='" + owner + "'>"
 			+	aHtml
 			+ 	"	<div class='caption text-center'>"
-			+ 	"		<h6>" + name + "</h6>"
+			+ 	"		<h6>" + taskName + "</h6>"
 			+ 	"	</div>"
 			+ 	"</li>";	
 	}
@@ -258,37 +262,106 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 	// 展示第一个
 	var firstMap = this._panel.find("#maps_list_ul").find("li").first();
 	firstMap.find("a").addClass("selected");
-	var name = firstMap.attr("name");
-	var mapManager = user.getMapManager();
-	mapManager.getMapObj(name,this.showMapInfo);
+	var name = firstMap.attr("mname");
+	var userName = firstMap.attr("owner");
+	var taskName = firstMap.attr("tname");
+	taskManager.getTaskInfo(userName,taskName,this.getTaskInfo_callback);
 
 	// 列表点击事件
 	this.registerMapListClickEvent();
 }
 
-// 展示地图的具体信息
-CoEditor.MapsPanel.prototype.showMapInfo = function(map){
-	var that = CoEditor.mapsPanel;
-	that._panel.find("#maps_right_panel").addClass("active");
+
+CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
+	var that = this;
+	var DELAY = 300, clicks = 0, timer = null;
+	this._panel.find("#maps_list_ul").find(".map-thumb").click(function(){
+		clicks++;
+		if(clicks == 1){
+			var node = this;
+			timer = setTimeout(function() {
+		        console.log("Single Click");  //perform single-click action    
+		        that._panel.find("#maps_list_ul").find(".map-thumb").removeClass("selected");
+				$(node).addClass("selected");
+				var name = $(node).parent().attr("mname");
+				var userName = $(node).parent().attr("owner");
+				var taskName = $(node).parent().attr("tname");
+				taskManager.getTaskInfo(userName,taskName,that.getTaskInfo_callback);
+		        clicks = 0;             //after action performed, reset counter
+		    }, DELAY);
+		}else{
+			clearTimeout(timer);    //prevent single-click action
+			console.log("Double Click");  //perform double-click action
+			var name = $(this).parent().attr("mname");
+			var userName = $(this).parent().attr("owner");
+			var owner = new GeoBeans.User(userName);
+			var mapManager = owner.getMapManager();
+			CoEditor.notify.loading();
+			that._panel.find("#layers_tab .list-type-div").empty();
+			var mapPanel = CoEditor.mapPanel;
+			mapPanel.setOwner(userName);
+			mapManager.getMapObj(name,that.initMap_callback);
+			clicks = 0;  
+		}
+	}).dblclick(function(e){
+		e.preventDefault();
+	});	
+}
+
+
+CoEditor.MapsPanel.prototype.initMap_callback = function(map){
+
 	if(map == null){
+		CoEditor.notify.showInfo("刷新地图","失败");
+		return;
+	}
+	CoEditor.notify.showInfo("刷新地图","success");
+	var that = CoEditor.mapPanel;
+	that.showMapPanel();
+	that.initMap(map);
+}
+
+
+CoEditor.MapsPanel.prototype.getTaskInfo_callback = function(task){
+	if(task == null){
 		return;
 	}
 
+	var that = CoEditor.mapsPanel;
+	that.showTaskInfo(task);
+}
+
+
+// 展示右侧的任务信息
+CoEditor.MapsPanel.prototype.showTaskInfo = function(task){
+	if(task == null){
+		return;
+	}
+
+	this._panel.find("#maps_right_panel").addClass("active");
+	var taskName = task.name;
+	var owner = task.owner;
+	var description = task.description;
+	this._panel.find("#maps_right_panel .task-name").html(taskName);
+	this._panel.find("#maps_right_panel .task-owner").html(owner);
+	this._panel.find("#maps_right_panel .task-description").html(description);
+
+	var map = task.map;
+
 	var name = map.name;
 	var srid = map.srid;
-	that._panel.find("#maps_right_panel .map-info-name").html(name);
-	that._panel.find("#maps_right_panel .map-info-srid").html(srid);
+	this._panel.find("#maps_right_panel .map-info-name").html(name);
+	this._panel.find("#maps_right_panel .map-info-srid").html(srid);
 
 	var extent = map.extent;
 	if(extent != null){
 		var extentStr = extent.xmin.toFixed(2) + " , " + extent.ymin.toFixed(2)
 				+ " , " + extent.xmax.toFixed(2) + " , " + extent.ymax.toFixed(2);
-		that._panel.find("#maps_right_panel .map-info-extent").html(extentStr);
+		this._panel.find("#maps_right_panel .map-info-extent").html(extentStr);
 	}
 
 	// layer
-	that._panel.find("#maps_right_panel .map-info-layers").empty();
-	// var layers = map.getLayers();
+	this._panel.find("#maps_right_panel .map-info-layers").empty();
 	var layers = map.layers;
 	var layer = null;
 	var name = null;
@@ -353,55 +426,5 @@ CoEditor.MapsPanel.prototype.showMapInfo = function(map){
 				+	'</div>';
 		}	
 	}
-	that._panel.find("#maps_right_panel .map-info-layers").append(html);
+	this._panel.find("#maps_right_panel .map-info-layers").append(html);
 }
-
-
-CoEditor.MapsPanel.prototype.registerMapListClickEvent = function(){
-	var that = this;
-	var DELAY = 300, clicks = 0, timer = null;
-	this._panel.find("#maps_list_ul").find(".map-thumb").click(function(){
-		clicks++;
-		if(clicks == 1){
-			var node = this;
-			timer = setTimeout(function() {
-		        console.log("Single Click");  //perform single-click action    
-		        that._panel.find("#maps_list_ul").find(".map-thumb").removeClass("selected");
-				$(node).addClass("selected");
-				var name = $(node).parent().attr("name");
-				var mapManager = user.getMapManager();
-				mapManager.getMapObj(name,that.showMapInfo);
-
-		        clicks = 0;             //after action performed, reset counter
-		    }, DELAY);
-		}else{
-			clearTimeout(timer);    //prevent single-click action
-			console.log("Double Click");  //perform double-click action
-			var name = $(this).parent().attr("name");
-			var mapManager = user.getMapManager();
-			CoEditor.notify.loading();
-			that._panel.find("#layers_tab .list-type-div").empty();
-			mapManager.getMapObj(name,that.initMap_callback);
-			clicks = 0;  
-		}
-	}).dblclick(function(e){
-		e.preventDefault();
-	});	
-}
-
-
-CoEditor.MapsPanel.prototype.initMap_callback = function(map){
-
-	if(map == null){
-		CoEditor.notify.showInfo("刷新地图","失败");
-		return;
-	}
-	CoEditor.notify.showInfo("刷新地图","success");
-	var that = CoEditor.mapPanel;
-	that.showMapPanel();
-	that.initMap(map);
-}
-
-
-
-
