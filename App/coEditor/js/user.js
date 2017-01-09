@@ -11,50 +11,49 @@ function addAccountEvent(){
 		}
 	});
 
-	// 登录切换注册页面
-	$("#user_login_panel .register-btn").click(function(){
-		showRegisterPanel();
-	});
+	// // 登录切换注册页面
+	// $("#user_login_panel .register-btn").click(function(){
+	// 	showRegisterPanel();
+	// });
 
-	// 注册切换登录页面
-	$("#user_register_panel .return-login").click(function(){
-		showLoginPanel();
-	});
+	// // 注册切换登录页面
+	// $("#user_register_panel .return-login").click(function(){
+	// 	showLoginPanel();
+	// });
 
 
-	// 登录
-	$("#user_login_panel .login-btn").click(function(){
-		login();
-	});
+	// // 登录
+	// $("#user_login_panel .login-btn").click(function(){
+	// 	login();
+	// });
 
-	// 注册
-	$("#user_register_panel .register-btn").click(function(){
-		register();
-	});
+	// // 注册
+	// $("#user_register_panel .register-btn").click(function(){
+	// 	register();
+	// });
 
 	// 退出
 	$("#user_logout").click(function(){
 		logout();
 	});
 
-	// enter 登录
-	$("#user_login_panel input[name='password']").keypress(function(e){
-		if(e.which == 13){
-			login();
-		}
-	});
+	// // enter 登录
+	// $("#user_login_panel input[name='password']").keypress(function(e){
+	// 	if(e.which == 13){
+	// 		login();
+	// 	}
+	// });
 
-	// enter 注册
-	$("#user_register_panel input[name='repassword']").keypress(function(e){
-		if(e.which == 13){
-			register();
-		}
-	});
+	// // enter 注册
+	// $("#user_register_panel input[name='repassword']").keypress(function(e){
+	// 	if(e.which == 13){
+	// 		register();
+	// 	}
+	// });
 
 	// 登陆
 	$("#user_login").click(function(){
-
-		showLoginPanel();
+		CoEditor.login_dialog.show();
 	});
 }
 
@@ -62,64 +61,65 @@ function addAccountEvent(){
 function initUserByCookie(){
 	var username = CoEditor.cookie.getCookie("username");
 	if(username != null){
-		initUser(username);
+		// initUser(username);
+		CoEditor.login_dialog.loginUser(username);
 	}else{
 		CoEditor.allMapsPanel.show();
 	}
 }
 
-// 显示注册页面
-function showRegisterPanel(){
-	$(".user-tab-panel").removeClass("active");	
-	$("#user_register_panel").addClass("active");
-	$("#user_register_panel input[name='username']").focus();
-	$("#user_register_panel").css("transform","rotateY(0deg)");
-	$("#user_login_panel").css("transform","rotateY(-180deg)");
-}
+// // 显示注册页面
+// function showRegisterPanel(){
+// 	$(".user-tab-panel").removeClass("active");	
+// 	$("#user_register_panel").addClass("active");
+// 	$("#user_register_panel input[name='username']").focus();
+// 	$("#user_register_panel").css("transform","rotateY(0deg)");
+// 	$("#user_login_panel").css("transform","rotateY(-180deg)");
+// }
 
-// 显示登录页面
-function showLoginPanel(){
-	$(".tab-panel").removeClass("active");
-	$("#user_panel").addClass("active");
+// // 显示登录页面
+// function showLoginPanel(){
+// 	$(".tab-panel").removeClass("active");
+// 	$("#user_panel").addClass("active");
 
-	$(".user-tab-panel").removeClass("active");	
-	$("#user_login_panel").addClass("active");
-	$("#user_login_panel input[name='username']").focus();
-	$("#user_register_panel").css("transform","rotateY(-180deg)");
-	$("#user_login_panel").css("transform","rotateY(0deg)");
-}
+// 	$(".user-tab-panel").removeClass("active");	
+// 	$("#user_login_panel").addClass("active");
+// 	$("#user_login_panel input[name='username']").focus();
+// 	$("#user_register_panel").css("transform","rotateY(-180deg)");
+// 	$("#user_login_panel").css("transform","rotateY(0deg)");
+// }
 
-// 登录
-function login(){
-	var name = $("#user_login_panel input[name='username']").val();
-	if(name == ""){
-		$("#user_login_panel input[name='username']").next().addClass("active");
-		$("#user_login_panel input[name='username']").focus();
-		return;
-	}
+// // 登录
+// function login(){
+// 	var name = $("#user_login_panel input[name='username']").val();
+// 	if(name == ""){
+// 		$("#user_login_panel input[name='username']").next().addClass("active");
+// 		$("#user_login_panel input[name='username']").focus();
+// 		return;
+// 	}
 
-	var password = $("#user_login_panel input[name='password']").val();
-	if(password == ""){
-		$("#user_login_panel input[name='password']").next().html("请输入密码").addClass("active");
-		$("#user_login_panel input[name='password']").focus();
-		return;
-	}
+// 	var password = $("#user_login_panel input[name='password']").val();
+// 	if(password == ""){
+// 		$("#user_login_panel input[name='password']").next().html("请输入密码").addClass("active");
+// 		$("#user_login_panel input[name='password']").focus();
+// 		return;
+// 	}
 
-	CoEditor.notify.loading();
-	authManager.login(name,password,login_callback);
-}
+// 	CoEditor.notify.loading();
+// 	authManager.login(name,password,login_callback);
+// }
 
-function login_callback(result){
-	CoEditor.notify.showInfo("用户登录",result);
+// function login_callback(result){
+// 	CoEditor.notify.showInfo("用户登录",result);
 
-	var name = $("#user_login_panel input[name='username']").val();
-	if(result == "success"){
-		initUser(name);
-	}else{
-		$("#user_login_panel input[name='password']").next().html(result).addClass("active");
-		$("#user_login_panel input[name='password']").focus();
-	}
-}
+// 	var name = $("#user_login_panel input[name='username']").val();
+// 	if(result == "success"){
+// 		initUser(name);
+// 	}else{
+// 		$("#user_login_panel input[name='password']").next().html(result).addClass("active");
+// 		$("#user_login_panel input[name='password']").focus();
+// 	}
+// }
 
 // 注册
 function register(){
@@ -147,30 +147,30 @@ function register(){
 	authManager.createUser(name,name,password,null,"bh",register_callbacks);
 }
 
-// 初始化用户
-function initUser(username){
-	userName = username;
-	user = new GeoBeans.User(username);
-	$("#user_title").show();
-	$("#user_login").hide();
-	$("#user_title_name").html(userName);
-	$(".tab-panel").removeClass("active");
-	$("#content_panel").addClass("active");
-	$(".content-panel").removeClass("active");
-	$("#maps_panel").addClass("active");
+// // 初始化用户
+// function initUser(username){
+// 	userName = username;
+// 	user = new GeoBeans.User(username);
+// 	$("#user_title").show();
+// 	$("#user_login").hide();
+// 	$("#user_title_name").html(userName);
+// 	$(".tab-panel").removeClass("active");
+// 	$("#content_panel").addClass("active");
+// 	$(".content-panel").removeClass("active");
+// 	$("#maps_panel").addClass("active");
 
-	CoEditor.cookie.setCookie("username",username,"/Map5/App/coEditor/");
+// 	CoEditor.cookie.setCookie("username",username,"/Map5/App/coEditor/");
 
-	// 区分是展示所有任务，还是加入某个任务
-	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
-	if(taskObj == null){
-		CoEditor.mapsPanel.getMaps();
-	}else{
-		var taskID = taskObj.taskID;
-		taskManager.joinTask(userName,taskID,joinTask_callback);
-	}
+// 	// 区分是展示所有任务，还是加入某个任务
+// 	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
+// 	if(taskObj == null){
+// 		CoEditor.mapsPanel.getMaps();
+// 	}else{
+// 		var taskID = taskObj.taskID;
+// 		taskManager.joinTask(userName,taskID,joinTask_callback);
+// 	}
  	
-}
+// }
 
 
 // 退出
@@ -223,26 +223,26 @@ function registerDBSource_callback(result){
 }
 
 
-// 加入任务回调
-function joinTask_callback(result){
-	CoEditor.notify.showInfo("加入任务",result);
-	if(result != "success"){
-		CoEditor.allMapsPanel.clearJoinTaskObj();
-		CoEditor.mapsPanel.getMaps();
-		return;
-	}
-	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
-	if(taskObj == null){
-		return;
-	}
-	var mapName = taskObj.mapName;
-	var userName = taskObj.owner;
+// // 加入任务回调
+// function joinTask_callback(result){
+// 	CoEditor.notify.showInfo("加入任务",result);
+// 	if(result != "success"){
+// 		CoEditor.allMapsPanel.clearJoinTaskObj();
+// 		CoEditor.mapsPanel.getMaps();
+// 		return;
+// 	}
+// 	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
+// 	if(taskObj == null){
+// 		return;
+// 	}
+// 	var mapName = taskObj.mapName;
+// 	var userName = taskObj.owner;
 	
-	CoEditor.allMapsPanel.clearJoinTaskObj();
-	var owner = new GeoBeans.User(userName);
-	var mapManager = owner.getMapManager();
-	var that = CoEditor.mapsPanel;
-	var mapPanel = CoEditor.mapPanel;
-	mapPanel.setOwner(userName);
-	mapManager.getMapObj(mapName,that.initMap_callback);
-}
+// 	CoEditor.allMapsPanel.clearJoinTaskObj();
+// 	var owner = new GeoBeans.User(userName);
+// 	var mapManager = owner.getMapManager();
+// 	var that = CoEditor.mapsPanel;
+// 	var mapPanel = CoEditor.mapPanel;
+// 	mapPanel.setOwner(userName);
+// 	mapManager.getMapObj(mapName,that.initMap_callback);
+// }

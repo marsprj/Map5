@@ -283,7 +283,7 @@ CoEditor.AllMapsPanel.prototype.showMaps = function(startIndex,endIndex){
 			mapName : mapName,
 			owner : owner
 		};
-		showLoginPanel();
+		CoEditor.login_dialog.show();
 	});
 
 	// 列表点击事件

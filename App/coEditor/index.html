@@ -26,6 +26,7 @@
 <script type="text/javascript" src="js/AllMapsPanel.js"></script>
 <script type="text/javascript" src="js/CreateDataSetDialog.js"></script>
 <script type="text/javascript" src="js/CreateMapDialog.js"></script>
+<script type="text/javascript" src="js/LoginDialog.js"></script>
 <script type="text/javascript" src="js/StyleControl.js"></script>
 <script type="text/javascript" src="js/Notify.js"></script>
 <script type="text/javascript" src="js/TaskManager.js"></script>
@@ -61,8 +62,6 @@
 	// 当前的绘制几何图形
 	var geometry = null;
 
-	// 用户名称
-	var userName = "bh-test";
 	// 用户
 	var user = null;
 
@@ -99,6 +98,7 @@
 		CoEditor.allMapsPanel = new CoEditor.AllMapsPanel("all_maps_panel");
 		CoEditor.create_dataset_dlg = new CoEditor.CreateDataSetDialog("create_dataset_dialog");
 		CoEditor.create_map_dialog = new CoEditor.CreateMapDialog("create_map_dialog");
+		CoEditor.login_dialog = new CoEditor.LoginDialog("login_dialog");
 		CoEditor.styleControl = new CoEditor.StyleControl();
 		addAccountEvent();
 	 	// loadMap();
@@ -513,6 +513,30 @@
 	    </div>
 	</div>
 
+	<!-- 登录对话框 -->
+	<div class="modal fade" id="login_dialog" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="true">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	     		<div class="modal-header">
+	       			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">登录</h4>
+	      		</div>
+	      		<div class="modal-body">
+	      			<form>
+						<input class="login-form-input" type="text" name="username" placeholder="用户名">
+						<span class="user-tab-info">请输入用户名</span>
+						<input class="login-form-input" type="password" name="password" placeholder="密码">
+						<span class="user-tab-info">请输入密码</span>
+						<div class="form-group" style="height: 20px">
+							<div class="col-md-6 col-md-offset-3">
+								<a href="javascript:void(0)" class="login-btn"></a>
+							</div>
+						</div>
+					</form>
+	      		</div>
+	      	</div>
+	     </div>
+	</div>
 
 	<!-- Notify  -->
 	<div id="container" style="display:none">
