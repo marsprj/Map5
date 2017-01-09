@@ -16,13 +16,13 @@ function loadMap(){
 		 		"visible" : true
 			}),new GeoBeans.Layer.FeatureLayer({			
 				"name" : "country",
-				"geometryType" : GeoBeans.Geometry.Type.LINESTRING,
+				"geometryType" : GeoBeans.Geometry.Type.POLYGON,
 				"source" : new GeoBeans.Source.Feature.WFS({
 					"url" : "/geoserver/radi/ows?",
 					"version" : "1.0.0",
 					"featureNS" : 'http://www.radi.ac.cn',
 					"featurePrefix" : "radi",
-					"featureType" : "rivers_2",
+					"featureType" : "country_2",
 					"geometryName" : "shape",
 					"outputFormat": "GML2"
 				})
