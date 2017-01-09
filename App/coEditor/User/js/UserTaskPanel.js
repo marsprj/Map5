@@ -99,18 +99,7 @@ CoEditor.UserTaskPanel.prototype.registerPanelEvent = function(){
 
 	// 关闭右侧面板
 	this._panel.find(".close-right-icon").click(function(){
-		that._panel.find(".content-right-panel").animate({
-			width : "0px"
-		},function(){
-			that._panel.find(".btn-group-checked").css("display","none");
-		});
-
-		var width = that._panel.find(".content-main-panel").width() - 260;
-		that._panel.find(".content-center-panel").animate({
-			width : width
-		},function(){
-			mapObj.getViewer().update();
-		});
+		that.closeRightPanel();
 	});
 }
 
@@ -120,55 +109,57 @@ CoEditor.UserTaskPanel.prototype.initUserTask = function(){
 		return;
 	}
 
-	this.getMaps();
+	this.getTasks();
 }
 
-// 获取地图列表
-CoEditor.UserTaskPanel.prototype.getMaps = function(){
-	if(user == null){
-		return;
-	}
-	var mapManager = user.getMapManager();
+// 获取任务列表，只展示owner的
+CoEditor.UserTaskPanel.prototype.getTasks = function(){
+	var userName = user.name;
+	var role = "owner";
 	CoEditor.notify.loading();
-	this._panel.find("#maps_list_panel .list-main-panel").empty();
-	this._panel.find("#layers_list_panel .list-main-panel").empty();
-	this._panel.find(".overlay-list-div").empty();
-	mapManager.getMaps(this.getMaps_callback);
+	taskManager.describeTask(userName,role,this.getTasks_callback);
 }
 
-CoEditor.UserTaskPanel.prototype.getMaps_callback = function(maps){
-	CoEditor.notify.hideLoading();
-	if(!$.isArray(maps)){
+CoEditor.UserTaskPanel.prototype.getTasks_callback = function(tasks){
+	if(tasks == null){
+		CoEditor.notify.hideLoading();
 		return;
 	}
+
+	CoEditor.notify.showInfo("获取任务列表","success");
 	var that = CoEditor.userTaskPanel;
-	that.showMaps(maps);
+	that.showTasks(tasks);
 }
 
-// 展示地图列表
-CoEditor.UserTaskPanel.prototype.showMaps = function(maps){
-	if(maps == null){
+CoEditor.UserTaskPanel.prototype.showTasks = function(tasks){
+	console.log(tasks);
+	if(tasks == null){
 		return;
 	}
 
 	var html = "";
-	var map = null,name = null;
-	for(var i = 0; i < maps.length;++i){
-		map = maps[i];
+	var map = null,name = null,task = null,taskName = null;
+	for(var i = 0; i < tasks.length;++i){
+		task = tasks[i];
+		if(task == null){
+			continue;
+		}
+		map = task.map;
 		if(map == null){
 			continue;
 		}
+		taskName = task.name;
 		name = map.name;
-		html += "<div class='list-item'>"
-		+	name + "</div>";
+		html += "<div class='list-item' tname='" + taskName + "' mname='" + name + "'>"
+		+	taskName + "</div>";
 	}
 
 	this._panel.find("#maps_list_panel .list-main-panel").html(html);
 
 	var firstItem = this._panel.find("#maps_list_panel .list-item:first");
 	firstItem.addClass("active");
-	var name = firstItem.html();
-	this.getMap(name);
+	var mapName = firstItem.attr("mname");
+	this.getMap(mapName);
 
 	var that = this;
 	// 点击地图列表
@@ -176,7 +167,7 @@ CoEditor.UserTaskPanel.prototype.showMaps = function(maps){
 		that._panel.find("#maps_list_panel .list-main-panel .list-item").removeClass("active");
 		$(this).addClass("active");
 
-		var name = $(this).html();
+		var name = $(this).attr("mname");
 		that.getMap(name);
 	});
 }
@@ -187,6 +178,8 @@ CoEditor.UserTaskPanel.prototype.getMap = function(mapName){
 	if(mapName == null){
 		return;
 	}
+	this._panel.find("#layers_list_panel .list-main-panel").empty();
+	this.closeRightPanel();
 	CoEditor.notify.loading();
 	var mapManager = user.getMapManager();
 	mapManager.getMapObj(mapName,this.initMap_callback);
@@ -673,7 +666,6 @@ CoEditor.UserTaskPanel.prototype.editFeatureHandler = function(features){
 	}
 	
 	featureCur = feature;
-
 	
 	that.showFeatureInfo();		
 }
@@ -723,6 +715,15 @@ CoEditor.UserTaskPanel.prototype.getFields_handler = function(fields){
 	var html = "";
 	var feature = featureCur;
 	var checked = null;
+	var checkedValue = feature.getValue("checked");
+	var checkedHtml = "";
+	if(checkedValue == "1"){
+		checkedHtml = "checked";
+	}
+	html += '<div class="input-group input-group-checked">'
+		+	'  	<span class="input-group-addon">' + '审核' + '</span>'
+		+	'   <input type="checkbox" data-on-text="通过" data-off-text="未通过" id="feature_checked" ' +  checkedHtml + ' />'
+		+	'</div>';		
 	for(var i = 0; i < fields.length;++i){
 		var field = fields[i];
 		var name = field.getName();
@@ -734,26 +735,19 @@ CoEditor.UserTaskPanel.prototype.getFields_handler = function(fields){
 		if(type  == GeoBeans.Field.Type.GEOMETRY){
 			continue;
 		}
-		if(name == "gid" || name == "username" || name == "updatetime"){
+		if(name == "gid" || name == "updatetime" || name == "checked"){
 			continue;
 		}
 
-		if(name == "checked"){
-			var checkedHtml = "";
-			if(value == "1"){
-				checkedHtml = "checked";
-			}
-			html += '<div class="input-group input-group-checked">'
-				+	'  	<span class="input-group-addon">' + '审核' + '</span>'
-				+	'   <input type="checkbox" data-on-text="通过" data-off-text="未通过" id="feature_checked" ' +  checkedHtml + ' />'
-				+	'</div>';			
-		}else{
-			html += '<div class="input-group">'
-				+	'  	<span class="input-group-addon">' + name + '</span>'
-				+	'  	<input type="text" class="form-control" value="' + value +'">'
-				+	'</div>';
+
+		var disabledHtml = "";
+		if(name == "username"){
+			disabledHtml = " disabled ";
 		}
-		
+		html += '<div class="input-group">'
+			+	'  	<span class="input-group-addon" title="' + name +'">' + name + '</span>'
+			+	'  	<input type="text" class="form-control" value="' + value +'" ' + disabledHtml +'>'
+			+	'</div>';		
 	}
 	that._panel.find(".overlay-info-div").html(html);	
 	that._panel.find("input[type='checkbox']").bootstrapSwitch();
@@ -828,4 +822,21 @@ CoEditor.UserTaskPanel.prototype.removeFeature_success_handler = function(result
 	console.log(result);
 	var that = CoEditor.userTaskPanel;
 	that.refreshFeatures();
+}
+
+// 关闭右侧面板
+CoEditor.UserTaskPanel.prototype.closeRightPanel = function(){
+	var that = this;
+	this._panel.find(".content-right-panel").animate({
+		width : "0px"
+	},function(){
+		that._panel.find(".btn-group-checked").css("display","none");
+	});
+
+	var width = this._panel.find(".content-main-panel").width() - 260;
+	this._panel.find(".content-center-panel").animate({
+		width : width
+	},function(){
+		mapObj.getViewer().update();
+	});
 }

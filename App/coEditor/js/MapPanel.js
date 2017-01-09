@@ -1100,6 +1100,11 @@ CoEditor.MapPanel.prototype.setBaseLayerDivChoose = function(imageSetName){
 // 设置任务的拥有者
 CoEditor.MapPanel.prototype.setOwner = function(userName){
 	this._owner = userName;
+	if(this._owner == user.name){
+		this._panel.find(".create-layer").show();
+	}else{
+		this._panel.find(".create-layer").hide();
+	}
 }
 
 

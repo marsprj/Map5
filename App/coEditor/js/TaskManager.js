@@ -105,12 +105,14 @@ CoEditor.TaskManager.prototype.parseDescribeTask = function(xml){
 
 CoEditor.TaskManager.prototype.parseTask = function(xml){
 	var task = new Object();
+	var id = $(xml).find("ID:first").text();
 	var name = $(xml).find("Name:first").text();
 	var description = $(xml).find("Description").text();
 	var owner = $(xml).find("Owner").text();
 	var mapXML = $(xml).find("Map");
 	var mapObj = this.parseMapObj(mapXML);
 	return {
+		id : id,
 		name : name,
 		description : description,
 		owner : owner,

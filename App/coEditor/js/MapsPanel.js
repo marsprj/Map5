@@ -241,6 +241,7 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 		var map = task.map;
 		var owner = task.owner; 
 		var taskName = task.name;
+		var id = task.id;
 		var mapName = map.name;
 		var thumbnail = map.thumbnail;
 		var aHtml = "";
@@ -250,7 +251,8 @@ CoEditor.MapsPanel.prototype.showMaps = function(startIndex,endIndex){
 		}else{
 			aHtml = 	"	<a href='javascript:void(0)' class='map-thumb'></a>";
 		}
-		html += "<li class='maps-thumb' tname='" + taskName + "' mname='" + mapName + "' owner='" + owner + "'>"
+		html += "<li class='maps-thumb' tname='" + taskName 
+			+ "' mname='" + mapName + "' owner='" + owner + "' tid='" + id + "'>"
 			+	aHtml
 			+ 	"	<div class='caption text-center'>"
 			+ 	"		<h6>" + taskName + "</h6>"

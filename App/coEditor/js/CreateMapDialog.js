@@ -62,7 +62,7 @@ CoEditor.CreateMapDialog.prototype.createMap = function(mapName){
 };
 
 CoEditor.CreateMapDialog.prototype.createMap_callback = function(result){
-	// CoEditor.notify.showInfo("新建地图",result.toString());
+	// CoEditor.notify.showInfo("新建任务",result.toString());
 	if(result != "success"){
 		return;
 	}
@@ -78,12 +78,12 @@ CoEditor.CreateMapDialog.prototype.createTask = function(){
 }
 
 CoEditor.CreateMapDialog.prototype.initNewMap = function(){
+	this.hide();
 	var that = CoEditor.mapPanel;
 	that.showMapPanel();
+	that.setOwner(user.name);
 
-	this.hide();
-
-	var name = this._panel.find("#new_map_name").val();
+	var name = this._panel.find("#task_name").val();
 
 	var bname = this._panel.find(".thumbnail.selected").attr("bname");
 	var imageSetName = "world_vector";
@@ -121,12 +121,14 @@ CoEditor.CreateMapDialog.prototype.initNewMap = function(){
 
 	that.setBaseLayerDivChoose(imageSetName);
 
-	
+
+	$("#layers_tab .list-type-div").empty();
 }
 
 
 CoEditor.CreateMapDialog.prototype.createTask_callback = function(result){
-	console.log(result);
+	// console.log(result);
+	CoEditor.notify.showInfo("新建任务",result.toString());
 	var that = CoEditor.create_map_dialog;
 	that.initNewMap();
 }

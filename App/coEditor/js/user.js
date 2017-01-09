@@ -149,10 +149,6 @@ function register(){
 
 // 初始化用户
 function initUser(username){
-	// if(username == "admin"){
-	// 	window.location.href = "./admin.html";
-	// 	return;
-	// }
 	userName = username;
 	user = new GeoBeans.User(username);
 	$("#user_title").show();
@@ -231,6 +227,8 @@ function registerDBSource_callback(result){
 function joinTask_callback(result){
 	CoEditor.notify.showInfo("加入任务",result);
 	if(result != "success"){
+		CoEditor.allMapsPanel.clearJoinTaskObj();
+		CoEditor.mapsPanel.getMaps();
 		return;
 	}
 	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
@@ -239,8 +237,8 @@ function joinTask_callback(result){
 	}
 	var mapName = taskObj.mapName;
 	var userName = taskObj.owner;
+	
 	CoEditor.allMapsPanel.clearJoinTaskObj();
-
 	var owner = new GeoBeans.User(userName);
 	var mapManager = owner.getMapManager();
 	var that = CoEditor.mapsPanel;

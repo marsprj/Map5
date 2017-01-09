@@ -152,6 +152,7 @@ function initUser(username){
 	$(".tab-panel").removeClass("active");
 	$("#info_panel").addClass("active");
 	$("#user_title_name").html(username);
+	$(".user-name-title").html("[" + username + "]");
 
 
 	CoEditor.cookie.setCookie("username",username,"/Map5/App/coEditor/");
@@ -189,9 +190,24 @@ function register_callbacks(result){
 	if(result == "success"){
 		// 注册数据源
 		initUser(name);
+		registerDBSource();
 	}else{
 		$("#user_register_panel input[name='username']").next().html(result).addClass("active");
 		$("#user_register_panel input[name='username']").focus();
 	}
 }
 
+// 注册数据源
+function registerDBSource(){
+	var dbsManager = user.getDBSManager();
+	var name = "bhdb";
+	var engine = "Postgres";
+	var constr = "server=192.168.111.160;instance=5432;database=bhdb;user=postgres;password=qwer1234;encoding=GBK"
+	var type = "feature";
+	dbsManager.registerDataSource(name,engine,constr,type,registerDBSource_callback);
+}
+
+// 注册数据源回调函数
+function registerDBSource_callback(result){
+	console.log(result);
+}

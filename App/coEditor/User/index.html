@@ -23,6 +23,7 @@
 <script type="text/javascript" src="../js/Notify.js"></script>
 <script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript" src="../js/Cookie.js"></script>
+<script type="text/javascript" src="../js/TaskManager.js"></script>
 
 
 <script type="text/javascript" src="js/user.js"></script>
@@ -42,6 +43,7 @@
 	// 管理员
 	var authServer = "/ows/admin/mgr";
 	var authManager = new GeoBeans.AuthManager(authServer);
+	var taskManager = new CoEditor.TaskManager();
 	function init(){
 		CoEditor.cookie = new CoEditor.Cookie();
 		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
@@ -109,7 +111,7 @@
 	<div class="tab-panel" id="info_panel">
 		<div id="header_panel">
 			<div id="logo_panel"></div>
-			<div id="title_panel" class="title_font"><span class="user-name-title">[radi]</span>管理系统</div>
+			<div id="title_panel" class="title_font"><span class="user-name-title"></span>管理系统</div>
 			<div id="user_title">
 				用户：<span id="user_title_name"></span>
 				<a href="javascript:void(0)" id="user_logout">退出</a>
@@ -212,7 +214,7 @@
 							<div id="maps_list_panel">
 								<div class="content-title">
 									<span class="glyphicon glyphicon-globe"></span>
-									<span>地图列表</span>
+									<span>任务列表</span>
 									<span class="glyphicon glyphicon-chevron-down maps-coll-icon" data-toggle="tooltip" data-placement="top" data-original-title="收起"></span>
 								</div>
 								<div class="list-main-panel">

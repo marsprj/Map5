@@ -46,7 +46,7 @@ CoEditor.AllMapsPanel.prototype.getMaps = function(){
 	this._panel.find("#maps_right_panel").removeClass("active");
 	this._panel.find(".pagination").empty();
 	CoEditor.notify.loading();
-	// mapManager.getMaps(this.getMaps_callback);
+	this.clearJoinTaskObj();
 	taskManager.describeTask(null,null,this.describeTask_callback);
 }
 
@@ -240,6 +240,7 @@ CoEditor.AllMapsPanel.prototype.showMaps = function(startIndex,endIndex){
 		var map = task.map;
 		var owner = task.owner; 
 		var taskName = task.name;
+		var taskID = task.id;
 		var mapName = map.name;
 		var thumbnail = map.thumbnail;
 		var aHtml = "";
@@ -249,7 +250,8 @@ CoEditor.AllMapsPanel.prototype.showMaps = function(startIndex,endIndex){
 		}else{
 			aHtml = 	"	<a href='javascript:void(0)' class='map-thumb'></a>";
 		}
-		html += "<li class='maps-thumb' tname='" + taskName + "' mname='" + mapName + "' owner='" + owner + "'>"
+		html += "<li class='maps-thumb' tname='" + taskName + "' mname='" + mapName 
+			+ "' owner='" + owner + "' tid='" + taskID + "'>"
 			+	aHtml
 			+ 	"	<div class='caption text-center'>"
 			+ 	"		<h6>" + taskName + "</h6>"
@@ -273,11 +275,10 @@ CoEditor.AllMapsPanel.prototype.showMaps = function(startIndex,endIndex){
 		var taskName = $(this).parents(".maps-thumb").attr("tname");
 		var owner = $(this).parents(".maps-thumb").attr("owner");
 		var mapName = $(this).parents(".maps-thumb").attr("mname");
-
-		// 需要一个id
+		var taskID = $(this).parents(".maps-thumb").attr("tid");
 
 		that._taskObj = {
-			taskID : 8,
+			taskID : taskID,
 			taskName : taskName,
 			mapName : mapName,
 			owner : owner
