@@ -13,6 +13,10 @@ CoEditor.LoginDialog = CoEditor.Class({
 CoEditor.LoginDialog.prototype.show = function(){
 	this.cleanup();
 	this._panel.modal();
+	var that = this;
+	that._panel.on('shown.bs.modal',function(){
+		that._panel.find("input[name='username']").focus();
+	});
 }
 
 // 隐藏

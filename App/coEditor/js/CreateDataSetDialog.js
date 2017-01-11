@@ -15,6 +15,10 @@ CoEditor.CreateDataSetDialog = CoEditor.Class({
 CoEditor.CreateDataSetDialog.prototype.show = function(){
 	this.cleanup();
 	this._panel.modal();
+	var that = this;
+	that._panel.on("shown.bs.modal",function(){
+		that._panel.find("#dataset_name").focus();
+	});
 }
 
 // 隐藏

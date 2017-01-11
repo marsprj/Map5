@@ -111,12 +111,6 @@ ul{
 	margin-left: 20px;
 	color: #fff;
 }
-/*#main_panel{
-	position: absolute;
-    height: calc(100% - 60px);
-    width: 100%;
-    top: 60px;
-}*/
 
 #left_panel{
 	float: left;
@@ -806,7 +800,6 @@ ul{
     overflow: hidden;
     margin: 0 auto;
 }
-
 
 #register_dialog  .user-tab-info{
     margin: 5px 0px 15px;

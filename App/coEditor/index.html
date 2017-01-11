@@ -47,50 +47,24 @@
 	var mapObj = null;
 	var drawer = null;
 
-	// wfs地址
-	var url = "/ows/radi/mgr?";
-
-	// wfs数据库
-	var db = "gisdb";
-
+	// 当前编辑的图层
 	var layerCur = null;
+
 	// 当前编辑的要素
 	var featureCur = null;
 
 	// 新增的要素
 	var featureNew = null;
 
-	// 当前的绘制几何图形
-	var geometry = null;
-
 	// 用户
 	var user = null;
-
-	// 每页显示的个数
-	var listCount = 20;
-
-
-	// 是否仅获取当前用户的数据
-	var userOnly = false;
-
-
-	// 列表要素
-	var featuresList = null;
-
-	// 当前页码
-	var currentPage = 1;
-
-	// 所有页码
-	var pageCount = null;
-
-	
-	
 
 	// 管理员
 	var authServer = "/ows/admin/mgr";
 	var authManager = new GeoBeans.AuthManager(authServer);
 
 	var taskManager = new CoEditor.TaskManager();
+	
 	function init(){
 		CoEditor.cookie = new CoEditor.Cookie();
 		CoEditor.notify = new CoEditor.Notify("container","alert_loading");
@@ -103,12 +77,6 @@
 		CoEditor.register_dialog = new CoEditor.RegisterDialog("register_dialog");
 		CoEditor.styleControl = new CoEditor.StyleControl();
 		addAccountEvent();
-	 	// loadMap();
-	 	// addDrawInteraction();
-	 	// loadLayersList();
-	 	// addPanelEvent();
-	 	// addMapEvent();
-
 	}
 
 
@@ -210,9 +178,9 @@
 				</div>
 				<div id="toolbar">
 					<div class="btn-group btn-group-lg">
-						<button type="button" class="btn btn-default normal" id="draw_marker">点</button>
+						<!-- <button type="button" class="btn btn-default normal" id="draw_marker">点</button>
 						<button type="button" class="btn btn-default" id="draw_line">线</button>
-						<button type="button" class="btn btn-default" id="draw_polygon">面</button>
+						<button type="button" class="btn btn-default" id="draw_polygon">面</button> -->
 					</div>
 				</div>
 				<div id="map_base_div">
@@ -342,55 +310,6 @@
 						<span style="font-size:14px">图层</span>
 					</div>
 					<div class="map-info-layers">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- 用户面板 -->
-	<div class="tab-panel" id="user_panel">
-		<div class="user-panel-title">
-		</div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-7">
-				</div>
-				<div class="col-md-5">
-					<div class="user-tab-panel active" id="user_login_panel">
-						<div class="user-tab-panel-title">用户登录</div>
-						<form>
-							<input class="login-form-input" type="text" name="username" placeholder="用户名">
-							<span class="user-tab-info">请输入用户名</span>
-							<input class="login-form-input" type="password" name="password" placeholder="密码">
-							<span class="user-tab-info">请输入密码</span>
-							<div class="form-group">
-								<div class="col-md-6">
-									<a href="javascript:void(0)" class="login-btn"></a>
-								</div>
-								<div class="col-md-6">
-									<a href="javascript:void(0)" class="register-btn"></a>
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="user-tab-panel" id="user_register_panel">
-						<div class="user-tab-panel-title">用户注册</div>
-						<form>
-							<input class="register-form-input" type="text" name="username" placeholder="用户名">
-							<span class="user-tab-info">请输入用户名</span>
-							<input class="register-form-input" type="password" name="password" placeholder="密码">
-							<span class="user-tab-info">请输入密码</span>
-							<input class="register-form-input" type="password" name="repassword" placeholder="再次输入密码">
-							<span class="user-tab-info">请再次输入密码</span>
-							<div class="form-group">
-								<div class="col-md-6 col-md-offset-3">
-									<a href="javascript:void(0)" class="register-btn"></a>
-								</div>
-								<div class="col-md-2">
-									<a href="javascript:void(0)" class="return-login">返回</a>
-								</div>
-							</div>
-						</form>
 					</div>
 				</div>
 			</div>
@@ -577,6 +496,7 @@
 			<span>#{text}</span>
 		</div>
 	</div>
+
 	<!-- loading panel -->
 	<div class="screen-alert" id="alert_loading">
 		<span>Please wait ...</span>

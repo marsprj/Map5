@@ -672,6 +672,7 @@ CoEditor.MapPanel.prototype.showFeatures = function(features){
 	var username = null;
 	var geometryType = layerCur.getGeometryType();
 	var	icon = this.getGeometryIcon(geometryType);
+	var geometry = null;
 
 	for(var i=0; i < features.length;++i){
 		feature = features[i];

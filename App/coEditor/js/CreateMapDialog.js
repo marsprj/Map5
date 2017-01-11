@@ -32,8 +32,11 @@ CoEditor.CreateMapDialog.prototype.registerPanelEvent = function(){
 // 显示
 CoEditor.CreateMapDialog.prototype.show = function(){
 	this.cleanup();
-	this._panel.find("#task_name").focus();
 	this._panel.modal();
+	var that = this;
+	this._panel.on("shown.bs.modal",function(){
+		that._panel.find("#task_name").focus();
+	});
 }
 
 // 隐藏
@@ -62,12 +65,10 @@ CoEditor.CreateMapDialog.prototype.createMap = function(mapName){
 };
 
 CoEditor.CreateMapDialog.prototype.createMap_callback = function(result){
-	// CoEditor.notify.showInfo("新建任务",result.toString());
 	if(result != "success"){
 		return;
 	}
 	var that = CoEditor.create_map_dialog;
-	// that.initNewMap();
 	that.createTask();
 }
 

@@ -11,6 +11,10 @@ CoEditor.RegisterDialog = CoEditor.Class({
 CoEditor.RegisterDialog.prototype.show = function(){
 	this.cleanup();
 	this._panel.modal();
+	var that = this;
+	that._panel.on('shown.bs.modal',function(){
+		that._panel.find("input[name='username']").focus();
+	});
 };
 
 CoEditor.RegisterDialog.prototype.hide = function(){
