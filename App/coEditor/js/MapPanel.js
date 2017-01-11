@@ -990,7 +990,7 @@ CoEditor.MapPanel.prototype.saveFeature = function(){
 	var geometryName = source.getGeometryName();
 	if(featureNew != null){
 		featureNew.setValue(geometryName,featureNew.geometry);
-		featureNew.setValue("username",userName);
+		featureNew.setValue("username",user.name);
 		featureNew.setValue("updatetime",dateStr);
 		featureNew.setValue("checked","0");
 	}else if(featureCur != null){

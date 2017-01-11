@@ -18,9 +18,53 @@ ul{
     margin: 5px;	
     list-style-type: none;
 }
+.modal {
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+    .modal:before {
+        display:inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%
+    }
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+    margin-top: 40px
+}
+.modal-open .modal {
+    overflow-y: hidden!important;
+}
 .modal-backdrop.in{
 	z-index: -1;
 }
+.modal.fade .modal-dialog {
+    -webkit-transform: scale(.1);
+    -moz-transform: scale(.1);
+    -ms-transform: scale(.1);
+    transform: scale(.1);
+    top: : 200px;
+    opacity: 0;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s
+}
+
+.modal.fade.in .modal-dialog {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform: translate3d(0,-200px,0);
+    transform: translate3d(0,-200px,0);
+    opacity: 1
+}
+
 
 #header_panel {
     height: 60px;
@@ -50,7 +94,7 @@ ul{
     text-shadow: 2px 0 0 #000;
 }
 
-#user_title,#user_login{
+#user_title,#user_login,#user_register{
 	float: right;
     height: 20px;
     line-height: 20px;
@@ -60,6 +104,9 @@ ul{
     top: 10px;	
 }
 
+#user_login{
+    right: 60px;
+}
 #user_logout{
 	margin-left: 20px;
 	color: #fff;
@@ -628,6 +675,10 @@ ul{
 }
 
 /*-------create dataset dialog--------*/
+#create_dataset_dialog .modal-dialog{
+    margin-top: 300px;
+}
+
 #dataset_fields_form{
 	border: 1px dotted #ccc;
 	height: 400px;
@@ -673,7 +724,6 @@ ul{
 
 /*-------login dialog--------*/
 #login_dialog .modal-dialog{
-    top: 200px;
     width: 500px;
 }
 
@@ -714,4 +764,51 @@ ul{
 
 #login_dialog .login-btn:hover {
     background-image: url(../images/ee.png);
+}
+
+
+/*-------register dialog--------*/
+#register_dialog .modal-dialog{
+    width: 500px;
+}
+
+#register_dialog .modal-body{
+    padding: 30px;
+}
+
+#register_dialog form input{
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    border-radius: 6px;
+    border: 2px solid #efe3e3;
+    background-color: transparent;
+    font-size: 16px;
+    margin: 0 0px 0px;
+    padding: 6px;
+}
+
+#register_dialog .register-btn {
+    background-image: url(../images/ff.png);
+    margin-right: 23px;
+}
+
+#register_dialog .register-btn:hover {
+    background-image: url(../images/gg.png);
+}
+
+#register_dialog .form-group a {
+    display: block;
+    width: 137px;
+    height: 42px;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+
+#register_dialog  .user-tab-info{
+    margin: 5px 0px 15px;
+    width: 100%;
 }

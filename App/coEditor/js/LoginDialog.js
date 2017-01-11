@@ -22,6 +22,7 @@ CoEditor.LoginDialog.prototype.hide =function(){
 
 CoEditor.LoginDialog.prototype.cleanup = function(){
 	this._panel.find("input[name='username'],input[name='password']").val("");
+	this._panel.find("input").next().removeClass("active");
 }
 CoEditor.LoginDialog.prototype.registerPanelEvent = function(){
 	var that = this;
@@ -68,7 +69,7 @@ CoEditor.LoginDialog.prototype.login_callback = function(result){
 		var username = that._panel.find("input[name='username']").val();
 		that.loginUser(username);
 	}else{
-		that._panel.find("input[name='password']").next().html("密码错误").addClass("active");
+		that._panel.find("input[name='password']").next().html(result).addClass("active");
 		that._panel.find("input[name='password']").focus();
 	}
 }
@@ -81,7 +82,7 @@ CoEditor.LoginDialog.prototype.loginUser = function(username){
 	this.hide();
 	user = new GeoBeans.User(username);
 	$("#user_title").show();
-	$("#user_login").hide();
+	$("#user_login,#user_register").hide();
 	$("#user_title_name").html(username);
 	$(".tab-panel").removeClass("active");
 	$("#content_panel").addClass("active");
@@ -96,6 +97,31 @@ CoEditor.LoginDialog.prototype.loginUser = function(username){
 		CoEditor.mapsPanel.getMaps();
 	}else{
 		var taskID = taskObj.taskID;
-		taskManager.joinTask(username,taskID,joinTask_callback);
+		CoEditor.notify.loading();
+		taskManager.joinTask(username,taskID,this.joinTask_callback);
 	}
+}
+
+// 加入任务回调
+CoEditor.LoginDialog.prototype.joinTask_callback = function(result){
+	CoEditor.notify.showInfo("加入任务",result);
+	if(result != "success"){
+		CoEditor.allMapsPanel.clearJoinTaskObj();
+		CoEditor.mapsPanel.getMaps();
+		return;
+	}
+	var taskObj = CoEditor.allMapsPanel.getJoinTaskObj();
+	if(taskObj == null){
+		return;
+	}
+	var mapName = taskObj.mapName;
+	var userName = taskObj.owner;
+	
+	CoEditor.allMapsPanel.clearJoinTaskObj();
+	var owner = new GeoBeans.User(userName);
+	var mapManager = owner.getMapManager();
+	var that = CoEditor.mapsPanel;
+	var mapPanel = CoEditor.mapPanel;
+	mapPanel.setOwner(userName);
+	mapManager.getMapObj(mapName,that.initMap_callback);	
 }

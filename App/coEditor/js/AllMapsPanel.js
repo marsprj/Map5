@@ -35,7 +35,7 @@ CoEditor.AllMapsPanel.prototype.show = function(){
 	$(".content-panel").removeClass("active");
 	this._panel.addClass("active");
 	$("#user_title").hide();
-	$("#user_login").show();
+	$("#user_login,#user_register").show();
 	this.getMaps();
 }
 

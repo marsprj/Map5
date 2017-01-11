@@ -27,6 +27,7 @@
 <script type="text/javascript" src="js/CreateDataSetDialog.js"></script>
 <script type="text/javascript" src="js/CreateMapDialog.js"></script>
 <script type="text/javascript" src="js/LoginDialog.js"></script>
+<script type="text/javascript" src="js/RegisterDialog.js"></script>
 <script type="text/javascript" src="js/StyleControl.js"></script>
 <script type="text/javascript" src="js/Notify.js"></script>
 <script type="text/javascript" src="js/TaskManager.js"></script>
@@ -99,6 +100,7 @@
 		CoEditor.create_dataset_dlg = new CoEditor.CreateDataSetDialog("create_dataset_dialog");
 		CoEditor.create_map_dialog = new CoEditor.CreateMapDialog("create_map_dialog");
 		CoEditor.login_dialog = new CoEditor.LoginDialog("login_dialog");
+		CoEditor.register_dialog = new CoEditor.RegisterDialog("register_dialog");
 		CoEditor.styleControl = new CoEditor.StyleControl();
 		addAccountEvent();
 	 	// loadMap();
@@ -124,6 +126,7 @@
 			</div>
 			<div id="login_title">
 				<a href="javascript:void(0)" id="user_login">登录</a>
+				<a href="javascript:void(0)" id="user_register">注册</a>
 			</div>
 		</div>
 		<!-- 标绘面板 -->
@@ -536,6 +539,33 @@
 	      		</div>
 	      	</div>
 	     </div>
+	</div>
+
+	<!-- 注册对话框 -->
+	<div class="modal fade" id="register_dialog" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="true">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	     		<div class="modal-header">
+	       			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">注册</h4>
+	      		</div>
+	      		<div class="modal-body">
+      				<form>
+						<input class="register-form-input" type="text" name="username" placeholder="用户名">
+						<span class="user-tab-info">请输入用户名</span>
+						<input class="register-form-input" type="password" name="password" placeholder="密码">
+						<span class="user-tab-info">请输入密码</span>
+						<input class="register-form-input" type="password" name="repassword" placeholder="再次输入密码">
+						<span class="user-tab-info">请再次输入密码</span>
+						<div class="form-group" style="height: 20px">
+							<div class="col-md-6 col-md-offset-3">
+								<a href="javascript:void(0)" class="register-btn"></a>
+							</div>
+						</div>
+					</form>
+	      		</div>
+	      	</div>
+	    </div>
 	</div>
 
 	<!-- Notify  -->
