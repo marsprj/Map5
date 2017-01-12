@@ -244,8 +244,7 @@ GeoBeans.Interaction.Select.prototype.selectByLine = function(){
 			var handler = {
 				target : that,
 				execute : function(features){
-					var selection = this.target._map.getSelection();
-					selection.setFeatures(features);
+					this.target.setSelection(features);
 				}
 			}
 			that._layer.query(query, handler);
@@ -344,8 +343,7 @@ GeoBeans.Interaction.Select.prototype.selectByPolygon = function(){
 			var handler = {
 				target : that,
 				execute : function(features){
-					var selection = this.target._map.getSelection();
-					selection.setFeatures(features);
+					this.target.setSelection(features);
 				}
 			}
 			that._layer.query(query, handler);
@@ -417,8 +415,7 @@ GeoBeans.Interaction.Select.prototype.selectByCircle = function(){
 			var handler = {
 				target : that,
 				execute : function(features){
-					var selection = this.target._map.getSelection();
-					selection.setFeatures(features);
+					this.target.setSelection(features);
 				}
 			}
 			that._layer.query(query, handler);
@@ -497,8 +494,7 @@ GeoBeans.Interaction.Select.prototype.selectByBBox = function(){
 			var handler = {
 				target : that,
 				execute : function(features){
-					var selection = this.target._map.getSelection();
-					selection.setFeatures(features);
+					this.target.setSelection(features);
 				}
 			}
 			that._layer.query(query, handler);
