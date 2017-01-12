@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -151,7 +150,11 @@
 	}
 
 	function removeLayer(layerName){
+
+		// 1、地图删除图层
 		mapObj.removeLayer(layerName);
+
+		// 2、地图刷新
 		mapObj.refresh();
 	}
 </script>

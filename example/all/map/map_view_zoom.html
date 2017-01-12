@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -166,13 +165,11 @@
 	}
 
 	function setZoom(){
-
 		// 设置级别
 		mapObj.zoomTo(10);
 	}
 
 	function getZoom(){
-
 		// 返回级别
 		var level = mapObj.getViewer().getZoom();
 		
@@ -180,14 +177,18 @@
 	}
 
 	function setMaxZoom(){
+		// 1、获取地图的视图
 		var viewer = mapObj.getViewer();
 
+		// 2、设置最大缩放级别
 		viewer.setMaxZoom(10);
 	}
 
 	function setMinZoom(){
+		// 1、获取地图的视图
 		var viewer = mapObj.getViewer();
 
+		// 2、设置最小的缩放级别
 		viewer.setMinZoom(3);
 	}
 </script>

@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -133,9 +132,17 @@
 	}
 
 	function onSetMinMaxZoom(){
+
+		// 1、获取地图的底图图层
 		var layer = mapObj.getBaseLayer();
+		
+		// 2、图层获取数据源
 		var source = layer.getSource();
+
+		// 3、设置最小的缩放级别
 		source.setMinZoom(2);
+
+		// 4、设置最大的缩放级别
 		source.setMaxZoom(4);
 	}
 

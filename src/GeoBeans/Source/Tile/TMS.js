@@ -1,6 +1,6 @@
 /**
  * @classdesc
- * Tile Map Service(TMS)格式的而数据源。
+ * Tile Map Service(TMS)格式的数据源。
  *
  *	var layer = new GeoBeans.Source.Tile.TMS({,
  *		url: "http://a.tile.openstreetmap.org/",

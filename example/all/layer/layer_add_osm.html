@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -142,9 +141,6 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
@@ -153,7 +149,7 @@
 			layers :[
 				new GeoBeans.Layer.TileLayer({
 					name   : "osm",
-					"source" : new GeoBeans.Source.Tile.OSM({
+					"source" : new GeoBeans.Source.Tile.OSM({   		// 数据源为OSM
 						srs: GeoBeans.Proj.WebMercator,
 					}),
 			 		"opacity" : 1.0,

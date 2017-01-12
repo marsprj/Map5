@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -141,15 +140,13 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
 			srs  : GeoBeans.Proj.WebMercator,
 			baseLayer : "world",
 			layers :[
+				// 定义一个瓦片图层，数据源为AMap高德地图
 				new GeoBeans.Layer.TileLayer({
 					name   : "world",
 					source : new GeoBeans.Source.Tile.AMap({
@@ -164,22 +161,6 @@
 	            zoom : 2,
 	        }
 		});
-		if(mapObj == null){
-			return;
-		}
-		
-
-		var amapLayer = new GeoBeans.Layer.TileLayer({
-			name   : "world",
-			source : new GeoBeans.Source.Tile.AMap({
-				srs: GeoBeans.Proj.WebMercator,
-			}),
-	 		opacity : 1.0,
-	 		visible : true
-		});
-
-
-		mapObj.addLayer(amapLayer);
 
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}

@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -127,10 +126,10 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
+
 	function  init(){
 		
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		
+		// 1、定义地图变量
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
@@ -139,20 +138,22 @@
 		if(mapObj == null){
 			return;
 		}
-		
+			
+		// 2、定义瓦片图层，数据源为QuadServer类型
 		var layer = new GeoBeans.Layer.TileLayer({
-			"name" : "world",
-			"source" : new GeoBeans.Source.Tile.QuadServer({
-	 			"url" : "/QuadServer/maprequest",
-	 			"imageSet" : "world_vector"
+			"name" : "world", 									// 图层名称
+			"source" : new GeoBeans.Source.Tile.QuadServer({    // 数据源为QuadServer类型
+	 			"url" : "/QuadServer/maprequest", 				// 地址
+	 			"imageSet" : "world_vector"                     // 图层名称
 	 		}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
+	 		"opacity" : 1.0,  									// 透明度
+	 		"visible" : true									// 是否显示
 		});
 
+		// 3、添加该图层
 		mapObj.addLayer(layer);
 		
-		// 5、设置中心点和显示级别
+		// 4、设置中心点和显示级别
 		var zoom = 3;
 		var center = new GeoBeans.Geometry.Point(0,0);
 		mapObj.zoomTo(zoom,center);

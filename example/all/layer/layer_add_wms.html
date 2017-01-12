@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -134,23 +133,24 @@
 	}
 
 	function addWmsLayer(){
+		// 1、定义一个栅格图层，数据源为WMS类型
 		wmsLayer = new GeoBeans.Layer.RasterLayer({			
-			"name" : "world",
-			"source" : new GeoBeans.Source.Raster.WMS({
-				"url" : "/geoserver/radi/ows?",
-				"version" : "1.1.0",
-				"layers"  : [
-						"radi:cities_2"
-				],//["cities","rivers","country"],
-				/*"styles"  : ["point" ,"line",  "polygon"],*/
-				"format"  : "image/png",
-				"srs"	  : "EPSG:4326",
-				"transparent": true
+			"name" : "world",									// 图层名称
+			"source" : new GeoBeans.Source.Raster.WMS({ 		// 图层的数据源
+				"url"		: "/geoserver/radi/ows?", 			// WMS数据源的地址
+				"version" 	: "1.1.0", 							// 版本
+				"layers"  	: ["country_2","rivers_2","cities_2"], // 图层列表
+				"styles"  	: ["polygon","line", "point"], 		// 图层对应的样式名称
+				"format"  	: "image/png", 						// WMS图层的格式
+				"srs"	  	: "EPSG:4326",						// 投影
+				"transparent": true 							// 图层是否透明
 			})
 		});
 
-		// 4、添加图层
+		// 2、添加图层
 		mapObj.addLayer(wmsLayer);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 

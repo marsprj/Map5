@@ -127,7 +127,7 @@
 	
 	var mapObj = null;
 	function  init(){
-		
+		// 在地图初始化的时候，对地图的范围进行设置，区分与地图视图中的显示范围
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
@@ -144,22 +144,19 @@
 			 		"visible" : true
 				}),new GeoBeans.Layer.FeatureLayer({			
 					"name" : "country",
-					"geometryType" : GeoBeans.Geometry.Type.LINESTRING,
+					"geometryType" : GeoBeans.Geometry.Type.POLYGON,
 					"source" : new GeoBeans.Source.Feature.WFS({
 						"url" : "/geoserver/radi/ows?",
 						"version" : "1.0.0",
 						"featureNS" : 'http://www.radi.ac.cn',
 						"featurePrefix" : "radi",
-						"featureType" : "rivers_2",
+						"featureType" : "country_2",
 						"geometryName" : "shape",
 						"outputFormat": "GML2"
 					})
 				})
 			],
 			viewer : {
-	            // 当前显示的范围
-	            // extent : new GeoBeans.Envelope(113.8996,22.51120,114.0077,22.5628),
-	            // extent : new GeoBeans.Envelope(-180,-90,180,90),
 	            zoom : 15,
 	            center : new GeoBeans.Geometry.Point(113.953640,22.5370180),
 	            minZoom : 4,		// 初始化的时候设定最小级别

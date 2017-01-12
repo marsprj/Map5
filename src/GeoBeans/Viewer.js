@@ -44,19 +44,6 @@ GeoBeans.Viewer = GeoBeans.Class({
 	_tolerance : null,
 	
 	
-	// initialize : function(map,options){
-	// 	this._map = map;
-	// 	if(isValid(options)){
-	// 		this._extent = options.extent;
-	// 		// this._viewer = options.viewer;
-	// 		// if(this._viewer == null){
-	// 		// 	this._viewer = this._extent;
-	// 		// }
-	// 		// this.setViewer(this._viewer);
-	// 		this.setExtent(this._extent);	
-	// 	}
-	// }
-
 	initialize : function(options){
 		if(!isValid(options)){
 			return;

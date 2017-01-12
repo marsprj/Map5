@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -142,24 +141,23 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
 			srs  : GeoBeans.Proj.WebMercator,
 			baseLayer : "osm",
 			layers :[
+				// 定义一个瓦片图层
 				new GeoBeans.Layer.TileLayer({
-					name   : "osm",
-					"source" : new GeoBeans.Source.Tile.TMS({
-						url : "http://a.tile.openstreetmap.org/",
-						srs: GeoBeans.Proj.WebMercator,
-						format : "image/png"
+					name   : "osm",      							// 图层名称
+					source : new GeoBeans.Source.Tile.TMS({ 		// Tile Map Service(TMS)
+																	// 格式的数据源
+						url : "http://a.tile.openstreetmap.org/", 	// 数据源地址
+						srs: GeoBeans.Proj.WebMercator, 			// 投影
+						format : "image/png" 						// 瓦片格式
 					}),
-			 		"opacity" : 1.0,
-			 		"visible" : true
+			 		opacity : 1.0, 									// 图层透明度，默认是1.0	
+			 		visible : true 									// 是否显示，默认显示
 				})
 			],
 			viewer : {

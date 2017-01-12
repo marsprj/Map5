@@ -6,7 +6,6 @@
 
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -132,23 +131,29 @@
 	}
 
 	function show(){
+		// 设置导航条的显示状态
 		mapObj.enableNavControl(true);
 	}
 
 	function hide(){
-
+		// 设置导航条的显示状态
 		mapObj.enableNavControl(false);
 	}
+
 	function setPosition(){
 		// 默认位置为右下角
 
 		// 两个参数分别为left和top
 		// left>=0,参考线为地图的左侧，left<0 ,参考线为右侧
 		// top>=0,参考线为地图的顶部，top<0,参考线为底部
+
+		// 1、根据类型获取导航条
 		var navControl = mapObj.getControl(GeoBeans.Control.Type.NAV);
 		if(navControl == null){
 			return;
 		}
+
+		// 2、设置导航条的位置
 		navControl.setPosition(10,-10);
 	}
 </script>

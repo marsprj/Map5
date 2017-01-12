@@ -6,8 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../../src/depends/echarts-all.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -134,27 +132,26 @@
 
 	function addWfsLayer(){
 
+		// 1、定义一个要素图层，其中数据源是WFS类型的
 		wfsLayer = new GeoBeans.Layer.FeatureLayer({			
-			"name" : "country",
-			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
-			"source" : new GeoBeans.Source.Feature.WFS({
-				"url" : "/geoserver/radi/ows?",
-				"version" : "1.0.0",
-				"featureNS" : 'http://www.radi.ac.cn',
-				"featurePrefix" : "radi",
-				"featureType" : "country_2",
-				"geometryName" : "shape",
-				"outputFormat": "GML2"
+			"name" : "country",									// 图层的名称
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON,  	// 图层的几何类型
+			"source" : new GeoBeans.Source.Feature.WFS({      	// 图层的数据源为WFS类型
+				"url" : "/geoserver/radi/ows?",					// WFS数据源地址
+				"version" : "1.0.0", 							// 版本
+				"featureNS" : 'http://www.radi.ac.cn', 			
+				"featurePrefix" : "radi", 						
+				"featureType" : "country_2", 					// 添加的要素名称
+				"geometryName" : "shape", 						// 该要素空间字段的名称
+				"outputFormat": "GML2"							// 输出形式
 			}),		
-			"style" : createSimplePolygonStyle()
+			"style" : createSimplePolygonStyle() 				// 图层的样式
 		});
 
+		// 2、添加图层
 		mapObj.addLayer(wfsLayer);
 
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.zoomTo(zoom,center);
-
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 

@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -129,10 +128,7 @@
 	var image  = null;
 	function  init(){
 		
-		//1.设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-		
-		//2.初始化地图变量，参数分别为:
+		//1、初始化地图变量，参数分别为:
 		//地图的容器为"mapDiv",地图名称"map"，地图范围，地图的空间参考，4326为经纬度
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
@@ -144,7 +140,7 @@
 			return;
 		}
 
-		// 3、第一个图层
+		// 2、第一个图层
 		vector = new GeoBeans.Layer.TileLayer({
 			"name" : "vector",
 			"source" : new GeoBeans.Source.Tile.QuadServer({
@@ -155,7 +151,7 @@
 	 		"visible" : true
 		});
 
-		// 4、第二个图层
+		// 3、第二个图层
 		image = new GeoBeans.Layer.TileLayer({
 			"name" : "trans",
 			"source" : new GeoBeans.Source.Tile.QuadServer({
@@ -166,20 +162,22 @@
 	 		"visible" : true
 		});		
 
-		// 5、添加图层
+		// 4、添加图层
 		mapObj.addLayers([vector,image]);
 		
-		//6.设置中心点和显示级别
+		// 5、设置中心点和显示级别
 		var zoom = 3;
 		var center = new GeoBeans.Geometry.Point(0,0);
 		mapObj.zoomTo(zoom,center);
 	}
 
 	function onOpacity(){
-		// 设置图层的隐藏
+		
+		// 1、设置图层的隐藏
 		var opacity = document.getElementById("opacity").value;
 		image.setOpacity(opacity);
-		// 刷新地图
+		
+		// 2、刷新地图
 		mapObj.refresh();
 	}
 </script>

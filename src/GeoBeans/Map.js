@@ -4,7 +4,7 @@
  * Map５地图控件由GeoBeans.Map类实现。由{@link GeoBeans.Layer}、{@link GeoBeans.Source}、{@link GeoBeans.Viewer}、{@link GeoBeans.Widget}等４个主要类构成。此外包含{@link GeoBeans.Control}和{@link GeoBeans.Interaction}实现Map控件的控制和用户交互。
  * 下面是Map5的一个简单示例，实现基本的地图显示。
  * 1) 编写显示Map的HTML页面。Map5需要一个div作为地图的容器，设置div的id为mapDiv。此id将作为Map的target参数，用于Map设置Map对象的容器。
- * 2) 将Map5的引用添加到HTMl页面上。
+ * 2) 将Map5的引用添加到HTML页面上。
  * 
  * 	<html>
  * 		<head>
@@ -13,7 +13,6 @@
  * 			<link rel="stylesheet" type="text/css" href="/lib/css/Map5.min.css">
  * 			
  * 			<script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
- * 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
  * 			<script type="text/javascript" src="lib/css/Map5.min.js"></script>
  * 			
  *    		<style type="text/css">
@@ -58,7 +57,6 @@
  * 						url : "http://127.0.0.1/Map5/example/all/data/geojson/countries.geojson",
  * 						geometryName : "geometry",
  *					}),
- *					style : createSimplePolygonStyle()
  *				})		
  *			],
  *			viewer : {

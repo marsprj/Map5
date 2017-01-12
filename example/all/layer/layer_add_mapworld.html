@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -140,9 +139,7 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
+		// 1、定义地图变量
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
@@ -152,40 +149,25 @@
 			return;
 		}
 		
-		// 3、添加一个图层
+		// 2、定义一个瓦片图层，数据源为天地图
 		var layer1 = new GeoBeans.Layer.TileLayer({
-			"name" : "vector",
-			"source" : new GeoBeans.Source.Tile.MapWorld({
-	 			"url" : "/DataServer?",
-	 			"imageSet" : /*"img", "cia", "vec",*/ "ter",
-	 			//"srs" : GeoBeans.Proj.WGS84,
-	 			"srs" : GeoBeans.Proj.WGS84,
+			"name" : "vector",  							// 图层名称
+			"source" : new GeoBeans.Source.Tile.MapWorld({  // 天地图数据源
+	 			"url" : "/DataServer?",						// 数据源地址
+	 			"imageSet" : /*"img", "cia", "vec",*/ "ter",// 数据名称 
+	 			"srs" : GeoBeans.Proj.WGS84, 				// 投影
 	 		}),
-	 		"opacity" : 1.0,
-	 		"visible" : true
+	 		"opacity" : 1.0,								// 透明度
+	 		"visible" : true								// 显示
 		});
 
-		// var layer3 = new GeoBeans.Layer.TileLayer2({
-		// 	"name" : "world",
-		// 	"source" : new GeoBeans.Source.Tile.MapWorld({
-	 // 			"url" : "/DataServer?",
-	 // 			"imageSet" : "cva_c"
-	 // 		}),
-	 // 		"opacity" : 1.0,
-	 // 		"visible" : true
-		// });
-
-		//layer1.setVisible(false);
-
-		// 添加图层
+		// 3、添加图层
 		mapObj.addLayer(layer1);
-		//mapObj.addLayer(layer2);
-		//mapObj.addLayer(layer3);
-		mapObj.setBaseLayer(layer1);
 
+		// 4、注册鼠标移动事件
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 
-		// 4、设置中心点和显示级别
+		// 5、设置中心点和显示级别
 		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);
 		mapObj.zoomTo(zoom,center);

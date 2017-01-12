@@ -6,7 +6,6 @@
 
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -142,9 +141,14 @@
 	function getCenter(){
 
 		// 返回中心点
-		var center = mapObj.getViewer().getCenter();
 
-		alert("当前地图的中心点是:" + center.x + "," + center.y);
+		// 1、获取地图的视图
+		var viewer = mapObj.getViewer();
+
+		// 2、获取地图的中心点
+		var center = viewer.getCenter();
+
+		alert("当前地图的中心点是:" + center.getX() + "," + center.getY());
 	}
 </script>
 <title>视图:设置地图中心点</title>

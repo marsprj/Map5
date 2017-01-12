@@ -176,10 +176,15 @@
 		mapObj.addLayer(wmsLayer);
 	}
 
-
+	// 添加图层面板控件，默认是没有的，可在图层面板中查看各个图层，并控制图层的显示状态
 	function addLayersWidget(){
+		// 1、定义图层面板控件
 		var layersWidget = new GeoBeans.Widget.LayersWidget(mapObj);
+
+		// 2、地图添加图层面板控件
 		mapObj.addWidget(layersWidget);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 </script>

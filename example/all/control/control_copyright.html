@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -131,22 +130,27 @@
 	// 地图变量
 	var mapObj = null;
 
-	// 版权控件
+	// 版权控件，默认显示
 	var widget = null;
 	function  init(){
 		loadTileMap();
+
+		// 根据类型获取版权控件
 		widget = mapObj.getWidget(GeoBeans.Widget.Type.COPYRIGHT);
 	}
 
 	function hide(){
+		// 设置版权控件不显示
 		widget.show(false);
 	}
 
 	function show(){
+		// 设置版权控件显示
 		widget.show(true);
 	}
 
 	function setContent(){
+		// 设置版权控件的内容
 		var content = "© <a href='http://www.geobeans.cn/' target='_blank'>GeoBeans</a> Map5地图 ";
 		widget.setContent(content);
 	}

@@ -6,8 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../../src/depends/echarts-all.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -145,8 +143,7 @@
 		// 		"featureType" : "country",
 		// 		"geometryName" : "shape",
 		// 		"outputFormat": "GML2",
-		// 		// "sourceName" : "gisdb"
-		// 		mapName : "1117"
+		// 		"sourceName" : "gisdb"
 		// 	}),		
 		// 	"style" : createSimplePolygonStyle()
 		// });
@@ -166,10 +163,6 @@
 			"style" : createSimplePolygonStyle()
 		});
 		mapObj.addLayer(wfsLayer);
-
-		var zoom = 3;
-		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.zoomTo(zoom,center);
 
 		mapObj.refresh();
 	}
