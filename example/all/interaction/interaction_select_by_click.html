@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -128,41 +127,39 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
+
 	var wfsLayer = null;
-	// function init(){
-	// 	loadMap();
-	// 	wfsLayer = mapObj.getLayer("country");
-	// 	createSelectInteraction();
-	// }
+
 	function init(){
 		loadCities();
 		wfsLayer = mapObj.getLayer("cities");
 		createSelectInteraction();
 	}
-	// function init(){
-	// 	loadRivers();
-	// 	wfsLayer = mapObj.getLayer("rivers");
-	// 	createSelectInteraction();
-	// }
-	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
-	 */
+
 	function createSelectInteraction(){
+		// 1、定义查询交互
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
 			"layer" : wfsLayer
 		});
+
+		// 2、定义查询交互的选择集发生变化事件
 		select.onchange(onSelectionChange);
+
+		// 3、地图增加交互
 		mapObj.addInteraction(select);
 
-		// 设置样式
+		// 4、获取地图的选择集
 		var selection = mapObj.getSelection();
+
+		// 5、定义样式
 		var symbolizer = createSymbolizer();
 
+		// 6、选择集设定样式
 		selection.setSymbolizer(symbolizer);
 	}
 
+	// onChange回调函数
 	function onSelectionChange(features){
 		console.log(features.length);
 	}

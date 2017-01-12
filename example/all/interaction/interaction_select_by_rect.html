@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -134,22 +133,25 @@
 		createSelectInteraction();
 	}
 
-	/**
-	 * [createSelectInteraction description]
-	 * @return {[type]} [description]
-	 */
+
 	function createSelectInteraction(){
+		// 1、定义地图交互
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
-			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.BBOX
+			"layer" : wfsLayer,     	// 查询图层
+			"condition" : GeoBeans.Interaction.SelectType.BBOX // 交互类型
 		});
+
+		// 2、定义查询交互的选择集发生变化事件
 		select.onchange(onSelectionChange);
+
+		// 3、添加查询交互
 		mapObj.addInteraction(select);
 	}
 
+	// onChange回调函数
 	function onSelectionChange(features){
-		//alert(features.length);
+		alert(features.length);
 	}
 
 </script>

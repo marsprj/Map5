@@ -6,8 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../../src/depends/echarts-all.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -132,26 +130,37 @@
 
 <script type="text/javascript">
 
+	var mapObj = null;
 	function  init(){
-		
 		loadTileMap();
 	}
 
 	function onGeoJSON(){
 
-		var url = "../data/geojson/point-samples.json";
+		// 1、定义一个GeoJson的数据源
+		var url = "../data/geojson/polygon-samples.geojson";
 		var source = new GeoBeans.Source.Feature.GeoJSON({
 			"url" : url,
 			"geometryName" : "geometry",
 		});
 
+		// 2、定义成功回调函数
 		var success = {
 			execute : function(features){
 				console.log(features.length);
-				//console.log("OK");
+
+				// 获取地图的选择集
+				var selection = mapObj.getSelection();
+
+				// 选择集中设置要素
+				selection.setFeatures(features);
+
+				// 地图刷新
+				mapObj.refresh();
 			}
 		}
 
+		// 3、获取要素
 		source.getFeatures(null,success);
 	}
 

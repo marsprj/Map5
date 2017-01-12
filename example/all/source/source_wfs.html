@@ -6,8 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../../src/depends/echarts-all.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -137,9 +135,10 @@
 	}
 
 	function addVectorLayer(){
-		//1.创建一个Feature类型的Source，该Source在内存中保存features。
+		// 1、创建一个Feature类型的Source，该Source在内存中保存features。
 		source = new GeoBeans.Source.Feature();
-		//2.以source为数据源，创建一个FeatureLayer。
+
+		// 2、以source为数据源，创建一个FeatureLayer。
 		vector = new GeoBeans.Layer.FeatureLayer({			
 			"name" : "country",
 			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
@@ -147,8 +146,10 @@
 			"style" : createSimplePolygonStyle()
 		});
 
+		// 3、添加图层
 		mapObj.addLayer(vector);
 
+		// 4、设置地图视图中心点和级别
 		var zoom = 3;
 		var center = new GeoBeans.Geometry.Point(0,0);
 		mapObj.zoomTo(zoom,center);
@@ -159,7 +160,7 @@
 	 * 然后将查询到Feature添加到vector图层上进行显示。
 	 */
 	function addFeatures(){
-		//1. 创建WFS数据源
+		// 1、创建WFS数据源
 		wfs = new GeoBeans.Source.Feature.WFS({
 			"url" : "/geoserver/radi/ows?",
 			"version" : "1.0.0",
@@ -169,24 +170,28 @@
 			"geometryName" : "shape",
 			"outputFormat": "GML2"
 		});
-		//2.定义查询结果的处理类，execute方法为处理函数
+
+		// 2、定义查询结果的处理类，execute方法为处理函数
 		var success = {
 			source: source,
 			execute : function(features){
 				//将查询结果添加到vector图层的source上。
 				this.source.addFeatures(features);
+				
 				//刷新地图，重绘图层。
 				mapObj.refresh();
 			}
 		}
 
-		//3.定义查询条件。
+		// 3、定义查询条件。
 		var query = createQuery(GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual);
-		//4.进行wfs查询
+
+		// 4、进行wfs查询
 		wfs.query(query, success);
 
 	}
 
+	// 定义查询，continent == Europe
 	function createQuery(oper){
 		
 		var prop = new GeoBeans.Expression.PropertyName();
@@ -205,19 +210,6 @@
 			"filter"	: filter
 		});
 		return query;
-	}
-
-	function addWFSLayer(){
-
-		wfs = new GeoBeans.Source.Feature.WFS({
-			"url" : "/geoserver/radi/ows?",
-			"version" : "1.0.0",
-			"featureNS" : 'http://www.radi.ac.cn',
-			"featurePrefix" : "radi",
-			"featureType" : "country_2",
-			"geometryName" : "shape",
-			"outputFormat": "GML2"
-		});
 	}
 
 	function createSimplePolygonStyle(){
