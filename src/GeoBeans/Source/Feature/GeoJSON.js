@@ -67,7 +67,9 @@ GeoBeans.Source.Feature.GeoJSON.prototype.getFeatures = function(filter, success
 
 			},
 			error	: function(e){
-				failure.execute("sss");
+				if(isValid(failure)){
+					failure.execute(e.statusText);
+				}
 			}
 		});
 	}
