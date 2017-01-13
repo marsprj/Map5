@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -131,26 +130,35 @@
 		loadMap();
 		vector = mapObj.getLayer("country");
 	}
+
 	function onQuery(){
-		//获取运算符
+
+		// 1、获取运算符
 		var oper = document.getElementById("oper").value;
-		//创建查询对象
+
+		// 2、创建查询对象
 		var query = createQuery(oper);
-		//定义查询结果回调函数,
-		//execute为回调函数接口
+
+		// 3、定义查询结果回调函数,
+		// execute为回调函数接口
 		var handler = {
 			execute : query_succeed
 		}
-		//执行查询
+		
+		// 4、执行查询
 		vector.query(query, handler);
 	}
+
+
 	function createQuery(oper){
 		// 1、定义字段
 		var prop = new GeoBeans.Expression.PropertyName();
 		prop.setName("continent");
+
 		// 2、定义查询值
 		var literal = new GeoBeans.Expression.Literal();
 		literal.setValue("Africa");
+
 		// 3、定义查询过滤条件
 		// 第一个参数为查询操作符
 		// 第二个和第三个分别为字段和查询值
@@ -158,11 +166,13 @@
 							oper,
 							prop,
 							literal);
+
 		// 4、创建查询对象
 		var query = new GeoBeans.Query({
 			"typeName"  : vector.getName(),
 			"filter"	: filter
 		});
+
 		return query;
 	}
 	//查询结果回调函数
@@ -213,7 +223,6 @@
 		<button onclick="onQuery()">查询</button>
 	</div>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:60px;"></div>
-	
 
 	<div id="result">
 	</div>

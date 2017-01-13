@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -137,26 +136,36 @@
 	}
 
 	function loadFeatureLayer(){
+		// 1、定义要素图层
 		var layer = new GeoBeans.Layer.FeatureLayer({
-			name : "rivers",
-			geometryType : GeoBeans.Geometry.Type.LINESTRING,
-			source : new GeoBeans.Source.Feature({
-				geometryName : "geometry"
+			name : "rivers", 									// 图层名称
+			geometryType : GeoBeans.Geometry.Type.LINESTRING,	// 图层的几何类型
+			source : new GeoBeans.Source.Feature({ 				// 数据源
+				geometryName : "geometry" 						// 几何字段名称
 			})
 		});
+
+		// 2、地图添加该图层
 		mapObj.addLayer(layer);
 
-		var source = layer.getSource();
-		var features = loadFeatures();
-		source.addFeatures(features);
-
+		// 3、图层设置样式
 		var style = createSimpleLineStyle();
 		layer.setStyle(style);
 
+		// 4、定义要素
+		var features = loadFeatures();
+
+		// 5、获取图层的数据源
+		var source = layer.getSource();
+		
+		// 6、设置数据源内的要素
+		source.addFeatures(features);
+
+		// 7、地图刷新
 		mapObj.refresh();
 	}
 
-
+	// 定义要素数组
 	function loadFeatures(){
 		var features = [];		
 		var length = g_riversValue.length;
@@ -170,6 +179,7 @@
 		return features;
 	}
 
+	// 创建要素
 	function createFeature(i, pairs){
 		// 使用wkt转换为geometry
 		var format = new GeoBeans.Format.WKT();
@@ -181,13 +191,14 @@
 		};
 
 		var feature = new GeoBeans.Feature({
-			fid : fid,
-			properties : values,
-			geometry : geometry
+			fid : fid,			// id 值
+			properties : values,// 字段和字段对应的值
+			geometry : geometry // 空间数据
 		});
 		return feature;
 	}
 
+	// 创建线样式
 	function createSimpleLineStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 		// 定义一个规则

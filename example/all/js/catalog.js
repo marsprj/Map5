@@ -243,7 +243,7 @@ var g_catalog = [
 				"link" : "query/query_set_maxfeatures.html"
 			},{
 				"name" : "(*)设置返回结果的偏移量",
-				"link" : "query_set_offset.html"
+				"link" : "query/query_set_offset.html"
 			},{
 				"name" : "(*)设置返回结果排序",
 				"link" : "query/query_set_orderby.html"

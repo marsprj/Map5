@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
+
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -133,19 +133,43 @@
 	
 	var vector = null;
 	function init(){
-		loadCities();
+		loadTileMap();
+		loadWFSLayer();
 		vector = mapObj.getLayer("cities");
 	}
 
 
+	// 加载WFS图层，注意是Ague支持的WFS图层，故而支持orderby
+	function loadWFSLayer(){
+		var wfsLayer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "cities",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/ows/user1/mgr?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "cities",
+				"geometryName" : "shape",
+				"outputFormat": "GML2",
+				"sourceName" : "gisdb"
+			}),		
+		});
+		mapObj.addLayer(wfsLayer);
+		mapObj.refresh();
+	}
+
 	function onQuery(){
-		//创建查询对象
+		// 1、创建查询对象
 		var query = createQuery();
-		//execute为回调函数接口
+
+		// 2、定义查询结果回调函数,
+		// execute为回调函数接口
 		var handler = {
 			execute : query_succeed
 		}
-		//执行查询
+
+		// 3、执行查询
 		vector.query(query, handler);
 	}	
 
