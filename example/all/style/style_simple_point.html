@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -132,7 +131,6 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
-	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
 		loadTileMap();
@@ -163,42 +161,48 @@
 		var style = createSimplePointStyle();
 		layer.setStyle(style);
 
+		// 4、地图刷新
 		mapObj.refresh();
 	}
 
 	/**
 	 * 创建简单点图层样式
-	 * @description feature包含status字段。status字段值为on绘制为紫色。status字段值为off绘制为黄色。
-	 * @return {[type]} [description]
 	 */
 	function createSimplePointStyle(){
+		// 1、定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
 
+		// 2、定义一个规则
+		var rule = new GeoBeans.Style.Rule();
+
+		// 3、定义一个点样式
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		//设置点大小
+
+		// 4、设置点大小
 		symbolizer.size = 6;
-		//设置点的填充颜色
+		
+		// 5、设置点的填充颜色
 		var fill   = symbolizer.fill;
 		fill.color.setHex('#800080',1);
 
-		//设置点的边界样式
+		// 6、设置点的边界样式
 		var stroke = symbolizer.stroke;
 		// 边框的颜色
 		stroke.color.set(0,255, 0,1);
 		// 边框的颜色
 		stroke.width = 1.0; 
 
-		var rule = new GeoBeans.Style.Rule();
+		// 7、定义该规则的样式
 		rule.symbolizer = symbolizer;
-		rule.filter = null;
 		
+		// 8、添加该项规则
 		style.addRule(rule);		
 
 		return style;
 	}
 
 </script>
-<title>要素图层：点素图</title>
+<title>图层样式：点样式</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">

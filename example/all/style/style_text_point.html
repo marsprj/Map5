@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -166,6 +165,7 @@
 		var style = createTextStyle();
 		layer.setStyle(style);
 
+		// 4、地图刷新
 		mapObj.refresh();
 	}
 
@@ -187,7 +187,6 @@
 
 		// 4、设置该规则的样式
 		rule.symbolizer = symbolizer;
-
 
 		// 5、定义一个文字样式
 		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
@@ -246,7 +245,7 @@
 	}
 
 </script>
-<title>要素图层：文字标注样式</title>
+<title>图层样式：文字标注样式</title>
 <body onload="init()">
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>

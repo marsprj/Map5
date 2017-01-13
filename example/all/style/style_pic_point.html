@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -155,7 +154,6 @@
 			})
 		});
 
-
 		// 2、添加图层
 		mapObj.addLayer(layer);
 
@@ -163,6 +161,7 @@
 		var style = createPicPointStyle();
 		layer.setStyle(style);
 
+		// 4、地图刷新
 		mapObj.refresh();
 	}
 
@@ -209,7 +208,7 @@
 	}
 
 </script>
-<title>样式：点图片样式</title>
+<title>图层样式：点图片样式</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
