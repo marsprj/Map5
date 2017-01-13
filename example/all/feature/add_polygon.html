@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -142,26 +141,38 @@
 
 
 	function onAdddPolygon(){
+
+		// 1、定义面geometry
 		var wkt = document.getElementById("wkt").value;
 		var wktFormat = new GeoBeans.Format.WKT();
 		var geometry = wktFormat.read(wkt);
 
+		// 2、定义字段和对应的值
 		var values = {
 			fname : "test",
 			shape : geometry
 		};
+
+		// 3、定义一个要素
 		var feature = new GeoBeans.Feature({
 			fid : 1,
 			geometry : geometry,
 			properties : values
 		});
 
+		// 4、定义一个面样式
 		var symbolizer = createPolygonSymbolizer();
-		feature.symbolizer = symbolizer;
 
+		// 5、要素设置样式
+		feature.setSymbolizer(symbolizer);
+
+		// 6、图层获取数据源
 		var source = featureLayer.getSource();
+
+		// 7、数据源添加要素
 		source.addFeature(feature);
 
+		// 8、地图刷新
 		mapObj.refresh();
 	}
 
@@ -186,6 +197,8 @@
 
 
 	function addFeatureLayer(){
+		
+		// 1、定义一个要素图层
 		featureLayer = new GeoBeans.Layer.FeatureLayer({
 			name : layerName,
 			geometryType : GeoBeans.Geometry.Type.POLYGON,
@@ -194,7 +207,10 @@
 			})
 		});
 
+		// 2、地图添加图层
 		mapObj.addLayer(featureLayer);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 
