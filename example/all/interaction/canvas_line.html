@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+	canvas{
+		position: absolute;
+		left: 100px;
+		top:100px;
+		border:1px solid #FF0000;
+	}
+</style>
+<script type="text/javascript">
+
+	// 备注：
+	// 测试 canvas绘制线的效率
+	
+	var map = null;
+	var context = null;
+	function  init(){
+		map = document.getElementById("map");
+		context = map.getContext('2d');
+	}
+
+	
+	function drawLine(){
+		var num = document.getElementById("num").value;
+		var time = new Date();
+		context.strokeStyle = 'rgba(0,255,0,1)';
+		context.beginPath();
+		context.moveTo(0,0);
+
+		for(var i = 1; i < num; ++i){
+			
+			var x = getRandom(0,1200);
+			var y = getRandom(0,800);
+			context.lineTo(x, y);
+		}
+
+		context.stroke();
+
+		document.getElementById("time").value = new Date() - time;
+	}
+
+
+	function drawLine2(){
+		var num = document.getElementById("num").value;
+		var time = new Date();
+		context.strokeStyle = 'rgba(0,255,0,1)';
+		// context.beginPath();
+		// context.moveTo(0,0);
+
+		for(var i = 1; i < num; ++i){
+			context.strokeStyle = 'rgba(0,255,0,1)';
+			var xb = getRandom(0,1200);
+			var yb = getRandom(0,800);
+			var x = getRandom(0,1200);
+			var y = getRandom(0,800);
+			context.beginPath();
+			context.moveTo(xb,yb);
+			context.lineTo(x, y);
+			context.stroke();
+		}
+
+		context.stroke();
+
+		document.getElementById("time").value = new Date() - time;		
+	}
+
+	function getRandom(min,max){
+		var range = max - min;
+		var rand = Math.random();
+
+		return min + Math.round(rand * range);
+	}
+
+</script>
+<title>Interaction:绘制类</title>
+<body onload="init()">
+	<input type="text" id="num" value="100000">
+	<input type='button' value='drawline' onclick="drawLine2()">
+	<canvas id="map" width="1200" height="800"></canvas>
+
+	<input type="text" id="time" disabled="disabled">
+</body>
+	

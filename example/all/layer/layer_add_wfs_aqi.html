@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../src/depends/echarts-all.js"></script>
+
+<!--Base-->
+<script type="text/javascript" src="../../../src/GeoBeans.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Class.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Type.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Color.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/ColorRangeMap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Envelope.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Utility/Utility.js"></script>
+
+<!--View-->
+<script type="text/javascript" src="../../../src/GeoBeans/Snap.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Viewer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Renderer.js"></script>
+<!--Geometry-->
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Point.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/LineString.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Line/LinearRing.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Polygon.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPoint.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiLineString.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/MultiPolygon.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Geometry/Circle.js"></script>
+<!--Projection-->
+<script type="text/javascript" src="../../../src/GeoBeans/Proj.js"></script>
+<!--Stype-->
+<script type="text/javascript" src="../../../src/GeoBeans/Style.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Symbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Font.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Fill.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Stroke.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/PointSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/LineSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/PolygonSymbolizer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/FeatureStyle.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Rule.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Style/Symbol.js"></script>
+<!--Control-->
+<script type="text/javascript" src="../../../src/GeoBeans/Control.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/DragMapControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/ScrollMapControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/TrackControl/TrackOverlayControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/ZoomControl.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Control/MapNavControl.js"></script>
+<!--Format-->
+<script type="text/javascript" src="../../../src/GeoBeans/Format.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GML.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Format/GeoJSON.js"></script>
+<!--Filter-->
+<script type="text/javascript" src="../../../src/GeoBeans/Filter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/IDFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/SpatialFilter/BBoxFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/ComparisionFilter/BinaryComparisionFilter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/PropertyName.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/Expression/Literal.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/FilterWriter.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Query.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Filter/OrderBy.js"></script>
+<!--Workspace-->
+<script type="text/javascript" src="../../../src/GeoBeans/Field.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/FeatureType.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Workspace.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Workspace/WFS/WFSWorkspace.js"></script>
+<!--Source-->
+<script type="text/javascript" src="../../../src/GeoBeans/Source.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/WFS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Feature/GeoJSON.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Raster/WMS.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Source/Tile/QuadServer.js"></script>
+<!--Layer-->
+<script type="text/javascript" src="../../../src/GeoBeans/Layer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/FeatureLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/OverlayLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/PanoramaLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ImageLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/Tile.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileCache.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/TileLayer.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Layer/ThematicLayer/RippleLayer.js"></script>
+<!--Interaction-->
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Draw.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Select.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Interaction/Rotate.js"></script>
+<!--Events-->
+<script type="text/javascript" src="../../../src/GeoBeans/Events.js"></script>
+<!--Render-->
+<script type="text/javascript" src="../../../src/GeoBeans/Render/Label/Maplex.js"></script>
+<!--Widget-->
+<script type="text/javascript" src="../../../src/GeoBeans/Widget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/CopyRightWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/InfoWindowWidget.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Widget/LegendWidget.js"></script>
+<!--Map-->
+<script type="text/javascript" src="../../../src/GeoBeans/Selection.js"></script>
+<script type="text/javascript" src="../../../src/GeoBeans/Map.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+
+	#time_div{
+	    height: 120px;
+	    width: 100%;
+	    text-align: center;
+	    z-index: 1001;
+	    top: 80px;
+	    position: absolute;
+	    line-height: 120px;
+	    font-size: 60px;
+	}
+</style>
+<script type="text/javascript">
+
+	// 备注：
+	// 测试空气质量指数动态变化的图,使用的WFS图层
+
+	// 地图变量
+	var mapObj = null;
+	var wfsLayer = null;
+	function  init(){
+		
+		loadTileMap();
+		addVectorLayer();
+		// addFeatures();
+		// setAQIStyle();
+
+	}
+
+	function addVectorLayer(){
+		//1.创建一个Feature类型的Source，该Source在内存中保存features。
+		source = new GeoBeans.Source.Feature();
+		//2.以source为数据源，创建一个FeatureLayer。
+		vector = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "aqi",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : source,
+			"style" : createSimplePointStyle()
+		});
+
+		mapObj.addLayer(vector);
+		// vector.renderer.context.globalCompositeOperation = "lighter";
+		vector.renderer.context.globalCompositeOperation = "source-over";
+		
+
+		var zoom = 5;
+		var center = new GeoBeans.Geometry.Point(107.56,33.1875);
+		mapObj.zoomTo(zoom,center);
+	}
+
+
+	function addFeatures(){
+		//1. 创建WFS数据源
+		var wfs = new GeoBeans.Source.Feature.WFS({
+			"url" : "/ows/radi/mgr?",
+			"version" : "1.0.0",
+			"featureNS" : 'http://www.radi.ac.cn',
+			"featurePrefix" : "radi",
+			"featureType" : "gc_aqi_ranking",
+			"geometryName" : "pos",
+			"outputFormat": "GML2",
+			"sourceName" : "base"
+		});
+		//2.定义查询结果的处理类，execute方法为处理函数
+		var success = {
+			source: source,
+			execute : function(features){
+				//将查询结果添加到vector图层的source上。
+				this.source.setFeatures(features);
+				setAQIStyle();
+				//刷新地图，重绘图层。
+				mapObj.refresh();
+			}
+		}
+
+		//3.定义查询条件。
+		var time = timeList[0];
+		var query = createQuery(GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual,time);
+		//4.进行wfs查询
+		wfs.query(query, success);
+
+	}
+
+	// 
+	function createQuery(oper,time){
+		
+		var prop = new GeoBeans.Expression.PropertyName();
+		prop.setName("time_point");
+
+		var literal = new GeoBeans.Expression.Literal();
+		literal.setValue(time);
+
+		var filter = new GeoBeans.Filter.BinaryComparisionFilter(
+							oper,
+							prop,
+							literal);
+		
+		var query = new GeoBeans.Query({
+			"filter"	: filter
+		});
+		return query;
+	}
+
+	function createSimplePointStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+
+		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+		//设置点大小
+		symbolizer.size = 6;
+		//设置点的填充颜色
+		var fill   = symbolizer.fill;
+		fill.color.setHex('#800080',1);
+
+		//设置点的边界样式
+		var stroke = symbolizer.stroke;
+		// 边框的颜色
+		stroke.color.set(0,255, 0,1);
+		// 边框的颜色
+		stroke.width = 1.0; 
+
+		var rule = new GeoBeans.Style.Rule();
+		rule.symbolizer = symbolizer;
+		rule.filter = null;
+		
+		style.addRule(rule);		
+
+		return style;
+	}
+
+
+	function setAQIStyle(){
+		var query = new GeoBeans.Query({});
+		var success = {
+			execute : function(features){
+				var aqi = null,f = null;
+				var min = 0,max = 500;
+				var delta = null;
+				var maxRadius = 20;
+				var size = null;
+				for(var i = 0; i < features.length; ++i){
+					f = features[i];
+					aqi = f.getValue("aqi");
+					delta = (aqi - min)/(max - min);
+					size = delta * maxRadius;
+
+					var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+					//设置点大小
+					symbolizer.size = size;
+					//设置点的填充颜色
+					var fill   = symbolizer.fill;
+					fill.color.setHex('#ff0000',0.5);
+
+					symbolizer.stroke = null;
+
+					f.setSymbolizer(symbolizer);
+				}
+				mapObj.refresh();
+			}
+		}
+
+		source.query(query,success);
+	}
+
+
+	// var timeList = ["2016-12-26 07:00:00","2016-12-26 09:00:00"];
+	// var timeList = ["2016-12-19 00:00:00","2016-12-19 01:00:00",
+	// "2016-12-19 02:00:00","2016-12-19 03:00:00","2016-12-19 04:00:00",
+	// "2016-12-19 05:00:00","2016-12-19 06:00:00","2016-12-19 07:00:00"]
+	var timeList = ["2016-12-21 19:00:00","2016-12-21 20:00:00",
+	"2016-12-21 21:00:00","2016-12-21 22:00:00","2016-12-21 23:00:00",
+	"2016-12-22 00:00:00","2016-12-22 01:00:00","2016-12-22 02:00:00",
+	"2016-12-22 03:00:00","2016-12-22 04:00:00","2016-12-22 05:00:00",
+	"2016-12-22 06:00:00","2016-12-22 07:00:00","2016-12-22 08:00:00",
+	"2016-12-22 09:00:00","2016-12-22 10:00:00","2016-12-22 11:00:00",
+	"2016-12-22 19:00:00","2016-12-22 20:00:00","2016-12-22 21:00:00",
+	"2016-12-22 22:00:00","2016-12-22 23:00:00"];	
+
+	// var timeList = ["2017-01-02 03:00:00","2017-01-02 05:00:00","2017-01-02 06:00:00",
+	// "2017-01-02 06:00:00","2017-01-02 07:00:00","2017-01-02 08:00:00",
+	// "2017-01-02 09:00:00","2017-01-02 10:00:00","2017-01-02 11:00:00",
+	// "2017-01-02 12:00:00","2017-01-02 13:00:00","2017-01-02 14:00:00",
+	// "2017-01-02 15:00:00","2017-01-02 16:00:00","2017-01-02 17:00:00",
+	// "2017-01-02 18:00:00","2017-01-02 19:00:00","2017-01-02 20:00:00",
+	// "2017-01-02 21:00:00","2017-01-02 22:00:00","2017-01-02 23:00:00"]
+	var featuresArray = [];
+	// 获取列表
+	function getFeaturesByTimeList(){
+		var wfs = new GeoBeans.Source.Feature.WFS({
+			"url" : "/ows/radi/mgr?",
+			"version" : "1.0.0",
+			"featureNS" : 'http://www.radi.ac.cn',
+			"featurePrefix" : "radi",
+			"featureType" : "gc_aqi",
+			"geometryName" : "pos",
+			"outputFormat": "GML2",
+			"sourceName" : "base"
+		});
+		//2.定义查询结果的处理类，execute方法为处理函数
+		for(var i = 0; i < timeList.length;++i){
+			var time = timeList[i];
+
+		
+			var success = {
+				source: source,
+				index : i,
+				execute : function(features){
+					featuresArray[this.index] = features;
+					if(this.index == timeList.length - 1){
+						alert("获取完毕");
+					}
+				}
+			}
+
+			//3.定义查询条件。
+			var query = createQuery(GeoBeans.Filter.ComparisionFilter.OperatorType.ComOprEqual,time);
+			//4.进行wfs查询
+			wfs.query(query, success);
+		}
+	}
+	function displayFeatures(){
+		var index = 0;
+		setTimeout(function(){
+			if(index == featuresArray.length){
+				// index = 0;
+				return;
+			}
+			$("#time_div").html(timeList[index]);
+			var features = featuresArray[index];
+			source.setFeatures(features);
+
+			var aqi = null,f = null;
+			var min = 0,max = 500;
+			var delta = null;
+			var maxRadius = 20;
+			var size = null;
+			for(var i = 0; i < features.length; ++i){
+				f = features[i];
+				aqi = f.getValue("aqi");
+				delta = (aqi - min)/(max - min);
+				size = delta * maxRadius;
+
+				var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
+				//设置点大小
+				symbolizer.size = size;
+				//设置点的填充颜色
+				var fill   = symbolizer.fill;
+				fill.color.setHex('#ff0000',0.8);
+
+				symbolizer.stroke = null;
+
+				f.setSymbolizer(symbolizer);
+			}
+
+			mapObj.refresh();
+			index++;
+			setTimeout(arguments.callee,20);
+		},20);
+	}
+</script>
+<title>图层：添加WFS图层</title>
+<body onload="init()">
+	<button onclick="getFeaturesByTimeList()">获取所有数据</button>
+	<button onclick="displayFeatures()">动画</button>
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+	<div id="time_div">
+
+	</div>
+</body>
+	
+
