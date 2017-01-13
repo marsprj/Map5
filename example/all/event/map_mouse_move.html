@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -150,13 +149,15 @@
 
 	function  init(){		
 		loadTileMap();
-		registerMapClick();
+		registerMapMouseMove();
 	}
 
-	function registerMapClick(){
+	// 注册鼠标移动事件
+	function registerMapMouseMove(){
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 
+	// 地图事件回调函数
 	function onMouseMove(evt){
 		var mapXY = evt.mapX + "," + evt.mapY;
 		var srcXY = evt.X + "," + evt.Y;

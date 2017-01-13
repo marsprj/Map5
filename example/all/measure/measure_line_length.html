@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -136,22 +135,30 @@
 		createDrawInteraction();
 	}
 	
+	// 添加绘制交互
 	function createDrawInteraction(){
+		// 1、定义一个绘制交互
 		drawer = new GeoBeans.Interaction.Draw({
 			map : mapObj,
 			onComplete : onComplete
 		});
+
+		// 2、地图添加绘制交互
 		mapObj.addInteraction(drawer);
 	}
 
+	// 绘制完成回调函数，返回绘制的几何图形
 	function onComplete(geometry){
+		// 1、获取地图的空间参考对象
 		var srs = mapObj.getSpatialReference();
-		//计算多边多边形面积
-		var area = srs.length(geometry, 	//多边形
-							GeoBeans.Unit.Kilometer);//单位
+		
+		// 2、计算几何图形的长度
+		var area = srs.length(geometry, 				// 几何图形
+							GeoBeans.Unit.Kilometer); 	// 单位, 公里
 		document.getElementById("length").value = area;
 	}
 
+	// 绘制线
 	function onDrawLine(){
 		// 1、定义线绘制的样式
 		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();

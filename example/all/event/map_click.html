@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -152,11 +151,13 @@
 		loadTileMap();
 		registerMapClick();
 	}
-
+	
+	// 注册地图的点击事件
 	function registerMapClick(){
 		mapObj.on(GeoBeans.Event.CLICK, onMapClick);
 	}
 
+	// 地图事件回调函数
 	function onMapClick(evt){
 		var mapXY = evt.mapX + "," + evt.mapY;
 		var srcXY = evt.X + "," + evt.Y;

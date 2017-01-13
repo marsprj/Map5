@@ -6,8 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
-
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
 <script type="text/javascript" src="../../../src/GeoBeans/BaseTypes/Class.js"></script>
@@ -164,10 +162,12 @@
 		registerMapZoomEvent();
 	}
 
+	// 注册地图级别改变事件
 	function registerMapZoomEvent(){
 		mapObj.on(GeoBeans.Event.ZOOM_CHANGE, onMapZoomChange);
 	}
 
+	// 地图级别改变事件回调函数
 	function onMapZoomChange(evt){
 		$("#zoom_div").html(evt.zoom);
 	}

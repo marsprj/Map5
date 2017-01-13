@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -137,6 +136,7 @@
 		createSelectInteraction();
 	}
 
+	// 加载一个要素图层
 	function addGeoJSONLayer(){
 		vector = new GeoBeans.Layer.FeatureLayer({			
 			"name" : "layername", // 图层名称
@@ -151,7 +151,7 @@
 		mapObj.refresh();
 	}
 
-	
+	// 加载一个点击交互
 	function createSelectInteraction(){
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
@@ -161,19 +161,24 @@
 		mapObj.addInteraction(select);
 	}
 
+	// 点击交互回调事件，返回点击选择的要素数组
 	function onSelectionChange(features){
 		if(features.length>0){
-			//计算面积
+			// 1、获取第一个要素的几何图形
 			var polygon = features[0].getGeometry();	
+
+			// 2、获取地图的空间参考
 			var srs = mapObj.getSpatialReference();
-			//计算多边多边形面积
-			var area = srs.area(polygon, 	//多边形
-								GeoBeans.Unit.Kilometer);//单位
+			
+			// 3、计算多边形的面积
+			var area = srs.area(polygon, 					// 多边形
+								GeoBeans.Unit.Kilometer);	// 单位
 			document.getElementById("area").value = area;
 		}
 		
 	}
 
+	// 创建面样式
 	function createSimplePolygonStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 		var rule = new GeoBeans.Style.Rule();

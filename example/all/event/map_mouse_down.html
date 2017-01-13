@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -154,10 +153,12 @@
 		registerMapClick();
 	}
 
+	// 注册鼠标按下事件
 	function registerMapClick(){
 		mapObj.on(GeoBeans.Event.MOUSE_DOWN, onMouseDown);
 	}
 
+	// 地图事件回调函数
 	function onMouseDown(evt){
 		var mapXY = evt.mapX + "," + evt.mapY;
 		var srcXY = evt.X + "," + evt.Y;
