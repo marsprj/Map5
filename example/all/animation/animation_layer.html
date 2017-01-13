@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../src/depends/requestNextAnimationFrame.js"></script>
 
 <!--Base-->
@@ -190,6 +189,7 @@
 	function beginAnimate(id){
 		// 1、根据id值获取该运动要素
 		var movePoint = animationLayer.getMoveObject(id);
+		
 		if(movePoint != null){
 			// 2、开始运动
 			movePoint.start();
@@ -210,8 +210,6 @@
 
 	/**
 	 * 删除运动要素
-	 * @param  {[type]} id [description]
-	 * @return {[type]}    [description]
 	 */
 	function removeMovePoint(id){
 		// 根据id值删除要素
@@ -226,7 +224,7 @@
 
 		var pointSymbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		var symbol = new GeoBeans.Style.Symbol();
-		symbol.icon = "../../images/circle.png";
+		symbol.icon = "../images/circle.png";
 		pointSymbolizer.symbol = symbol;
 
 		var lineSymbolizer = new GeoBeans.Symbolizer.LineSymbolizer();

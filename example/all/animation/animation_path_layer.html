@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../src/depends/requestNextAnimationFrame.js"></script>
 
 <!--Base-->
@@ -130,6 +129,7 @@
 </style>
 <script type="text/javascript">
 	
+	// 根据业务部门需求定制的轨迹线图层
 	var mapObj = null;
 
 	var pathLayer = null;
@@ -140,6 +140,8 @@
 	function getRandom(pre, next) {
 		return pre + (Math.random() * (next - pre)) * 0.01;
 	}
+
+	// 模拟数据
 	var num = 200,arr = [] , x = getRandom(113.953640, 116.953640),y = getRandom(22.537018, 25.537018);
 
 	arr.push({x:x,y:y});
@@ -318,57 +320,57 @@
 
 	// 	return textSymbolizer;
 	// }
-function createTextSymbolizer() {
+	function createTextSymbolizer() {
 
-  // 5、定义一个文字样式
-  var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
+	  // 5、定义一个文字样式
+	  var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
 
-  // 6、设置文字样式的标注字段
-  textSymbolizer.labelProp = "name";
+	  // 6、设置文字样式的标注字段
+	  textSymbolizer.labelProp = "name";
 
-  // 7、文字填充设置，不设置，则随机颜色
-  textSymbolizer.fill.color.setHex("#ffffff", 1);
-  // textSymbolizer.fill = null;
+	  // 7、文字填充设置，不设置，则随机颜色
+	  textSymbolizer.fill.color.setHex("#ffffff", 1);
+	  // textSymbolizer.fill = null;
 
-  // 8、文字边框设置，不设置，则随机颜色
-  textSymbolizer.stroke.color.setHex("#ffffff", 1);
-  textSymbolizer.stroke.width = 0.5;
-  // textSymbolizer.stroke = null;
+	  // 8、文字边框设置，不设置，则随机颜色
+	  textSymbolizer.stroke.color.setHex("#ffffff", 1);
+	  textSymbolizer.stroke.width = 0.5;
+	  // textSymbolizer.stroke = null;
 
-  // 9、文字样式的文字设置，默认大小是12
-  textSymbolizer.font.size = 12;
-  // 设置文字的字体，默认字体是Times New Roman
-  textSymbolizer.font.family = "Microsoft YaHei";
+	  // 9、文字样式的文字设置，默认大小是12
+	  textSymbolizer.font.size = 12;
+	  // 设置文字的字体，默认字体是Times New Roman
+	  textSymbolizer.font.family = "Microsoft YaHei";
 
-  // 10、字体样式，默认是正常的，
-  // GeoBeans.Style.Font.StyleType.Normal
-  // GeoBeans.Style.Font.StyleType.Italic
-  // GeoBeans.Style.Font.StyleType.Oblique
-  textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
+	  // 10、字体样式，默认是正常的，
+	  // GeoBeans.Style.Font.StyleType.Normal
+	  // GeoBeans.Style.Font.StyleType.Italic
+	  // GeoBeans.Style.Font.StyleType.Oblique
+	  textSymbolizer.font.style = GeoBeans.Style.Font.StyleType.Normal;
 
-  // 11、字体粗细，默认是正常
-  // GeoBeans.Style.Font.WeightType.Normal
-  // GeoBeans.Style.Font.WeightType.Bold
-  textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Normal;
+	  // 11、字体粗细，默认是正常
+	  // GeoBeans.Style.Font.WeightType.Normal
+	  // GeoBeans.Style.Font.WeightType.Bold
+	  textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Normal;
 
-  // 12、设置文字标注的偏移量，x方向，向右是正
-  textSymbolizer.displaceX = 5;
+	  // 12、设置文字标注的偏移量，x方向，向右是正
+	  textSymbolizer.displaceX = 5;
 
-  // 文字标注的偏移量，y方向，向上是正
-  textSymbolizer.displaceY = -15;
+	  // 文字标注的偏移量，y方向，向上是正
+	  textSymbolizer.displaceY = -15;
 
-  //背景色
-  textSymbolizer.bgFill = new GeoBeans.Style.Fill();
-  textSymbolizer.bgFill.color.setHex('#ff0000', 0.8);
-  //边框
-  textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
-  textSymbolizer.bgStroke.color.setHex('#ff0000', 0.8);
-  textSymbolizer.bgStroke.width = 1;
-  textSymbolizer.bgPadding = 3;
+	  //背景色
+	  textSymbolizer.bgFill = new GeoBeans.Style.Fill();
+	  textSymbolizer.bgFill.color.setHex('#ff0000', 0.8);
+	  //边框
+	  textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
+	  textSymbolizer.bgStroke.color.setHex('#ff0000', 0.8);
+	  textSymbolizer.bgStroke.width = 1;
+	  textSymbolizer.bgPadding = 3;
 
 
-  return textSymbolizer;
-}
+	  return textSymbolizer;
+	}
 
 	// 注册轨迹点的点击事件
 	function registerClickEvent(){

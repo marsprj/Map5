@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../src/depends/requestNextAnimationFrame.js"></script>
 
 <!--Base-->
@@ -136,13 +135,15 @@
 		var layer = new GeoBeans.Layer.RippleLayer({
 			name : "ripple",  			// 图层名称
 			color : "#ff0000", 			// 点的颜色
-			// color : color_function, 	// 可以设置为函数，传入变量为colorField字段对应的值
+			// color : color_function, 	// 可以设置为函数，
+										// 传入变量为colorField字段对应的值
 			colorField : "populat",  	// 颜色的辅助字段
 			opacity : 0.8,			 	// 波纹中心点的透明度
 			period : 4,					// 一个波纹持续的时间
 			lineNumber : 3,				// 一个波纹对应的波纹条数
 			// radius : 5,				// 每个波纹中心点的半径
-			radius : radius_function,	// 可以设置为函数，传入变量为radiusField字段对应的值
+			radius : radius_function,	// 可以设置为函数，
+										// 传入变量为radiusField字段对应的值
 			radiusField : "populat",	// 半径的辅助字段
 			scale : 3,					// 半径
 			type : "stroke",			// 波纹动画的效果，stroke为线，fill为填充
@@ -155,7 +156,7 @@
 		// 2、数据源加载数据
 		var features = loadFeatures();
 		var source = layer.getSource();
-		source.addFeatures(features);
+		source.setFeatures(features);
 
 		// 3、增加图层
 		mapObj.addLayer(layer);
