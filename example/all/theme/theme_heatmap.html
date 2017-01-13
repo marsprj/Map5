@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../src/depends/heatmap.min.js"></script>
 
 <!--Base-->
@@ -149,34 +148,43 @@
 		
 		loadTileMap();
 		loadHeatMapLayer();
-		mapObj.refresh();
 	}
 
-
+	// 加载热力图
 	function loadHeatMapLayer(){
-		var name = "cities";
+	
+		// 1、定义热力图
+		var layer = createHeatMapLayer();
+
+		// 2、获取图层的数据源
+		var source = layer.getSource();
+			
+		// 3、定义要素数组
 		var features = loadFeatures();
 
-		var layer = createHeatMapLayer(name);
-
-		var source = layer.getSource();
-		source.addFeatures(features);
-		//创建分级图样式
+		// 4、热力图加载数据
+		source.setFeatures(features);
+		
+		// 5、热力图图层设定样式
 		var style = createStyle();
 		layer.setStyle(style);
 
+		// 6、地图添加图层
 		mapObj.addLayer(layer);
+
+		// 7、刷新地图
 		mapObj.refresh();
 	}
 
-	function createHeatMapLayer(name){
-		// 3、定义聚合图
+	function createHeatMapLayer(){
+		// 定义热力图
 		var heatMapLayer = new GeoBeans.Layer.HeatMapLayer({
-			name : "heatmap",
-			field: "populat",
-			radius: 50,
-			showGeometry : true,
-			source : new GeoBeans.Source.Feature({
+			name : "heatmap",						// 图层名称
+			field: "populat",						// 热力图字段，
+													// 可以不设定,不设定则为一样的权重
+			radius: 60,								// 热力图半径,默认是40，单位px
+			showGeometry : true,					// 是否显示空间要素
+			source : new GeoBeans.Source.Feature({  // 数据源
 				geometryName : "shape"
 			})
 		});
@@ -232,9 +240,6 @@
 
 		return style;
 	}
-
-	
-
 
 </script>
 	

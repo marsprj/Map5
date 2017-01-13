@@ -6,8 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../../src/depends/heatmap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -156,38 +154,11 @@
 		loadMap();
 	}
 
-	/**
-	 * 添加聚合图
-	 */
 	function addCluster(){
-
-		// 1、设置图层名称
-		var layerName = "cluster";
-
-		// 2、设置底图名称
-		var baseLayerName = "cities";
-
-		// 3、定义聚合图
+		// 1、定义聚类图
 		var layer = new GeoBeans.Layer.ClusterLayer({
-			name: layerName,
-			baseLayerName :baseLayerName,
-			source : new GeoBeans.Source.Feature({
-
-			})
-		});
-
-		// 4、添加图层
-		mapObj.addLayer(layer);
-
-		// 5、刷新地图
-		mapObj.refresh();
-	}
-
-
-	function addCluster(){
-		var layer = new GeoBeans.Layer.ClusterLayer({
-			name : "cluster",
-			source : new GeoBeans.Source.Feature.WFS({
+			name : "cluster",							// 图层名称
+			source : new GeoBeans.Source.Feature.WFS({	// 图层数据源
 				url : "/geoserver/radi/ows?",
 				version : "1.0.0",
 				featureNS : 'http://www.radi.ac.cn',
@@ -196,15 +167,20 @@
 				geometryName : "shape",
 				outputFormat: "GML2"
 			}),
-			showGeometry : true
+			showGeometry : true							// 是否显示几何要素
 		});
+
+		// 2、地图添加要素
 		mapObj.addLayer(layer);
+
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 
+	// 设置图层是否显示
 	function setLayerVisible(){
 		var layer = mapObj.getLayer("cluster");
-		if(layer.visible){
+		if(layer.isVisible()){
 			layer.setVisible(false);
 		}else{
 			layer.setVisible(true);

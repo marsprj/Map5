@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -145,12 +144,12 @@
 	// 地图变量
 	var mapObj = null;
 	function  init(){
-		
 		loadTileMap();
 		loadFeatureLayer();
 	}
 
 	function loadFeatureLayer(){
+		// 1、定义一个要素图层
 		var layer = new GeoBeans.Layer.FeatureLayer({
 			name : "tianjin",
 			geometryType : GeoBeans.Geometry.Type.POLYGON,
@@ -158,24 +157,29 @@
 				geometryName : "shape"
 			})
 		});
+
+		// 2、添加该图层
 		mapObj.addLayer(layer);
 
-
+		// 3、定义要素数组
 		var features = loadFeatures();
-		var source = layer.getSource();
-		source.addFeatures(features);
 
-		// 创建分级图样式
+		// 4、获取图层的数据源
+		var source = layer.getSource();
+
+		// 5、设置数据源内的要素
+		source.setFeatures(features);
+
+		// 6、创建分级图样式
 		setRangeStyle(layer,"gdp")
 
-		mapObj.addLayer(layer);
-
-		//启用hit
+		//  7、启用hit
 		layer.onhit = onhit;
 		layer.enableHit(true);
 
 		// mapObj.setViewExtent(layer.getExtent());
 
+		// 8、设置地图的显示
 		var center = new GeoBeans.Geometry.Point(117.68,39.26);
 		mapObj.zoomTo(10,center);
 	}

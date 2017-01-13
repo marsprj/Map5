@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../../src/depends/echarts-all.js"></script>
 
 <!--Base-->
@@ -148,45 +147,57 @@
 	function  init(){
 		
 		loadTileMap();
-		// loadFeatureLayer();
 		addChart();
 	}
 
 
 	function addChart(){
+
+		// 1、定义柱状图
 		var layer = new GeoBeans.Layer.BarChartLayer({
-			name : "chart",
-			fields : ["gdp","populat"],
-			source : new GeoBeans.Source.Feature({
+			name : "chart",							// 图层名称
+			fields : ["gdp","populat"],				// 专题图字段
+			source : new GeoBeans.Source.Feature({	// 图层数据源
 				geometryName : "shape"
 			}),
-			showGeometry : true,
-			style : createStyle(),
-			height		: 100,				//每个柱状图的高度，图上距离
-			width 		: 60,				//每个柱状图的宽度，图上距离
-			colors 		: ["#e1c72d","#b171f6"], // 字段对应的颜色
-			offsetX 	: 0,				// x方向偏移量，向右为正
-			offsetY 	: 0,				// y方向偏移量，向上为正
-			showLabel 	: true,			// 是否显示标签
-			opacity 	: 1.0,				// 透明度
-			x_axisLine  : false,				// 每个柱状图x向坐标轴
-			y_axisLine  : false,				// 每个柱状图y向坐标轴
+			showGeometry : true,					// 是否显示几何要素
+			style : createStyle(),					// 样式
+			height		: 100,						//每个柱状图的高度，单位px
+			width 		: 60,						//每个柱状图的宽度，单位px
+			colors 		: ["#e1c72d","#b171f6"], 	// 字段对应的颜色
+			offsetX 	: 0,						// x方向偏移量，向右为正
+			offsetY 	: 0,						// y方向偏移量，向上为正
+			showLabel 	: true,						// 是否显示标签
+			opacity 	: 1.0,						// 透明度
+			x_axisLine  : false,					// 每个柱状图x向坐标轴
+			y_axisLine  : false,					// 每个柱状图y向坐标轴
 
 		});
 
-
-		var features = loadFeatures();
+		// 2、图层获取数据源
 		var source = layer.getSource();
-		source.addFeatures(features);
 
+		// 3、定义要素数组
+		var features = loadFeatures();
+
+		// 4、数据源设定要素
+		source.setFeatures(features);
+
+		// 5、地图添加要素
 		mapObj.addLayer(layer);
 
+		// 6、地图设定显示中心点和级别
 		var center = new GeoBeans.Geometry.Point(117.68,39.26);
 		mapObj.zoomTo(10,center);
 	}
+
+	// 设置图层是否显示
 	function setVisible(){
 		var layer = mapObj.getLayer(layerName);
-		if(layer.visible){
+		if(layer == null){
+			return;
+		}
+		if(layer.isVisible()){
 			layer.setVisible(false);
 		}else{
 			layer.setVisible(true);
@@ -266,9 +277,6 @@
 		
 		return style;
 	}
-
-	
-
 
 </script>
 	
