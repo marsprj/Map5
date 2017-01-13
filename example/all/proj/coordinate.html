@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../../src/depends/bootstrap.min.js"></script>
 
 <!--Base-->
 <script type="text/javascript" src="../../../src/GeoBeans.js"></script>
@@ -172,6 +171,7 @@
 		document.getElementById("w_x").value = evt.mapX;
 		document.getElementById("w_y").value = evt.mapY;
 
+		// 经纬度转换为平面坐标
 		var pt = GeoBeans.Proj.fromLonLat(lon, lat);
 		document.getElementById("m_x").value = pt.x;
 		document.getElementById("m_y").value = pt.y;
