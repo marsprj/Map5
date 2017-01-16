@@ -221,7 +221,7 @@ GeoBeans.Layer.RippleLayer.prototype.animate = function(features,time){
 		var context = this.renderer.context;
 		context.fillStyle = radiusColor.getRgba();
 
-		spt = this.map.getViewer().toScreenPoint(geometry.x,geometry.y);
+		var spt = this.map.getViewer().toScreenPoint(geometry.x,geometry.y);
 		context.beginPath();
 		context.arc(spt.x,spt.y,r,0,Math.PI*2);
 		context.fill();
