@@ -34,16 +34,15 @@
 
 	function  init(){		
 		loadTileMap();
-		registerMapClick();
+		registerMapMouseUp();
 	}
 
-	function registerMapClick(){
-		// 事件绑定
-		// 第一个参数为事件
-		// 第二个参数为事件相应函数
+	// 注册地图鼠标抬起事件
+	function registerMapMouseUp(){
 		mapObj.on(GeoBeans.Event.MOUSE_UP, onMouseUp);
 	}
 
+	// 地图事件回调函数
 	function onMouseUp(evt){
 		var mapXY = evt.mapX + "," + evt.mapY;
 		var srcXY = evt.X + "," + evt.Y;

@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -34,25 +33,25 @@
 		registerDragEvent();
 	}
 
+	// 设置地图可以进行拖拽
 	function enableDrag(){
-		// 启用拖拽
 		mapObj.enableDrag(true);
 	}
 
+	// 禁止地图拖拽
 	function disableDrag(){
-		// 禁止拖拽
 		mapObj.enableDrag(false);
 	}
 
+	// 注册地图的拖拽事件,分别为拖拽开始、拖拽中和拖拽结束
 	function registerDragEvent(){
-		// 注册拖拽开始事件
 		mapObj.on(GeoBeans.Event.DRAG_BEGIN, onDragBegin);
-		// 注册拖拽事件
 		mapObj.on(GeoBeans.Event.DRAGING, onDraging);
-		// 注册拖拽事件
 		mapObj.on(GeoBeans.Event.DRAG_END, onDragEnd);
 	}
 
+
+	// 拖拽回调函数
 	function onDragBegin(evt){
 		console.log("DragBegin");
 	}

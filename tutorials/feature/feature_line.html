@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -28,40 +27,36 @@
 	}
 
 	function loadFeatureLayer(){
-		// 1、定义一个要素图层
+		// 1、定义要素图层
 		var layer = new GeoBeans.Layer.FeatureLayer({
-			name : "rivers", //图层名称
-			geometryType : GeoBeans.Geometry.Type.LINESTRING, //图层的几何类型，为线类型
-			source : new GeoBeans.Source.Feature({ // 定义一个要素数据源
-				geometryName : "geometry"
+			name : "rivers", 									// 图层名称
+			geometryType : GeoBeans.Geometry.Type.LINESTRING,	// 图层的几何类型
+			source : new GeoBeans.Source.Feature({ 				// 数据源
+				geometryName : "geometry" 						// 几何字段名称
 			})
 		});
 
-		// 2、添加图层
+		// 2、地图添加该图层
 		mapObj.addLayer(layer);
 
-		// 3、定义线样式
+		// 3、图层设置样式
 		var style = createSimpleLineStyle();
-
-		// 4、图层设置样式
 		layer.setStyle(style);
+
+		// 4、定义要素
+		var features = loadFeatures();
 
 		// 5、获取图层的数据源
 		var source = layer.getSource();
-
-		// 6、定义要素数组
-		var features = loadFeatures();
-
-		// 7、数据源添加要素
+		
+		// 6、设置数据源内的要素
 		source.addFeatures(features);
 
-		// 8、地图刷新
+		// 7、地图刷新
 		mapObj.refresh();
 	}
 
-	/**
-	 * 从js文件中读取要素
-	 */
+	// 定义要素数组
 	function loadFeatures(){
 		var features = [];		
 		var length = g_riversValue.length;
@@ -75,6 +70,7 @@
 		return features;
 	}
 
+	// 创建要素
 	function createFeature(i, pairs){
 		// 使用wkt转换为geometry
 		var format = new GeoBeans.Format.WKT();
@@ -85,18 +81,15 @@
 			shape :geometry
 		};
 
-		// 定义要素
 		var feature = new GeoBeans.Feature({
-			fid : fid, // 要素的fid
-			properties : values,  // 要素的字段和对应的值
-			geometry : geometry // 要素的geometry
+			fid : fid,			// id 值
+			properties : values,// 字段和字段对应的值
+			geometry : geometry // 空间数据
 		});
 		return feature;
 	}
 
-	/**
-	 * 定义线样式
-	 */
+	// 创建线样式
 	function createSimpleLineStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 		// 定义一个规则
@@ -127,4 +120,5 @@
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>
+	
 	

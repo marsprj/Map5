@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -34,18 +33,17 @@
 		loadTileMap();
 	}
 
+	// 注册鼠标滚动事件
 	function registerEvent(){
-		// 事件绑定
-		// 第一个参数为事件
-		// 第二个参数为事件相应函数
 		mapObj.on(GeoBeans.Event.MOUSE_WHEEL, onWheel);
 	}
 
+	// 注销鼠标滚动事件
 	function unregisterEvent(){
-		// 事件注销，传入事件类型
 		mapObj.un(GeoBeans.Event.MOUSE_WHEEL);	
 	}
 
+	// 鼠标滚动回调函数
 	function onWheel(evt){
 		var info = "delta:" + evt.delta + "," + "zoom:" + evt.zoom;
 		document.getElementById("info").value = info;

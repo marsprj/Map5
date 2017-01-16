@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -24,6 +23,7 @@
 		loadTileMap();
 	}
 
+	// 读取geojson文件，获取字符串
 	function getGeoJson(){
 		// var url = "../data/geojson/point-samples.geojson";
 		// var url = "../data/geojson/line-samples.geojson";
@@ -45,19 +45,19 @@
 		});		
 	}
 
-
+	// 读取geojson字符串
 	function readJson(geoJson){
 		if(geoJson == null){
 			return;
 		}
 
-		// 1、定义geojson数据转换类
+		// 1、定义GeoJson数据格式
 		var geoJsonFormat = new GeoBeans.Format.GeoJson();
 
-		// 2、从geojson字符串中读取要素
+		// 2、读取要素数组
 		var features = geoJsonFormat.readFeatures(geoJson);
 
-		// 3、定义 一个要素图层
+		// 3、定义一个要素图层
 		var featureLayer = new GeoBeans.Layer.FeatureLayer({
 			name : "geojson",
 			geometryType : GeoBeans.Geometry.Type.POLYGON,
@@ -66,14 +66,16 @@
 			})
 		});
 
-		// 4、添加图层
+		// 4、图层获取数据源
+		var source = featureLayer.getSource();
+
+		// 5、数据源设定要素
+		source.setFeatures(features);
+
+		// 6、地图添加图层
 		mapObj.addLayer(featureLayer);
 
-		// 5、图层的数据源中增加要素
-		var source = featureLayer.getSource();
-		source.addFeatures(features);
-
-		// 6、地图刷新
+		// 7、地图刷新
 		mapObj.refresh();
 	}
 

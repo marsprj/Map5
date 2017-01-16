@@ -6,11 +6,11 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
 <script type="text/javascript" src="../js/citiesValue.js"></script>
+
 <style type="text/css">
 	body{
 		margin: 0px;
@@ -20,45 +20,43 @@
 	// 地图变量
 	var mapObj = null;
 	function init(){
+		
 		loadTileMap();
 		loadFeatureLayer();
 	}
 
+	// 加载要素图层
 	function loadFeatureLayer(){
-		// 1、定义一个要素图层
+		// 1、定义要素图层
 		var featureLayer = new GeoBeans.Layer.FeatureLayer({
-			name : "cities", //图层名称
-			geometryType : GeoBeans.Geometry.Type.POINT, //图层的几何类型
-			source : new GeoBeans.Source.Feature({ //定义一个要素数据源
-				geometryName : "geometry" // 数据源中几何要素的名称
+			name : "cities",								// 图层名称
+			geometryType : GeoBeans.Geometry.Type.POINT,	// 图层的几何类型
+			source : new GeoBeans.Source.Feature({			// 数据源
+				geometryName : "geometry"					// 几何字段名称
 			})
 		});
 
-		// 2、添加图层
+		// 2、地图添加该图层
 		mapObj.addLayer(featureLayer);
 
-		// 3、定义点样式
+		// 3、图层设置样式
 		var style = createSimplePointStyle();
-
-		// 4、定义该图层的样式
 		featureLayer.setStyle(style);
 
-		// 5、定义要素数组
+		// 4、定义要素
 		var features = loadFeatures();
 
-		// 6、获取图层的数据源
+		// 5、获取图层的数据源
 		var source = featureLayer.getSource();
 
-		// 7、数据源添加要素
-		source.addFeatures(features);
+		// 6、设置数据源内的要素
+		source.setFeatures(features);
 
-		// 8、地图刷新
+		// 7、地图刷新
 		mapObj.refresh();
 	}
 
-	/**
-	 * 从js文件中读取要素
-	 */
+	// 定义要素数组
 	function loadFeatures(){
 		var features = [];		
 		var length = g_citiesValue.length;
@@ -68,9 +66,11 @@
 			var feature = createFeature(i, pairs);
 			features.push(feature);
 		}
+
 		return features;
 	}
 
+	// 创建要素
 	function createFeature(i, pairs){
 		// 使用wkt转换为geometry
 		var format = new GeoBeans.Format.WKT();
@@ -85,17 +85,15 @@
 
 		// 定义要素
 		var feature = new GeoBeans.Feature({
-			fid : fid, // 要素的fid
-			properties : values,  // 要素的字段和对应的值
-			geometry : geometry // 要素的geometry
+			fid : fid, 				// id 值
+			properties : values,	// 字段和字段对应的值
+			geometry : geometry 	// 空间数据
 		});
 		return feature;
 	}
 
 
-	/**
-	 * 定义点样式
-	 */
+	// 创建点样式
 	function createSimplePointStyle(){
 		var style = new GeoBeans.Style.FeatureStyle();
 

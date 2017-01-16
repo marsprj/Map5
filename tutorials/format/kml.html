@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -24,7 +23,8 @@
 		loadTileMap();
 	}
 
-	function getGeoJson(){
+	// 从文件中读取kml字符串
+	function getKML(){
 		// var url = "../data/kml/point.kml";
 		// var url = "../data/kml/line.kml";
 		var url = "../data/kml/polygon.kml";
@@ -46,11 +46,16 @@
 		});		
 	}
 
+	// 读取kml
 	function readKML(kml){
-		// 1、定义KML数据转换类
+		if(kml == null){
+			return;
+		}
+
+		// 1、定义KML数据格式
 		var kmlFormat = new GeoBeans.Format.KML();
 
-		// 2、从kml字符串中读取要素
+		// 2、读取要素数组
 		var features = kmlFormat.readFeatures(kml);
 
 		// 3、定义一个要素图层
@@ -65,11 +70,13 @@
 		// 4、添加图层
 		mapObj.addLayer(layer);
 
-		// 5、图层的数据源中增加要素
+		// 5、图层获取数据源
 		var source = layer.getSource();
-		source.addFeatures(features);
 
-		// 6、地图刷新
+		// 6、数据源设定要素
+		source.setFeatures(features);
+
+		// 7、地图刷新
 		mapObj.refresh();
 	}
 
@@ -79,6 +86,5 @@
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
-	<button onclick="getGeoJson()">转换</button>
+	<button onclick="getKML()">转换</button>
 </body>
-	

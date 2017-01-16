@@ -14,15 +14,26 @@
 	body{
 		margin: 0px;
 	}
+
+	#zoom_div{
+		width: 32px;
+	    height: 32px;
+	    position: absolute;
+	    left: 0px;
+	    top: 0px;
+	    background-color: #fda709;
+	    text-align: center;
+	    line-height: 32px;
+	    font-size: 32px;
+	}
 </style>
 
-<title>事件：地图点击</title>
+<title>事件：级别zoom改变</title>
 <body onload="init()">
-	<ul>
-		<li>地图坐标：<input id="mapXY" type="text" size="30"></li>
-		<li>屏幕坐标：<input id="srcXY" type="text" size="30"></li>
-	</ul>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;"></div>
+	<div id="zoom_div">
+		3
+	</div>
 </body>
 	
 
@@ -32,20 +43,17 @@
 
 	function  init(){		
 		loadTileMap();
-		registerMapClick();
-	}
-	
-	// 注册地图的点击事件
-	function registerMapClick(){
-		mapObj.on(GeoBeans.Event.CLICK, onMapClick);
+		registerMapZoomEvent();
 	}
 
-	// 地图事件回调函数
-	function onMapClick(evt){
-		var mapXY = evt.mapX + "," + evt.mapY;
-		var srcXY = evt.X + "," + evt.Y;
-		document.getElementById("mapXY").value = mapXY;
-		document.getElementById("srcXY").value = srcXY;
+	// 注册地图级别改变事件
+	function registerMapZoomEvent(){
+		mapObj.on(GeoBeans.Event.ZOOM_CHANGE, onMapZoomChange);
+	}
+
+	// 地图级别改变事件回调函数
+	function onMapZoomChange(evt){
+		$("#zoom_div").html(evt.zoom);
 	}
 
 </script>
