@@ -116,7 +116,7 @@ function loadRivers(){
 		 		"visible" : true
 			}),new GeoBeans.Layer.FeatureLayer({			
 				"name" : "rivers",
-				"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+				"geometryType" : GeoBeans.Geometry.Type.LINESTRING,
 				"source" : new GeoBeans.Source.Feature.WFS({
 					"url" : "/geoserver/radi/ows?",
 					"version" : "1.0.0",

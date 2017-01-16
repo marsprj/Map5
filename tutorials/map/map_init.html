@@ -4,9 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
-<script type="text/javascript" src="../../src/depends/jquery-1.11.1.js"></script>
-<!-- <script type="text/javascript" src="../../src/depends/bootstrap.min.js"></script> -->
-
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <style type="text/css">
@@ -15,38 +13,48 @@
 	}
 </style>
 <script type="text/javascript">
-	// 定义地图变量
+	
 	var mapObj = null;
+
 	function init(){
 		mapObj = new GeoBeans.Map({
-	        target : "mapDiv",  //地图存放的容器
-	        name : "map",		//地图的名称
-	        srs  : GeoBeans.Proj.WGS84,  //地图的投影
-	        baseLayer : "world",		//地图的底图名称，应该为layers中的一个图层
+			// 地图的容器
+	        target : "mapDiv",
+	        // 地图的名称
+	        name : "map",
+	        // 地图的投影
+	        srs  : GeoBeans.Proj.WGS84,
+	        // 地图的底图
+	        baseLayer : "world",
+	        // 地图的图层
 	        layers : [
-	            new GeoBeans.Layer.TileLayer({  //定义一个瓦片图层
-	                name : "world",   //图层的名称
-	                source : new GeoBeans.Source.Tile.QuadServer({ // 定义数据源
-	                    url : "/QuadServer/maprequest", // QuadServer服务的地址
-	                    imageSet : "world_image"		//数据集名称
+	            new GeoBeans.Layer.TileLayer({
+	                name : "world",
+	                source : new GeoBeans.Source.Tile.QuadServer({
+	                    url : "/QuadServer/maprequest",
+	                    imageSet : "world_image"
 	                }),
-	                opacity : 1.0,    // 透明度
-	                visible : true	  // 是否显示
+	                opacity : 1.0,
+	                visible : true
 	            }),
-	            new GeoBeans.Layer.FeatureLayer({   //定义一个要素图层
-	                name : "country",	//图层名称
-	                geometryType : GeoBeans.Geometry.Type.POLYGON, //图层的几何类型
-	                source : new GeoBeans.Source.Feature.GeoJSON({ //图层的数据源
-	                    url : "../data/geojson/countries.geojson", // 地址
-	                    geometryName : "geometry", //几何要素的字段名称
-	                }),
+	            new GeoBeans.Layer.FeatureLayer({
+	                name : "country",
+	                geometryType : GeoBeans.Geometry.Type.POLYGON,
+	                source : new GeoBeans.Source.Feature.GeoJSON({
+	                    url : "/Map5/example/all/data/geojson/countries.geojson",
+	                    geometryName : "geometry",
+	                })
 	            })        
 	        ],
-	        viewer : {  //定义地图的视口
-	            center : new GeoBeans.Geometry.Point(0,0),  // 视图的中心点
-	            zoom : 3,  // 地图的缩放级别
-	            // extent : new GeoBeans.Envelope(0,0,180,90), // 地图的视口范围
-	            // resolution : 0.01,  // 地图的分辨率
+	        // 地图的视图设置
+	        viewer : {
+	        	// 中心点设置
+	            center : new GeoBeans.Geometry.Point(0,0),
+	            // 地图的级别
+	            zoom : 3,
+	            // extent : new GeoBeans.Envelope(0,0,180,90),
+	            // extent : new GeoBeans.Envelope(-180,-90,180,90),
+	            // resolution : 0.01,
 	        }
 	    });
 	}

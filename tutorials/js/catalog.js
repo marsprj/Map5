@@ -40,6 +40,9 @@ var g_catalog = [
 			},{
 				"name" : "图层面板",
 				"link" : "control/control_layerpanel.html"	
+			},{
+				"name" : "弹窗",
+				"link" : "control/control_infowindow.html"	
 			}
 		]
 	},{
@@ -57,6 +60,9 @@ var g_catalog = [
 			},{
 				"name" : "地图旋转",
 				"link" : "map/map_view_rotate.html"
+			},{
+				"name" : "设定地图范围",
+				"link" : "map/map_extent.html"
 			}
 		]
 	},{
@@ -75,7 +81,7 @@ var g_catalog = [
 				"name" : "TMS图层",
 				"link" : "layer/layer_add_tms.html"
 			},{
-				"name" : "WMTS图层",
+				"name" : "(*)WMTS图层",
 				"link" : "layer/layer_add_wmts.html"
 			},{
 				"name" : "QuadServer图层",
@@ -84,7 +90,7 @@ var g_catalog = [
 				"name" : "多个QuadServer图层",
 				"link" : "layer/layer_add_multi_quadserver.html"
 			},{
-				"name" : "PGIS图层",
+				"name" : "(*)PGIS图层",
 				"link" : "layer/layer_add_pgis.html"
 			},{
 				"name" : "高德图层",
@@ -165,6 +171,9 @@ var g_catalog = [
 			},{
 				"name" : "地图旋转",
 				"link" : "interaction/interaction_rotate.html"
+			},{
+				"name" : "拾取",
+				"link" : "interaction/interaction_hit.html"
 			}
 		]
 	},{
@@ -190,10 +199,10 @@ var g_catalog = [
 	},{
 		"name" : "条件查询",
 		"items":[
-			/*{
+			{
 				"name" : "(*)ID查询",
 				"link" : "query/filter_id.html"
-			},*/{
+			},{
 				"name" : "二元比较查询",
 				"link" : "query/filter_binary_comparision.html"
 			},{
@@ -232,17 +241,18 @@ var g_catalog = [
 			},{
 				"name" : "设置最大的返回的features个数",
 				"link" : "query/query_set_maxfeatures.html"
-			}/*,{
+			},{
 				"name" : "(*)设置返回结果的偏移量",
-				"link" : "query_set_offset.html"
+				"link" : "query/query_set_offset.html"
 			},{
 				"name" : "(*)设置返回结果排序",
 				"link" : "query/query_set_orderby.html"
-			}*/
+			}
 		]
 	},{
 
 		"name" : "交互式查询",
+
 		"items":[
 
 			{
@@ -323,16 +333,16 @@ var g_catalog = [
 	}*/,{
 		"name" : "专题图",
 		"items":[
-			/*{
+			{
 				"name" : "(*)唯一值图",
 				"link" : "theme/theme_unique.html"
-			},*/{
+			},{
 				"name" : "分级图(前端)",
 				"link" : "theme/theme_class_c.html"
-			}/*,{
+			},{
 				"name" : "(*)分级图(后端)",
 				"link" : "theme/theme_class_s.html"
-			}*/,{
+			},{
 				"name" : "热力图",
 				"link" : "theme/theme_heatmap.html"
 			},{
@@ -427,10 +437,10 @@ var g_catalog = [
 			},{
 				"name" : "Marker",
 				"link" : "feature/add_marker.html"
-			}/*,{
+			},{
 				"name" : "(*)标绘&标注点击事件",
 				"link" : "overlayClick.html"
-			}*/
+			}
 		]
 	},{
 		"name" : "标绘",
@@ -444,10 +454,10 @@ var g_catalog = [
 			},{
 				"name" : "动态标绘",
 				"link" : "interaction/interaction_draw.html"
-			}/*,{
+			},{
 				"name" : "(*)标绘&标注点击事件",
 				"link" : "overlayClick.html"
-			}*/
+			}
 		]
 	},{
 		"name" : "地图事件",
@@ -473,6 +483,9 @@ var g_catalog = [
 			},{
 				"name" : "地图拖拽事件",
 				"link" : "event/map_drag.html"
+			},{
+				"name" : "地图级别改变事件",
+				"link" : "event/map_zoom.html"
 			}
 		]
 	}/*,{
@@ -545,19 +558,36 @@ var g_catalog = [
 			}
 		]		
 	}*/,{
+		"name" : "空间量算",
+		"items":[
+			{
+				"name" : "线长度",
+				"link" : "measure/measure_line_length.html"
+			},{
+				"name" : "多边形周长",
+				"link" : "measure/measure_polygon_perimeter.html"
+			},{
+				"name" : "多边形面积",
+				"link" : "measure/measure_polygon_area.html"
+			},{
+				"name" : "多边形面积(交互式)",
+				"link" : "measure/measure_polygon_area_by_draw.html"
+			}
+		]
+	},{
 		"name" : "格式转换",
 		"items":[
 			{
-				"name" : "WKT<-->Geometry",
+				"name" : "(*)WKT<-->Geometry",
 				"link" : "format/wkt.html"
 			},{
-				"name" : "GML<-->Geometry",
+				"name" : "(*)GML<-->Geometry",
 				"link" : "format_gmal.html"
 			},{
-				"name" : "KML<-->Geometry",
+				"name" : "(*)KML<-->Geometry",
 				"link" : "format/kml.html"
 			},{
-				"name" : "GeoJSON<-->Geometry",
+				"name" : "(*)GeoJSON<-->Geometry",
 				"link" : "format/geojson.html"
 			}
 		]
@@ -569,16 +599,22 @@ var g_catalog = [
 				"link" : "proj/coordinate.html"
 			}
 		]
-	}/*,{
+	},{
 		"name" : "动画",
 		"items":[
 			{
-				"name" : "(*)动画轨迹（未全部实现）",
-				"link" : "animation.html"
+				"name" : "动画轨迹",
+				"link" : "animation/animation_layer.html"
 			},{
-				"name" : "(*)动态迁徙图",
-				"link" : "geoLineLayer.html"
+				"name" : "动态迁徙图",
+				"link" : "animation/animation_geoline_layer.html"
+			},{
+				"name" : "波纹图",
+				"link" : "animation/animation_ripple_layer.html"
+			},{
+				"name" : "轨迹线",
+				"link" : "animation/animation_path_layer.html"
 			}
 		]
-	}*/
+	}
 ];

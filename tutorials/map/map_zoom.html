@@ -2,12 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
-<script type="text/javascript" src="../../src/depends/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../src/depends/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -38,6 +35,10 @@
 
 		// 根据control类型获取control
 		zoomControl = mapObj.getControl(GeoBeans.Control.Type.ZOOM);
+
+		var viewer = mapObj.getViewer();
+		viewer.setMinZoom(3);
+		viewer.setMaxZoom(10);
 	}
 
 
@@ -64,7 +65,7 @@
 			return;
 		}
 
-		// 停止拉框缩放
+		// 拉框结束
 		zoomControl.end();
 	}
 </script>

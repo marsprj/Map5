@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+<script type="text/javascript" src="../../lib/requestNextAnimationFrame.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+<script type="text/javascript" src="../js/citiesValue.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	
+	var mapObj = null;
+
+	function init(){
+	 	loadTileMap();
+	}
+	/**
+	 * 增加波纹图层，以点图层为基础，通过颜色和半径来展示动画的效果
+	 */
+	function addRippleLayer(){
+		// 1、定义波纹图层
+		var layer = new GeoBeans.Layer.RippleLayer({
+			name : "ripple",  			// 图层名称
+			color : "#ff0000", 			// 点的颜色
+			// color : color_function, 	// 可以设置为函数，
+										// 传入变量为colorField字段对应的值
+			colorField : "populat",  	// 颜色的辅助字段
+			opacity : 0.8,			 	// 波纹中心点的透明度
+			period : 4,					// 一个波纹持续的时间
+			lineNumber : 3,				// 一个波纹对应的波纹条数
+			// radius : 5,				// 每个波纹中心点的半径
+			radius : radius_function,	// 可以设置为函数，
+										// 传入变量为radiusField字段对应的值
+			radiusField : "populat",	// 半径的辅助字段
+			scale : 3,					// 半径
+			type : "stroke",			// 波纹动画的效果，stroke为线，fill为填充
+			geometryType : GeoBeans.Geometry.Type.POINT,
+			source : new GeoBeans.Source.Feature({
+				geometryName : "geometry"
+			})
+		});
+
+		// 2、数据源加载数据
+		var features = loadFeatures();
+		var source = layer.getSource();
+		source.setFeatures(features);
+
+		// 3、增加图层
+		mapObj.addLayer(layer);
+
+		// 4、地图刷新
+		mapObj.refresh();
+	}
+
+	function loadFeatures(){
+		var features = [];		
+		var length = g_citiesValue.length;
+
+		for(var i = 0; i < length;++i){
+			var pairs = g_citiesValue[i];	
+			var feature = createFeature(i, pairs);
+			features.push(feature);
+		}
+
+		return features;
+	}
+
+	function createFeature(i, pairs){
+		// 使用wkt转换为geometry
+		var format = new GeoBeans.Format.WKT();
+		var geometry = format.read(pairs.shape);
+		var fid = "id_" + i;
+		var values = {
+			name :pairs.name,
+			populat : pairs.populat,
+			capital : pairs.capital,
+			geometry :geometry
+		};
+
+		var feature = new GeoBeans.Feature({
+			fid : fid,
+			properties : values,
+			geometry : geometry
+		});
+		return feature;
+	}
+
+	// 
+	/**
+	 * 颜色的设定函数，传入参数为颜色的辅助字段值，返回颜色的十六进制值
+	 */
+	function color_function(value){
+		var color = null;
+		if(value <　100000){
+			color = "#ffffcc";
+		}else if(value > 100000 && value < 　1000000){
+			color = "#37f67d";
+		}else if(value > 　1000000){
+			color = "#0c2c84";
+		}
+		return color;
+	}
+
+	/**
+	 * 半径的设定函数，传入参数为半径的辅助字段值，返回半径的设定值
+	 */
+	function radius_function(value){
+		var radius = null;
+		return value / 1000000;
+	}
+</script>
+<title>动画：波纹图层</title>
+<body onload="init()">
+	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:30px">
+	</div>
+	<button onclick="addRippleLayer()">添加图层</button>
+</body>

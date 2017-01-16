@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+		overflow: hidden;
+	}
+
+</style>
+<script type="text/javascript">
+	
+	var mapObj = null;
+	function  init(){
+		loadTileMap();
+		addInfoWindow();
+	}
+
+
+	function addInfoWindow(){
+		// 1、按照类型获取弹窗
+		var infoWindow = mapObj.getWidget(GeoBeans.Widget.Type.INFO_WINDOW);
+
+		// 2、定义弹窗的位置
+		var pt = new GeoBeans.Geometry.Point(0,0);
+		infoWindow.setPosition(pt);
+
+		// 3、设置弹窗的参数
+		infoWindow.setOption({
+			title : "title",    // 标题
+			content : "content" // 弹窗内容
+		});
+
+		// 4、显示
+		infoWindow.show(true);
+
+		// 5、地图刷新
+		mapObj.refresh();
+	}
+
+
+</script>
+<title>控件：弹窗</title>
+<body onload="init()">
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
+	</div>
+</body>
+	
