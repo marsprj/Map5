@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	var drawer = null;
+	function init(){
+		loadTileMap();
+		createDrawInteraction();
+	}
+	
+	function createDrawInteraction(){
+		drawer = new GeoBeans.Interaction.Draw({
+			map : mapObj,
+			onComplete : onComplete
+		});
+		mapObj.addInteraction(drawer);
+	}
+
+	function onComplete(geometry){
+		var srs = mapObj.getSpatialReference();
+		//计算多边多边形面积
+		var area = srs.area(geometry, 	//多边形
+							GeoBeans.Unit.Kilometer);//单位
+		document.getElementById("area").value = area;
+	}
+
+	function onDrawPolygon(){
+		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+		var fill = symbolizer.fill;
+		fill.color.set(255,255,255,0.25);
+
+		drawer.draw(GeoBeans.Geometry.Type.POLYGON,symbolizer);
+	}
+</script>
+<title>Measure:计算面积</title>
+<body onload="init()">
+	<button onclick="onDrawPolygon()">量算</button>
+	<span>面积:</span>
+	<input type="text" id="area" value="0.0" placeholder="0.0" size="20">
+	<span>平方公里</span>
+
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+</body>

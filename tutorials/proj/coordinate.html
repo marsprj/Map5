@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -55,7 +54,7 @@
 		document.getElementById("w_x").value = evt.mapX;
 		document.getElementById("w_y").value = evt.mapY;
 
-		// 经纬度(WGS84)转平面坐标(Web Mercator)
+		// 经纬度转换为平面坐标
 		var pt = GeoBeans.Proj.fromLonLat(lon, lat);
 		document.getElementById("m_x").value = pt.x;
 		document.getElementById("m_y").value = pt.y;

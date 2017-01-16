@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	var vector = null;
+	function init(){
+		loadTileMap();
+		addGeoJSONLayer();
+		createSelectInteraction();
+	}
+
+	// 添加一个要素图层
+	function addGeoJSONLayer(){
+		vector = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "layername", // 图层名称
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+			"source" : new GeoBeans.Source.Feature.GeoJSON({
+				"url" : "../data/geojson/countries.geojson",
+				"geometryName" : "geometry",
+			}),
+			"style" : createSimplePolygonStyle()
+		});
+		mapObj.addLayer(vector);
+		mapObj.refresh();
+	}
+
+	// 添加一个点击交互
+	function createSelectInteraction(){
+		var select = new GeoBeans.Interaction.Select({
+			"map" : mapObj,
+			"layer" : vector
+		});
+		select.onchange(onSelectionChange);
+		mapObj.addInteraction(select);
+	}
+
+	// 点击交互回调函数,返回要素数组
+	function onSelectionChange(features){
+		if(features.length>0){
+			// 1、获取第一个要素的几何图形
+			var polygon = features[0].getGeometry();
+
+			// 2、获取地图的空间参考 
+			var srs = mapObj.getSpatialReference();
+
+			// 3、计算多边形周长
+			var perimeter = srs.length(polygon, 			// 几何图形
+								GeoBeans.Unit.Kilometer);	// 单位
+			document.getElementById("perimeter").value = perimeter;
+		}
+		
+	}
+
+	// 创建一个面样式
+	function createSimplePolygonStyle(){
+		var style = new GeoBeans.Style.FeatureStyle();
+		var rule = new GeoBeans.Style.Rule();
+		var symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
+		symbolizer.fill.color.set(50, 60, 72,1.0);
+		symbolizer.stroke.color.set(17, 17, 17,0.6);
+		symbolizer.stroke.width = 1;
+		rule.symbolizer = symbolizer;
+		style.addRule(rule);
+		return style;
+	}
+
+</script>
+<title>Measure:计算多边形周长</title>
+<body onload="init()">
+	<span>周长:</span>
+	<input type="text" id="perimeter" value="0.0" placeholder="0.0" size="20">
+	<span>公里</span>
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+</body>

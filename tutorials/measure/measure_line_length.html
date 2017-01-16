@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
+
+<script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../../lib/Map5.min.js"></script>
+
+<script type="text/javascript" src="../js/initMap.js"></script>
+
+<style type="text/css">
+	body{
+		margin: 0px;
+	}
+</style>
+<script type="text/javascript">
+	// 地图变量
+	var mapObj = null;
+	var drawer = null;
+	function init(){
+		loadTileMap();
+		createDrawInteraction();
+	}
+	
+	// 添加绘制交互
+	function createDrawInteraction(){
+		// 1、定义一个绘制交互
+		drawer = new GeoBeans.Interaction.Draw({
+			map : mapObj,
+			onComplete : onComplete
+		});
+
+		// 2、地图添加绘制交互
+		mapObj.addInteraction(drawer);
+	}
+
+	// 绘制完成回调函数，返回绘制的几何图形
+	function onComplete(geometry){
+		// 1、获取地图的空间参考对象
+		var srs = mapObj.getSpatialReference();
+		
+		// 2、计算几何图形的长度
+		var area = srs.length(geometry, 				// 几何图形
+							GeoBeans.Unit.Kilometer); 	// 单位, 公里
+		document.getElementById("length").value = area;
+	}
+
+	// 绘制线
+	function onDrawLine(){
+		// 1、定义线绘制的样式
+		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
+		var stroke = symbolizer.stroke;
+		stroke.color.set(0,153,255,1);
+
+		// 2、绘制要素
+		// 第一个参数为要素类型
+		// 第二个参数为绘制的样式
+		drawer.draw(GeoBeans.Geometry.Type.LINESTRING,symbolizer);
+	}
+</script>
+<title>Measure:计算长度</title>
+<body onload="init()">
+	<button onclick="onDrawLine()">量算</button>
+	<span>长度:</span>
+	<input type="text" id="length" value="0.0" placeholder="0.0" size="20">
+	<span>公里</span>
+
+	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
+	</div>
+</body>
