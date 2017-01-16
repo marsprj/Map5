@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -25,13 +24,16 @@
 	}
 
 	function onQuery(){
-		//创建查询对象
+		// 1、创建查询对象
 		var query = createQuery();
-		//execute为回调函数接口
+
+		// 2、定义查询结果回调函数,
+		// execute为回调函数接口
 		var handler = {
 			execute : query_succeed
 		}
-		//执行查询
+
+		// 3、执行查询
 		vector.query(query, handler);
 	}	
 
