@@ -431,7 +431,7 @@ GeoBeans.Interaction.Draw.prototype.drawRect = function(symbolizer){
 	var onmousedown = function(evt){
 		that._map.saveSnap();
 		evt.preventDefault();
-		point_b = {x:evt.layerX,y:evt.layerY};
+		var point_b = {x:evt.layerX,y:evt.layerY};
 		that.draw_points([],point_b.x,point_b.y,symbolizer);
 
 		that.drawing = true;
@@ -441,8 +441,8 @@ GeoBeans.Interaction.Draw.prototype.drawRect = function(symbolizer){
 			if(point_b == null){
 				return;
 			}
-			point_b_m = viewer.toMapPoint(point_b.x,point_b.y);
-			point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
+			var point_b_m = viewer.toMapPoint(point_b.x,point_b.y);
+			var point_e = viewer.toMapPoint(evt.layerX,evt.layerY);
 			that._map.restoreSnap();
 			var points = [];
 			points.push({
