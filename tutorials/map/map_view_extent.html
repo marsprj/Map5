@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -23,26 +22,22 @@
 	}
 
 	function getExtent(){
-		// 1、获取地图的视口
+		// 1、获取地图的视图
 		var viewer = mapObj.getViewer();
 
-		// 2、获取范围
+		// 2、获取范围,返回结果为一个矩形
 		var extent = viewer.getExtent();
 		
-		// 返回结果为一个矩形
 		alert(extent.xmin + "," + extent.ymin + "," + extent.xmax + "," + extent.ymax);
 	}
 
 	function setExtent(){
 
 		// 1、定义一个矩形，四个参数分别为，xmin,ymin,xmax,ymax
-		var extent = new GeoBeans.Envelope(110,33,130,44);
+		var extent = new GeoBeans.Envelope(10,33,30,44);
 
-		// 2、获取地图的视口
-		var viewer = mapObj.getViewer();
-
-		// 3、设置范围
-		mapObj.setViewExtent(extent);
+		// 2、设置范围，地图范围会按照地图的长宽比例进行调整
+		mapObj.zoomToExtent(extent);
 		
 	}
 </script>

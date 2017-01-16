@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
@@ -28,16 +27,28 @@
 		// 1、定义旋转角
 		var rotation = 45.0;
 
-		// 2、获取地图的视口
+		// 2、获取地图的视图
 		var viewer = mapObj.getViewer();
 
-		// 3、设置地图的旋转角度
+		// 3、设置地图的旋转角度，单位为度°
 		viewer.setRotation(rotation);
 	}
+
+
+	function getRotation(){
+		// 1、获取地图的视图
+		var viewer = mapObj.getViewer();
+
+		// 2、获取地图的旋转角度
+		var rotation = viewer.getRotation();
+
+		alert("地图的旋转角度: " + rotation);
+	}
 </script>
-<title>视图:设置旋转角</title>
+<title>视图:地图旋转角</title>
 <body onload="init()">
 	<button onclick="setRotation()">设置旋转角</button>
+	<button onclick="getRotation()">获取旋转角</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
 	</div>
 </body>

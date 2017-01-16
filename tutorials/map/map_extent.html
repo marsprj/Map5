@@ -5,10 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
-
-<script type="text/javascript" src="../js/initMap.js"></script>
 
 <style type="text/css">
 	body{
@@ -19,7 +16,7 @@
 	
 	var mapObj = null;
 	function  init(){
-		
+		// 在地图初始化的时候，对地图的范围进行设置，区分与地图视图中的显示范围
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
@@ -36,61 +33,33 @@
 			 		"visible" : true
 				}),new GeoBeans.Layer.FeatureLayer({			
 					"name" : "country",
-					"geometryType" : GeoBeans.Geometry.Type.LINESTRING,
+					"geometryType" : GeoBeans.Geometry.Type.POLYGON,
 					"source" : new GeoBeans.Source.Feature.WFS({
 						"url" : "/geoserver/radi/ows?",
 						"version" : "1.0.0",
 						"featureNS" : 'http://www.radi.ac.cn',
 						"featurePrefix" : "radi",
-						"featureType" : "rivers_2",
+						"featureType" : "country_2",
 						"geometryName" : "shape",
 						"outputFormat": "GML2"
 					})
 				})
 			],
 			viewer : {
-	            center : new GeoBeans.Geometry.Point(0,0),
-	            zoom : 4,
+	            zoom : 15,
+	            center : new GeoBeans.Geometry.Point(113.953640,22.5370180),
 	            minZoom : 4,		// 初始化的时候设定最小级别
 	            maxZoom : 17		// 初始化的时候设定最大级别
-	        }
+	        },
+	        
+	        // 地图的范围，可以不设定，当设定时，地图将不会拖拽出此范围，当设定时，可能viewer的minZoom可能会无效,注意：区分于显示范围
+	        // extent : new GeoBeans.Envelope(113.8996,22.51120,114.0077,22.5628)
+	        extent : new GeoBeans.Envelope(-180,-90,180,90)
 		});
 	}
-
-	function setZoom(){
-		// 设置级别
-		mapObj.zoomTo(10);
-	}
-
-	function getZoom(){
-		// 返回级别
-		var level = mapObj.getViewer().getZoom();
-		
-		alert("当前地图的级别是:" + level);
-	}
-
-	function setMaxZoom(){
-		// 1、获取地图的视图
-		var viewer = mapObj.getViewer();
-
-		// 2、设置最大缩放级别
-		viewer.setMaxZoom(10);
-	}
-
-	function setMinZoom(){
-		// 1、获取地图的视图
-		var viewer = mapObj.getViewer();
-
-		// 2、设置最小的缩放级别
-		viewer.setMinZoom(3);
-	}
 </script>
-<title>Map5 -- 初始化地图</title>
+<title>Map5 -- 地图范围</title>
 <body onload="init()">
-	<button onclick="getZoom()">显示级别</button>
-	<button onclick="setZoom()">设置级别</button>
-	<button onclick="setMaxZoom()">设置最大显示级别</button>
-	<button onclick="setMinZoom()">设置最小显示级别</button>
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;">
 	</div>
 </body>
