@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -26,26 +25,25 @@
 		createSelectInteraction();
 	}
 
-	/**
-	 * 定义多边形查询
-	 */
+
 	function createSelectInteraction(){
-		// 1、定义查询交互
+		// 1、定义地图交互
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
-			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.POLYGON // 查询类型为多边形查询
+			"layer" : wfsLayer,		// 查询的图层
+			"condition" : GeoBeans.Interaction.SelectType.POLYGON // 交互类型，默认是点击查询
 		});
 
-		// 2、定义查询的相应函数
+		// 2、定义查询交互的选择集发生变化事件
 		select.onchange(onSelectionChange);
 
 		// 3、添加查询交互
 		mapObj.addInteraction(select);
 	}
 
+	// onChange回调函数
 	function onSelectionChange(features){
-		//alert(features.length);
+		alert(features.length);
 	}
 
 </script>

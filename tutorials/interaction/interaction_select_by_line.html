@@ -6,10 +6,10 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
+
 <style type="text/css">
 	body{
 		margin: 0px;
@@ -25,30 +25,28 @@
 		createSelectInteraction();
 	}
 
-	/**
-	 * 定义线查询交互，返回与线相交的要素
-	 */
 	function createSelectInteraction(){
-		// 1、定义查询交互
+		// 1、定义地图交互		
 		var select = new GeoBeans.Interaction.Select({
 			"map" : mapObj,
 			"layer" : wfsLayer,
-			"condition" : GeoBeans.Interaction.SelectType.LINE //查询类型为线查询
+			"condition" : GeoBeans.Interaction.SelectType.LINE
 		});
 
-		// 2、定义查询的相应函数
+		// 2、定义查询交互的选择集发生变化事件		
 		select.onchange(onSelectionChange);
 
-		// 3、地图增加查询交互
+		// 3、添加查询交互		
 		mapObj.addInteraction(select);
 	}
 
+	// onChange回调函数
 	function onSelectionChange(features){
-		//alert(features.length);
+		alert(features.length);
 	}
 
 </script>
-<title>Interaction:线查询</title>
+<title>Interaction:多边形选择</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">

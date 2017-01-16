@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -51,11 +50,11 @@
 	function addDrawInteraction(){
 		// 1、定义绘制交互
 		drawer = new GeoBeans.Interaction.Draw({
-			map : mapObj, //地图
-			onComplete : onComplete  // 绘制完成的事件相应函数
+			map : mapObj,
+			onComplete : onComplete  // 绘制完成回调函数
 		});
 
-		// 2、地图增加绘制交互
+		// 2、地图添加交互
 		mapObj.addInteraction(drawer);
 	}
 
@@ -69,7 +68,7 @@
 		// stroke.color.set(0,255, 0,1);
 		// stroke.width = 1.0; 
 
-		// 1、定义点绘制的样式
+		// 1、定义点样式
 		var symbol = new GeoBeans.Style.Symbol();
 		symbol.icon = "../images/pin.png";
 		symbol.rotation = 45;
@@ -78,70 +77,49 @@
 		symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
 		symbolizer.symbol = symbol;
 
-		// 2、绘制要素
-		// 第一个参数为要素类型
-		// 第二个参数为绘制的样式
+		// 2、绘制点
 		drawer.draw(GeoBeans.Geometry.Type.POINT,symbolizer);
 	}
 
 	function onDrawLine(){
-		// 1、定义线绘制的样式
 		symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 		var stroke = symbolizer.stroke;
 		stroke.color.set(0,153,255,1);
 
-		// 2、绘制要素
-		// 第一个参数为要素类型
-		// 第二个参数为绘制的样式
 		drawer.draw(GeoBeans.Geometry.Type.LINESTRING,symbolizer);
 	}
 
 	function onDrawPolygon(){
-		// 1、定义面绘制的样式
 		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		var stroke = symbolizer.stroke;
 		stroke.color.set(0,153,255,1);
 		var fill = symbolizer.fill;
 		fill.color.set(255,255,255,0.25);
 
-		// 2、绘制要素
-		// 第一个参数为要素类型
-		// 第二个参数为绘制的样式
 		drawer.draw(GeoBeans.Geometry.Type.POLYGON,symbolizer);
 	}
 
 	function onDrawCircle(){
-		// 1、定义圆绘制的样式
 		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		var stroke = symbolizer.stroke;
 		stroke.color.set(0,153,255,1);
 		var fill = symbolizer.fill;
 		fill.color.set(255,255,255,0.25);
 
-		// 2、绘制要素
-		// 第一个参数为要素类型
-		// 第二个参数为绘制的样式
 		drawer.draw(GeoBeans.Geometry.Type.CIRCLE,symbolizer);
 	}
 
 	function onDrawRect(){
-		// 1、定义矩形绘制的样式
 		symbolizer = new GeoBeans.Symbolizer.PolygonSymbolizer();
 		var stroke = symbolizer.stroke;
 		stroke.color.set(0,153,255,1);
 		var fill = symbolizer.fill;
 		fill.color.set(255,255,255,0.25);
 
-		// 2、绘制要素
-		// 第一个参数为要素类型
-		// 第二个参数为绘制的样式
 		drawer.draw("Rect",symbolizer);
 	}	
 
-	/**
-	 * 绘制完成的相应函数
-	 * 返回绘制的几何图形
-	 */
+	// 绘制结束回调函数
 	function onComplete(geometry){
 		var format = new GeoBeans.Format.WKT();
 		var wkt = format.write(geometry);
@@ -153,24 +131,20 @@
 			geometry : geometry,
 			value : {}
 		});
-		// 2、定义要素的样式
-		feature.symbolizer = symbolizer;
+		feature.setSymbolizer(symbolizer);
 
-		// 3、获取图层的数据源
+		// 2、获取数据源
 		var source = layer.getSource();
 
-		// 4、数据源添加要素
+		// 3、数据源添加该数据
 		source.addFeature(feature);
 
-		// 5、地图刷新
+		// 4、地图刷新
 		mapObj.refresh();
 	}
 
-	/**
-	 * 添加一个要素图层
-	 */
+
 	function addFeatureLayer(name){
-		// 1、定义一个要素图层
 		var featureLayer = new GeoBeans.Layer.FeatureLayer({
 			name : name,
 			geometryType : GeoBeans.Geometry.Type.POINT,
@@ -179,46 +153,19 @@
 			})
 		});
 
-		// 2、添加图层
 		mapObj.addLayer(featureLayer);
-		
 		return featureLayer;
 	}
 
-	function createSimplePointStyle(){
-		var style = new GeoBeans.Style.FeatureStyle();
-
-		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		//设置点大小
-		symbolizer.size = 6;
-		//设置点的填充颜色
-		var fill   = symbolizer.fill;
-		fill.color.setHex('#800080',1);
-
-		//设置点的边界样式
-		var stroke = symbolizer.stroke;
-		// 边框的颜色
-		stroke.color.set(0,255, 0,1);
-		// 边框的颜色
-		stroke.width = 1.0; 
-
-		var rule = new GeoBeans.Style.Rule();
-		rule.symbolizer = symbolizer;
-		rule.filter = null;
-		
-		style.addRule(rule);		
-
-		return style;
-	}
 
 	function onEnable(){
 		var enabled = drawer.isEnabled();
 		if(enabled){
-			document.getElementById("status").value = "禁用";
+			document.getElementById("status").innerHTML = "禁用";
 			drawer.enable(!enabled);
 		}
 		else{
-			document.getElementById("status").value = "启用";
+			document.getElementById("status").innerHTML = "启用";
 			drawer.enable(!enabled);
 		}
 	}
