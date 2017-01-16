@@ -1,4 +1,4 @@
-GeoBeans.Raster = GeoBeans.Class({
+GeoBeans.RasterImg = GeoBeans.Class({
 	// 名称
 	name : null,
 

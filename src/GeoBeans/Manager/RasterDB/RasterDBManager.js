@@ -303,7 +303,7 @@ GeoBeans.RasterDBManager = GeoBeans.Class({
 
 		var raster = null;
 		if(name != null){
-			raster = new GeoBeans.Raster(name,format,bands,srid,width,height,extent);
+			raster = new GeoBeans.RasterImg(name,format,bands,srid,width,height,extent);
 		}
 		return raster;
 
