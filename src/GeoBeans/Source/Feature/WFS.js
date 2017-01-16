@@ -281,8 +281,8 @@ GeoBeans.Source.Feature.WFS.prototype.serializeQuery = function(query, mapName, 
 
 	// set fields
 	var fields = query.getFields();
-	for (f in fields){
-		fn = doc.createElement("wfs:PropertyName");
+	for (var f in fields){
+		var fn = doc.createElement("wfs:PropertyName");
 		$(fn).text(fields[f]);
 		$(qnode).append(fn);
 	}
