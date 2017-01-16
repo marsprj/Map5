@@ -339,7 +339,7 @@ GeoBeans.Layer.SymbolChartLayer.prototype.drawLayerByValue = function(features){
 	this.renderer.save();
 	this.renderer.setSymbolizer(symbolizer);
 
-	var feature = null, geometry = null, center = null,circle = null,radius;
+	var feature = null, geometry = null, center = null,circle = null,radius,value,radius_m;
 
 	for(var i = 0; i < features.length;++i){
 		feature = features[i];

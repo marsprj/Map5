@@ -42,7 +42,7 @@ GeoBeans.ColorRangeMap = GeoBeans.Class({
 	    var v = this.getColorValue(this.beginColorHSV.v,this.endColorHSV.v,value);
 
 	    var rgb = this.hsv_2_rgb(h,s,v);
-	    color = new GeoBeans.Color();
+	    var color = new GeoBeans.Color();
     	
 		color.set(parseInt(rgb.r),parseInt(rgb.g),parseInt(rgb.b),1);
     	return color;

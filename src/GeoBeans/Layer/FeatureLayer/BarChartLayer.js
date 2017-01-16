@@ -170,8 +170,8 @@ GeoBeans.Layer.BarChartLayer.prototype.drawBarFeatures = function(features){
 	var minMax = {};
 	var source = this.getSource();
 	for(var i = 0; i < fields.length;++i){
-		field = fields[i];
-		minMax_f = source.getMinMaxValue(field);
+		var field = fields[i];
+		var minMax_f = source.getMinMaxValue(field);
 		if(isValid(minMax_f)){
 			minMax.max = minMax.max > minMax_f.max ? minMax.max : minMax_f.max;
 			minMax.min = minMax.min < minMax_f.min ? minMax.min : minMax_f.min;
@@ -179,7 +179,7 @@ GeoBeans.Layer.BarChartLayer.prototype.drawBarFeatures = function(features){
 	}
 	// console.log(minMax);
 
-	var field = null,value = null,feature = null,geometry = null,chartValue = null;
+	var field = null,value = null,feature = null,geometry = null,chartValue = null,center = null;
 
 
 	var mapContainer = this.map.getContainer();

@@ -140,7 +140,7 @@ GeoBeans.Layer.ClusterLayer.prototype.createSymbolizer = function(){
 GeoBeans.Layer.ClusterLayer.prototype.getIconLoaded = function(){
 	var flag = true;
 	for(var i = 0; i < this.symbolizers.length;++i){
-		symbolizer = this.symbolizers[i];
+		var symbolizer = this.symbolizers[i];
 		if(symbolizer.icon==null){
 			symbolizer.icon = new Image();
 			symbolizer.icon.crossOrigin="anonymous";

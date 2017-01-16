@@ -106,3 +106,4 @@ version 1.0.111
 2017.01.16 bug   修改严格模式下的Select函数。
 2017.01.16 bug   修改严格模式下的Draw类。
 2017.01.16 bug   修改严格模式下的WFS类。
+2017.01.16 bug   修改严格模式下的ColorRangeMap、BarChartLayer、ClusterLayer、SymbolChartLayer等。
