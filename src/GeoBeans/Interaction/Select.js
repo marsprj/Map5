@@ -727,7 +727,7 @@ GeoBeans.Interaction.Select.prototype.drawPolygon = function(points, x, y){
 	var len = points.length;
 	context.beginPath();
 	context.moveTo(x, y);
-	for(i=0; i<len; i++){
+	for(var i=0; i<len; i++){
 		context.lineTo(points[i].x, points[i].y);
 	}
 	context.closePath();

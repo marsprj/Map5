@@ -103,3 +103,4 @@ version 1.0.111
 2017.01.12 bug   修改查询交互Select的onChange回调函数。
 2017.01.12 bug   GeoJson查询过滤器失败查询回调的错误。
 2017.01.16 bug   删除RippleLayer原有版本，修改严格模式下的RippleLayer图层。
+2017.01.16 bug   修改严格模式下的Select函数。
