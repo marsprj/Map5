@@ -5,10 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
-
-<script type="text/javascript" src="../js/initMap.js"></script>
 
 <style type="text/css">
 	body{
@@ -22,7 +19,7 @@
 	}
 </style>
 
-<title>地图：加载OpenStreetMap地图</title>
+<title>地图：加载ArcGIS Online地图</title>
 <body onload="init()">
 	<table>
 		<tr>
@@ -51,9 +48,9 @@
 			layers : [
 				new GeoBeans.Layer.TileLayer({
 					"name" : "arcgis",
-					"source" : new GeoBeans.Source.Tile.ArcGIS({ //定义arcgis数据源
-						imageSet : "ChinaOnlineCommunity", // 定义数据集
-						srs: GeoBeans.Proj.WebMercator, // 定义投影
+					"source" : new GeoBeans.Source.Tile.ArcGIS({  // 数据源为ArcGIS Online
+						imageSet : "ChinaOnlineCommunity",
+						srs: GeoBeans.Proj.WebMercator,
 					}),
 			 		"opacity" : 1.0,
 			 		"visible" : true
@@ -68,7 +65,6 @@
 			return;
 		}
 		
-		// 定义鼠标移动事件
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 

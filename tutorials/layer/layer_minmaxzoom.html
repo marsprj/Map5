@@ -20,20 +20,22 @@
 	// 地图变量
 	var mapObj = null;
 	function  init(){
+		
 		loadTileMap();
 	}
 
 	function onSetMinMaxZoom(){
-		// 1、获取地图的底图
-		var layer = mapObj.getBaseLayer();
 
-		// 2、获取该图层的数据源
+		// 1、获取地图的底图图层
+		var layer = mapObj.getBaseLayer();
+		
+		// 2、图层获取数据源
 		var source = layer.getSource();
 
-		// 3、设置最小显示级别
+		// 3、设置最小的缩放级别
 		source.setMinZoom(2);
 
-		// 4、设置最大显示级别
+		// 4、设置最大的缩放级别
 		source.setMaxZoom(4);
 	}
 

@@ -5,10 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
-
-<script type="text/javascript" src="../js/initMap.js"></script>
 
 <style type="text/css">
 	body{
@@ -45,18 +42,19 @@
 	function  init(){
 		
 		mapObj = new GeoBeans.Map({
-			target : "mapDiv", //地图存放的容器
-			name : "map", //地图的名称
-			srs  : GeoBeans.Proj.WebMercator, //地图的投影
-			baseLayer : "world", 	//地图的底图名称，应该为layers中的一个图
+			target : "mapDiv",
+			name : "map",
+			srs  : GeoBeans.Proj.WebMercator,
+			baseLayer : "world",
 			layers :[
-				new GeoBeans.Layer.TileLayer({ //定义一个瓦片图层
-					name   : "world",  //图层的名称
-					source : new GeoBeans.Source.Tile.AMap({ // 定义高德地图数据源
-						srs: GeoBeans.Proj.WebMercator, // 定义投影类型
+				// 定义一个瓦片图层，数据源为AMap高德地图
+				new GeoBeans.Layer.TileLayer({
+					name   : "world",
+					source : new GeoBeans.Source.Tile.AMap({
+						srs: GeoBeans.Proj.WebMercator,
 					}),
-			 		opacity : 1.0,  // 透明度
-			 		visible : true  // 是否显示
+			 		opacity : 1.0,
+			 		visible : true
 				})
 			],
 			viewer : {
@@ -64,10 +62,7 @@
 	            zoom : 2,
 	        }
 		});
-		if(mapObj == null){
-			return;
-		}
-		// 注册地图移动事件
+
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 
@@ -76,7 +71,6 @@
 		document.getElementById("m_x").value = evt.mapX;
 		document.getElementById("m_y").value = evt.mapY;
 
-		// 平面坐标转经纬度
 		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;

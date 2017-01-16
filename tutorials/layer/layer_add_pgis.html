@@ -5,9 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
-
 
 <style type="text/css">
 	body{
@@ -18,21 +16,31 @@
 	// 地图变量
 	var mapObj = null;
 	function  init(){
+		
+		var extent = new GeoBeans.Envelope(113.9414,38.10546,119.01953,42.16015);
+
 		mapObj = new GeoBeans.Map({
-			target : "mapDiv", //地图存放的容器
-			name : "map", //地图的名称
-			srs  : GeoBeans.Proj.WGS84, //地图的投影
-			baseLayer : "tianjin",//地图的底图名称，应该为layers中的一个图层
+			target : "mapDiv",
+			name : "map",
+			srs  : GeoBeans.Proj.WGS84,
+			baseLayer : "tianjin",
 			layers :[
-				// 定义一个瓦片图层
 				new GeoBeans.Layer.TileLayer({
 					name   : "tianjin",
-					source : new GeoBeans.Source.Tile.PGIS({ //数据源为
+					source : new GeoBeans.Source.Tile.PGIS({
 						
 					}),
 			 		opacity : 1.0,
 			 		visible : true,
-			 		// extent : extent
+			 		extent : extent
+				}),new GeoBeans.Layer.TileLayer({
+					"name" : "world",
+					"source" : new GeoBeans.Source.Tile.QuadServer({
+			 			"url" : "/QuadServer/maprequest",
+			 			"imageSet" : "world_vector"
+			 		}),
+			 		"opacity" : 1.0,
+			 		"visible" : true
 				})
 			],
 			viewer : {

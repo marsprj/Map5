@@ -5,9 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
-
 
 <style type="text/css">
 	body{
@@ -42,22 +40,18 @@
 	var mapObj = null;
 	function  init(){
 		
-		// 1、设置地图的范围
-		var extent = new GeoBeans.Envelope(-180,-90,180,90);
-
 		mapObj = new GeoBeans.Map({
 			target : "mapDiv",
 			name : "map",
 			srs  : GeoBeans.Proj.WebMercator,
 			baseLayer : "osm",
 			layers :[
-				// 定义瓦片图层
 				new GeoBeans.Layer.TileLayer({
 					name   : "osm",
-					"source" : new GeoBeans.Source.Tile.OSM({ //定义OSM数据源
-						srs: GeoBeans.Proj.WebMercator, //定义投影
+					"source" : new GeoBeans.Source.Tile.OSM({   		// 数据源为OSM
+						srs: GeoBeans.Proj.WebMercator,
 					}),
-			 		"opacity" : 1.0, 
+			 		"opacity" : 1.0,
 			 		"visible" : true
 				})
 			],
@@ -67,10 +61,6 @@
 	        }
 
 		});
-		if(mapObj == null){
-			return;
-		}
-
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 	}
 

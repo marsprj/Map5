@@ -6,11 +6,9 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
-<script type="text/javascript" src="../data/sample/tianjinValue.js"></script>
 
 <style type="text/css">
 	body{
@@ -37,12 +35,12 @@
 
 
 	function addPointKMLLayer(){
-		// 1、定义一个要素图层
+		// 1、定义一个要素图层，KML图层内有样式
 		var layer = new GeoBeans.Layer.FeatureLayer({
-			name : "point", // 图层名称
-			geometryType : GeoBeans.Geometry.Type.POINT, // 图层的几何类型
-			source : new GeoBeans.Source.Feature.KML({ // 定义KML数据源
-				url : "/Map5/example/all/data/kml/point.kml" // 数据地址
+			name : "point", 								// 图层名称
+			geometryType : GeoBeans.Geometry.Type.POINT,	// 图层的几何类型
+			source : new GeoBeans.Source.Feature.KML({		// 图层的数据源为KML
+				url : "/Map5/example/all/data/kml/point.kml"// 数据的地址
 			})
 		});
 
@@ -78,4 +76,5 @@
 		mapObj.refresh();			
 	}
 </script>
+	
 	

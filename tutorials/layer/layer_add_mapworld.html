@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <style type="text/css">
@@ -24,11 +23,11 @@
 <body onload="init()">
 	<table>
 		<tr>
-			<td>WGS84：</td>
+			<td>Mercator：</td>
 			<td><input id="m_x" type="text" size="20"> - <input id="m_y" type="text" size="20"></td>
 		</tr>
 		<tr>
-			<td>Mercator：</td>
+			<td>WGS84：</td>
 			<td><input id="w_x" type="text" size="20"> - <input id="w_y" type="text" size="20"></td>
 		</tr>
 	</table>
@@ -51,30 +50,28 @@
 			return;
 		}
 		
-		// 2、定义一个瓦片图层
-		var layer = new GeoBeans.Layer.TileLayer({
-			"name" : "vector", // 图层名称
-			"source" : new GeoBeans.Source.Tile.MapWorld({ //定义天地图数据源
-	 			"url" : "/DataServer?", // 服务器地址 
-	 			"imageSet" : /*"img", "cia", "vec",*/ "ter", // 数据集名称
-	 			//"srs" : GeoBeans.Proj.WGS84,
-	 			"srs" : GeoBeans.Proj.WGS84, // 投影
+		// 2、定义一个瓦片图层，数据源为天地图
+		var layer1 = new GeoBeans.Layer.TileLayer({
+			"name" : "vector",  							// 图层名称
+			"source" : new GeoBeans.Source.Tile.MapWorld({  // 天地图数据源
+	 			"url" : "/DataServer?",						// 数据源地址
+	 			"imageSet" : /*"img", "cia", "vec",*/ "ter",// 数据名称 
+	 			"srs" : GeoBeans.Proj.WGS84, 				// 投影
 	 		}),
-	 		"opacity" : 1.0, // 透明度
-	 		"visible" : true // 是否显示
+	 		"opacity" : 1.0,								// 透明度
+	 		"visible" : true								// 显示
 		});
 
-
 		// 3、添加图层
-		mapObj.addLayer(layer);
+		mapObj.addLayer(layer1);
 
-		// 4、定义鼠标移动事件
+		// 4、注册鼠标移动事件
 		mapObj.on(GeoBeans.Event.MOUSE_MOVE, onMouseMove);
 
 		// 5、设置中心点和显示级别
 		var zoom = 2;
 		var center = new GeoBeans.Geometry.Point(0,0);
-		mapObj.setZoomCenter(zoom,center);
+		mapObj.zoomTo(zoom,center);
 	}
 
 	function onMouseMove(evt){
@@ -82,8 +79,7 @@
 		document.getElementById("m_x").value = evt.mapX;
 		document.getElementById("m_y").value = evt.mapY;
 
-		// 平面坐标转换为经纬度
-		var pt = GeoBeans.Proj.fromLonLat(evt.mapX, evt.mapY);
+		var pt = GeoBeans.Proj.toLonLat(evt.mapX, evt.mapY);
 		document.getElementById("w_x").value = pt.x;
 		document.getElementById("w_y").value = pt.y;
 	}

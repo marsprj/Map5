@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <style type="text/css">
@@ -16,6 +15,8 @@
 <script type="text/javascript">
 	
 	var mapObj = null;
+
+
 	function init(){
 		mapObj = new GeoBeans.Map({
 	        target : "mapDiv",
@@ -34,7 +35,7 @@
 	            }),
 	            new GeoBeans.Layer.FeatureLayer({
 	                name : "country",
-	                geometryType : GeoBeans.Geometry.Type.POLYGON,
+	                geometryType : GeoBeans.Geometry.Type.POINT,
 	                source : new GeoBeans.Source.Feature.GeoJSON({
 	                    url : "/Map5/example/all/data/geojson/countries.geojson",
 	                    geometryName : "geometry",
@@ -50,7 +51,7 @@
 
 	function removeLayer(layerName){
 
-		// 1、按照图层名称删除图层
+		// 1、地图删除图层
 		mapObj.removeLayer(layerName);
 
 		// 2、地图刷新
