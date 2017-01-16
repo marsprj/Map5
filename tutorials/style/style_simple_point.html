@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -21,20 +20,32 @@
 	var mapObj = null;
 	function init(){
 		
-		loadCities();
-
-		setPointStyle();
+		loadTileMap();
+		loadPointLayer();
 	}
 
+	function loadPointLayer(){
+		// 1、定义WFS图层
+		var layer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "cities",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "cities_2",
+				"geometryName" : "shape",
+				"outputFormat": "GML2"
+			})
+		});
 
-	function setPointStyle(){
-		// 1、获取图层
-		var layer = mapObj.getLayer("cities");
 
-		// 2、设定样式
+		// 2、添加图层
+		mapObj.addLayer(layer);
+
+		// 3、设定样式
 		var style = createSimplePointStyle();
-
-		// 3、图层设定样式
 		layer.setStyle(style);
 
 		// 4、地图刷新
@@ -53,7 +64,7 @@
 
 		// 3、定义一个点样式
 		var symbolizer = new GeoBeans.Symbolizer.PointSymbolizer();
-		
+
 		// 4、设置点大小
 		symbolizer.size = 6;
 		
@@ -68,20 +79,19 @@
 		// 边框的颜色
 		stroke.width = 1.0; 
 
-		// 7、设置该规则的样式
+		// 7、定义该规则的样式
 		rule.symbolizer = symbolizer;
 		
-		// 8、添加该规则
+		// 8、添加该项规则
 		style.addRule(rule);		
 
 		return style;
 	}
 
 </script>
-<title>要素图层：点素图</title>
+<title>图层样式：点样式</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>
-	

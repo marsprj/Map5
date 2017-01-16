@@ -7,7 +7,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -23,28 +22,39 @@
 	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
-		loadMap();
-
-		setPolygonStyle();
+		loadTileMap();
+		loadPointLayer();
 	}
 
+	function loadPointLayer(){
+		// 1、定义WFS图层
+		var layer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "country",
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "country_2",
+				"geometryName" : "shape",
+				"outputFormat": "GML2"
+			})
+		});
+		// 2、添加图层
+		mapObj.addLayer(layer);
 
-	function setPolygonStyle(){
-		// 1、获取图层
-		var layer = mapObj.getLayer("country");
-
-		// 2、定义面样式
+		// 3、设定样式
 		var style = createSimplePolygonStyle();
-
-		// 3、设置样式
 		layer.setStyle(style);
 
-		// 4、地图刷新
-		mapObj.refresh();		
+		mapObj.refresh();
 	}
 
 	/**
 	 * 创建简单面图层样式
+	 * @description feature包含status字段。status字段值为on绘制为紫色。status字段值为off绘制为黄色。
+	 * @return {[type]} [description]
 	 */
 	function createSimplePolygonStyle(){
 		// 1、定义元素的样式
@@ -81,4 +91,3 @@
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>
-	

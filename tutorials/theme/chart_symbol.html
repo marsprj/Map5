@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
@@ -40,44 +39,54 @@
 	function addChart(){
 		// 1、定义等级符号图
 		var layer = new GeoBeans.Layer.SymbolChartLayer({
-			name : "chart", // 图层名称
-			source : new GeoBeans.Source.Feature({ // 定义数据源
+			name : "chart",							// 图层名称
+			source : new GeoBeans.Source.Feature({	// 图层数据源
 				geometryName : "shape"
 			}),
-			field : "gdp",					// 等级符号图的字段
-			showGeometry : true,			// 是否显示几何要素
-			style : createStyle(),			// 几何要素的样式
-			color  			: "#f5e900",	//符号的颜色
-			opacity 		: 0.8,			//透明度
-			border 			: "#eeeeee",    //线段的颜色
-			borderOpacity 	: 1.0,          //线段的透明度
-			borderWidth		: 0,			//线段的宽度，设置为0，则不设置线段
-			maxSize 		: 30,			//最大的符号的半径
-			byLevel 		: false,		//是否按照等级进行绘制
-			level 			: 4				//如果按照等级绘制，设置的级别个数
+			field : "gdp",							// 专题图字段
+			showGeometry : true,					// 是否显示几何要素
+			style : createStyle(),					// 图层样式
+			color  			: "#f5e900",			// 符号的颜色
+			opacity 		: 0.8,					// 透明度
+			border 			: "#eeeeee",    		// 线段的颜色
+			borderOpacity 	: 1.0,          		// 线段的透明度
+			borderWidth		: 0,					// 线段的宽度，设置为0，则不设置线段
+			maxSize 		: 30,					// 最大的符号的半径
+			byLevel 		: false,				// 是否按照等级进行绘制
+			level 			: 4						// 如果按照等级绘制，设置的级别个数
 		});
 
 
-		// 2、数据源添加要素
-		var features = loadFeatures();
+		// 2、图层获取数据源
 		var source = layer.getSource();
-		source.addFeatures(features);
 
-		// 3、添加图层
+		// 3、定义要素数组
+		var features = loadFeatures();
+			
+		// 4、数据源设定要素
+		source.setFeatures(features);
+
+		// 5、地图添加图层
 		mapObj.addLayer(layer);
 
-		// 4、定义中心点和缩放级别
+		// 6、地图设定显示中心点和级别		
 		var center = new GeoBeans.Geometry.Point(117.68,39.26);
-		mapObj.setZoomCenter(10,center);
+		mapObj.zoomTo(10,center);
 	}
 
+	// 设定图层是否显示
 	function setVisible(){
 		var layer = mapObj.getLayer("chart");
-		if(layer.visible){
+		if(layer == null){
+			return;
+		}
+
+		if(layer.isVisible()){
 			layer.setVisible(false);
 		}else{
 			layer.setVisible(true);
 		}
+		
 		mapObj.refresh();
 	}
 
@@ -154,9 +163,5 @@
 		
 		return style;
 	}
-
-	
-
-
 </script>
 	

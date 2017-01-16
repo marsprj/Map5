@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/echarts-all.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
@@ -37,43 +36,53 @@
 	}
 
 	function addChart(){
-		// 1、定义饼状图
+		// 1、定义一个饼状图
 		var layer = new GeoBeans.Layer.PieChartLayer({
-			name : "chart",  // 图层名称
-			fields : ["gdp","populat"], // 专题图字段
-			source : new GeoBeans.Source.Feature({ // 数据源
+			name : "chart", 						// 图层名称
+			fields : ["gdp","populat"],				// 图层字段
+			source : new GeoBeans.Source.Feature({	// 图层数据源
 				geometryName : "shape"
 			}),
-			showGeometry : true, 			// 是否显示几何要素 
-			style : createStyle(), 			// 几何要素的样式
-			radius 		: 20,				// 饼状图的半径
-			colors 		: ["#e1c72d","#b171f6"], // 字段对应的颜色
-			offsetX 	: 0,				// x方向偏移量，向右为正
-			offsetY 	: 0,				// y方向偏移量，向上为正
-			showLabel 	: true,				// 是否显示标签
-			opacity 	: 1.0				// 透明度
+			showGeometry : true,					// 是否显示几何要素
+			style : createStyle(),					// 图层的样式
+			radius 		: 20,						// 饼状图的半径
+			colors 		: ["#e1c72d","#b171f6"], 	// 字段对应的颜色
+			offsetX 	: 0,						// x方向偏移量，向右为正
+			offsetY 	: 0,						// y方向偏移量，向上为正
+			showLabel 	: true,						// 是否显示标签
+			opacity 	: 1.0						// 透明度
 		});
 
-		// 2、数据源添加要素
-		var features = loadFeatures();
+		// 2、图层获取数据源
 		var source = layer.getSource();
-		source.addFeatures(features);
 
-		// 3、添加图层
+		// 3、定义要素数组
+		var features = loadFeatures();
+
+		// 4、数据源设定要素
+		source.setFeatures(features);
+
+		// 5、地图添加图层
 		mapObj.addLayer(layer);
 
-		// 4、定义中心点和缩放级别
+		// 6、地图设定显示中心点和级别
 		var center = new GeoBeans.Geometry.Point(117.68,39.26);
-		mapObj.setZoomCenter(10,center);
+		mapObj.zoomTo(10,center);
 	}
 
+	// 设定图层是否显示
 	function setVisible(){
 		var layer = mapObj.getLayer("chart");
-		if(layer.visible){
+		if(layer == null){
+			return;
+		}
+
+		if(layer.isVisible()){
 			layer.setVisible(false);
 		}else{
 			layer.setVisible(true);
 		}
+
 		mapObj.refresh();
 	}
 
@@ -152,4 +161,3 @@
 	}
 
 </script>
-	

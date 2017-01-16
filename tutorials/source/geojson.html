@@ -6,11 +6,9 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
-<script type="text/javascript" src="../data/sample/tianjinValue.js"></script>
 
 <style type="text/css">
 	body{
@@ -26,33 +24,38 @@
 
 <script type="text/javascript">
 
+	var mapObj = null;
 	function  init(){
-		
 		loadTileMap();
 	}
 
 	function onGeoJSON(){
 
-		// 1、定义GeoJson数据源
+		// 1、定义一个GeoJson的数据源
+		var url = "../data/geojson/polygon-samples.geojson";
 		var source = new GeoBeans.Source.Feature.GeoJSON({
-			"url" : "../data/geojson/point-samples.json", // 数据地址
-			"geometryName" : "geometry",	//几何要素的字段名称
+			"url" : url,
+			"geometryName" : "geometry",
 		});
 
-
-		// 2、定义回调函数
+		// 2、定义成功回调函数
 		var success = {
 			execute : function(features){
-				alert("要素个数: " + features.length); // 返回要素数组
+				console.log(features.length);
+
+				// 获取地图的选择集
+				var selection = mapObj.getSelection();
+
+				// 选择集中设置要素
+				selection.setFeatures(features);
+
+				// 地图刷新
+				mapObj.refresh();
 			}
 		}
 
-		// 3、获取数据，
-		// 第一个参数是filter
-		// 第二个参数是查询成功的回调函数
-		// 第三个参数是查询失败的回调函数
+		// 3、获取要素
 		source.getFeatures(null,success);
 	}
-
 </script>
 	

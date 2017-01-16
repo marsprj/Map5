@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -34,12 +33,11 @@
 		loadMap();
 	}
 
-
 	function addCluster(){
-		// 1、定义聚合图
+		// 1、定义聚类图
 		var layer = new GeoBeans.Layer.ClusterLayer({
-			name : "cluster", // 图层名称
-			source : new GeoBeans.Source.Feature.WFS({ //定义WFS数据源
+			name : "cluster",							// 图层名称
+			source : new GeoBeans.Source.Feature.WFS({	// 图层数据源
 				url : "/geoserver/radi/ows?",
 				version : "1.0.0",
 				featureNS : 'http://www.radi.ac.cn',
@@ -48,19 +46,23 @@
 				geometryName : "shape",
 				outputFormat: "GML2"
 			}),
-			showGeometry : true
+			showGeometry : true							// 是否显示几何要素
 		});
 
-		// 2、添加图层
+		// 2、地图添加要素
 		mapObj.addLayer(layer);
 
-		// 3、刷新
+		// 3、地图刷新
 		mapObj.refresh();
 	}
 
+	// 设置图层是否显示
 	function setLayerVisible(){
 		var layer = mapObj.getLayer("cluster");
-		if(layer.visible){
+		if(layer == null){
+			return;
+		}
+		if(layer.isVisible()){
 			layer.setVisible(false);
 		}else{
 			layer.setVisible(true);

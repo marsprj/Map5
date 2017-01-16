@@ -180,6 +180,9 @@
 	// 设置图层是否显示
 	function setLayerVisible(){
 		var layer = mapObj.getLayer("cluster");
+		if(layer == null){
+			return;
+		}
 		if(layer.isVisible()){
 			layer.setVisible(false);
 		}else{

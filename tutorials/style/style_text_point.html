@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -22,22 +21,32 @@
 	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
-		loadCities();
-
-		setTextStyle();
+		loadTileMap();
+		loadPointLayer();
 	}
 
-	/**
-	 * 设置样式
-	 */
-	function setTextStyle(){
-		// 1、获取图层
-		var layer = mapObj.getLayer("cities");
+	function loadPointLayer(){
 
-		// 2、定义样式
+		// 1、定义WFS图层
+		var layer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "cities",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "cities_2",
+				"geometryName" : "shape",
+				"outputFormat": "GML2"
+			})
+		});
+
+		// 2、添加图层
+		mapObj.addLayer(layer);
+
+		// 3、设定样式
 		var style = createTextStyle();
-
-		// 3、图层设置样式
 		layer.setStyle(style);
 
 		// 4、地图刷新
@@ -62,7 +71,6 @@
 
 		// 4、设置该规则的样式
 		rule.symbolizer = symbolizer;
-
 
 		// 5、定义一个文字样式
 		var textSymbolizer = new GeoBeans.Symbolizer.TextSymbolizer();
@@ -96,15 +104,25 @@
 		textSymbolizer.font.weight = GeoBeans.Style.Font.WeightType.Bold;
 
 		// 12、设置文字标注的偏移量，x方向，向右是正
-		textSymbolizer.displaceX = 5;
+		textSymbolizer.displaceX = 0;
 
 		// 文字标注的偏移量，y方向，向上是正
-		textSymbolizer.displaceY = -15;
+		textSymbolizer.displaceY = -20;
 
-		// 13、设置规则的文字样式。
+		// 13、设置文字的背景填充样式，默认不设置
+		textSymbolizer.bgFill = new GeoBeans.Style.Fill();
+		textSymbolizer.bgFill.color.setHex("#ff0000",0.2);
+
+
+		// 14、设置文字的背景边框样式，默认不设置
+		textSymbolizer.bgStroke = new GeoBeans.Style.Stroke();
+		textSymbolizer.bgStroke.color.setHex("#000000",0.2);
+		textSymbolizer.bgStroke.width = 1;
+
+		// 15、设置规则的文字样式。
 		rule.textSymbolizer = textSymbolizer;
 
-		// 14、添加该规则
+		// 16、添加该规则
 		style.addRule(rule);		
 
 		return style;

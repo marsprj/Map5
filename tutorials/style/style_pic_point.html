@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -19,22 +18,34 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
+	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
-		loadCities();
-
-		setPointStyle();
+		loadTileMap();
+		loadPointLayer();
 	}
 
+	function loadPointLayer(){
+		// 1、定义WFS图层
+		var layer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "cities",
+			"geometryType" : GeoBeans.Geometry.Type.POINT,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "cities_2",
+				"geometryName" : "shape",
+				"outputFormat": "GML2"
+			})
+		});
 
-	function setPointStyle(){
-		// 1、获取图层
-		var layer = mapObj.getLayer("cities");
+		// 2、添加图层
+		mapObj.addLayer(layer);
 
-		// 2、定义样式
+		// 3、设定样式
 		var style = createPicPointStyle();
-
-		// 3、设置样式
 		layer.setStyle(style);
 
 		// 4、地图刷新
@@ -84,7 +95,7 @@
 	}
 
 </script>
-<title>样式：点图片样式</title>
+<title>图层样式：点图片样式</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">

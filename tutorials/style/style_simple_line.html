@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="../../lib/css/Map5.min.css">
 
 <script type="text/javascript" src="../../lib/jquery-1.11.1.js"></script>
-<script type="text/javascript" src="../../lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../lib/Map5.min.js"></script>
 
 <script type="text/javascript" src="../js/initMap.js"></script>
@@ -19,31 +18,40 @@
 <script type="text/javascript">
 	// 地图变量
 	var mapObj = null;
+	var geomType  = GeoBeans.Geometry.Type.POINT;
 	function init(){
 		
-		loadRivers();
-
-		setLineStyle();
+		loadTileMap();
+		loadPointLayer();
 	}
 
+	function loadPointLayer(){
+		// 1、定义WFS图层
+		var layer = new GeoBeans.Layer.FeatureLayer({			
+			"name" : "rivers",
+			"geometryType" : GeoBeans.Geometry.Type.POLYGON,
+			"source" : new GeoBeans.Source.Feature.WFS({
+				"url" : "/geoserver/radi/ows?",
+				"version" : "1.0.0",
+				"featureNS" : 'http://www.radi.ac.cn',
+				"featurePrefix" : "radi",
+				"featureType" : "rivers_2",
+				"geometryName" : "shape",
+				"outputFormat": "GML2"
+			})
+		});
 
-	function setLineStyle(){
-		// 1、获取图层
-		var layer = mapObj.getLayer("rivers");
+		// 2、添加图层
+		mapObj.addLayer(layer);
 
-		// 2、定义线样式
+		// 3、设定样式
 		var style = createSimpleLineStyle();
-
-		// 3、设置样式
 		layer.setStyle(style);
 
-		// 4、刷新
-		mapObj.refresh();
-
+		mapObj.refresh(true);
 	}
-	/**
-	 * 创建简单线图层样式
-	 */
+
+	// 创建线样式
 	function createSimpleLineStyle(){
 		// 1、定义元素的样式
 		var style = new GeoBeans.Style.FeatureStyle();
@@ -54,11 +62,11 @@
 		// 3、定义一个线样式
 		var symbolizer = new GeoBeans.Symbolizer.LineSymbolizer();
 
-		// 4、设定线样式的颜色，stroke必须设定
-		symbolizer.stroke.color.set(0,0,255,0.6);
+		// 4、定义线样式的边框的颜色，也可以设定边框为空
+		symbolizer.stroke.color.set(17, 17, 17,0.6);
 
-		// 5、设定线样式的宽度，默认宽度为2
-		symbolizer.stroke.width = 3;
+		// 5、定义线样式的边框的宽度，默认为2
+		symbolizer.stroke.width = 1;
 
 		// 6、定义该规则的样式
 		rule.symbolizer = symbolizer;
@@ -70,10 +78,11 @@
 	}
 
 </script>
-<title>图层样式： 线样式</title>
+<title>图层样式：线样式</title>
 <body onload="init()">
 	<!-- mapDiv 为初始化地图的容器，给定高度和宽度，并指定定位方式为绝对定位 -->
 	<div id="mapDiv" style="height:800px;width:100%;position:absolute;top:80px;">
 	</div>
 </body>
 	
+
