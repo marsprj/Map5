@@ -54,7 +54,7 @@ GeoBeans.AuthManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;		
 	},
 
@@ -97,7 +97,7 @@ GeoBeans.AuthManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;			
 	},
 
@@ -140,7 +140,7 @@ GeoBeans.AuthManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;				
 	},
 
@@ -178,7 +178,7 @@ GeoBeans.AuthManager = GeoBeans.Class({
 	},
 
 	parseGetUser : function(xml){
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != ""){
 			return exception;
 		}
@@ -365,8 +365,8 @@ GeoBeans.AuthManager = GeoBeans.Class({
 		var result = "";
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;		
 	},

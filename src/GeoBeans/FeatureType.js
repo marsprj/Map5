@@ -90,8 +90,8 @@ GeoBeans.FeatureType = GeoBeans.Class({
 	},
 	
 	parseFields : function(xml){
-		if($(xml).find("ExceptionText").length != 0){
-			var text = $(xml).find("ExceptionText").text();
+		if($(xml).find("ows\\:ExceptionText").length != 0){
+			var text = $(xml).find("ows\\:ExceptionText").text();
 			return text;
 		}
 		var that = this;

@@ -16,7 +16,7 @@ GeoBeans.Filter.ComparisionFilter = GeoBeans.Class(GeoBeans.Filter,{
 
 
 GeoBeans.Filter.ComparisionFilter.OperatorType = {
-	ComOprEqual 			: "equal",
+	ComOprEqual 			: "equalto",
 	ComOprNotEqual 			: "notequal",
 	ComOprLessThan 			: "lessthan",
 	ComOprGreaterThan 		: "greaterthan",

@@ -91,7 +91,7 @@ CoEditor.RegisterDialog.prototype.registerDBSource = function(){
 	var dbsManager = user.getDBSManager();
 	var name = "bhdb";
 	var engine = "Postgres";
-	var constr = "server=192.168.111.160;instance=5432;database=bhdb;user=postgres;password=qwer1234;encoding=GBK"
+	var constr = "server=192.168.111.155;instance=5432;database=bhdb;user=postgres;password=qwer1234;encoding=GBK"
 	var type = "feature";
 	dbsManager.registerDataSource(name,engine,constr,type,this.registerDBSource_callback);
 }

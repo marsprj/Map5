@@ -106,7 +106,7 @@ GeoBeans.Format.GML.prototype.readPolygon = function(gml){
 	var ring = null;
 	var rings= new Array();
 	var pts  = new Array();
-	$(gml).find("LinearRing").each(function(index, element) {
+	$(gml).find("gml\\:LinearRing").each(function(index, element) {
         pts = that.parsePoints($(this).children().first());
 		ring = new GeoBeans.Geometry.LinearRing(pts);
 		rings.push(ring);
@@ -122,7 +122,7 @@ GeoBeans.Format.GML.prototype.readMultiLineString = function(gml){
 	
 	var l = null;
 	var lines= new Array();
-	$(gml).find("LineString").each(function(index, element) {
+	$(gml).find("gml\\:LineString").each(function(index, element) {
 		l = that.readLineString(this);
 		lines.push(l);
     });
@@ -189,8 +189,8 @@ GeoBeans.Format.GML.prototype.writePoint = function(point){
 		return null;
 	}
 	var gml = "";
-	gml += " <gml:Point>"
-		+  "<gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" "
+	gml += "<gml:Point  xmlns:gml=\"http://www.opengis.net/gml\" >"
+		+  "<gml:coordinates "
 		+  "decimal=\".\" cs=\",\" ts=\" \">";
 	gml += point.x;
 	gml += ",";
@@ -225,11 +225,11 @@ GeoBeans.Format.GML.prototype.writePolygon = function(polygon){
 	}
 	var gml = "";
 	var rings = polygon.rings;
-	gml += "<gml:Polygon>";
+	gml += "<gml:Polygon  xmlns:gml=\"http://www.opengis.net/gml\">";
 	for(var j = 0; j < rings.length; ++j){
 		gml += "<gml:outerBoundaryIs>";
 		gml += "<gml:LinearRing>";
-		gml += "<gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" "
+		gml += "<gml:coordinates "
 			+  "decimal=\".\" cs=\",\" ts=\" \">";
 		var ring = rings[j];
 		var points = ring.points;

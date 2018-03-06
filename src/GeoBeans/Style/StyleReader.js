@@ -7,7 +7,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	read : function(xml){
 		var style = null;
 		var xmlDoc = $(xml);
-		var StyledLayerDescriptorXml = xmlDoc.find("StyledLayerDescriptor");
+		var StyledLayerDescriptorXml = xmlDoc.find("sld\\:StyledLayerDescriptor");
 		if(StyledLayerDescriptorXml.length != 1){
 			return null;
 		}
@@ -25,7 +25,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	},
 
 	parseUserLayer : function(xml){
-		var userStyleXML = xml.find("UserStyle");
+		var userStyleXML = xml.find("sld\\:UserStyle");
 		if(userStyleXML.length != 1){
 			return null;
 		}
@@ -34,18 +34,18 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	},
 
 	parseUserStyle : function(xml){
-		var name = xml.find("Name:first").text();
-		var featureTypeXML = xml.find("FeatureTypeStyle");
+		var name = xml.find("sld\\:Name:first").text();
+		var featureTypeXML = xml.find("sld\\:FeatureTypeStyle");
 		if(featureTypeXML.length != 1){
 			return null;
 		}
 		var style = this.parseFeatureTypeXML(xml);
-		var styleClass = xml.find("StyleClass").text();
+		var styleClass = xml.find("sld\\:StyleClass").text();
 		if(styleClass != null){
 			style.styleClass = styleClass;
 		}
 
-		var styleField = xml.find("StyleField").text();
+		var styleField = xml.find("sld\\:StyleField").text();
 		if(styleField != null){
 			style.field = styleField;
 		}
@@ -57,7 +57,7 @@ GeoBeans.StyleReader = GeoBeans.Class({
 	parseFeatureTypeXML : function(xml){
 		var style = new GeoBeans.Style.FeatureStyle();
 		var that = this;
-		xml.find("Rule").each(function(){
+		xml.find("sld\\:Rule").each(function(){
 			var rule = that.parseRule($(this));
 			style.addRule(rule);
 		});		

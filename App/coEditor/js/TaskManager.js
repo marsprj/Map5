@@ -50,7 +50,7 @@ CoEditor.TaskManager.prototype.parseCreateTask = function(xml){
 	if(result.toLowerCase() == "success"){
 		return "success";
 	}
-	var exception = $(xml).find("ExceptionText").text();
+	var exception = $(xml).find("ows\\:ExceptionText").text();
 	return exception;	
 }
 
@@ -120,7 +120,7 @@ CoEditor.TaskManager.prototype.parseTask = function(xml){
 	};
 }
 CoEditor.TaskManager.prototype.parseMapObj = function(xml){
-	var exception = $(xml).find("ExceptionText").text();
+	var exception = $(xml).find("ows:\\ExceptionText").text();
 	if(exception != ""){
 		console.log(exception);
 		return null;
@@ -324,7 +324,7 @@ CoEditor.TaskManager.prototype.parseJoinTask = function(xml){
 	if(result.toLowerCase() == "success"){
 		return "success";
 	}
-	var exception = $(xml).find("ExceptionText").text();
+	var exception = $(xml).find("ows\\:ExceptionText").text();
 	return exception;		
 }
 

@@ -117,7 +117,7 @@ GeoBeans.SubManager = GeoBeans.Class({
 	},
 
 	parseGetSubscription : function(xml){
-		var exception = $(xml).find("ExceptionText");
+		var exception = $(xml).find("ows\\:ExceptionText");
 		if(exception.length != 0){
 			return exception.text();
 		}
@@ -580,7 +580,7 @@ GeoBeans.SubManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "SUCCESS";
 		}
-		var exception = $(xml).find("ExceptionText");
+		var exception = $(xml).find("ows\\:ExceptionText");
 		if(exception.length != 0){
 			return exception.text();
 		}
@@ -638,7 +638,7 @@ GeoBeans.SubManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "SUCCESS";
 		}
-		var exception = $(xml).find("ExceptionText");
+		var exception = $(xml).find("ows\\:ExceptionText");
 		if(exception.length != 0){
 			return exception.text();
 		}

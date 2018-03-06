@@ -65,7 +65,7 @@ GeoBeans.Source.Feature.WFS = GeoBeans.Class(GeoBeans.Source.Feature, {
 		var g = null;
 		var features = new Array();
 		var format = new GeoBeans.Format.GML();
-		$(xml).find("featureMember").each(function() {
+		$(xml).find("gml\\:featureMember").each(function() {
             f = that.parseFeature($(this).children()[0], format);
 			features.push(f);
         });		
@@ -251,7 +251,7 @@ GeoBeans.Source.Feature.WFS.prototype.serializeQuery = function(query, mapName, 
 			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
 
 	var doc = $.parseXML(str);
-	var root = $(doc).find("GetFeature")[0];
+	var root = $(doc).find("wfs\\:GetFeature")[0];
 
 	// set mapName and sourceName attribute
 	if(isValid(mapName)){
@@ -375,14 +375,14 @@ GeoBeans.Source.Feature.WFS.prototype.getFields = function(success,failure){
  * @private
  */
 GeoBeans.Source.Feature.WFS.prototype.parseFields = function(xml){
-	if($(xml).find("ExceptionText").length != 0){
-		var text = $(xml).find("ExceptionText").text();
+	if($(xml).find("ows\\:ExceptionText").length != 0){
+		var text = $(xml).find("ows\\:ExceptionText").text();
 		return text;
 	}
 	var that = this;
 	var f = null;
 	var fields = new Array();
-	$(xml).find("sequence").children().each(function() {
+	$(xml).find("xsd\\:sequence").children().each(function() {
         f = that.parseField(this);
 		fields.push(f);
     });
@@ -454,7 +454,7 @@ GeoBeans.Source.Feature.WFS.prototype.removeFeature = function(feature,success,f
 			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
 
 	var doc = $.parseXML(str);
-	var root = $(doc).find("Transaction")[0];
+	var root = $(doc).find("wfs\\:Transaction")[0];
 	if(isValid(this._sourceName)){
 		$(root).attr("sourceName", this._sourceName);	
 	}
@@ -510,7 +510,7 @@ GeoBeans.Source.Feature.WFS.prototype.removeFeature = function(feature,success,f
  * @private
  */
 GeoBeans.Source.Feature.WFS.prototype.parseTransactionResp = function(xml){
-	var exception = $(xml).find("ExceptionText").text();
+	var exception = $(xml).find("ows\\:ExceptionText").text();
 	if(exception != ""){
 		console.log(exception);
 		return null;
@@ -550,7 +550,7 @@ GeoBeans.Source.Feature.WFS.prototype.addFeature = function(feature,success,fail
 			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
 
 	var doc = $.parseXML(str);
-	var root = $(doc).find("Transaction")[0];
+	var root = $(doc).find("wfs\\:Transaction")[0];
 
 	if(isValid(this._sourceName)){
 		$(root).attr("sourceName", this._sourceName);	
@@ -629,7 +629,7 @@ GeoBeans.Source.Feature.WFS.prototype.updateFeature = function(feature,success,f
 			+ 'xsi:schemaLocation="http://www.opengis.net/wfs '
 			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';	
 	var doc = $.parseXML(str);
-	var root = $(doc).find("Transaction")[0];
+	var root = $(doc).find("wfs\\:Transaction")[0];
 	if(isValid(this._sourceName)){
 		$(root).attr("sourceName", this._sourceName);	
 	}
@@ -794,7 +794,7 @@ GeoBeans.Source.Feature.WFS.prototype.serializeQueryCount = function(query, mapN
 			+ 'http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" />';
 
 	var doc = $.parseXML(str);
-	var root = $(doc).find("GetCount")[0];
+	var root = $(doc).find("wfs\\:GetCount")[0];
 
 	// set mapName and sourceName attribute
 	if(isValid(mapName)){

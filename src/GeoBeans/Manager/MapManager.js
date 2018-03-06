@@ -169,7 +169,7 @@ GeoBeans.MapManager = GeoBeans.Class({
 	},
 
 	parseMap : function(xml){
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != ""){
 			console.log(exception);
 			return null;
@@ -467,7 +467,7 @@ GeoBeans.MapManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -493,7 +493,7 @@ GeoBeans.MapManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -664,7 +664,7 @@ GeoBeans.MapManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -743,7 +743,7 @@ GeoBeans.MapManager = GeoBeans.Class({
 	},
 
 	parseMapObj : function(xml){
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != ""){
 			console.log(exception);
 			return null;

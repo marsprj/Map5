@@ -107,7 +107,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -154,8 +154,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("FeatureProject").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},
@@ -209,8 +209,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("FeatureImport").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},
@@ -391,7 +391,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -447,7 +447,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;		
 	},
 
@@ -504,7 +504,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;	
 	},
 
@@ -561,7 +561,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;			
 	},
 
@@ -623,7 +623,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -686,7 +686,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -742,7 +742,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -801,7 +801,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -857,7 +857,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;				
 	},
 
@@ -901,7 +901,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -945,7 +945,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -997,7 +997,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1041,7 +1041,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1085,7 +1085,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1129,8 +1129,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("BuildPyramid").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;		
 	},
@@ -1173,8 +1173,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("UpdateTile").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;		
 	},
@@ -1230,8 +1230,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("RasterHistogramEqualization").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;		
 	},
@@ -1286,8 +1286,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("DemSlope").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;	
 	},
@@ -1342,8 +1342,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("DemAspect").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;	
 	},
@@ -1398,8 +1398,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("DemStretch").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;	
 	},
@@ -1457,8 +1457,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("DemHillshade").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;	
 	},
@@ -1508,7 +1508,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1562,8 +1562,8 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		var text = $(xml).find("RasterThreshold").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;	
 	},
@@ -1609,7 +1609,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},	
 
@@ -1653,7 +1653,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1697,7 +1697,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1741,7 +1741,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1785,7 +1785,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;		
 	},
 
@@ -1829,7 +1829,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -1942,7 +1942,7 @@ GeoBeans.GPSManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;		
 	}
 });

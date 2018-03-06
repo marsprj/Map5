@@ -589,8 +589,8 @@ GeoBeans.StyleManager = GeoBeans.Class({
 		var text = $(xml).find("AddStyle").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},
@@ -601,8 +601,8 @@ GeoBeans.StyleManager = GeoBeans.Class({
 		var text = $(xml).find("UpdateStyle").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},
@@ -612,8 +612,8 @@ GeoBeans.StyleManager = GeoBeans.Class({
 		var text = $(xml).find("RemoveStyle").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},

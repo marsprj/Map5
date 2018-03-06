@@ -182,7 +182,7 @@ GeoBeans.DataSource = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;		
 	},
 
@@ -224,7 +224,7 @@ GeoBeans.DataSource = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;	
 	}
 });

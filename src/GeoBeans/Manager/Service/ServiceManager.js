@@ -203,7 +203,7 @@ GeoBeans.ServiceManager = GeoBeans.Class({
 			return null;
 		}
 
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != ""){
 			console.log(exception);
 			return null;
@@ -225,7 +225,7 @@ GeoBeans.ServiceManager = GeoBeans.Class({
 			return null;
 		}
 
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != ""){
 			console.log(exception);
 			return null;
@@ -297,8 +297,8 @@ GeoBeans.ServiceManager = GeoBeans.Class({
 		var text = $(xml).find("RemoveService").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},
@@ -308,8 +308,8 @@ GeoBeans.ServiceManager = GeoBeans.Class({
 		var text = $(xml).find("CreateService").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	},
@@ -319,8 +319,8 @@ GeoBeans.ServiceManager = GeoBeans.Class({
 		var text = $(xml).find("StartService").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;				
 	},
@@ -330,8 +330,8 @@ GeoBeans.ServiceManager = GeoBeans.Class({
 		var text = $(xml).find("StopService").text();
 		if(text.toUpperCase() == "SUCCESS"){
 			result = "success";
-		}else if($(xml).find("ExceptionText").text() != ""){
-			result = $(xml).find("ExceptionText").text();
+		}else if($(xml).find("ows\\:ExceptionText").text() != ""){
+			result = $(xml).find("ows\\:ExceptionText").text();
 		}
 		return result;
 	}

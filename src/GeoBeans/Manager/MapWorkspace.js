@@ -337,7 +337,7 @@ GeoBeans.MapWorkspace = GeoBeans.Class({
 	},
 
 	parseDescribeLayer : function(xml){
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != ""){
 			return exception;
 		}
@@ -390,7 +390,7 @@ GeoBeans.MapWorkspace = GeoBeans.Class({
 
 	// 修改之后为返回图层的信息
 	parseRegisterLayer : function(xml){
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != null && exception != ""){
 			return exception;
 		}
@@ -576,7 +576,7 @@ GeoBeans.MapWorkspace = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -628,7 +628,7 @@ GeoBeans.MapWorkspace = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	}
 

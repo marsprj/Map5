@@ -243,7 +243,7 @@ GeoBeans.FileManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;
 	},
 
@@ -252,7 +252,7 @@ GeoBeans.FileManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;		
 	},
 
@@ -261,7 +261,7 @@ GeoBeans.FileManager = GeoBeans.Class({
 		if(result.toLowerCase() == "success"){
 			return "success";
 		}
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		return exception;			
 	},
 
@@ -281,7 +281,7 @@ GeoBeans.FileManager = GeoBeans.Class({
 	},
 
 	parseDescribeCsv : function(xml){
-		var exception = $(xml).find("ExceptionText").text();
+		var exception = $(xml).find("ows\\:ExceptionText").text();
 		if(exception != null && exception != ""){
 			return exception;
 		}
