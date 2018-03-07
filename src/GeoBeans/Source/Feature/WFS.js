@@ -517,9 +517,9 @@ GeoBeans.Source.Feature.WFS.prototype.parseTransactionResp = function(xml){
 	}
 
 
-	var insertedCount = $(xml).find("totalInserted").text();
-	var updatedCount = $(xml).find("totalUpdated").text();
-	var deletedCount = $(xml).find("totalDeleted").text();
+	var insertedCount = $(xml).find("wfs\\:totalInserted").text();
+	var updatedCount = $(xml).find("wfs\\:totalUpdated").text();
+	var deletedCount = $(xml).find("wfs\\:totalDeleted").text();
 	return{
 		insert : parseInt(insertedCount),
 		update : parseInt(updatedCount),
